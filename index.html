@@ -145,12 +145,12 @@
         <div class="docs-header-content" style="transform:none;-webkit-transform:none;">
             <p class="docs-subtitle">pdfh5.js - 移动端预览PDF插件，基于pdf.js和jQuery</p>
             <a href="pdf.html" style="display:block;margin-bottom:30px;">
-                <img src="images/saoma.png" alt="" width="100px" height="100px">
+                <div id="code"></div>
             </a>
-            <iframe class="github-btn" src="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=gjtool&amp;type=watch&amp;count=true" width="100"
+            <iframe class="github-btn" src="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=pdfh5&amp;type=watch&amp;count=true" width="100"
                 height="20">
             </iframe>
-            <iframe class="github-btn" src="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=gjtool&amp;type=fork&amp;count=true" width="100"
+            <iframe class="github-btn" src="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=pdfh5&amp;type=fork&amp;count=true" width="100"
                 height="20">
             </iframe>
             <p style="text-align: left;margin-top: 20px;">本插件所需文件如下：</p>
@@ -161,7 +161,7 @@
                 <li><a target="_blank" download="js" href="http://www.gjtool.cn/pdfh5/js/pdfh5.js">pdfh5.js 下载大小：41kb</a></li>
                 <li><a target="_blank" download="css" href="http://www.gjtool.cn/pdfh5/css/pdfh5.css">pdfh5.css 下载大小：1kb</a></li>
             </ol>
-            <p style="text-align: left;margin-top: 20px;">pdfh5支持在线预览：</p>
+            <p style="text-align: left;margin-top: 20px;">pdfh5支持在线预览，修改地址栏file=后的地址就行，如果不填写，就在实例化的时候传入pdf地址：</p>
             <a target="_blank" href="http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/test.pdf">http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/test.pdf</a>
             <p style="text-align: left;margin-top: 20px;">pdfh5实例初始化：</p>
             <pre style="text-align: left;margin-top: 20px;background: #111;color:aqua">
@@ -181,7 +181,11 @@
             </p>
         </div>
     </div>
-
+    <script src="js/jquery-1.11.3.min.js"></script>
+    <script src="js/jquery.qrcode.min.js"></script>
+    <script>
+        $('#code').qrcode(location.href); 
+    </script>
 </body>
 
 </html>
