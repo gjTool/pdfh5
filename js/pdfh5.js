@@ -827,11 +827,13 @@
                 return "";
             }
             if(options.pdfdata){
+
                 // getDoc(array)
                 console.log(options.pdfdata)
             }else {
                 var pdfurl =  GetQueryString("file");
                 if(pdfurl){
+                    //
                     options.pdfurl = pdfurl
                 }   
                 if(options.pdfurl){
