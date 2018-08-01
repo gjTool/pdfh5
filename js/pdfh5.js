@@ -826,15 +826,15 @@
                 if (r != null) return decodeURIComponent(r[2]);
                 return "";
             }
-            if(options.data){
+            if(options.pdfdata){
                 // getDoc(array)
-                console.log(options.data)
+                console.log(options.pdfdata)
             }else {
-                if(!options.pdfurl){
-                    options.pdfurl = GetQueryString("file");
-                }
+                var pdfurl =  GetQueryString("file");
+                if(pdfurl){
+                    options.pdfurl = pdfurl
+                }   
                 if(options.pdfurl){
-                    console.log(1)
                     $.ajax({
                         type: "get",
                         mimeType: 'text/plain; charset=x-user-defined',

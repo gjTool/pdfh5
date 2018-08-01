@@ -220,6 +220,7 @@
 					pageNum.fadeOut(200);
 				}, 1500)
 			}
+		
 			pageTop.on('click tap', function (e) {
 				var mart = pdfh5.viewer.css('transform');
 				var arr = mart.replace(/[a-z\(\)\s]/g, '').split(',');
@@ -259,7 +260,7 @@
 			//pdfh5开始渲染距离初始化多少毫秒 pdfh5.startTime
 			//pdfh5渲染完毕距离初始化多少毫秒  pdfh5.endTime
 			//pdfh5渲染过程中时间戳   pdfh5.renderTime
-			
+			//pdfh5支持在线预览 http://www.gjtool.cn/pdfh5/index.html?file=http://xxx.xxx.xxx/xxx.pdf
 		})
 	</script>
 </body>
