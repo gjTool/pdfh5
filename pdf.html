@@ -159,6 +159,10 @@
 			var pdfh5 = new Pdfh5('.pdfjs', {
 				pdfurl: 'default.pdf'
 			});
+			//初始化之前
+			pdfh5.start = function(a){
+				console.log(a)
+			}
 			//pdfh5加载完成事件 包括成功或者失败
 			pdfh5.complete = function(a,b,c){
 				console.log(a,b,c)
@@ -166,6 +170,7 @@
 			//PDF渲染之前 当前页渲染pdf的div 距离初始化多少毫秒 当前页渲染pdf话费多少毫秒
 			pdfh5.renderStart = function (time) {
 				pageTotal.text(this.totalNum)
+				console.log(time)
 			}
 			//PDF渲染过程中 有多少页就执行多少次
 			pdfh5.renderPages = function (a, b, c) {

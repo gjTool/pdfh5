@@ -800,12 +800,15 @@
     };
     Pdfh5.prototype = {
         init: function (options) {
+            var self = this;
             this.initTime = new Date().getTime();
-            this.start && this.start(this.initTime)
+            setTimeout(function(){
+                self.start && self.start(self.initTime)
+            },0)
             options = options ? options : {};
             options.pdfurl = options.pdfurl ? options.pdfurl : null;
             options.data = options.data ? options.data : null;
-            var self = this;
+           
             var viewer = document.createElement("div");
             viewer.className = 'pdfViewer';
             var viewerContainer = document.createElement("div");
