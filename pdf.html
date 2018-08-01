@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">
+	<title>PDFH5</title>
+	<link type="image/x-icon" rel="shortcut icon" href="images/logo.jpg">
+	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/pdfh5.css" />
+	<style>
+		.pageTop {
+			width: 50px;
+			height: 50px;
+			line-height: 50px;
+			text-align: center;
+			position: fixed;
+			bottom: 30px;
+			right: 15px;
+			font-size: 18px;
+			background: rgba(0, 0, 0, 0.5) url(images/top2.png) no-repeat center;
+			background-size: 24px 24px;
+			z-index: 997;
+			border-radius: 50%;
+			display: none;
+		}
+
+		#loadingBar {
+			position: fixed;
+			width: 100%;
+			z-index: 99;
+			background: #fff !important;
+			height: 4px;
+			top: 0px;
+			left: 0px;
+		}
+
+		#loadingBar .progress {
+			background: #fff !important;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 0%;
+			height: 100%;
+			overflow: hidden;
+			transition: width 200ms;
+		}
+
+		#loadingBar .progress .glimmer {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: calc(100% + 150px);
+			background: #7bcf34;
+		}
+
+		.pageNum {
+			padding: 0px 7px;
+			height: 26px;
+			position: absolute;
+			top: 20px;
+			left: 15px;
+			z-index: 997;
+			border-radius: 8px;
+			display: none;
+		}
+
+		.pageNum.bt {
+			top: 154px;
+		}
+
+		.pageNum-bg,
+		.pageNum-num {
+			width: 100%;
+			height: 100%;
+			line-height: 26px;
+			text-align: center;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			color: #fff;
+			border-radius: 8px;
+			font-size: 16px;
+		}
+
+		.pageNum-bg {
+			background: rgba(0, 0, 0, 0.5);
+		}
+
+		.pageNum-num {
+			position: relative;
+		}
+
+		.pageNum span {
+			color: #fff;
+			font-size: 16px;
+		}
+
+		.pdfjs {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			background: #fff;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="pdfjs"></div>
+	<div class="pageTop"></div>
+	<div id="loadingBar">
+		<div class="progress">
+			<div class="glimmer">
+			</div>
+		</div>
+	</div>
+	<div class="pageNum">
+		<div class="pageNum-bg"></div>
+		<div class="pageNum-num">
+			<span id="pageNow">1</span>/
+			<span id="pageTotal">1</span>
+		</div>
+	</div>
+	<div id='loading' style="width:100%;height:100%; top: 0px;left:0;position:fixed;z-index:9999;display:none;">
+		<div style='width:74px;text-align:center;position:absolute;border-radius:6px;left:50%;top:50%;margin-left:-37px;margin-top:-37px;'>
+			<div style='width:35px;height:35px;margin-top:8px;display:inline-block;background:url(images/loading-3.gif) no-repeat center;background-size:cover;'></div>
+		</div>
+	</div>
+	<script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/pdf.worker.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		$(function () {
+			// var pdfh5 = new Pdfh5('.pdfjs',{
+			// 	pdfurl: 'http://220.249.86.133:8001/uploadfile/PublishInfo/20180523104721265%E6%8A%A5%E4%BC%9A%E5%8D%951.pdf'
+			// });
+			var loading = $('#loading'),
+				loadingBar = $('#loadingBar'),
+				progress = $('#loadingBar .progress'),
+				pageNum = $('.pageNum'),
+				pageNow = $('.pageNum #pageNow'),
+				pageTotal = $('.pageNum #pageTotal'),
+				pageTop = $('.pageTop'),
+				height = document.documentElement.clientHeight * (1 / 3),
+				docWidth = document.documentElement.clientWidth,
+				width = 1,
+				timer = null;
+
+			loading.show();
+
+			var pdfh5 = new Pdfh5('.pdfjs', {
+				pdfurl: 'default.pdf'
+			});
+			//pdfh5加载完成事件 包括成功或者失败
+			pdfh5.complete = function(a,b,c){
+				console.log(a,b,c)
+			}
+			//PDF渲染之前 当前页渲染pdf的div 距离初始化多少毫秒 当前页渲染pdf话费多少毫秒
+			pdfh5.renderStart = function (time) {
+				pageTotal.text(this.totalNum)
+			}
+			//PDF渲染过程中 有多少页就执行多少次
+			pdfh5.renderPages = function (a, b, c) {
+				if (this.currentNum == 1) {
+					loading.fadeOut(200);
+					width = 100 / this.totalNum;
+					loadingBar.show();
+				}
+				progress.css({
+					width: width * this.currentNum + "%"
+				})
+			}
+			//PDF渲染完毕
+			pdfh5.renderEnd = function (time) {
+				progress.css({
+					width: "100%"
+				})
+				loadingBar.fadeOut(300);
+				setTimeout(function(){
+					pdfh5.reset();
+				},3000)
+			}
+			//PDF放大缩小变化
+			pdfh5.zoomChange = function (scale) {
+				if (scale == 1) {
+					this.viewerContainer.css({
+						'-webkit-overflow-scrolling': 'touch'
+					})
+				} else {
+					this.viewerContainer.css({
+						'-webkit-overflow-scrolling': 'auto'
+					})
+				}
+			}
+			//PDF滚动
+			pdfh5.scroll = function (scrollTop) {
+				if (scrollTop >= 150) {
+					pageTop.show();
+				} else {
+					pageTop.fadeOut(200);
+				}
+				clearTimeout(timer);
+				pageNum.show();
+				this.pages.each(function (index, obj) {
+					var top = obj.getBoundingClientRect().top;
+					var bottom = obj.getBoundingClientRect().bottom;
+					if (top <= height && bottom > height) {
+						pageNow.text(index + 1)
+					}
+				})
+				timer = setTimeout(function () {
+					pageNum.fadeOut(200);
+				}, 1500)
+			}
+			pageTop.on('click tap', function (e) {
+				var mart = pdfh5.viewer.css('transform');
+				var arr = mart.replace(/[a-z\(\)\s]/g, '').split(',');
+				var s1 = arr[0];
+				var s2 = arr[3];
+				var x = arr[4] / 2;
+				var y = arr[5] / 2;
+				var left = pdfh5.viewer[0].getBoundingClientRect().left;
+				var right = pdfh5.viewer[0].getBoundingClientRect().right;
+				if (left <= -docWidth * 2) {
+					x = -docWidth / 2
+				}
+				pdfh5.viewer.css({
+					transform: 'scale(' + s1 + ', ' + s2 + ') translate(' + x + 'px, 0px)'
+				})
+				if(pdfh5.PinchZoom){
+					pdfh5.PinchZoom.offset.y = 0;
+					pdfh5.PinchZoom.lastclientY = 0;
+				}
+				pdfh5.viewerContainer.animate({
+					scrollTop: 0
+				}, 300)
+
+			})
+			
+			//pdfh5还有pdfh5开始初始化、pdfh5加载完成、PDF加载失败、PDF加载成功事件：   pdfh5.start pdfh5.complete pdfh5.error pdfh5.success 
+			//pdfh5还有还原事件、销毁事件：   pdfh5.reset pdfh5.destroy 
+			//pdfh5还有静态参数： 
+			//pdf最外层div pdfh5.container
+			//pdf第二层div pdfh5.viewerContainer
+			//所有包裹pdf的div的父div pdfh5.viewer
+			//所有包裹pdf的div pdfh5.pages
+			//pdf加载完成状态 pdfh5.pdfLoaded
+			//pdf总页数 pdfh5.totalNum
+			//pdf当前页数 pdfh5.currentNum
+			//pdfh5初始化的时间戳 pdfh5.initTime
+			//pdfh5开始渲染距离初始化多少毫秒 pdfh5.startTime
+			//pdfh5渲染完毕距离初始化多少毫秒  pdfh5.endTime
+			//pdfh5渲染过程中时间戳   pdfh5.renderTime
+			
+		})
+	</script>
+</body>
+
+</html>

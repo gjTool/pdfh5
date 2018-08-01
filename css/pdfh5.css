@@ -1,0 +1,60 @@
+html,body {
+	width:100%;
+	height:100%;
+}
+
+ .viewerContainer {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+ .pdfViewer {
+	position: relative;
+	top: 0;
+	left: 0;
+	padding: 10px 8px;
+}
+
+ .pdfViewer .canvasWrapper {
+	width: 100%;
+	overflow: hidden;
+}
+
+ .pdfViewer .page {
+	direction: ltr;
+	width: 100%;
+	margin: 0px auto 8px auto;
+	position: relative;
+	overflow: visible;
+	-webkit-box-shadow: darkgrey 0px 2px 4px 1px;
+	-moz-box-shadow: darkgrey 0px 2px 4px 1px;
+	box-shadow: #888 0px 2px 4px 1px;
+	background-color: white;
+	box-sizing: border-box;
+}
+
+ .pdfViewer .page .box-shadow {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.2);
+	z-index: 1;
+}
+
+ .pdfViewer .page .canvasWrapper {
+	position: relative;
+	z-index: 2;
+}
+
+ .pdfViewer .page img {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	display: block;
+}
+
