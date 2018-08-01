@@ -58,3 +58,69 @@ html,body {
 	display: block;
 }
 
+.pageNum {
+	padding: 0px 7px;
+	height: 26px;
+	position: absolute;
+	top: 20px;
+	left: 15px;
+	z-index: 997;
+	border-radius: 8px;
+	display: none;
+}
+
+.pageNum-bg,
+.pageNum-num {
+	width: 100%;
+	height: 100%;
+	line-height: 26px;
+	text-align: center;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	color: #fff;
+	border-radius: 8px;
+	font-size: 16px;
+}
+
+.pageNum-bg {
+	background: rgba(0, 0, 0, 0.5);
+}
+
+.pageNum-num {
+	position: relative;
+}
+
+.pageNum span {
+	color: #fff;
+	font-size: 16px;
+}
+.loadingBar {
+	position: fixed;
+	width: 100%;
+	z-index: 99;
+	background: #fff !important;
+	height: 4px;
+	top: 0px;
+	left: 0px;
+}
+
+.loadingBar .progress {
+	background: #fff !important;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0%;
+	height: 100%;
+	overflow: hidden;
+	transition: width 200ms;
+}
+
+.loadingBar .progress .glimmer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: calc(100% + 150px);
+	background: #7bcf34;
+}

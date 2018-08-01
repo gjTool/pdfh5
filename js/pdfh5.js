@@ -795,7 +795,8 @@
         this.startTime = 0;
         this.endTime = 0;
         this.renderTime = 0;
-        this.complete = null;
+        this.timer = null;
+        this.width = 1;
         this.init(options);
     };
     Pdfh5.prototype = {
@@ -817,9 +818,44 @@
             this.container.append(viewerContainer);
             this.viewer = $(viewer);
             this.viewerContainer = $(viewerContainer);
+            var html = '<div class="loadingBar">'+
+                            '<div class="progress">'+
+                               ' <div class="glimmer">'+
+                                '</div>'+
+                           ' </div>'+
+                        '</div>'+
+                        '<div class="pageNum">'+
+                            '<div class="pageNum-bg"></div>'+
+                           ' <div class="pageNum-num">'+
+                               ' <span class="pageNow">1</span>/'+
+                                '<span class="pageTotal">1</span>'+
+                            '</div>'+
+                       ' </div>'
+                        ;
+            if(!this.container.find('.pageNum')[0]){
+                this.container.append(html);
+            }
+            this.pageNum = this.container.find('.pageNum');
+            this.pageNow = this.pageNum.find('.pageNow');
+            this.pageTotal = this.pageNum.find('.pageTotal');
+            this.loadingBar = this.container.find('.loadingBar');
+            this.progress = this.loadingBar.find('.progress');
+            var height = document.documentElement.clientHeight * (1 / 3);
             viewerContainer.addEventListener('scroll',function(){
                 var scrollTop = viewerContainer.scrollTop;
                 self.pages = self.viewerContainer.find('.page');
+                clearTimeout(self.timer);
+				self.pageNum.show();
+				self.pages.each(function (index, obj) {
+					var top = obj.getBoundingClientRect().top;
+					var bottom = obj.getBoundingClientRect().bottom;
+					if (top <= height && bottom > height) {
+						self.pageNow.text(index + 1)
+					}
+				})
+				self.timer = setTimeout(function () {
+					self.pageNum.fadeOut(200);
+				}, 1500)
                 self.scroll && self.scroll(scrollTop);
             })
             //获取url带的参数地址
@@ -883,6 +919,7 @@
                     self.thePDF = pdf;
                     self.totalNum = pdf.numPages;
                     self.thePDF.getPage(1).then(handlePages);
+                    self.pageTotal.text(self.totalNum)
                     var time = new Date().getTime();
                     self.startTime = time - self.initTime;
                     self.renderStart && self.renderStart(self.startTime)
@@ -945,12 +982,25 @@
                         self.currentNum = self.totalNum;
                         var time = new Date().getTime();
                         self.endTime = time - self.initTime;
+                        self.progress.css({
+                            width: "100%"
+                        })
+                        self.loadingBar.fadeOut(200);
                         self.renderEnd && self.renderEnd(self.endTime)
                         self.complete && self.complete("success","PDF解析完毕",self.endTime)
                         self.success && self.success("success","PDF解析完毕",self.endTime)
                         self.PinchZoom = new PinchZoom(self.viewer,{},self.viewerContainer);
 
                         self.PinchZoom.done = function (scale) {
+                            if (scale == 1) {
+                                self.viewerContainer.css({
+                                    '-webkit-overflow-scrolling': 'touch'
+                                })
+                            } else {
+                                self.viewerContainer.css({
+                                    '-webkit-overflow-scrolling': 'auto'
+                                })
+                            }
                             self.zoomChange && self.zoomChange(scale)
                         }
                     }
@@ -977,6 +1027,13 @@
             })
             page.appendChild(img);
             this.viewer.append(page);
+            if (this.currentNum == 1) {
+                this.width = 100 / this.totalNum;
+                this.loadingBar.show();
+            }
+            this.progress.css({
+                width: this.width * this.currentNum + "%"
+            })
             this.renderPages && this.renderPages(page,time-this.initTime,time2)
             this.renderTime = time;
         },
@@ -1007,6 +1064,13 @@
             this.renderTime = 0;
             this.viewerContainer = null;
             this.viewer = null;
+            this.pageNum = null;
+            this.pageNow = null;
+            this.pageTotal = null;
+            this.loadingBar = null;
+            this.progress = null;
+            this.timer = null;
+            this.width = 1;
             this.pdfLoaded = false;
             this.container.html('');
             this.container = null;
