@@ -15,21 +15,6 @@
 	<link rel="stylesheet" href="css/style.css" />
 	<link rel="stylesheet" href="css/pdfh5.css" />
 	<style>
-		.pageTop {
-			width: 50px;
-			height: 50px;
-			line-height: 50px;
-			text-align: center;
-			position: fixed;
-			bottom: 30px;
-			right: 15px;
-			font-size: 18px;
-			background: rgba(0, 0, 0, 0.5) url(images/top2.png) no-repeat center;
-			background-size: 24px 24px;
-			z-index: 997;
-			border-radius: 50%;
-			display: none;
-		}
 		.pdfjs {
 			width: 100%;
 			height: 100%;
@@ -42,90 +27,33 @@
 
 <body>
 	<div class="pdfjs"></div>
-	<div class="pageTop"></div>
-	<div id='loading' style="width:100%;height:100%; top: 0px;left:0;position:fixed;z-index:9999;display:none;">
-		<div style='width:74px;text-align:center;position:absolute;border-radius:6px;left:50%;top:50%;margin-left:-37px;margin-top:-37px;'>
-			<div style='width:35px;height:35px;margin-top:8px;display:inline-block;background:url(images/loading-3.gif) no-repeat center;background-size:cover;'></div>
-		</div>
-	</div>
 	<script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/pdf.worker.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
-		$(function () {
-			// var pdfh5 = new Pdfh5('.pdfjs',{
-			// 	pdfurl: 'http://220.249.86.133:8001/uploadfile/PublishInfo/20180523104721265%E6%8A%A5%E4%BC%9A%E5%8D%951.pdf'
-			// });
-			var loading = $('#loading'),
-				pageTop = $('.pageTop'),
-				docWidth = document.documentElement.clientWidth,
-				width = 1,
-				timer = null;
-
-			loading.show();
-
-			var pdfh5 = new Pdfh5('.pdfjs', {
-				pdfurl: 'default.pdf'
-			});
-			
-			//PDF渲染过程中 有多少页就执行多少次
-			pdfh5.renderPages = function (a, b, c) {
-				if (this.currentNum == 1) {
-					loading.hide()
-				}
-			}
-			//PDF滚动
-			pdfh5.scroll = function (scrollTop) {
-				if (scrollTop >= 150) {
-					pageTop.show();
-				} else {
-					pageTop.fadeOut(200);
-				}
-				
-			}
-		
-			pageTop.on('click tap', function (e) {
-				var mart = pdfh5.viewer.css('transform');
-				var arr = mart.replace(/[a-z\(\)\s]/g, '').split(',');
-				var s1 = arr[0];
-				var s2 = arr[3];
-				var x = arr[4] / 2;
-				var y = arr[5] / 2;
-				var left = pdfh5.viewer[0].getBoundingClientRect().left;
-				var right = pdfh5.viewer[0].getBoundingClientRect().right;
-				if (left <= -docWidth * 2) {
-					x = -docWidth / 2
-				}
-				pdfh5.viewer.css({
-					transform: 'scale(' + s1 + ', ' + s2 + ') translate(' + x + 'px, 0px)'
-				})
-				if(pdfh5.PinchZoom){
-					pdfh5.PinchZoom.offset.y = 0;
-					pdfh5.PinchZoom.lastclientY = 0;
-				}
-				pdfh5.viewerContainer.animate({
-					scrollTop: 0
-				}, 300)
-
-			})
-			//pdfh5.zoomChange pdfh5.renderPages pdfh5.renderEnd
-			//pdfh5还有pdfh5开始初始化、pdfh5加载完成、PDF加载失败、PDF加载成功事件：   pdfh5.start pdfh5.complete pdfh5.error pdfh5.success 
-			//pdfh5还有还原事件、销毁事件：   pdfh5.reset pdfh5.destroy 
-			//pdfh5还有静态参数： 
-			//pdf最外层div pdfh5.container
-			//pdf第二层div pdfh5.viewerContainer
-			//所有包裹pdf的div的父div pdfh5.viewer
-			//所有包裹pdf的div pdfh5.pages
-			//pdf加载完成状态 pdfh5.pdfLoaded
-			//pdf总页数 pdfh5.totalNum
-			//pdf当前页数 pdfh5.currentNum
-			//pdfh5初始化的时间戳 pdfh5.initTime
-			//pdfh5开始渲染距离初始化多少毫秒 pdfh5.startTime
-			//pdfh5渲染完毕距离初始化多少毫秒  pdfh5.endTime
-			//pdfh5渲染过程中时间戳   pdfh5.renderTime
-			//pdfh5支持在线预览 http://www.gjtool.cn/pdfh5/index.html?file=http://xxx.xxx.xxx/xxx.pdf
-		})
+		// var pdfh5 = new Pdfh5('.pdfjs',{
+		// 	pdfurl: 'http://220.249.86.133:8001/uploadfile/PublishInfo/20180523104721265%E6%8A%A5%E4%BC%9A%E5%8D%951.pdf'
+		// });
+		var pdfh5 = new Pdfh5('.pdfjs', {
+			pdfurl: 'default.pdf'
+		});
+		//pdfh5.zoomChange pdfh5.renderPages pdfh5.renderEnd pdfh5.scroll
+		//pdfh5还有pdfh5开始初始化、pdfh5加载完成、PDF加载失败、PDF加载成功事件：   pdfh5.start pdfh5.complete pdfh5.error pdfh5.success 
+		//pdfh5还有还原事件、销毁事件（附带回调函数）：   pdfh5.reset pdfh5.destroy 
+		//pdfh5还有静态参数： 
+		//pdf最外层div pdfh5.container
+		//pdf第二层div pdfh5.viewerContainer
+		//所有包裹pdf的div的父div pdfh5.viewer
+		//所有包裹pdf的div pdfh5.pages
+		//pdf加载完成状态 pdfh5.pdfLoaded
+		//pdf总页数 pdfh5.totalNum
+		//pdf当前页数 pdfh5.currentNum
+		//pdfh5初始化的时间戳 pdfh5.initTime
+		//pdfh5开始渲染距离初始化多少毫秒 pdfh5.startTime
+		//pdfh5渲染完毕距离初始化多少毫秒  pdfh5.endTime
+		//pdfh5渲染过程中时间戳   pdfh5.renderTime
+		//pdfh5支持在线预览 http://www.gjtool.cn/pdfh5/index.html?file=http://xxx.xxx.xxx/xxx.pdf
 	</script>
 </body>
 

@@ -796,7 +796,8 @@
         this.endTime = 0;
         this.renderTime = 0;
         this.timer = null;
-        this.width = 1;
+        this.loadWidth = 1;
+        this.docWidth = document.documentElement.clientWidth;
         this.init(options);
     };
     Pdfh5.prototype = {
@@ -809,15 +810,6 @@
             options = options ? options : {};
             options.pdfurl = options.pdfurl ? options.pdfurl : null;
             options.data = options.data ? options.data : null;
-           
-            var viewer = document.createElement("div");
-            viewer.className = 'pdfViewer';
-            var viewerContainer = document.createElement("div");
-            viewerContainer.className = 'viewerContainer';
-            viewerContainer.appendChild(viewer);
-            this.container.append(viewerContainer);
-            this.viewer = $(viewer);
-            this.viewerContainer = $(viewerContainer);
             var html = '<div class="loadingBar">'+
                             '<div class="progress">'+
                                ' <div class="glimmer">'+
@@ -830,19 +822,47 @@
                                ' <span class="pageNow">1</span>/'+
                                 '<span class="pageTotal">1</span>'+
                             '</div>'+
-                       ' </div>'
+                       ' </div>'+
+                       '<div class="pageTop">'+
+                            '<span class="u-icon-arr"></span>'+
+                        '</div>'+
+                        '<div class="loadEffect">'+
+                            '<span></span>'+
+                            '<span></span>'+
+                            '<span></span>'+
+                            '<span></span>'+
+                            '<span></span>'+
+                            '<span></span>'+
+                            '<span></span>'+
+                            '<span></span>'+
+                        '</div>'
                         ;
             if(!this.container.find('.pageNum')[0]){
                 this.container.append(html);
             }
+            var viewer = document.createElement("div");
+            viewer.className = 'pdfViewer';
+            var viewerContainer = document.createElement("div");
+            viewerContainer.className = 'viewerContainer';
+            viewerContainer.appendChild(viewer);
+            this.container.append(viewerContainer);
+            this.viewer = $(viewer);
+            this.viewerContainer = $(viewerContainer);
             this.pageNum = this.container.find('.pageNum');
             this.pageNow = this.pageNum.find('.pageNow');
             this.pageTotal = this.pageNum.find('.pageTotal');
             this.loadingBar = this.container.find('.loadingBar');
             this.progress = this.loadingBar.find('.progress');
+            this.pageTop = this.container.find('.pageTop');
+            this.loading = this.container.find('.loadEffect');
             var height = document.documentElement.clientHeight * (1 / 3);
             viewerContainer.addEventListener('scroll',function(){
                 var scrollTop = viewerContainer.scrollTop;
+                if (scrollTop >= 150) {
+					self.pageTop.show();
+				} else {
+					self.pageTop.fadeOut(200);
+				}
                 self.pages = self.viewerContainer.find('.page');
                 clearTimeout(self.timer);
 				self.pageNum.show();
@@ -858,6 +878,28 @@
 				}, 1500)
                 self.scroll && self.scroll(scrollTop);
             })
+            this.pageTop.on('click tap', function () {
+				var mart = self.viewer.css('transform');
+				var arr = mart.replace(/[a-z\(\)\s]/g, '').split(',');
+				var s1 = arr[0];
+				var s2 = arr[3];
+				var x = arr[4] / 2;
+				var left = self.viewer[0].getBoundingClientRect().left;
+				if (left <= -self.docWidth * 2) {
+					x = -self.docWidth / 2
+				}
+				self.viewer.css({
+					transform: 'scale(' + s1 + ', ' + s2 + ') translate(' + x + 'px, 0px)'
+				})
+				if (self.PinchZoom) {
+					self.PinchZoom.offset.y = 0;
+					self.PinchZoom.lastclientY = 0;
+				}
+				self.viewerContainer.animate({
+					scrollTop: 0
+				}, 300)
+
+			})
             //获取url带的参数地址
             function GetQueryString(name) {
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -1028,11 +1070,12 @@
             page.appendChild(img);
             this.viewer.append(page);
             if (this.currentNum == 1) {
-                this.width = 100 / this.totalNum;
+                this.loadWidth = 100 / this.totalNum;
                 this.loadingBar.show();
+                this.loading.fadeOut(200);
             }
             this.progress.css({
-                width: this.width * this.currentNum + "%"
+                width: this.loadWidth * this.currentNum + "%"
             })
             this.renderPages && this.renderPages(page,time-this.initTime,time2)
             this.renderTime = time;
@@ -1069,8 +1112,10 @@
             this.pageTotal = null;
             this.loadingBar = null;
             this.progress = null;
+            this.pageTop.off('click tap');
+            this.pageTop = null;
             this.timer = null;
-            this.width = 1;
+            this.loadWidth = 1;
             this.pdfLoaded = false;
             this.container.html('');
             this.container = null;
