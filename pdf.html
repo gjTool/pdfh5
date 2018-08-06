@@ -11,13 +11,19 @@
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">
 	<title>PDFH5</title>
-	<link type="image/x-icon" rel="shortcut icon" href="images/logo.jpg">
 	<link rel="stylesheet" href="css/style.css" />
 	<link rel="stylesheet" href="css/pdfh5.css" />
 	<style>
 		.pdfjs {
 			width: 100%;
-			height: 100%;
+			height: 50%;
+			overflow: hidden;
+			background: #fff;
+			position: relative;
+		}
+		.pdfjs2 {
+			width: 100%;
+			height: 50%;
 			overflow: hidden;
 			background: #fff;
 			position: relative;
@@ -27,18 +33,19 @@
 
 <body>
 	<div class="pdfjs"></div>
+	<div class="pdfjs2"></div>
 	<script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/pdf.worker.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
-		// var pdfh5 = new Pdfh5('.pdfjs',{
-		// 	pdfurl: 'http://220.249.86.133:8001/uploadfile/PublishInfo/20180523104721265%E6%8A%A5%E4%BC%9A%E5%8D%951.pdf'
-		// });
 		var pdfh5 = new Pdfh5('.pdfjs', {
 			pdfurl: 'default.pdf'
 		});
-		//pdfh5.zoomChange pdfh5.renderPages pdfh5.renderEnd pdfh5.scroll
+		var pdfh52 = new Pdfh5('.pdfjs2',{
+			pdfurl: 'test.pdf'
+		});
+		//pdfh5.zoomChange pdfh5.renderPages pdfh5.renderEnd pdfh5.scroll pdfh5.show pdfh5.hide
 		//pdfh5还有pdfh5开始初始化、pdfh5加载完成、PDF加载失败、PDF加载成功事件：   pdfh5.start pdfh5.complete pdfh5.error pdfh5.success 
 		//pdfh5还有还原事件、销毁事件（附带回调函数）：   pdfh5.reset pdfh5.destroy 
 		//pdfh5还有静态参数： 
@@ -53,7 +60,7 @@
 		//pdfh5开始渲染距离初始化多少毫秒 pdfh5.startTime
 		//pdfh5渲染完毕距离初始化多少毫秒  pdfh5.endTime
 		//pdfh5渲染过程中时间戳   pdfh5.renderTime
-		//pdfh5支持在线预览 http://www.gjtool.cn/pdfh5/index.html?file=http://xxx.xxx.xxx/xxx.pdf
+		//pdfh5支持在线预览 http://www.gjtool.cn/pdfh5/pdf.html?file=http://xxx.xxx.xxx/xxx.pdf
 	</script>
 </body>
 

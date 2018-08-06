@@ -823,7 +823,7 @@
                                 '<span class="pageTotal">1</span>'+
                             '</div>'+
                        ' </div>'+
-                       '<div class="pageTop">'+
+                       '<div class="backTop">'+
                             '<span class="u-icon-arr"></span>'+
                         '</div>'+
                         '<div class="loadEffect">'+
@@ -853,15 +853,15 @@
             this.pageTotal = this.pageNum.find('.pageTotal');
             this.loadingBar = this.container.find('.loadingBar');
             this.progress = this.loadingBar.find('.progress');
-            this.pageTop = this.container.find('.pageTop');
+            this.backTop = this.container.find('.backTop');
             this.loading = this.container.find('.loadEffect');
             var height = document.documentElement.clientHeight * (1 / 3);
             viewerContainer.addEventListener('scroll',function(){
                 var scrollTop = viewerContainer.scrollTop;
                 if (scrollTop >= 150) {
-					self.pageTop.show();
+					self.backTop.show();
 				} else {
-					self.pageTop.fadeOut(200);
+					self.backTop.fadeOut(200);
 				}
                 self.pages = self.viewerContainer.find('.page');
                 clearTimeout(self.timer);
@@ -878,7 +878,7 @@
 				}, 1500)
                 self.scroll && self.scroll(scrollTop);
             })
-            this.pageTop.on('click tap', function () {
+            this.backTop.on('click tap', function () {
 				var mart = self.viewer.css('transform');
 				var arr = mart.replace(/[a-z\(\)\s]/g, '').split(',');
 				var s1 = arr[0];
@@ -1080,6 +1080,14 @@
             this.renderPages && this.renderPages(page,time-this.initTime,time2)
             this.renderTime = time;
         },
+        show: function(callback){
+            this.container.show();
+            callback && callback.call(this)
+        },
+        hide: function(callback){
+            this.container.hide()
+            callback && callback.call(this)
+        },
         reset: function(callback){
             if(this.PinchZoom){
                 this.PinchZoom.offset.y = 0;
@@ -1112,16 +1120,19 @@
             this.pageTotal = null;
             this.loadingBar = null;
             this.progress = null;
-            this.pageTop.off('click tap');
-            this.pageTop = null;
+            this.backTop.off('click tap');
+            this.backTop = null;
+            this.loading = null;
             this.timer = null;
             this.loadWidth = 1;
             this.pdfLoaded = false;
             this.container.html('');
             this.container = null;
             this.reset = null;
-            this.destroy = null;
+            this.show = null;
+            this.hide = null;
             callback && callback.call(this)
+            this.destroy = null;
         }
     }
 

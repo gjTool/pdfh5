@@ -24,7 +24,6 @@ html,body {
 }
 
  .pdfViewer .page {
-	direction: ltr;
 	width: 100%;
 	margin: 0px auto 8px auto;
 	position: relative;
@@ -124,7 +123,7 @@ html,body {
 	width: calc(100% + 150px);
 	background: #7bcf34;
 }
-.pageTop {
+.backTop {
 	width: 50px;
 	height: 50px;
 	line-height: 50px;
@@ -138,7 +137,7 @@ html,body {
 	border-radius: 50%;
 	display: none;
 }
-.pageTop .u-icon-arr{
+.backTop .u-icon-arr{
 	position: absolute;
 	top: 50%;
 	left: 50%;
