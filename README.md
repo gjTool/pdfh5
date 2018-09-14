@@ -26,4 +26,4 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 //pdfh5渲染完毕距离初始化多少毫秒  pdfh5.endTime
 //pdfh5渲染过程中时间戳   pdfh5.renderTime
 
-//pdfh5支持在线预览 http://www.gjtool.cn/pdfh5/pdf.html?file=http://xxx.xxx.xxx/xxx.pdf
+//pdfh5支持在线预览 http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/test.pdf
