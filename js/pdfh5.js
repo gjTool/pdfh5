@@ -1,27 +1,27 @@
 (function () {
     'use strict';
     var definePinchZoom = function ($) {
-        var PinchZoom = function (el, options,viewerContainer) {
-                this.el = $(el);
-                this.viewerContainer = viewerContainer;
-                this.zoomFactor = 1;
-                this.lastScale = 1;
-                this.offset = {
-                    x: 0,
-                    y: 0
-                };
-                this.options = $.extend({}, this.defaults, options);
-                this.setupMarkup();
-                this.bindEvents();
-                this.update();
-                // default enable.
-                this.enable();
-                this.height = 0;
-                this.load = false;
-                this.direction = null;
-                this.clientY = null;
-                this.lastclientY = null;
-            },
+        var PinchZoom = function (el, options, viewerContainer) {
+            this.el = $(el);
+            this.viewerContainer = viewerContainer;
+            this.zoomFactor = 1;
+            this.lastScale = 1;
+            this.offset = {
+                x: 0,
+                y: 0
+            };
+            this.options = $.extend({}, this.defaults, options);
+            this.setupMarkup();
+            this.bindEvents();
+            this.update();
+            // default enable.
+            this.enable();
+            this.height = 0;
+            this.load = false;
+            this.direction = null;
+            this.clientY = null;
+            this.lastclientY = null;
+        },
             sum = function (a, b) {
                 return a + b;
             },
@@ -329,17 +329,6 @@
              * Updates the aspect ratio
              */
             updateAspectRatio: function () {
-                var offsetHeight = this.el[0].offsetHeight;
-                var zoomFactor = this.zoomFactor;
-                var lastScale = this.lastScale;
-                //          	if(zoomFactor <= 1.0 && this.load){
-                //					this.container.height(this.height-100)
-                //          	}
-                //          	if(!this.load){
-                //          		this.load = true;
-                //          		this.height = this.el[0].offsetHeight;
-                //          	}
-                //          	
                 this.setContainerY(this.getContainerX() / this.getAspectRatio());
             },
 
@@ -351,8 +340,11 @@
                 // use .offsetWidth instead of width()
                 // because jQuery-width() return the original width but Zepto-width() will calculate width with transform.
                 // the same as .height()
-
-                return this.container[0].offsetWidth / this.el[0].offsetWidth;
+                if(this.container[0] && this.el[0]){
+                    return this.container[0].offsetWidth / this.el[0].offsetWidth;
+                }else {
+                    return 0
+                }
             },
 
             /**
@@ -360,11 +352,13 @@
              * @return the aspect ratio
              */
             getAspectRatio: function () {
-                var offsetHeight = this.el[0].offsetHeight;
-                var zoomFactor = this.zoomFactor;
-                var lastScale = this.lastScale;
-
-                return this.container[0].offsetWidth / offsetHeight;
+                if(this.el[0]){
+                    var offsetHeight = this.el[0].offsetHeight;
+                    return this.container[0].offsetWidth / offsetHeight;
+                }else {
+                    return 0
+                }
+                
             },
 
             /**
@@ -477,7 +471,11 @@
             },
 
             getContainerX: function () {
-                return this.el[0].offsetWidth;
+                if(this.el[0]){
+                    return this.el[0].offsetWidth;
+                }else {
+                    return 0;
+                }
             },
 
             getContainerY: function () {
@@ -525,7 +523,7 @@
              * Binds all required event listeners
              */
             bindEvents: function () {
-                detectGestures(this.container.eq(0), this,this.viewerContainer);
+                detectGestures(this.container.eq(0), this, this.viewerContainer);
                 // Zepto and jQuery both know about `on`
                 $(window).on('resize', this.update.bind(this));
                 $(this.el).find('img').on('load', this.update.bind(this));
@@ -552,7 +550,7 @@
                     var transform3d = 'scale3d(' + zoomFactor + ', ' + zoomFactor + ',1) ' +
                         'translate3d(' + offsetX + 'px,' + offsetY + 'px,0px)',
                         transform2d = 'scale(' + zoomFactor + ', ' + zoomFactor + ') ' +
-                        'translate(' + offsetX + 'px,' + offsetY + 'px)',
+                            'translate(' + offsetX + 'px,' + offsetY + 'px)',
                         removeClone = (function () {
                             if (this.clone) {
                                 this.clone.remove();
@@ -621,7 +619,7 @@
             }
         };
 
-        var detectGestures = function (el, target,viewerContainer) {
+        var detectGestures = function (el, target, viewerContainer) {
             var interaction = null,
                 fingers = 0,
                 lastTouchStart = null,
@@ -723,7 +721,9 @@
                     }
                 },
                 firstMove = true;
-            var parentNode = viewerContainer[0];
+            if(viewerContainer){
+                var parentNode = viewerContainer[0];
+            }
             if (parentNode) {
                 parentNode.addEventListener('touchstart', function (event) {
                     if (target.enabled) {
@@ -803,41 +803,34 @@
     Pdfh5.prototype = {
         init: function (options) {
             var self = this;
+            if (self.pdfLoaded) {
+                return;
+            }
             this.initTime = new Date().getTime();
-            setTimeout(function(){
+            setTimeout(function () {
                 self.start && self.start(self.initTime)
-            },0)
+            }, 0)
             options = options ? options : {};
             options.pdfurl = options.pdfurl ? options.pdfurl : null;
             options.data = options.data ? options.data : null;
-            var html = '<div class="loadingBar">'+
-                            '<div class="progress">'+
-                               ' <div class="glimmer">'+
-                                '</div>'+
-                           ' </div>'+
-                        '</div>'+
-                        '<div class="pageNum">'+
-                            '<div class="pageNum-bg"></div>'+
-                           ' <div class="pageNum-num">'+
-                               ' <span class="pageNow">1</span>/'+
-                                '<span class="pageTotal">1</span>'+
-                            '</div>'+
-                       ' </div>'+
-                       '<div class="backTop">'+
-                            '<span class="u-icon-arr"></span>'+
-                        '</div>'+
-                        '<div class="loadEffect">'+
-                            '<span></span>'+
-                            '<span></span>'+
-                            '<span></span>'+
-                            '<span></span>'+
-                            '<span></span>'+
-                            '<span></span>'+
-                            '<span></span>'+
-                            '<span></span>'+
-                        '</div>'
-                        ;
-            if(!this.container.find('.pageNum')[0]){
+            var html = '<div class="loadingBar">' +
+                '<div class="progress">' +
+                ' <div class="glimmer">' +
+                '</div>' +
+                ' </div>' +
+                '</div>' +
+                '<div class="pageNum">' +
+                '<div class="pageNum-bg"></div>' +
+                ' <div class="pageNum-num">' +
+                ' <span class="pageNow">1</span>/' +
+                '<span class="pageTotal">1</span>' +
+                '</div>' +
+                ' </div>' +
+                '<div class="backTop">' +
+                '</div>' +
+                '<div class="loadEffect"></div>'
+                ;
+            if (!this.container.find('.pageNum')[0]) {
                 this.container.append(html);
             }
             var viewer = document.createElement("div");
@@ -856,50 +849,64 @@
             this.backTop = this.container.find('.backTop');
             this.loading = this.container.find('.loadEffect');
             var height = document.documentElement.clientHeight * (1 / 3);
-            viewerContainer.addEventListener('scroll',function(){
+            viewerContainer.addEventListener('scroll', function () {
                 var scrollTop = viewerContainer.scrollTop;
                 if (scrollTop >= 150) {
-					self.backTop.show();
-				} else {
-					self.backTop.fadeOut(200);
-				}
-                self.pages = self.viewerContainer.find('.page');
+                    if(self.backTop){
+                        self.backTop.show();
+                    }
+                } else {
+                    if(self.backTop){
+                        self.backTop.fadeOut(200);
+                    }
+                }
+                if(self.viewerContainer){
+                    self.pages = self.viewerContainer.find('.page');
+                }
                 clearTimeout(self.timer);
-				self.pageNum.show();
-				self.pages.each(function (index, obj) {
-					var top = obj.getBoundingClientRect().top;
-					var bottom = obj.getBoundingClientRect().bottom;
-					if (top <= height && bottom > height) {
-						self.pageNow.text(index + 1)
-					}
-				})
-				self.timer = setTimeout(function () {
-					self.pageNum.fadeOut(200);
-				}, 1500)
+                if(self.pageNum){
+                    self.pageNum.show();
+                }
+                if(self.pages){
+                    self.pages.each(function (index, obj) {
+                        var top = obj.getBoundingClientRect().top;
+                        var bottom = obj.getBoundingClientRect().bottom;
+                        if (top <= height && bottom > height) {
+                            if(self.pageNum){
+                                self.pageNow.text(index + 1)
+                            }
+                        }
+                    })
+                }
+                self.timer = setTimeout(function () {
+                    if(self.pageNum){
+                        self.pageNum.fadeOut(200);
+                    }
+                }, 1500)
                 self.scroll && self.scroll(scrollTop);
             })
-            this.backTop.on('click tap', function () {
-				var mart = self.viewer.css('transform');
-				var arr = mart.replace(/[a-z\(\)\s]/g, '').split(',');
-				var s1 = arr[0];
-				var s2 = arr[3];
-				var x = arr[4] / 2;
-				var left = self.viewer[0].getBoundingClientRect().left;
-				if (left <= -self.docWidth * 2) {
-					x = -self.docWidth / 2
-				}
-				self.viewer.css({
-					transform: 'scale(' + s1 + ', ' + s2 + ') translate(' + x + 'px, 0px)'
-				})
-				if (self.PinchZoom) {
-					self.PinchZoom.offset.y = 0;
-					self.PinchZoom.lastclientY = 0;
-				}
-				self.viewerContainer.animate({
-					scrollTop: 0
-				}, 300)
+            this.backTop.on('tap', function () {
+                var mart = self.viewer.css('transform');
+                var arr = mart.replace(/[a-z\(\)\s]/g, '').split(',');
+                var s1 = arr[0];
+                var s2 = arr[3];
+                var x = arr[4] / 2;
+                var left = self.viewer[0].getBoundingClientRect().left;
+                if (left <= -self.docWidth * 2) {
+                    x = -self.docWidth / 2
+                }
+                self.viewer.css({
+                    transform: 'scale(' + s1 + ', ' + s2 + ') translate(' + x + 'px, 0px)'
+                })
+                if (self.PinchZoom) {
+                    self.PinchZoom.offset.y = 0;
+                    self.PinchZoom.lastclientY = 0;
+                }
+                self.viewerContainer.animate({
+                    scrollTop: 0
+                }, 300)
 
-			})
+            })
             //获取url带的参数地址
             function GetQueryString(name) {
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -907,57 +914,29 @@
                 if (r != null) return decodeURIComponent(r[2]);
                 return "";
             }
-            if(options.pdfdata){
+            var pdfurl = GetQueryString("file");
+            if (options.pdfurl) {
+                getDoc(options.pdfurl)
+            } else if(pdfurl){
+                getDoc(pdfurl)
+            } else {
+                setTimeout(function () {
+                    var time = new Date().getTime();
+                    self.endTime = time - self.initTime;
+                    self.complete && self.complete("error", "文件路径不能为空", self.endTime)
+                    self.error && self.error("error", "文件路径不能为空", self.endTime)
+                }, 0)
 
-                // getDoc(array)
-                console.log(options.pdfdata)
-            }else {
-                var pdfurl =  GetQueryString("file");
-                if(pdfurl){
-                    //
-                    options.pdfurl = pdfurl
-                }   
-                if(options.pdfurl){
-                    $.ajax({
-                        type: "get",
-                        mimeType: 'text/plain; charset=x-user-defined',
-                        url: options.pdfurl,
-                        success: function (data) {
-                            if (data) {
-                                var rawLength = data.length;
-                                var array = new Uint8Array(new ArrayBuffer(rawLength));
-                                for (var i = 0; i < rawLength; i++) {
-                                    array[i] = data.charCodeAt(i) & 0xff;
-                                }
-                                getDoc(array)
-                            } else {
-                                var time = new Date().getTime();
-                                self.endTime = time - self.initTime;
-                                self.complete && self.complete("error","文件解析失败",self.endTime)
-                                self.error && self.error("error","文件解析失败",self.endTime)
-                            }
-                        },
-                        error: function (err) {
-                            var time = new Date().getTime();
-                            self.endTime = time - self.initTime;
-                            self.complete && self.complete("error",err.responseText,self.endTime)
-                            self.error && self.error("error",err.responseText,self.endTime)
-                        }
-                    });
-                }else {
-                    setTimeout(function(){
-                        var time = new Date().getTime();
-                        self.endTime = time - self.initTime;
-                        self.complete && self.complete("error","文件路径不能为空",self.endTime)
-                        self.error && self.error("error","文件路径不能为空",self.endTime)
-                    },0)
-                    
-                }
-                
             }
-            
-            function getDoc(array){
+
+            function getDoc(array) {
+                if (self.pdfLoaded) {
+                    return;
+                }
                 pdfjsLib.getDocument(array).then(function (pdf) {
+                    if (self.pdfLoaded) {
+                        return;
+                    }
                     self.thePDF = pdf;
                     self.totalNum = pdf.numPages;
                     self.thePDF.getPage(1).then(handlePages);
@@ -968,26 +947,29 @@
                 }).catch(function (err) {
                     var time = new Date().getTime();
                     self.endTime = time - self.initTime;
-                    self.complete && self.complete("error",err.responseText,self.endTime)
-                    self.error && self.error("error",err.responseText,self.endTime)
+                    self.complete && self.complete("error", err.responseText, self.endTime)
+                    self.error && self.error("error", err.responseText, self.endTime)
                 })
             }
             function handlePages(page) {
                 if (self.pdfLoaded) {
                     return;
                 }
-                if(!options || !options.scale ){
-                    if(self.totalNum === 1) {
+                if (!options || !options.scale) {
+                    if (self.totalNum === 1) {
                         options.scale = 1.8
-                    }else{
+                    } else {
                         options.scale = 2.5
+                        // options.scale = 1.8
                     }
                 }
-                if(options && options.defalutScale ){
-                    if(self.totalNum === 1) {
+                if (options && options.defalutScale) {
+                    if (self.totalNum === 1) {
                         options.scale = options.defalutScale
-                    }else{
+                        // options.scale = 1.8
+                    } else {
                         options.scale = 2.5
+                        // options.scale = 1.8
                     }
                 }
                 var viewport = page.getViewport(options.scale);
@@ -1015,48 +997,64 @@
                 }).then(function () {
                     //开始下一页到绘制
                     self.currentNum++;
-                   
+
                     if (!self.pdfLoaded && self.thePDF && self.currentNum <= self.totalNum) {
                         self.thePDF.getPage(self.currentNum).then(handlePages);
                     } else {
                         self.pdfLoaded = true;
-                        self.pages = self.viewerContainer.find('.page');
+                        if (self.viewerContainer) {
+                            self.pages = self.viewerContainer.find('.page');
+                        }
                         self.currentNum = self.totalNum;
                         var time = new Date().getTime();
                         self.endTime = time - self.initTime;
-                        self.progress.css({
-                            width: "100%"
-                        })
-                        self.loadingBar.fadeOut(200);
+                        if (self.progress) {
+                            self.progress.css({
+                                width: "100%"
+                            })
+                        }
+                        if (self.loadingBar) {
+                            self.loadingBar.fadeOut(200);
+                        }
                         self.renderEnd && self.renderEnd(self.endTime)
-                        self.complete && self.complete("success","PDF解析完毕",self.endTime)
-                        self.success && self.success("success","PDF解析完毕",self.endTime)
-                        self.PinchZoom = new PinchZoom(self.viewer,{},self.viewerContainer);
+                        self.complete && self.complete("success", "PDF解析完毕", self.endTime)
+                        self.success && self.success("success", "PDF解析完毕", self.endTime)
+                        self.PinchZoom = new PinchZoom(self.viewer, {}, self.viewerContainer);
 
                         self.PinchZoom.done = function (scale) {
                             if (scale == 1) {
-                                self.viewerContainer.css({
-                                    '-webkit-overflow-scrolling': 'touch'
-                                })
+                                if (self.viewerContainer) {
+                                    self.viewerContainer.css({
+                                        '-webkit-overflow-scrolling': 'touch'
+                                    })
+                                }
+
                             } else {
-                                self.viewerContainer.css({
-                                    '-webkit-overflow-scrolling': 'auto'
-                                })
+                                if (self.viewerContainer) {
+                                    self.viewerContainer.css({
+                                        '-webkit-overflow-scrolling': 'auto'
+                                    })
+                                }
                             }
                             self.zoomChange && self.zoomChange(scale)
                         }
                     }
+                }).catch(function(err){
+                    console.log(err)
                 })
 
             }
         },
-        render: function(obj){
+        render: function (obj) {
+            if (this.pdfLoaded) {
+                return;
+            }
             var img = new Image();
             var time = new Date().getTime();
             var time2 = 0;
-            if(this.renderTime == 0){
+            if (this.renderTime == 0) {
                 time2 = time - this.startTime
-            }else {
+            } else {
                 time2 = time - this.renderTime
             }
             obj.src = obj.canvas.toDataURL("image/jpeg");
@@ -1068,71 +1066,88 @@
                 'max-width': obj.width
             })
             page.appendChild(img);
-            this.viewer.append(page);
+            if (this.viewer) {
+                this.viewer.append(page);
+            }
             if (this.currentNum == 1) {
                 this.loadWidth = 100 / this.totalNum;
-                this.loadingBar.show();
-                this.loading.fadeOut(200);
+                if (this.loadingBa) {
+                    this.loadingBar.show();
+                }
+                if (this.loading) {
+                    this.loading.fadeOut(200);
+                }
             }
-            this.progress.css({
-                width: this.loadWidth * this.currentNum + "%"
-            })
-            this.renderPages && this.renderPages(page,time-this.initTime,time2)
+            if (this.progress) {
+                this.progress.css({
+                    width: this.loadWidth * this.currentNum + "%"
+                })
+            }
+            this.renderPages && this.renderPages(page, time - this.initTime, time2)
             this.renderTime = time;
         },
-        show: function(callback){
+        show: function (callback) {
             this.container.show();
             callback && callback.call(this)
         },
-        hide: function(callback){
+        hide: function (callback) {
             this.container.hide()
             callback && callback.call(this)
         },
-        reset: function(callback){
-            if(this.PinchZoom){
+        reset: function (callback) {
+            if (this.PinchZoom) {
                 this.PinchZoom.offset.y = 0;
                 this.PinchZoom.offset.x = 0;
                 this.PinchZoom.lastclientY = 0;
                 this.PinchZoom.zoomFactor = 1;
                 this.PinchZoom.update();
             }
-            if(this.viewerContainer){
+            if (this.viewerContainer) {
                 this.viewerContainer.scrollTop(0);
             }
             callback && callback.call(this)
         },
-        destroy: function(callback){
+        destroy: function (callback) {
+            var self = this;
             this.reset();
-            this.currentNum = 1; 
-            this.thePDF = null;
-            this.pdfRender = null;
+            if(this.thePDF){
+                this.thePDF.destroy();
+                this.thePDF = null;
+            }
+            if(this.pdfRender){
+                this.pdfRender.cancel();
+                this.pdfRender = null;
+            }
+            if(this.viewerContainer){
+                this.viewerContainer.remove();
+                this.viewerContainer = null;
+            }
+            if(this.container){
+                this.container.html('');
+                this.container = null;
+            }
+            this.backTop.off('tap');
+
+            this.pdfLoaded = true;
+            this.currentNum = 1;
             this.totalNum = null;
-            this.pdfLoaded = false;
             this.pages = null;
             this.initTime = 0;
             this.startTime = 0;
             this.endTime = 0;
             this.renderTime = 0;
-            this.viewerContainer = null;
             this.viewer = null;
             this.pageNum = null;
             this.pageNow = null;
             this.pageTotal = null;
             this.loadingBar = null;
             this.progress = null;
-            this.backTop.off('click tap');
-            this.backTop = null;
             this.loading = null;
             this.timer = null;
             this.loadWidth = 1;
-            this.pdfLoaded = false;
-            this.container.html('');
-            this.container = null;
-            this.reset = null;
             this.show = null;
             this.hide = null;
             callback && callback.call(this)
-            this.destroy = null;
         }
     }
 
