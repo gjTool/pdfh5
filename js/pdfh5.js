@@ -885,7 +885,7 @@
                 }, 1500)
                 self.scroll && self.scroll(scrollTop);
             })
-            this.backTop.on('tap', function () {
+            this.backTop.on('click tap', function () {
                 var mart = self.viewer.css('transform');
                 var arr = mart.replace(/[a-z\(\)\s]/g, '').split(',');
                 var s1 = arr[0];
@@ -1127,7 +1127,7 @@
                 this.container = null;
             }
             this.backTop.off('tap');
-
+            this.backTop.off('click');
             this.pdfLoaded = true;
             this.currentNum = 1;
             this.totalNum = null;
