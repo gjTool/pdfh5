@@ -915,9 +915,9 @@
                 return "";
             }
             var pdfurl = GetQueryString("file");
-            if (options.pdfurl) {
+            if (pdfurl) {
                 getDoc(options.pdfurl)
-            } else if(pdfurl){
+            } else if(options.pdfurl){
                 getDoc(pdfurl)
             } else {
                 setTimeout(function () {
