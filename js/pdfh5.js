@@ -916,9 +916,9 @@
             }
             var pdfurl = GetQueryString("file");
             if (pdfurl) {
-                getDoc(options.pdfurl)
-            } else if(options.pdfurl){
                 getDoc(pdfurl)
+            } else if(options.pdfurl){
+                getDoc(options.pdfurl)
             } else {
                 setTimeout(function () {
                     var time = new Date().getTime();
