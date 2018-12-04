@@ -885,7 +885,7 @@
                 }, 1500)
                 self.scroll && self.scroll(scrollTop);
             })
-            this.backTop.on('tap', function () {
+            this.backTop.on('click tap', function () {
                 var mart = self.viewer.css('transform');
                 var arr = mart.replace(/[a-z\(\)\s]/g, '').split(',');
                 var s1 = arr[0];
@@ -915,10 +915,10 @@
                 return "";
             }
             var pdfurl = GetQueryString("file");
-            if (options.pdfurl) {
-                getDoc(options.pdfurl)
-            } else if(pdfurl){
+            if (pdfurl) {
                 getDoc(pdfurl)
+            } else if(options.pdfurl){
+                getDoc(options.pdfurl)
             } else {
                 setTimeout(function () {
                     var time = new Date().getTime();
@@ -1127,7 +1127,7 @@
                 this.container = null;
             }
             this.backTop.off('tap');
-
+            this.backTop.off('click');
             this.pdfLoaded = true;
             this.currentNum = 1;
             this.totalNum = null;
