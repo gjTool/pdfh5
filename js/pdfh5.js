@@ -798,9 +798,11 @@
         this.timer = null;
         this.loadWidth = 1;
         this.docWidth = document.documentElement.clientWidth;
+		this.eventType = {};
         this.init(options);
     };
     Pdfh5.prototype = {
+		
         init: function (options) {
             var self = this;
             if (self.pdfLoaded) {
@@ -808,11 +810,25 @@
             }
             this.initTime = new Date().getTime();
             setTimeout(function () {
+				self.eventType["start"] && self.eventType["start"](self.initTime);
                 self.start && self.start(self.initTime)
             }, 0)
             options = options ? options : {};
             options.pdfurl = options.pdfurl ? options.pdfurl : null;
             options.data = options.data ? options.data : null;
+			if(options.scrollEnable == 'undefined' || options.scrollEnable == undefined){
+				options.scrollEnable = true
+			}
+			if(options.scrollEnable == 'true' || options.scrollEnable == true){
+				options.scrollEnable = true
+			}
+			if(options.scrollEnable == 'null' ||  options.scrollEnable == null){
+				options.scrollEnable = true
+			}
+			if(options.scrollEnable == 'false'){
+				options.scrollEnable = false
+			}
+			
             var html = '<div class="loadingBar">' +
                 '<div class="progress">' +
                 ' <div class="glimmer">' +
@@ -849,6 +865,15 @@
             this.backTop = this.container.find('.backTop');
             this.loading = this.container.find('.loadEffect');
             var height = document.documentElement.clientHeight * (1 / 3);
+			if(!options.scrollEnable){
+				this.viewerContainer.css({
+					"overflow":"hidden"
+				})
+			}else {
+				this.viewerContainer.css({
+					"overflow":"auto"
+				})
+			}
             viewerContainer.addEventListener('scroll', function () {
                 var scrollTop = viewerContainer.scrollTop;
                 if (scrollTop >= 150) {
@@ -883,6 +908,7 @@
                         self.pageNum.fadeOut(200);
                     }
                 }, 1500)
+				self.eventType["scroll"] && self.eventType["scroll"](scrollTop);
                 self.scroll && self.scroll(scrollTop);
             })
             this.backTop.on('click tap', function () {
@@ -921,12 +947,13 @@
                 getDoc(options.pdfurl)
             } else {
                 setTimeout(function () {
-                    var time = new Date().getTime();
-                    self.endTime = time - self.initTime;
-                    self.complete && self.complete("error", "文件路径不能为空", self.endTime)
-                    self.error && self.error("error", "文件路径不能为空", self.endTime)
+                   var time = new Date().getTime();
+                   self.endTime = time - self.initTime;
+				   self.eventType["complete"] && self.eventType["complete"]("error", "文件路径不能为空", self.endTime);
+				   self.eventType["error"] && self.eventType["complete"]("error", "文件路径不能为空", self.endTime);
+                   self.complete && self.complete("error", "文件路径不能为空", self.endTime)
+                   self.error && self.error("error", "文件路径不能为空", self.endTime)
                 }, 0)
-
             }
 
             function getDoc(array) {
@@ -943,10 +970,13 @@
                     self.pageTotal.text(self.totalNum)
                     var time = new Date().getTime();
                     self.startTime = time - self.initTime;
+					self.eventType["renderStart"] && self.eventType["renderStart"](self.startTime);
                     self.renderStart && self.renderStart(self.startTime)
                 }).catch(function (err) {
                     var time = new Date().getTime();
                     self.endTime = time - self.initTime;
+					self.eventType["complete"] && self.eventType["complete"]("error", err.responseText, self.endTime);
+					self.eventType["error"] && self.eventType["complete"]("error", err.responseText, self.endTime);
                     self.complete && self.complete("error", err.responseText, self.endTime)
                     self.error && self.error("error", err.responseText, self.endTime)
                 })
@@ -1017,6 +1047,8 @@
                             self.loadingBar.fadeOut(200);
                         }
                         self.renderEnd && self.renderEnd(self.endTime)
+						self.eventType["complete"] && self.eventType["complete"]("success", "PDF解析完毕", self.endTime);
+						self.eventType["success"] && self.eventType["success"]("success", "PDF解析完毕", self.endTime);
                         self.complete && self.complete("success", "PDF解析完毕", self.endTime)
                         self.success && self.success("success", "PDF解析完毕", self.endTime)
                         self.PinchZoom = new PinchZoom(self.viewer, {}, self.viewerContainer);
@@ -1083,6 +1115,7 @@
                     width: this.loadWidth * this.currentNum + "%"
                 })
             }
+			this.eventType["renderPages"] && this.eventType["renderPages"](page, time - this.initTime, time2);
             this.renderPages && this.renderPages(page, time - this.initTime, time2)
             this.renderTime = time;
         },
@@ -1094,6 +1127,20 @@
             this.container.hide()
             callback && callback.call(this)
         },
+		on:function(type,callback){
+			this.eventType[type] = callback
+		},
+		scrollEnable:function(flag){
+			if(!flag){
+				this.viewerContainer.css({
+					"overflow":"hidden"
+				})
+			}else {
+				this.viewerContainer.css({
+					"overflow":"auto"
+				})
+			}
+		},
         reset: function (callback) {
             if (this.PinchZoom) {
                 this.PinchZoom.offset.y = 0;
@@ -1148,10 +1195,9 @@
             this.show = null;
             this.hide = null;
             callback && callback.call(this)
+			this.eventType["destroy"] && this.eventType["destroy"].call(this)
         }
     }
-
-
     if (typeof define !== 'undefined' && define.amd) {
         define(['jquery'], function ($) {
             return Pdfh5
