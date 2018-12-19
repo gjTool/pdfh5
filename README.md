@@ -33,6 +33,7 @@ http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf
 http://118.89.56.33:8999/pdfh5/pdf.html?file=http://118.89.56.33:8999/pdfh5/default.pdf
 
 //新增配置参数scrollEnable:false不允许pdf滚动,true允许pdf滚动
+
 	var pdfh5 = new Pdfh5('.pdfjs', {
  			scrollEnable:false,//是否允许pdf滚动
 			pdfurl: url
