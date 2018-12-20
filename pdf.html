@@ -45,7 +45,11 @@
 		var pdfh5 = new Pdfh5('.pdfjs', {
 			pdfurl: url
 		});
-		
+		//监听当前加载的pdf页数,currentPageDom当前加载的pdf的dom,currentNum当前加载的pdf页数,
+		pdfh5.on("renderPages",function(currentPageDom){
+			console.log(this.currentNum)
+			console.log(pdfh5.currentNum)
+		})
 		// var pdfh52 = new Pdfh5('.pdfjs2',{
 		// 	pdfurl: 'test.pdf'
 		// });

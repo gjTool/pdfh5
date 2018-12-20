@@ -810,7 +810,7 @@
             }
             this.initTime = new Date().getTime();
             setTimeout(function () {
-				self.eventType["start"] && self.eventType["start"](self.initTime);
+				self.eventType["start"] && self.eventType["start"].call(self,self.initTime);
                 self.start && self.start(self.initTime)
             }, 0)
             options = options ? options : {};
@@ -908,7 +908,7 @@
                         self.pageNum.fadeOut(200);
                     }
                 }, 1500)
-				self.eventType["scroll"] && self.eventType["scroll"](scrollTop);
+				self.eventType["scroll"] && self.eventType["scroll"].call(self,scrollTop);
                 self.scroll && self.scroll(scrollTop);
             })
             this.backTop.on('click tap', function () {
@@ -931,7 +931,7 @@
                 self.viewerContainer.animate({
                     scrollTop: 0
                 }, 300)
-
+				self.eventType["backTop"] && self.eventType["backTop"].call(self);
             })
             //获取url带的参数地址
             function GetQueryString(name) {
@@ -949,8 +949,8 @@
                 setTimeout(function () {
                    var time = new Date().getTime();
                    self.endTime = time - self.initTime;
-				   self.eventType["complete"] && self.eventType["complete"]("error", "文件路径不能为空", self.endTime);
-				   self.eventType["error"] && self.eventType["complete"]("error", "文件路径不能为空", self.endTime);
+				   self.eventType["complete"] && self.eventType["complete"].call(self,"error", "文件路径不能为空", self.endTime);
+				   self.eventType["error"] && self.eventType["complete"].call(self,"error", "文件路径不能为空", self.endTime);
                    self.complete && self.complete("error", "文件路径不能为空", self.endTime)
                    self.error && self.error("error", "文件路径不能为空", self.endTime)
                 }, 0)
@@ -970,13 +970,13 @@
                     self.pageTotal.text(self.totalNum)
                     var time = new Date().getTime();
                     self.startTime = time - self.initTime;
-					self.eventType["renderStart"] && self.eventType["renderStart"](self.startTime);
+					self.eventType["renderStart"] && self.eventType["renderStart"].call(self,self.startTime);
                     self.renderStart && self.renderStart(self.startTime)
                 }).catch(function (err) {
                     var time = new Date().getTime();
                     self.endTime = time - self.initTime;
-					self.eventType["complete"] && self.eventType["complete"]("error", err.responseText, self.endTime);
-					self.eventType["error"] && self.eventType["complete"]("error", err.responseText, self.endTime);
+					self.eventType["complete"] && self.eventType["complete"].call(self,"error", err.responseText, self.endTime);
+					self.eventType["error"] && self.eventType["complete"].call(self,"error", err.responseText, self.endTime);
                     self.complete && self.complete("error", err.responseText, self.endTime)
                     self.error && self.error("error", err.responseText, self.endTime)
                 })
@@ -1047,8 +1047,8 @@
                             self.loadingBar.fadeOut(200);
                         }
                         self.renderEnd && self.renderEnd(self.endTime)
-						self.eventType["complete"] && self.eventType["complete"]("success", "PDF解析完毕", self.endTime);
-						self.eventType["success"] && self.eventType["success"]("success", "PDF解析完毕", self.endTime);
+						self.eventType["complete"] && self.eventType["complete"].call(self,"success", "PDF解析完毕", self.endTime);
+						self.eventType["success"] && self.eventType["success"].call(self,"success", "PDF解析完毕", self.endTime);
                         self.complete && self.complete("success", "PDF解析完毕", self.endTime)
                         self.success && self.success("success", "PDF解析完毕", self.endTime)
                         self.PinchZoom = new PinchZoom(self.viewer, {}, self.viewerContainer);
@@ -1115,16 +1115,18 @@
                     width: this.loadWidth * this.currentNum + "%"
                 })
             }
-			this.eventType["renderPages"] && this.eventType["renderPages"](page, time - this.initTime, time2);
+			this.eventType["renderPages"] && this.eventType["renderPages"].call(this,page, time - this.initTime, time2);
             this.renderPages && this.renderPages(page, time - this.initTime, time2)
             this.renderTime = time;
         },
         show: function (callback) {
             this.container.show();
+			this.eventType["show"] && this.eventType["show"].call(this);
             callback && callback.call(this)
         },
         hide: function (callback) {
             this.container.hide()
+			this.eventType["hide"] && this.eventType["show"].call(this);
             callback && callback.call(this)
         },
 		on:function(type,callback){
@@ -1140,6 +1142,7 @@
 					"overflow":"auto"
 				})
 			}
+			this.eventType["scrollEnable"] && this.eventType["scrollEnable"].call(this);
 		},
         reset: function (callback) {
             if (this.PinchZoom) {
@@ -1152,6 +1155,7 @@
             if (this.viewerContainer) {
                 this.viewerContainer.scrollTop(0);
             }
+			this.eventType["reset"] && this.eventType["reset"].call(this);
             callback && callback.call(this)
         },
         destroy: function (callback) {
