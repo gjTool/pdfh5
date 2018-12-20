@@ -3,9 +3,9 @@
 
 2018.12.4更新：解决部分pdf字体显示不全，合同、公文等pdf末尾红色印章无法显示问题。必须下载我提供的pdf.js和pdf.worker.js。后续会放出api文档，以及做成npm包引用（时间待定，暂不支持）
 
-var pdfh5 = new Pdfh5('.pdfjs', {
-	pdfurl: 'default.pdf'
-});
+	var pdfh5 = new Pdfh5('.pdfjs', {
+		pdfurl: 'default.pdf'
+	});
 
 //pdfh5.zoomChange pdfh5.renderPages pdfh5.renderEnd pdfh5.scroll pdfh5.show pdfh5.hide
 
@@ -31,13 +31,18 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 //pdfh5支持在线预览 
 http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf
 http://118.89.56.33:8999/pdfh5/pdf.html?file=http://118.89.56.33:8999/pdfh5/default.pdf
+
 //新增配置参数scrollEnable:false不允许pdf滚动,true允许pdf滚动
+
 	var pdfh5 = new Pdfh5('.pdfjs', {
  			scrollEnable:false,//是否允许pdf滚动
 			pdfurl: url
 		});
+		
 //新增方法pdfh5.scrollEnable(true)允许pdf滚动,pdfh5.scrollEnable(false)不允许pdf滚动
+
 //新增on方法,监听各种事件
+
 	pdfh5.on("start",function(str){
  			console.log(str)
  		})
