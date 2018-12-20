@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">
+	<title>PDFH5</title>
+	<link rel="stylesheet" href="css/style.css" />
+	<link rel="stylesheet" href="css/pdfh5.css" />
+	<style>
+		.pdfContent {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			background: #fff;
+			position: relative;
+		}
+	</style>
+</head>
+
+<body>
+	
+	<div class="pdfContent"></div>
+	
+	<script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/pdf.worker.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var pdfView = new Pdfh5('.pdfContent', {
+			pdfurl: "http://118.89.56.33:8999/pdfh5/default.pdf"
+		});
+		pdfView.on("start",function(initTime){
+			console.log("Pdfh5开始初始化")
+		});
+		pdfView.on("complete",function(status,msg,time){
+			console.log("Pdfh5加载完成,总页数："+this.totalNum)
+		});
+		pdfView.on("scroll",function(scrollTop){
+			console.log("Pdfh5滚动监听",scrollTop)
+		});
+		pdfView.on("renderPages",function(currentPageDom){
+			console.log("Pdfh5加载pdf监听",currentPageDom,this.currentNum)
+		});
+		
+	</script>
+</body>
+
+</html>
