@@ -948,10 +948,10 @@
 				setTimeout(function() {
 					var time = new Date().getTime();
 					self.endTime = time - self.initTime;
-					self.eventType["complete"] && self.eventType["complete"].call(self, "error", "文件路径不能为空", self.endTime);
-					self.eventType["error"] && self.eventType["complete"].call(self, "error", "文件路径不能为空", self.endTime);
-					self.complete && self.complete("error", "文件路径不能为空", self.endTime)
-					self.error && self.error("error", "文件路径不能为空", self.endTime)
+					self.eventType["complete"] && self.eventType["complete"].call(self, "error", "文件路径错误", self.endTime);
+					self.eventType["error"] && self.eventType["error"].call(self, "error", "文件路径错误", self.endTime);
+					self.complete && self.complete("error", "文件路径错误", self.endTime)
+					self.error && self.error("error", "文件路径错误", self.endTime)
 				}, 0)
 			}
 
@@ -975,7 +975,7 @@
 					var time = new Date().getTime();
 					self.endTime = time - self.initTime;
 					self.eventType["complete"] && self.eventType["complete"].call(self, "error", err.responseText, self.endTime);
-					self.eventType["error"] && self.eventType["complete"].call(self, "error", err.responseText, self.endTime);
+					self.eventType["error"] && self.eventType["error"].call(self, "error", err.responseText, self.endTime);
 					self.complete && self.complete("error", err.responseText, self.endTime)
 					self.error && self.error("error", err.responseText, self.endTime)
 				})
