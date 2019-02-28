@@ -40,7 +40,7 @@
 	<script src="js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
-		var url = "http://118.89.56.33:8999/pdfh5/default.pdf"
+		var url = "http://118.89.56.33:8999/pdfh5/default1.pdf"
 		// var url = 'default.pdf';
 		var pdfh5 = new Pdfh5('.pdfjs', {
 			pdfurl: url
@@ -49,6 +49,9 @@
 		pdfh5.on("renderPages",function(currentPageDom){
 			console.log(this.currentNum)
 			console.log(pdfh5.currentNum)
+		})
+		pdfh5.on('error',function(str){
+			console.log('error',str)
 		})
 		// var pdfh52 = new Pdfh5('.pdfjs2',{
 		// 	pdfurl: 'test.pdf'
