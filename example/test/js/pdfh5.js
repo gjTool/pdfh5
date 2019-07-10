@@ -1,5 +1,12 @@
 (function() {
 	'use strict';
+	if(typeof require !== 'undefined'){
+		this.$ = require('./jquery-1.11.3.min.js');
+		this.pdfjsLib = require('./pdf.js');
+		var PdfjsWorker = require('./pdf.worker.js');
+		this.pdfjsLib.GlobalWorkerOptions.workerPort = new PdfjsWorker();
+	}
+	var pdfjsLib = this.pdfjsLib;
 	var definePinchZoom = function($) {
 		var PinchZoom = function(el, options, viewerContainer) {
 				this.el = $(el);
@@ -600,9 +607,7 @@
 			 */
 			enable: function() {
 				this.enabled = true;
-
 			},
-
 			/**
 			 * Disables event handling for gestures
 			 */
@@ -785,50 +790,39 @@
 	var PinchZoom = definePinchZoom($);
 	var Pdfh5 = function(dom, options) {
 		this.container = $(dom);
-		this.currentNum = 1; //当前页数从1开始
 		this.thePDF = null;
-		this.pdfRender = null;
 		this.totalNum = null;
-		this.pdfLoaded = false;
 		this.pages = null;
 		this.initTime = 0;
-		this.startTime = 0;
+		this.scale = 1;
+		this.currentNum = 1;
 		this.endTime = 0;
-		this.renderTime = 0;
+		this.pinchZoom = null;
 		this.timer = null;
-		this.loadWidth = 1;
 		this.docWidth = document.documentElement.clientWidth;
 		this.eventType = {};
 		this.init(options);
 	};
 	Pdfh5.prototype = {
-
 		init: function(options) {
 			var self = this;
-			if (self.pdfLoaded) {
-				return;
-			}
+			pdfjsLib.cMapUrl= './cmaps/';
+			pdfjsLib.cMapPacked= true;
 			this.initTime = new Date().getTime();
 			setTimeout(function() {
 				self.eventType["start"] && self.eventType["start"].call(self, self.initTime);
-				self.start && self.start(self.initTime)
 			}, 0)
 			options = options ? options : {};
 			options.pdfurl = options.pdfurl ? options.pdfurl : null;
 			options.data = options.data ? options.data : null;
-			if (options.scrollEnable == 'undefined' || options.scrollEnable == undefined) {
-				options.scrollEnable = true
-			}
-			if (options.scrollEnable == 'true' || options.scrollEnable == true) {
-				options.scrollEnable = true
-			}
-			if (options.scrollEnable == 'null' || options.scrollEnable == null) {
-				options.scrollEnable = true
-			}
-			if (options.scrollEnable == 'false') {
-				options.scrollEnable = false
-			}
-
+			options.scale = options.scale ? options.scale : self.scale;
+			options.zoomEnable = options.zoomEnable === false ? false : true;
+			options.scrollEnable = options.scrollEnable === false ? false : true;
+			options.loadingBar = options.loadingBar === false ? false : true;
+			options.pageNum = options.pageNum === false ? false : true;
+			options.backTop = options.backTop === false ? false : true;
+			options.backTop = options.backTop === false ? false : true;
+			options.URIenable = options.URIenable === false ? false : true;
 			var html = '<div class="loadingBar">' +
 				'<div class="progress">' +
 				' <div class="glimmer">' +
@@ -863,6 +857,10 @@
 			this.progress = this.loadingBar.find('.progress');
 			this.backTop = this.container.find('.backTop');
 			this.loading = this.container.find('.loadEffect');
+			this.loading.hide();
+			if(!options.loadingBar){
+				this.loadingBar.hide()
+			}
 			var height = document.documentElement.clientHeight * (1 / 3);
 			if (!options.scrollEnable) {
 				this.viewerContainer.css({
@@ -876,19 +874,19 @@
 			viewerContainer.addEventListener('scroll', function() {
 				var scrollTop = viewerContainer.scrollTop;
 				if (scrollTop >= 150) {
-					if (self.backTop) {
+					if (options.backTop) {
 						self.backTop.show();
 					}
 				} else {
-					if (self.backTop) {
+					if (options.backTop) {
 						self.backTop.fadeOut(200);
 					}
 				}
 				if (self.viewerContainer) {
-					self.pages = self.viewerContainer.find('.page');
+					self.pages = self.viewerContainer.find('.pageContainer');
 				}
 				clearTimeout(self.timer);
-				if (self.pageNum) {
+				if (options.pageNum) {
 					self.pageNum.show();
 				}
 				if (self.pages) {
@@ -896,19 +894,19 @@
 						var top = obj.getBoundingClientRect().top;
 						var bottom = obj.getBoundingClientRect().bottom;
 						if (top <= height && bottom > height) {
-							if (self.pageNum) {
+							if (options.pageNum) {
 								self.pageNow.text(index + 1)
 							}
+							self.currentNum = index + 1
 						}
 					})
 				}
 				self.timer = setTimeout(function() {
-					if (self.pageNum) {
+					if (options.pageNum) {
 						self.pageNum.fadeOut(200);
 					}
 				}, 1500)
 				self.eventType["scroll"] && self.eventType["scroll"].call(self, scrollTop);
-				self.scroll && self.scroll(scrollTop);
 			})
 			this.backTop.on('click tap', function() {
 				var mart = self.viewer.css('transform');
@@ -923,9 +921,9 @@
 				self.viewer.css({
 					transform: 'scale(' + s1 + ', ' + s2 + ') translate(' + x + 'px, 0px)'
 				})
-				if (self.PinchZoom) {
-					self.PinchZoom.offset.y = 0;
-					self.PinchZoom.lastclientY = 0;
+				if (self.pinchZoom) {
+					self.pinchZoom.offset.y = 0;
+					self.pinchZoom.lastclientY = 0;
 				}
 				self.viewerContainer.animate({
 					scrollTop: 0
@@ -940,184 +938,103 @@
 				return "";
 			}
 			var pdfurl = GetQueryString("file");
-			if (pdfurl) {
-				getDoc(pdfurl)
+			
+			if (pdfurl && options.URIenable) {
+				self.renderPdf(options,{
+					url:pdfurl
+				})
 			} else if (options.pdfurl) {
-				getDoc(options.pdfurl)
-			} else {
-				setTimeout(function() {
-					var time = new Date().getTime();
-					self.endTime = time - self.initTime;
-					self.eventType["complete"] && self.eventType["complete"].call(self, "error", "文件路径错误", self.endTime);
-					self.eventType["error"] && self.eventType["error"].call(self, "error", "文件路径错误", self.endTime);
-					self.complete && self.complete("error", "文件路径错误", self.endTime)
-					self.error && self.error("error", "文件路径错误", self.endTime)
-				}, 0)
-			}
-
-			function getDoc(array) {
-				if (self.pdfLoaded) {
-					return;
-				}
-				pdfjsLib.getDocument(array).then(function(pdf) {
-					if (self.pdfLoaded) {
-						return;
-					}
-					self.thePDF = pdf;
-					self.totalNum = pdf.numPages;
-					self.thePDF.getPage(1).then(handlePages);
-					self.pageTotal.text(self.totalNum)
-					var time = new Date().getTime();
-					self.startTime = time - self.initTime;
-					self.eventType["renderStart"] && self.eventType["renderStart"].call(self, self.startTime);
-					self.renderStart && self.renderStart(self.startTime)
-				}).catch(function(err) {
-					var time = new Date().getTime();
-					self.endTime = time - self.initTime;
-					self.eventType["complete"] && self.eventType["complete"].call(self, "error", err.responseText, self.endTime);
-					self.eventType["error"] && self.eventType["error"].call(self, "error", err.responseText, self.endTime);
-					self.complete && self.complete("error", err.responseText, self.endTime)
-					self.error && self.error("error", err.responseText, self.endTime)
+				self.renderPdf(options,{
+					url:options.pdfurl
 				})
-			}
-
-			function handlePages(page) {
-				if (self.pdfLoaded) {
-					return;
-				}
-				if (!options || !options.scale) {
-					if (self.totalNum === 1) {
-						options.scale = 1.8
-					} else {
-						options.scale = 2.5
-						// options.scale = 1.8
-					}
-				}
-				if (options && options.defalutScale) {
-					if (self.totalNum === 1) {
-						options.scale = options.defalutScale
-						// options.scale = 1.8
-					} else {
-						options.scale = 2.5
-						// options.scale = 1.8
-					}
-				}
-				var viewport = page.getViewport(options.scale);
-				var canvas = document.createElement("canvas");
-				var winRatio = ($(window).width() / viewport.width) * 1;
-				var obj = {
-					'Cheight': viewport.height * winRatio,
-					'width': viewport.width,
-					'height': viewport.height,
-					'canvas': canvas,
-					'index': self.currentNum
-				}
-				var context = canvas.getContext('2d');
-				canvas.height = viewport.height;
-				canvas.width = viewport.width;
-				//在canvas上绘制
-				self.pdfRender = page.render({
-					canvasContext: context,
-					viewport: viewport
-				});
-				obj.src = obj.canvas.toDataURL("image/jpeg");
-
-				self.pdfRender.promise.then(function() {
-					self.render(obj);
-				}).then(function() {
-					//开始下一页到绘制
-					self.currentNum++;
-
-					if (!self.pdfLoaded && self.thePDF && self.currentNum <= self.totalNum) {
-						self.thePDF.getPage(self.currentNum).then(handlePages);
-					} else {
-						self.pdfLoaded = true;
-						if (self.viewerContainer) {
-							self.pages = self.viewerContainer.find('.page');
-						}
-						self.currentNum = self.totalNum;
-						var time = new Date().getTime();
-						self.endTime = time - self.initTime;
-						if (self.progress) {
-							self.progress.css({
-								width: "100%"
-							})
-						}
-						if (self.loadingBar) {
-							self.loadingBar.fadeOut(200);
-						}
-						self.renderEnd && self.renderEnd(self.endTime)
-						self.eventType["complete"] && self.eventType["complete"].call(self, "success", "PDF解析完毕", self.endTime);
-						self.eventType["success"] && self.eventType["success"].call(self, "success", "PDF解析完毕", self.endTime);
-						self.complete && self.complete("success", "PDF解析完毕", self.endTime)
-						self.success && self.success("success", "PDF解析完毕", self.endTime)
-						self.PinchZoom = new PinchZoom(self.viewer, {}, self.viewerContainer);
-
-						self.PinchZoom.done = function(scale) {
-							if (scale == 1) {
-								if (self.viewerContainer) {
-									self.viewerContainer.css({
-										'-webkit-overflow-scrolling': 'touch'
-									})
-								}
-
-							} else {
-								if (self.viewerContainer) {
-									self.viewerContainer.css({
-										'-webkit-overflow-scrolling': 'auto'
-									})
-								}
-							}
-							self.zoomChange && self.zoomChange(scale)
-						}
-					}
-				}).catch(function(err) {
-					console.log(err)
+			}else if (options.data) {
+				self.renderPdf(options,{
+					data:options.data
 				})
-
+			}  else {
+				throw Error("Expect options.pdfurl or options.data!")
 			}
+			
 		},
-		render: function(obj) {
-			if (this.pdfLoaded) {
-				return;
-			}
-			var img = new Image();
-			var time = new Date().getTime();
-			var time2 = 0;
-			if (this.renderTime == 0) {
-				time2 = time - this.startTime
-			} else {
-				time2 = time - this.renderTime
-			}
-			obj.src = obj.canvas.toDataURL("image/jpeg");
-			img.src = obj.src;
-			var page = document.createElement("div");
-			page.className = "page page" + obj.index;
-			page.setAttribute('data-index', obj.index);
-			$(page).css({
-				'max-width': obj.width
-			})
-			page.appendChild(img);
-			if (this.viewer) {
-				this.viewer.append(page);
-			}
-			if (this.currentNum == 1) {
-				this.loadWidth = 100 / this.totalNum;
-				if (this.loadingBa) {
-					this.loadingBar.show();
-				}
-				if (this.loading) {
-					this.loading.fadeOut(200);
-				}
-			}
-			if (this.progress) {
-				this.progress.css({
-					width: this.loadWidth * this.currentNum + "%"
+		renderPdf:function(options,obj){
+			var self = this;
+			pdfjsLib.getDocument(obj).then(function(pdf) {
+				self.thePDF = pdf;
+				self.totalNum = pdf.numPages;
+				self.pageTotal.text(self.totalNum)
+				self.eventType["ready"] && self.eventType["ready"].call(self);
+				var promise = Promise.resolve();
+				var num = Math.floor(100/self.totalNum).toFixed(2);
+				self.progress.css({
+					width: "1%"
 				})
-			}
-			this.eventType["renderPages"] && this.eventType["renderPages"].call(this, page, time - this.initTime, time2);
-			this.renderPages && this.renderPages(page, time - this.initTime, time2)
-			this.renderTime = time;
+				for (var i = 1; i <= self.totalNum ; i++) {
+					promise = promise.then(function (pageNum) {
+						return self.thePDF.getPage(pageNum).then(function (page) {
+							var viewport = page.getViewport(options.scale);
+							var scale = (self.docWidth / viewport.width).toFixed(2)
+							var scaledViewport = page.getViewport(scale)
+							var container = document.createElement('div');
+							container.id = 'pageContainer' + pageNum;
+							container.className = 'pageContainer';
+							container.setAttribute('name', 'page=' + pageNum);
+							container.setAttribute('title', 'Page ' + pageNum);
+							container.style.height = scaledViewport.height + 'px';
+							self.viewer[0].appendChild(container);
+							return page.getOperatorList().then(function (opList) {
+								var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
+								return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
+									container.appendChild(svg);
+									svg.style.width = "100%";
+									self.viewer[0].style.width = document.querySelector('.pageContainer').getBoundingClientRect().width + 'px';
+									self.progress.css({
+										width: num*pageNum+"%"
+									})
+									var time = new Date().getTime();
+									self.eventType["render"] && self.eventType["render"].call(self,pageNum,time - self.initTime,container);
+									if (pageNum === self.totalNum) {
+										self.progress.css({
+											width: "100%"
+										});
+										setTimeout(function(){
+											self.loadingBar.hide();
+										},300)
+										self.endTime = time - self.initTime;
+										self.eventType["complete"] && self.eventType["complete"].call(self, "success", "pdf加载完成",self.endTime);
+										self.eventType["success"] && self.eventType["success"].call(self, self.endTime);
+										if(options.zoomEnable){
+											self.pinchZoom = new PinchZoom(self.viewer, {}, self.viewerContainer);
+											self.pinchZoom.done = function (scale) {
+												if (scale == 1) {
+													if (self.viewerContainer) {
+														self.viewerContainer.css({
+															'-webkit-overflow-scrolling': 'touch'
+														})
+													}
+
+												} else {
+													if (self.viewerContainer) {
+														self.viewerContainer.css({
+															'-webkit-overflow-scrolling': 'auto'
+														})
+													}
+												}
+												self.eventType["zoom"] && self.eventType["zoom"].call(self);
+											}
+										}
+									}
+								});
+							});
+						});
+					}.bind(null, i));
+				}
+			}).catch(function(err) {
+				self.loading.hide()
+				var time = new Date().getTime();
+				self.endTime = time - self.initTime;
+				self.eventType["complete"] && self.eventType["complete"].call(self, "error", err.responseText, self.endTime);
+				self.eventType["error"] && self.eventType["error"].call(self, err.responseText, self.endTime);
+			})
 		},
 		show: function(callback) {
 			this.container.show();
@@ -1133,7 +1050,7 @@
 			this.eventType[type] = callback
 		},
 		scrollEnable: function(flag) {
-			if (!flag) {
+			if (flag===false) {
 				this.viewerContainer.css({
 					"overflow": "hidden"
 				})
@@ -1142,15 +1059,23 @@
 					"overflow": "auto"
 				})
 			}
-			this.eventType["scrollEnable"] && this.eventType["scrollEnable"].call(this);
+			this.eventType["scrollEnable"] && this.eventType["scrollEnable"].call(this,flag);
+		},
+		zoomEnable: function(flag) {
+			if (flag===false) {
+				this.pinchZoom.disable()
+			} else {
+				this.pinchZoom.enable()
+			}
+			this.eventType["zoomEnable"] && this.eventType["zoomEnable"].call(this,flag);
 		},
 		reset: function(callback) {
-			if (this.PinchZoom) {
-				this.PinchZoom.offset.y = 0;
-				this.PinchZoom.offset.x = 0;
-				this.PinchZoom.lastclientY = 0;
-				this.PinchZoom.zoomFactor = 1;
-				this.PinchZoom.update();
+			if (this.pinchZoom) {
+				this.pinchZoom.offset.y = 0;
+				this.pinchZoom.offset.x = 0;
+				this.pinchZoom.lastclientY = 0;
+				this.pinchZoom.zoomFactor = 1;
+				this.pinchZoom.update();
 			}
 			if (this.viewerContainer) {
 				this.viewerContainer.scrollTop(0);
@@ -1159,15 +1084,10 @@
 			callback && callback.call(this)
 		},
 		destroy: function(callback) {
-			var self = this;
 			this.reset();
 			if (this.thePDF) {
 				this.thePDF.destroy();
 				this.thePDF = null;
-			}
-			if (this.pdfRender) {
-				this.pdfRender.cancel();
-				this.pdfRender = null;
 			}
 			if (this.viewerContainer) {
 				this.viewerContainer.remove();
@@ -1177,16 +1097,10 @@
 				this.container.html('');
 				this.container = null;
 			}
-			this.backTop.off('tap');
-			this.backTop.off('click');
-			this.pdfLoaded = true;
-			this.currentNum = 1;
 			this.totalNum = null;
 			this.pages = null;
 			this.initTime = 0;
-			this.startTime = 0;
 			this.endTime = 0;
-			this.renderTime = 0;
 			this.viewer = null;
 			this.pageNum = null;
 			this.pageNow = null;
@@ -1195,18 +1109,19 @@
 			this.progress = null;
 			this.loading = null;
 			this.timer = null;
-			this.loadWidth = 1;
 			this.show = null;
 			this.hide = null;
 			callback && callback.call(this)
 			this.eventType["destroy"] && this.eventType["destroy"].call(this)
 		}
 	}
-	if (typeof define !== 'undefined' && define.amd) {
+	if(typeof exports === 'object' && typeof module === 'object'){
+		module.exports = Pdfh5;
+	}else if (typeof define !== 'undefined' && define.amd) {
 		define(['jquery'], function($) {
 			return Pdfh5
 		});
-	} else {
+	} else if (typeof window !== 'undefined')  {
 		window.Pdfh5 = Pdfh5
 	}
 }).call(this);

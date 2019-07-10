@@ -13,7 +13,7 @@
             width: 100%;
             height: 100%;
         }
-
+        
         .docs-header-content {
             max-width: 388px;
             float: left;
@@ -27,7 +27,7 @@
             -moz-animation-duration: 2s;
             animation-duration: 2s;
         }
-
+        
         .docs-subtitle {
             max-width: 750px;
             margin: 0 auto 20px;
@@ -39,12 +39,12 @@
             font-size: 41px;
             line-height: 60px;
         }
-
+        
         .github-btn {
             overflow: hidden;
             border: 0;
         }
-
+        
         .phone {
             margin: 10px auto;
             position: relative;
@@ -58,7 +58,7 @@
             box-sizing: content-box;
             float: right;
         }
-
+        
         .phone iframe {
             width: 270px;
             height: 100%;
@@ -66,7 +66,7 @@
             width: 100%;
             margin-top: 15px;
         }
-
+        
         .phone:before {
             content: '';
             width: 60px;
@@ -78,7 +78,7 @@
             background: #333;
             top: 50px;
         }
-
+        
         .phone:after {
             content: '';
             position: absolute;
@@ -91,7 +91,7 @@
             box-sizing: border-box;
             border: 5px solid #333;
         }
-
+        
         .phone .statusbar {
             position: absolute;
             width: 270px;
@@ -103,23 +103,24 @@
             -webkit-background-size: 100% auto;
             background-size: 100% auto;
         }
-
-        :before,
-        :after {
+        
+         :before,
+         :after {
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
             box-sizing: border-box;
         }
-
+        
         .phone-link {
             position: absolute;
             width: 100%;
             top: 100%;
-            left:0;
+            left: 0;
             text-align: center;
             margin-top: 25px;
             margin-bottom: 25px;
         }
+        
         a,
         a:focus,
         a:active,
@@ -127,12 +128,14 @@
             color: #018efb;
             text-decoration: underline;
         }
+        
         ol {
-            width:90%;
+            width: 90%;
             margin-left: 40px;
             list-style: decimal;
             text-align: left;
         }
+        
         ol li {
             margin: 10px 0;
         }
@@ -146,11 +149,9 @@
             <a href="pdf.html" style="display:block;margin-bottom:30px;">
                 <div id="code"></div>
             </a>
-            <iframe class="github-btn" src="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=pdfh5&amp;type=watch&amp;count=true" width="100"
-                height="20">
+            <iframe class="github-btn" src="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=pdfh5&amp;type=watch&amp;count=true" width="100" height="20">
             </iframe>
-            <iframe class="github-btn" src="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=pdfh5&amp;type=fork&amp;count=true" width="100"
-                height="20">
+            <iframe class="github-btn" src="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=pdfh5&amp;type=fork&amp;count=true" width="100" height="20">
             </iframe>
             <p style="text-align: left;margin-top: 20px;">本插件所需文件如下：</p>
             <ol>
@@ -161,7 +162,7 @@
                 <li><a target="_blank" download="css" href="http://www.gjtool.cn/pdfh5/css/pdfh5.css">pdfh5.css 下载大小：5kb</a></li>
             </ol>
             <p style="text-align: left;margin-top: 20px;">pdfh5支持在线预览，修改地址栏file=后的地址就行，如果不填写，就在实例化的时候传入pdf地址：</p>
-            <a target="_blank" href="http://118.89.56.33:8999/pdfh5/pdf.html?file=http://118.89.56.33:8999/pdfh5/test.pdf">http://118.89.56.33:8999/pdfh5/pdf.html?file=http://118.89.56.33:8999/pdfh5/test.pdf</a>
+            <a target="_blank" href="http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/test.pdf">http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/test.pdf</a>
             <p style="text-align: left;margin-top: 20px;">pdfh5实例初始化：</p>
             <pre style="text-align: left;margin-top: 20px;background: #111;color:aqua">
            
@@ -183,7 +184,7 @@
     <script src="js/jquery-1.11.3.min.js"></script>
     <script src="js/jquery.qrcode.min.js"></script>
     <script>
-        $('#code').qrcode(location.href); 
+        $('#code').qrcode(location.href);
     </script>
 </body>
 
