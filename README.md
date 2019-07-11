@@ -3,10 +3,11 @@
 
 	当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf
 	优先顺序：  ？file= > pdfurl > data
+```
 	var pdfh5 = new Pdfh5('.pdfjs', {
 		pdfurl: "./default.pdf"
 	});
-
+```
 	配置项参数 URIenable:false 可以无视地址栏参数，只拿配置项的pdfurl或者data来渲染pdf
 	var pdfh5 = new Pdfh5('.pdfjs', {
 		URIenable:false,
@@ -75,5 +76,6 @@
 	})
 
 	pdfh5支持在线预览 
-	http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf
+	[http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf](http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf)  
+	
 
