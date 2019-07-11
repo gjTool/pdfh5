@@ -1,5 +1,5 @@
 # pdfh5
-## 2019.07.10更新：新增部分api，配置参数。内部渲染机制改动：先画canvas再转为img 改成 直接渲染svg。
+## 2019.07.10更新：新增部分api，配置参数。内部渲染机制改动：canvas转img 改成 直接渲染svg。
 
 	当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf
 	优先顺序：  ？file= > pdfurl > data
@@ -32,7 +32,7 @@
 	pdfh5.on("success", function (time) {
 		console.log("加载完成，耗时" + time + "毫秒")
 	})
-	
+
 	配置项参数 是否显示小部件 加载进度loadingBar 页面显示pageNum 回到顶部backTop  默认显示
 	var pdfh5 = new Pdfh5('.pdfjs', {
 			loadingBar: false,
