@@ -857,7 +857,6 @@
 			this.progress = this.loadingBar.find('.progress');
 			this.backTop = this.container.find('.backTop');
 			this.loading = this.container.find('.loadEffect');
-			this.loading.hide();
 			if(!options.loadingBar){
 				this.loadingBar.hide()
 			}
@@ -984,6 +983,9 @@
 							return page.getOperatorList().then(function (opList) {
 								var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
 								return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
+									if(pageNum===2){
+										self.loading.hide();
+									}
 									container.appendChild(svg);
 									svg.style.width = "100%";
 									self.viewer[0].style.width = document.querySelector('.pageContainer').getBoundingClientRect().width + 'px';
