@@ -1,38 +1,38 @@
-(function() {
+(function () {
 	'use strict';
-	if(typeof require !== 'undefined'){
+	if (typeof require !== 'undefined') {
 		this.$ = require('./jquery-1.11.3.min.js');
 		this.pdfjsLib = require('./pdf.js');
 		var PdfjsWorker = require('./pdf.worker.js');
 		this.pdfjsLib.GlobalWorkerOptions.workerPort = new PdfjsWorker();
 	}
 	var pdfjsLib = this.pdfjsLib;
-	var definePinchZoom = function($) {
-		var PinchZoom = function(el, options, viewerContainer) {
-				this.el = $(el);
-				this.viewerContainer = viewerContainer;
-				this.zoomFactor = 1;
-				this.lastScale = 1;
-				this.offset = {
-					x: 0,
-					y: 0
-				};
-				this.options = $.extend({}, this.defaults, options);
-				this.setupMarkup();
-				this.bindEvents();
-				this.update();
-				// default enable.
-				this.enable();
-				this.height = 0;
-				this.load = false;
-				this.direction = null;
-				this.clientY = null;
-				this.lastclientY = null;
-			},
-			sum = function(a, b) {
+	var definePinchZoom = function ($) {
+		var PinchZoom = function (el, options, viewerContainer) {
+			this.el = $(el);
+			this.viewerContainer = viewerContainer;
+			this.zoomFactor = 1;
+			this.lastScale = 1;
+			this.offset = {
+				x: 0,
+				y: 0
+			};
+			this.options = $.extend({}, this.defaults, options);
+			this.setupMarkup();
+			this.bindEvents();
+			this.update();
+			// default enable.
+			this.enable();
+			this.height = 0;
+			this.load = false;
+			this.direction = null;
+			this.clientY = null;
+			this.lastclientY = null;
+		},
+			sum = function (a, b) {
 				return a + b;
 			},
-			isCloseTo = function(value, expected) {
+			isCloseTo = function (value, expected) {
 				return value > expected - 0.01 && value < expected + 0.01;
 			};
 
@@ -57,7 +57,7 @@
 			 * Event handler for 'dragstart'
 			 * @param event
 			 */
-			handleDragStart: function(event) {
+			handleDragStart: function (event) {
 				this.el.trigger(this.options.dragStartEventName);
 				this.stopAnimation();
 				this.lastDragPosition = false;
@@ -69,7 +69,7 @@
 			 * Event handler for 'drag'
 			 * @param event
 			 */
-			handleDrag: function(event) {
+			handleDrag: function (event) {
 
 				if (this.zoomFactor > 1.0) {
 					var touch = this.getTouches(event)[0];
@@ -79,7 +79,7 @@
 				}
 			},
 
-			handleDragEnd: function() {
+			handleDragEnd: function () {
 				this.el.trigger(this.options.dragEndEventName);
 				this.end();
 			},
@@ -88,7 +88,7 @@
 			 * Event handler for 'zoomstart'
 			 * @param event
 			 */
-			handleZoomStart: function(event) {
+			handleZoomStart: function (event) {
 				this.el.trigger(this.options.zoomStartEventName);
 				this.stopAnimation();
 				this.lastScale = 1;
@@ -101,7 +101,7 @@
 			 * Event handler for 'zoom'
 			 * @param event
 			 */
-			handleZoom: function(event, newScale) {
+			handleZoom: function (event, newScale) {
 
 				// a relative scale factor is used
 				var touchCenter = this.getTouchCenter(this.getTouches(event)),
@@ -118,7 +118,7 @@
 				this.lastZoomCenter = touchCenter;
 			},
 
-			handleZoomEnd: function() {
+			handleZoomEnd: function () {
 				this.el.trigger(this.options.zoomEndEventName);
 				this.end();
 			},
@@ -127,11 +127,11 @@
 			 * Event handler for 'doubletap'
 			 * @param event
 			 */
-			handleDoubleTap: function(event) {
+			handleDoubleTap: function (event) {
 				var center = this.getTouches(event)[0],
 					zoomFactor = this.zoomFactor > 1 ? 1 : this.options.tapZoomFactor,
 					startZoomFactor = this.zoomFactor,
-					updateProgress = (function(progress) {
+					updateProgress = (function (progress) {
 						this.scaleTo(startZoomFactor + progress * (zoomFactor - startZoomFactor), center);
 					}).bind(this);
 
@@ -151,7 +151,7 @@
 			 * @param offset
 			 * @return {Object} the sanitized offset
 			 */
-			sanitizeOffset: function(offset) {
+			sanitizeOffset: function (offset) {
 				var maxX = (this.zoomFactor - 1) * this.getContainerX(),
 					maxY = (this.zoomFactor - 1) * this.getContainerY(),
 					maxOffsetX = Math.max(maxX, 0),
@@ -174,7 +174,7 @@
 			 * @param zoomFactor
 			 * @param center
 			 */
-			scaleTo: function(zoomFactor, center) {
+			scaleTo: function (zoomFactor, center) {
 				this.scale(zoomFactor / this.zoomFactor, center);
 			},
 
@@ -183,7 +183,7 @@
 			 * @param scale
 			 * @param center
 			 */
-			scale: function(scale, center) {
+			scale: function (scale, center) {
 				scale = this.scaleZoomFactor(scale);
 				this.addOffset({
 					x: (scale - 1) * (center.x + this.offset.x),
@@ -196,7 +196,7 @@
 			 * @param scale
 			 * @return the actual scale (can differ because of max min zoom factor)
 			 */
-			scaleZoomFactor: function(scale) {
+			scaleZoomFactor: function (scale) {
 				var originalZoomFactor = this.zoomFactor;
 				this.zoomFactor *= scale;
 				this.zoomFactor = Math.min(this.options.maxZoom, Math.max(this.zoomFactor, this.options.minZoom));
@@ -208,7 +208,7 @@
 			 * @param center
 			 * @param lastCenter
 			 */
-			drag: function(center, lastCenter, event) {
+			drag: function (center, lastCenter, event) {
 				if (lastCenter) {
 					if (this.options.lockDragAxis) {
 						// lock scroll to position that was changed the most
@@ -242,19 +242,19 @@
 			 * @param touches
 			 * @return {Object}
 			 */
-			getTouchCenter: function(touches) {
+			getTouchCenter: function (touches) {
 				return this.getVectorAvg(touches);
 			},
 
 			/**
 			 * Calculates the average of multiple vectors (x, y values)
 			 */
-			getVectorAvg: function(vectors) {
+			getVectorAvg: function (vectors) {
 				return {
-					x: vectors.map(function(v) {
+					x: vectors.map(function (v) {
 						return v.x;
 					}).reduce(sum) / vectors.length,
-					y: vectors.map(function(v) {
+					y: vectors.map(function (v) {
 						return v.y;
 					}).reduce(sum) / vectors.length
 				};
@@ -265,14 +265,14 @@
 			 * @param offset the offset to add
 			 * @return return true when the offset change was accepted
 			 */
-			addOffset: function(offset) {
+			addOffset: function (offset) {
 				this.offset = {
 					x: this.offset.x + offset.x,
 					y: this.offset.y + offset.y
 				};
 			},
 
-			sanitize: function() {
+			sanitize: function () {
 				if (this.zoomFactor < this.options.zoomOutFactor) {
 					this.zoomOutAnimation();
 				} else if (this.isInsaneOffset(this.offset)) {
@@ -285,7 +285,7 @@
 			 * @param offset
 			 * @return {Boolean}
 			 */
-			isInsaneOffset: function(offset) {
+			isInsaneOffset: function (offset) {
 				var sanitizedOffset = this.sanitizeOffset(offset);
 				return sanitizedOffset.x !== offset.x ||
 					sanitizedOffset.y !== offset.y;
@@ -294,13 +294,13 @@
 			/**
 			 * Creates an animation moving to a sane offset
 			 */
-			sanitizeOffsetAnimation: function() {
+			sanitizeOffsetAnimation: function () {
 				var targetOffset = this.sanitizeOffset(this.offset),
 					startOffset = {
 						x: this.offset.x,
 						y: this.offset.y
 					},
-					updateProgress = (function(progress) {
+					updateProgress = (function (progress) {
 						this.offset.x = startOffset.x + progress * (targetOffset.x - startOffset.x);
 						this.offset.y = startOffset.y + progress * (targetOffset.y - startOffset.y);
 						this.update();
@@ -317,11 +317,11 @@
 			 * Zooms back to the original position,
 			 * (no offset and zoom factor 1)
 			 */
-			zoomOutAnimation: function() {
+			zoomOutAnimation: function () {
 				var startZoomFactor = this.zoomFactor,
 					zoomFactor = 1,
 					center = this.getCurrentZoomCenter(),
-					updateProgress = (function(progress) {
+					updateProgress = (function (progress) {
 						this.scaleTo(startZoomFactor + progress * (zoomFactor - startZoomFactor), center);
 					}).bind(this);
 
@@ -335,7 +335,7 @@
 			/**
 			 * Updates the aspect ratio
 			 */
-			updateAspectRatio: function() {
+			updateAspectRatio: function () {
 				this.setContainerY(this.getContainerX() / this.getAspectRatio());
 			},
 
@@ -343,7 +343,7 @@
 			 * Calculates the initial zoom factor (for the element to fit into the container)
 			 * @return the initial zoom factor
 			 */
-			getInitialZoomFactor: function() {
+			getInitialZoomFactor: function () {
 				// use .offsetWidth instead of width()
 				// because jQuery-width() return the original width but Zepto-width() will calculate width with transform.
 				// the same as .height()
@@ -358,7 +358,7 @@
 			 * Calculates the aspect ratio of the element
 			 * @return the aspect ratio
 			 */
-			getAspectRatio: function() {
+			getAspectRatio: function () {
 				if (this.el[0]) {
 					var offsetHeight = this.el[0].offsetHeight;
 					return this.container[0].offsetWidth / offsetHeight;
@@ -373,7 +373,7 @@
 			 * (used for reverse zoom)
 			 * @return {Object} the current zoom center
 			 */
-			getCurrentZoomCenter: function() {
+			getCurrentZoomCenter: function () {
 
 				// uses following formula to calculate the zoom center x value
 				// offset_left / offset_right = zoomcenter_x / (container_x - zoomcenter_x)
@@ -404,7 +404,7 @@
 				};
 			},
 
-			canDrag: function() {
+			canDrag: function () {
 				return !isCloseTo(this.zoomFactor, 1);
 			},
 
@@ -413,9 +413,9 @@
 			 * @param event
 			 * @return array touches
 			 */
-			getTouches: function(event) {
+			getTouches: function (event) {
 				var position = this.container.offset();
-				return Array.prototype.slice.call(event.touches).map(function(touch) {
+				return Array.prototype.slice.call(event.touches).map(function (touch) {
 					return {
 						x: touch.pageX - position.left,
 						y: touch.pageY - position.top
@@ -431,9 +431,9 @@
 			 * @param timefn
 			 * @param callback
 			 */
-			animate: function(duration, framefn, timefn, callback) {
+			animate: function (duration, framefn, timefn, callback) {
 				var startTime = new Date().getTime(),
-					renderFrame = (function() {
+					renderFrame = (function () {
 						if (!this.inAnimation) {
 							return;
 						}
@@ -463,7 +463,7 @@
 			/**
 			 * Stops the animation
 			 */
-			stopAnimation: function() {
+			stopAnimation: function () {
 				this.inAnimation = false;
 
 			},
@@ -473,11 +473,11 @@
 			 * @param p
 			 * @return {Number}
 			 */
-			swing: function(p) {
+			swing: function (p) {
 				return -Math.cos(p * Math.PI) / 2 + 0.5;
 			},
 
-			getContainerX: function() {
+			getContainerX: function () {
 				if (this.el[0]) {
 					return this.el[0].offsetWidth;
 				} else {
@@ -485,10 +485,10 @@
 				}
 			},
 
-			getContainerY: function() {
+			getContainerY: function () {
 				return this.el[0].offsetHeight;
 			},
-			setContainerY: function(y) {
+			setContainerY: function (y) {
 				y = y.toFixed(2);
 				return this.container.height(y);
 			},
@@ -496,7 +496,7 @@
 			/**
 			 * Creates the expected html structure
 			 */
-			setupMarkup: function() {
+			setupMarkup: function () {
 				this.container = $('<div class="pinch-zoom-container"></div>');
 				this.el.before(this.container);
 				this.container.append(this.el);
@@ -519,7 +519,7 @@
 
 			},
 
-			end: function() {
+			end: function () {
 				this.hasInteraction = false;
 				this.sanitize();
 				this.update();
@@ -529,7 +529,7 @@
 			/**
 			 * Binds all required event listeners
 			 */
-			bindEvents: function() {
+			bindEvents: function () {
 				detectGestures(this.container.eq(0), this, this.viewerContainer);
 				// Zepto and jQuery both know about `on`
 				$(window).on('resize', this.update.bind(this));
@@ -540,13 +540,13 @@
 			/**
 			 * Updates the css values according to the current zoom factor and offset
 			 */
-			update: function() {
+			update: function () {
 
 				if (this.updatePlaned) {
 					return;
 				}
 				this.updatePlaned = true;
-				setTimeout((function() {
+				setTimeout((function () {
 					this.updatePlaned = false;
 					this.updateAspectRatio();
 					var zoomFactor = this.getInitialZoomFactor() * this.zoomFactor,
@@ -557,8 +557,8 @@
 					var transform3d = 'scale3d(' + zoomFactor + ', ' + zoomFactor + ',1) ' +
 						'translate3d(' + offsetX + 'px,' + offsetY + 'px,0px)',
 						transform2d = 'scale(' + zoomFactor + ', ' + zoomFactor + ') ' +
-						'translate(' + offsetX + 'px,' + offsetY + 'px)',
-						removeClone = (function() {
+							'translate(' + offsetX + 'px,' + offsetY + 'px)',
+						removeClone = (function () {
 							if (this.clone) {
 								this.clone.remove();
 								delete this.clone;
@@ -605,17 +605,17 @@
 			/**
 			 * Enables event handling for gestures
 			 */
-			enable: function() {
+			enable: function () {
 				this.enabled = true;
 			},
 			/**
 			 * Disables event handling for gestures
 			 */
-			disable: function() {
+			disable: function () {
 				this.enabled = false;
 			},
 			//销毁还原
-			destroy: function() {
+			destroy: function () {
 				var dom = this.el.clone();
 				var p = this.container.parent();
 				this.container.remove();
@@ -624,7 +624,7 @@
 			}
 		};
 
-		var detectGestures = function(el, target, viewerContainer) {
+		var detectGestures = function (el, target, viewerContainer) {
 			var interaction = null,
 				fingers = 0,
 				lastTouchStart = null,
@@ -633,7 +633,7 @@
 				clientY = null,
 				lastclientY = 0,
 				lastTop = 0,
-				setInteraction = function(newInteraction, event) {
+				setInteraction = function (newInteraction, event) {
 					if (interaction !== newInteraction) {
 
 						if (interaction && !newInteraction) {
@@ -659,7 +659,7 @@
 					interaction = newInteraction;
 				},
 
-				updateInteraction = function(event) {
+				updateInteraction = function (event) {
 					if (fingers === 2) {
 						setInteraction('zoom');
 					} else if (fingers === 1 && target.canDrag()) {
@@ -669,8 +669,8 @@
 					}
 				},
 
-				targetTouches = function(touches) {
-					return Array.prototype.slice.call(touches).map(function(touch) {
+				targetTouches = function (touches) {
+					return Array.prototype.slice.call(touches).map(function (touch) {
 						return {
 							x: touch.pageX,
 							y: touch.pageY
@@ -678,25 +678,25 @@
 					});
 				},
 
-				getDistance = function(a, b) {
+				getDistance = function (a, b) {
 					var x, y;
 					x = a.x - b.x;
 					y = a.y - b.y;
 					return Math.sqrt(x * x + y * y);
 				},
 
-				calculateScale = function(startTouches, endTouches) {
+				calculateScale = function (startTouches, endTouches) {
 					var startDistance = getDistance(startTouches[0], startTouches[1]),
 						endDistance = getDistance(endTouches[0], endTouches[1]);
 					return endDistance / startDistance;
 				},
 
-				cancelEvent = function(event) {
+				cancelEvent = function (event) {
 					event.stopPropagation();
 					event.preventDefault();
 				},
 
-				detectDoubleTap = function(event) {
+				detectDoubleTap = function (event) {
 					var time = (new Date()).getTime();
 					var pageY = event.changedTouches[0].pageY;
 					var top = parentNode.scrollTop || 0;
@@ -730,7 +730,7 @@
 				var parentNode = viewerContainer[0];
 			}
 			if (parentNode) {
-				parentNode.addEventListener('touchstart', function(event) {
+				parentNode.addEventListener('touchstart', function (event) {
 					if (target.enabled) {
 						firstMove = true;
 						fingers = event.touches.length;
@@ -742,7 +742,7 @@
 					}
 				});
 
-				parentNode.addEventListener('touchmove', function(event) {
+				parentNode.addEventListener('touchmove', function (event) {
 					if (target.enabled) {
 						lastclientY = event.changedTouches[0].clientY;
 						if (firstMove) {
@@ -772,7 +772,7 @@
 					}
 				});
 
-				parentNode.addEventListener('touchend', function(event) {
+				parentNode.addEventListener('touchend', function (event) {
 					if (target.enabled) {
 						fingers = event.touches.length;
 						if (fingers > 1) {
@@ -788,7 +788,7 @@
 		return PinchZoom;
 	};
 	var PinchZoom = definePinchZoom($);
-	var Pdfh5 = function(dom, options) {
+	var Pdfh5 = function (dom, options) {
 		this.container = $(dom);
 		this.thePDF = null;
 		this.totalNum = null;
@@ -804,13 +804,18 @@
 		this.init(options);
 	};
 	Pdfh5.prototype = {
-		init: function(options) {
+		init: function (options) {
 			var self = this;
-			pdfjsLib.cMapUrl= './cmaps/';
-			pdfjsLib.cMapPacked= true;
+			pdfjsLib.cMapUrl = './cmaps/';
+			pdfjsLib.cMapPacked = true;
 			this.initTime = new Date().getTime();
-			setTimeout(function() {
-				self.eventType["start"] && self.eventType["start"].call(self, self.initTime);
+			setTimeout(function () {
+				var arr1 = self.eventType["scroll"];
+				if (arr1 && arr1 instanceof Array) {
+					for (var i = 0; i < arr1.length; i++) {
+						arr1[i] && arr1[i].call(self,self.initTime)
+					}
+				}
 			}, 0)
 			options = options ? options : {};
 			options.pdfurl = options.pdfurl ? options.pdfurl : null;
@@ -857,7 +862,7 @@
 			this.progress = this.loadingBar.find('.progress');
 			this.backTop = this.container.find('.backTop');
 			this.loading = this.container.find('.loadEffect');
-			if(!options.loadingBar){
+			if (!options.loadingBar) {
 				this.loadingBar.hide()
 			}
 			var height = document.documentElement.clientHeight * (1 / 3);
@@ -870,7 +875,7 @@
 					"overflow": "auto"
 				})
 			}
-			viewerContainer.addEventListener('scroll', function() {
+			viewerContainer.addEventListener('scroll', function () {
 				var scrollTop = viewerContainer.scrollTop;
 				if (scrollTop >= 150) {
 					if (options.backTop) {
@@ -889,7 +894,7 @@
 					self.pageNum.show();
 				}
 				if (self.pages) {
-					self.pages.each(function(index, obj) {
+					self.pages.each(function (index, obj) {
 						var top = obj.getBoundingClientRect().top;
 						var bottom = obj.getBoundingClientRect().bottom;
 						if (top <= height && bottom > height) {
@@ -900,14 +905,19 @@
 						}
 					})
 				}
-				self.timer = setTimeout(function() {
+				self.timer = setTimeout(function () {
 					if (options.pageNum) {
 						self.pageNum.fadeOut(200);
 					}
 				}, 1500)
-				self.eventType["scroll"] && self.eventType["scroll"].call(self, scrollTop);
+				var arr1 = self.eventType["scroll"];
+				if (arr1 && arr1 instanceof Array) {
+					for (var i = 0; i < arr1.length; i++) {
+						arr1[i] && arr1[i].call(self,scrollTop)
+					}
+				}
 			})
-			this.backTop.on('click tap', function() {
+			this.backTop.on('click tap', function () {
 				var mart = self.viewer.css('transform');
 				var arr = mart.replace(/[a-z\(\)\s]/g, '').split(',');
 				var s1 = arr[0];
@@ -927,7 +937,12 @@
 				self.viewerContainer.animate({
 					scrollTop: 0
 				}, 300)
-				self.eventType["backTop"] && self.eventType["backTop"].call(self);
+				var arr1 = self.eventType["backTop"];
+				if (arr1 && arr1 instanceof Array) {
+					for (var i = 0; i < arr1.length; i++) {
+						arr1[i] && arr1[i].call(self)
+					}
+				}
 			})
 			//获取url带的参数地址
 			function GetQueryString(name) {
@@ -937,38 +952,57 @@
 				return "";
 			}
 			var pdfurl = GetQueryString("file");
-			
+
 			if (pdfurl && options.URIenable) {
-				self.renderPdf(options,{
-					url:pdfurl
+				self.renderPdf(options, {
+					url: pdfurl
 				})
 			} else if (options.pdfurl) {
-				self.renderPdf(options,{
-					url:options.pdfurl
+				self.renderPdf(options, {
+					url: options.pdfurl
 				})
-			}else if (options.data) {
-				self.renderPdf(options,{
-					data:options.data
+			} else if (options.data) {
+				self.renderPdf(options, {
+					data: options.data
 				})
-			}  else {
+			} else {
 				self.loading.hide();
+				var time = new Date().getTime();
+				self.endTime = time - self.initTime;
+				var arr1 = self.eventType["complete"];
+				if (arr1 && arr1 instanceof Array) {
+					for (var i = 0; i < arr1.length; i++) {
+						arr1[i] && arr1[i].call(self, "error", "Expect options.pdfurl or options.data!", self.endTime)
+					}
+				}
+				var arr2 = self.eventType["error"];
+				if (arr2 && arr2 instanceof Array) {
+					for (var i = 0; i < arr2.length; i++) {
+						arr2[i] && arr2[i].call(self, "Expect options.pdfurl or options.data!", self.endTime)
+					}
+				}
 				throw Error("Expect options.pdfurl or options.data!")
 			}
-			
+
 		},
-		renderPdf:function(options,obj){
+		renderPdf: function (options, obj) {
 			var self = this;
-			pdfjsLib.getDocument(obj).then(function(pdf) {
+			pdfjsLib.getDocument(obj).then(function (pdf) {
 				self.thePDF = pdf;
 				self.totalNum = pdf.numPages;
 				self.pageTotal.text(self.totalNum)
-				self.eventType["ready"] && self.eventType["ready"].call(self);
+				var arr1 = self.eventType["ready"];
+				if (arr1 && arr1 instanceof Array) {
+					for (var i = 0; i < arr1.length; i++) {
+						arr1[i] && arr1[i].call(self)
+					}
+				}
 				var promise = Promise.resolve();
-				var num = Math.floor(100/self.totalNum).toFixed(2);
+				var num = Math.floor(100 / self.totalNum).toFixed(2);
 				self.progress.css({
 					width: "1%"
 				})
-				for (var i = 1; i <= self.totalNum ; i++) {
+				for (var i = 1; i <= self.totalNum; i++) {
 					promise = promise.then(function (pageNum) {
 						return self.thePDF.getPage(pageNum).then(function (page) {
 							var viewport = page.getViewport(options.scale);
@@ -984,28 +1018,43 @@
 							return page.getOperatorList().then(function (opList) {
 								var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
 								return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
-									if(pageNum===1){
+									if (pageNum === 1) {
 										self.loading.hide();
 									}
 									container.appendChild(svg);
 									svg.style.width = "100%";
 									self.viewer[0].style.width = document.querySelector('.pageContainer').getBoundingClientRect().width + 'px';
 									self.progress.css({
-										width: num*pageNum+"%"
+										width: num * pageNum + "%"
 									})
 									var time = new Date().getTime();
-									self.eventType["render"] && self.eventType["render"].call(self,pageNum,time - self.initTime,container);
+									var arr1 = self.eventType["render"];
+									if (arr1 && arr1 instanceof Array) {
+										for (var i = 0; i < arr1.length; i++) {
+											arr1[i] && arr1[i].call(self, pageNum, time - self.initTime, container)
+										}
+									}
 									if (pageNum === self.totalNum) {
 										self.progress.css({
 											width: "100%"
 										});
-										setTimeout(function(){
+										setTimeout(function () {
 											self.loadingBar.hide();
-										},300)
+										}, 300)
 										self.endTime = time - self.initTime;
-										self.eventType["complete"] && self.eventType["complete"].call(self, "success", "pdf加载完成",self.endTime);
-										self.eventType["success"] && self.eventType["success"].call(self, self.endTime);
-										if(options.zoomEnable){
+										var arr1 = self.eventType["complete"];
+										if (arr1 && arr1 instanceof Array) {
+											for (var i = 0; i < arr1.length; i++) {
+												arr1[i] && arr1[i].call(self, "success", "pdf加载完成", self.endTime)
+											}
+										}
+										var arr2 = self.eventType["success"];
+										if (arr2 && arr2 instanceof Array) {
+											for (var i = 0; i < arr2.length; i++) {
+												arr2[i] && arr2[i].call(self, self.endTime)
+											}
+										}
+										if (options.zoomEnable) {
 											self.pinchZoom = new PinchZoom(self.viewer, {}, self.viewerContainer);
 											self.pinchZoom.done = function (scale) {
 												if (scale == 1) {
@@ -1022,7 +1071,12 @@
 														})
 													}
 												}
-												self.eventType["zoom"] && self.eventType["zoom"].call(self);
+												var arr1 = self.eventType["zoom"];
+												if (arr1 && arr1 instanceof Array) {
+													for (var i = 0; i < arr1.length; i++) {
+														arr1[i] && arr1[i].call(self)
+													}
+												}
 											}
 										}
 									}
@@ -1031,30 +1085,53 @@
 						});
 					}.bind(null, i));
 				}
-			}).catch(function(err) {
+			}).catch(function (err) {
 				self.loading.hide()
 				var time = new Date().getTime();
 				self.endTime = time - self.initTime;
-				self.eventType["complete"] && self.eventType["complete"].call(self, "error", err.responseText, self.endTime);
-				self.eventType["error"] && self.eventType["error"].call(self, err.responseText, self.endTime);
 				self.loading.hide();
+				var arr1 = self.eventType["complete"];
+				if (arr1 && arr1 instanceof Array) {
+					for (var i = 0; i < arr1.length; i++) {
+						arr1[i] && arr1[i].call(self, "error", err.responseText, self.endTime)
+					}
+				}
+				var arr2 = self.eventType["error"];
+				if (arr2 && arr2 instanceof Array) {
+					for (var i = 0; i < arr2.length; i++) {
+						arr2[i] && arr2[i].call(self, err.responseText, self.endTime)
+					}
+				}
 			})
 		},
-		show: function(callback) {
+		show: function (callback) {
 			this.container.show();
-			this.eventType["show"] && this.eventType["show"].call(this);
 			callback && callback.call(this)
+			var arr = this.eventType["show"];
+			if (arr && arr instanceof Array) {
+				for (var i = 0; i < arr.length; i++) {
+					arr[i] && arr[i].call(this)
+				}
+			}
 		},
-		hide: function(callback) {
+		hide: function (callback) {
 			this.container.hide()
-			this.eventType["hide"] && this.eventType["show"].call(this);
 			callback && callback.call(this)
+			var arr = this.eventType["hide"];
+			if (arr && arr instanceof Array) {
+				for (var i = 0; i < arr.length; i++) {
+					arr[i] && arr[i].call(this)
+				}
+			}
 		},
-		on: function(type, callback) {
-			this.eventType[type] = callback
+		on: function (type, callback) {
+			if (this.eventType[type] && this.eventType[type] instanceof Array) {
+				this.eventType[type].push(callback)
+			}
+			this.eventType[type] = [callback]
 		},
-		scrollEnable: function(flag) {
-			if (flag===false) {
+		scrollEnable: function (flag) {
+			if (flag === false) {
 				this.viewerContainer.css({
 					"overflow": "hidden"
 				})
@@ -1063,17 +1140,27 @@
 					"overflow": "auto"
 				})
 			}
-			this.eventType["scrollEnable"] && this.eventType["scrollEnable"].call(this,flag);
+			var arr = this.eventType["scrollEnable"];
+			if (arr && arr instanceof Array) {
+				for (var i = 0; i < arr.length; i++) {
+					arr[i] && arr[i].call(this, flag)
+				}
+			}
 		},
-		zoomEnable: function(flag) {
-			if (flag===false) {
+		zoomEnable: function (flag) {
+			if (flag === false) {
 				this.pinchZoom.disable()
 			} else {
 				this.pinchZoom.enable()
 			}
-			this.eventType["zoomEnable"] && this.eventType["zoomEnable"].call(this,flag);
+			var arr = this.eventType["zoomEnable"];
+			if (arr && arr instanceof Array) {
+				for (var i = 0; i < arr.length; i++) {
+					arr[i] && arr[i].call(this, flag)
+				}
+			}
 		},
-		reset: function(callback) {
+		reset: function (callback) {
 			if (this.pinchZoom) {
 				this.pinchZoom.offset.y = 0;
 				this.pinchZoom.offset.x = 0;
@@ -1084,10 +1171,15 @@
 			if (this.viewerContainer) {
 				this.viewerContainer.scrollTop(0);
 			}
-			this.eventType["reset"] && this.eventType["reset"].call(this);
 			callback && callback.call(this)
+			var arr = this.eventType["reset"];
+			if (arr && arr instanceof Array) {
+				for (var i = 0; i < arr.length; i++) {
+					arr[i] && arr[i].call(this, flag)
+				}
+			}
 		},
-		destroy: function(callback) {
+		destroy: function (callback) {
 			this.reset();
 			if (this.thePDF) {
 				this.thePDF.destroy();
@@ -1116,16 +1208,21 @@
 			this.show = null;
 			this.hide = null;
 			callback && callback.call(this)
-			this.eventType["destroy"] && this.eventType["destroy"].call(this)
+			var arr = this.eventType["destroy"];
+			if (arr && arr instanceof Array) {
+				for (var i = 0; i < arr.length; i++) {
+					arr[i] && arr[i].call(this, flag)
+				}
+			}
 		}
 	}
-	if(typeof exports === 'object' && typeof module === 'object'){
+	if (typeof exports === 'object' && typeof module === 'object') {
 		module.exports = Pdfh5;
-	}else if (typeof define !== 'undefined' && define.amd) {
-		define(['jquery'], function($) {
+	} else if (typeof define !== 'undefined' && define.amd) {
+		define(['jquery'], function ($) {
 			return Pdfh5
 		});
-	} else if (typeof window !== 'undefined')  {
+	} else if (typeof window !== 'undefined') {
 		window.Pdfh5 = Pdfh5
 	}
 }).call(this);
