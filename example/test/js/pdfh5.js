@@ -951,6 +951,7 @@
 					data:options.data
 				})
 			}  else {
+				self.loading.hide();
 				throw Error("Expect options.pdfurl or options.data!")
 			}
 			
@@ -983,7 +984,7 @@
 							return page.getOperatorList().then(function (opList) {
 								var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
 								return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
-									if(pageNum===2){
+									if(pageNum===1){
 										self.loading.hide();
 									}
 									container.appendChild(svg);
@@ -1036,6 +1037,7 @@
 				self.endTime = time - self.initTime;
 				self.eventType["complete"] && self.eventType["complete"].call(self, "error", err.responseText, self.endTime);
 				self.eventType["error"] && self.eventType["error"].call(self, err.responseText, self.endTime);
+				self.loading.hide();
 			})
 		},
 		show: function(callback) {
