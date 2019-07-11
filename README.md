@@ -1,6 +1,6 @@
 # pdfh5
 ## 2019.07.10更新：新增部分api，配置参数。内部渲染机制改动：canvas转img 改成 直接渲染svg。
-`
+
 
 	当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf
 	优先顺序：  ？file= > pdfurl > data
@@ -73,9 +73,9 @@
 	pdfh5.on("complete",function(status,msg,time){
 		this.zoomEnable(false)
 	})
-`
+
 
 ##### pdfh5支持在线预览 
-	[http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf](http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf)  
+[http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf](http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf)  
 	
 
