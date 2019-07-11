@@ -794,7 +794,7 @@
 		this.totalNum = null;
 		this.pages = null;
 		this.initTime = 0;
-		this.scale = 1;
+		this.scale = 1.3;
 		this.currentNum = 1;
 		this.endTime = 0;
 		this.pinchZoom = null;
@@ -828,6 +828,7 @@
 			options.backTop = options.backTop === false ? false : true;
 			options.backTop = options.backTop === false ? false : true;
 			options.URIenable = options.URIenable === false ? false : true;
+			options.fullscreen = options.fullscreen === false ? false : true;
 			var html = '<div class="loadingBar">' +
 				'<div class="progress">' +
 				' <div class="glimmer">' +
@@ -1013,6 +1014,10 @@
 							container.className = 'pageContainer';
 							container.setAttribute('name', 'page=' + pageNum);
 							container.setAttribute('title', 'Page ' + pageNum);
+							if(options.fullscreen === false && viewport.width<self.docWidth){
+								scaledViewport = viewport;
+								container.style.width = scaledViewport.width + 'px';
+							}
 							container.style.height = scaledViewport.height + 'px';
 							self.viewer[0].appendChild(container);
 							return page.getOperatorList().then(function (opList) {
@@ -1023,7 +1028,7 @@
 									}
 									container.appendChild(svg);
 									svg.style.width = "100%";
-									self.viewer[0].style.width = document.querySelector('.pageContainer').getBoundingClientRect().width + 'px';
+									// self.viewer[0].style.width = document.querySelector('.pageContainer').getBoundingClientRect().width + 'px';
 									self.progress.css({
 										width: num * pageNum + "%"
 									})
@@ -1038,22 +1043,8 @@
 										self.progress.css({
 											width: "100%"
 										});
-										setTimeout(function () {
-											self.loadingBar.hide();
-										}, 300)
+										self.loadingBar.hide();
 										self.endTime = time - self.initTime;
-										var arr1 = self.eventType["complete"];
-										if (arr1 && arr1 instanceof Array) {
-											for (var i = 0; i < arr1.length; i++) {
-												arr1[i] && arr1[i].call(self, "success", "pdf加载完成", self.endTime)
-											}
-										}
-										var arr2 = self.eventType["success"];
-										if (arr2 && arr2 instanceof Array) {
-											for (var i = 0; i < arr2.length; i++) {
-												arr2[i] && arr2[i].call(self, self.endTime)
-											}
-										}
 										if (options.zoomEnable) {
 											self.pinchZoom = new PinchZoom(self.viewer, {}, self.viewerContainer);
 											self.pinchZoom.done = function (scale) {
@@ -1077,6 +1068,18 @@
 														arr1[i] && arr1[i].call(self)
 													}
 												}
+											}
+										}
+										var arr1 = self.eventType["complete"];
+										if (arr1 && arr1 instanceof Array) {
+											for (var i = 0; i < arr1.length; i++) {
+												arr1[i] && arr1[i].call(self, "success", "pdf加载完成", self.endTime)
+											}
+										}
+										var arr2 = self.eventType["success"];
+										if (arr2 && arr2 instanceof Array) {
+											for (var i = 0; i < arr2.length; i++) {
+												arr2[i] && arr2[i].call(self, self.endTime)
 											}
 										}
 									}
