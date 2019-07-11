@@ -23,9 +23,9 @@ html,body {
 	margin: 0px auto 8px auto;
 	position: relative;
 	overflow: visible;
-	-webkit-box-shadow: darkgrey 0px 2px 4px 1px;
-	-moz-box-shadow: darkgrey 0px 2px 4px 1px;
-	box-shadow: #888 0px 2px 4px 1px;
+	-webkit-box-shadow: darkgrey 0px 1px 3px 0px;
+	-moz-box-shadow: darkgrey 0px 1px 3px 0px;
+	box-shadow:  darkgrey 0px 1px 3px 0px;
 	background-color: white;
 	box-sizing: border-box;
 }
