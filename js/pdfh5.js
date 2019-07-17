@@ -1064,13 +1064,13 @@
 				var arr1 = self.eventType["complete"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
-						arr1[i] && arr1[i].call(self, "error", err.responseText, self.endTime)
+						arr1[i] && arr1[i].call(self, "error", err.message, self.endTime)
 					}
 				}
 				var arr2 = self.eventType["error"];
 				if (arr2 && arr2 instanceof Array) {
 					for (var i = 0; i < arr2.length; i++) {
-						arr2[i] && arr2[i].call(self, err.responseText, self.endTime)
+						arr2[i] && arr2[i].call(self, err.message, self.endTime)
 					}
 				}
 			})
