@@ -921,11 +921,11 @@
 						self.cache[pageNum+""].loaded = true;
 						self.renderSvg(page,scaledViewport,pageNum,num,container,options)
 					}
-					if(self.cache[(self.totalNum-2)+""].loaded && !self.cache[(self.totalNum-1)+""].loaded){
+					if(self.cache[(self.totalNum-1)+""].loaded && !self.cache[self.totalNum+""].loaded){
 						var num = Math.floor(100 / self.totalNum).toFixed(2);
-						var page = self.cache[(self.totalNum-1)+""].page;
-						var container = self.cache[(self.totalNum-1)+""].container;
-						var pageNum = (self.totalNum-1);
+						var page = self.cache[self.totalNum+""].page;
+						var container = self.cache[self.totalNum+""].container;
+						var pageNum = self.totalNum;
 						var scaledViewport = self.cache[pageNum+""].scaledViewport;
 						self.cache[pageNum+""].loaded = true;
 						self.renderSvg(page,scaledViewport,pageNum,num,container,options)
