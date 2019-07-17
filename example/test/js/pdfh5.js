@@ -1083,7 +1083,11 @@
 			});
 			self.loadingBar.hide();
 			self.endTime = time - self.initTime;
-			self.cache[(self.totalNum-1)+""].loaded = true;
+			if(self.totalNum!==1){
+				self.cache[(self.totalNum-1)+""].loaded = true;
+			}else {
+				self.cache["1"].loaded = true;
+			}
 			if (options.zoomEnable) {
 				self.pinchZoom = new PinchZoom(self.viewer, {}, self.viewerContainer);
 				self.pinchZoom.done = function (scale) {
