@@ -13,19 +13,10 @@
     <title>PDFH5</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/pdfh5.css" />
-    <style>
-        .pdfjs {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: #fff;
-            position: relative;
-        }
-    </style>
 </head>
 
 <body>
-    <div class="pdfjs"></div>
+    <div id="demo"></div>
     <script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/pdf.worker.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
@@ -33,12 +24,17 @@
     <script type="text/javascript">
         //当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf
         //优先顺序：  ？file= > pdfurl > data
-        var pdfh5 = new Pdfh5('.pdfjs', {
+        var pdfh5 = new Pdfh5('#demo', {
             pdfurl: "./default.pdf"
         });
+        //配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
+        // var pdfh5 = new Pdfh5('#demo', {
+        //     pdfurl: "./default.pdf",
+        //     lazy:true 
+        // });
 
         //配置项参数 URIenable:false 可以无视地址栏参数，只拿配置项的pdfurl或者data来渲染pdf
-        // var pdfh5 = new Pdfh5('.pdfjs', {
+        // var pdfh5 = new Pdfh5('#demo', {
         //     URIenable:false,
         //     pdfurl: "./default.pdf"
         // });
@@ -60,26 +56,26 @@
             console.log("加载完成，耗时" + time + "毫秒")
         })
         //配置项参数 是否显示小部件 加载进度loadingBar 页面显示pageNum 回到顶部backTop  默认显示
-        //		var pdfh5 = new Pdfh5('.pdfjs', {
+        //		var pdfh5 = new Pdfh5('#demo', {
         // 			 loadingBar: false,
         //           pageNum:false,
         //           backTop:false
         // 		});
 
         //配置项参数data，文件流形式传入  pdfurl和data二选一
-        //		var pdfh5 = new Pdfh5('.pdfjs', {
+        //		var pdfh5 = new Pdfh5('#demo', {
         // 			data: data
         // 		});
 
         //配置项参数scrollEnable:false不允许pdf滚动,true允许pdf滚动  默认允许
-        //		var pdfh5 = new Pdfh5('.pdfjs', {
+        //		var pdfh5 = new Pdfh5('#demo', {
         // 			scrollEnable:false,//是否允许pdf滚动
         // 			pdfurl: url
         // 		});
         //pdfh5.scrollEnable(true)允许pdf滚动,pdfh5.scrollEnable(false)不允许pdf滚动
 
         //配置项参数zoomEnable:false不允许pdf手势缩放,true允许pdf手势缩放  默认允许
-        //		var pdfh5 = new Pdfh5('.pdfjs', {
+        //		var pdfh5 = new Pdfh5('#demo', {
         // 			zoomEnable:false,//是否允许pdf滚动
         // 			pdfurl: url
         // 		});
@@ -101,7 +97,7 @@
         // 		})
 
         //pdfh5支持在线预览 
-        //https://www.gjtool.cn/pdfh5/pdf.html?file=https://www.gjtool.cn/pdfh5/default.pdf
+        //http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf
     </script>
 </body>
 

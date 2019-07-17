@@ -1,4 +1,5 @@
 # pdfh5
+## 2019.07.17更新：新增配置参数lazy，支持懒加载。
 ## 2019.07.10更新：新增部分api，配置参数。内部渲染机制改动：canvas转img 改成 直接渲染svg。
 
 
@@ -7,6 +8,12 @@
 	var pdfh5 = new Pdfh5('.pdfjs', {
 		pdfurl: "./default.pdf"
 	});
+	配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
+	var pdfh5 = new Pdfh5('#demo', {
+	     pdfurl: "./default.pdf",
+	     lazy:true //true开启懒加载，默认是false,不开启懒加载
+	});
+
 	配置项参数 URIenable:false 可以无视地址栏参数，只拿配置项的pdfurl或者data来渲染pdf
 	var pdfh5 = new Pdfh5('.pdfjs', {
 		URIenable:false,

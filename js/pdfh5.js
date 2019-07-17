@@ -6,7 +6,7 @@
 		var PdfjsWorker = require('./pdf.worker.js');
 		this.pdfjsLib.GlobalWorkerOptions.workerPort = new PdfjsWorker();
 	}
-	var pdfjsLib = this.pdfjsLib;
+	var pdfjsLib = this.pdfjsLib,$ = this.$;
 	var definePinchZoom = function ($) {
 		var PinchZoom = function (el, options, viewerContainer) {
 			this.el = $(el);
@@ -801,10 +801,12 @@
 		this.timer = null;
 		this.docWidth = document.documentElement.clientWidth;
 		this.eventType = {};
+		this.cache = {};
 		this.init(options);
 	};
 	Pdfh5.prototype = {
 		init: function (options) {
+			this.container.addClass("pdfjs")
 			var self = this;
 			pdfjsLib.cMapUrl = './cmaps/';
 			pdfjsLib.cMapPacked = true;
@@ -826,9 +828,9 @@
 			options.loadingBar = options.loadingBar === false ? false : true;
 			options.pageNum = options.pageNum === false ? false : true;
 			options.backTop = options.backTop === false ? false : true;
-			options.backTop = options.backTop === false ? false : true;
 			options.URIenable = options.URIenable === false ? false : true;
 			options.fullscreen = options.fullscreen === false ? false : true;
+			options.lazy = options.lazy === true ? true : false;
 			var html = '<div class="loadingBar">' +
 				'<div class="progress">' +
 				' <div class="glimmer">' +
@@ -843,8 +845,7 @@
 				'</div>' +
 				' </div>' +
 				'<div class="backTop">' +
-				'</div>' +
-				'<div class="loadEffect"></div>';
+				'</div>' ;
 			if (!this.container.find('.pageNum')[0]) {
 				this.container.append(html);
 			}
@@ -862,7 +863,6 @@
 			this.loadingBar = this.container.find('.loadingBar');
 			this.progress = this.loadingBar.find('.progress');
 			this.backTop = this.container.find('.backTop');
-			this.loading = this.container.find('.loadEffect');
 			if (!options.loadingBar) {
 				this.loadingBar.hide()
 			}
@@ -911,6 +911,26 @@
 						self.pageNum.fadeOut(200);
 					}
 				}, 1500)
+				if(options.lazy){
+					if(!self.cache[self.currentNum+""].loaded){
+						var num = Math.floor(100 / self.totalNum).toFixed(2);
+						var page = self.cache[self.currentNum+""].page;
+						var container = self.cache[self.currentNum+""].container;
+						var pageNum = self.currentNum;
+						var scaledViewport = self.cache[pageNum+""].scaledViewport;
+						self.cache[pageNum+""].loaded = true;
+						self.renderSvg(page,scaledViewport,pageNum,num,container,options)
+					}
+					if(self.cache[(self.totalNum-2)+""].loaded && !self.cache[(self.totalNum-1)+""].loaded){
+						var num = Math.floor(100 / self.totalNum).toFixed(2);
+						var page = self.cache[(self.totalNum-1)+""].page;
+						var container = self.cache[(self.totalNum-1)+""].container;
+						var pageNum = (self.totalNum-1);
+						var scaledViewport = self.cache[pageNum+""].scaledViewport;
+						self.cache[pageNum+""].loaded = true;
+						self.renderSvg(page,scaledViewport,pageNum,num,container,options)
+					}
+				}
 				var arr1 = self.eventType["scroll"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
@@ -967,7 +987,6 @@
 					data: options.data
 				})
 			} else {
-				self.loading.hide();
 				var time = new Date().getTime();
 				self.endTime = time - self.initTime;
 				var arr1 = self.eventType["complete"];
@@ -1006,6 +1025,12 @@
 				for (var i = 1; i <= self.totalNum; i++) {
 					promise = promise.then(function (pageNum) {
 						return self.thePDF.getPage(pageNum).then(function (page) {
+							self.cache[pageNum+""] = {
+								page:page,
+								loaded:false,
+								container:null,
+								scaledViewport:null
+							};
 							var viewport = page.getViewport(options.scale);
 							var scale = (self.docWidth / viewport.width).toFixed(2)
 							var scaledViewport = page.getViewport(scale)
@@ -1018,81 +1043,24 @@
 								scaledViewport = viewport;
 								container.style.width = scaledViewport.width + 'px';
 							}
+							var loadEffect = document.createElement('div');
+							loadEffect.className = 'loadEffect';
+							container.appendChild(loadEffect);
 							container.style.height = scaledViewport.height + 'px';
 							self.viewer[0].appendChild(container);
-							return page.getOperatorList().then(function (opList) {
-								var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
-								return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
-									if (pageNum === 1) {
-										self.loading.hide();
-									}
-									container.appendChild(svg);
-									svg.style.width = "100%";
-									// self.viewer[0].style.width = document.querySelector('.pageContainer').getBoundingClientRect().width + 'px';
-									self.progress.css({
-										width: num * pageNum + "%"
-									})
-									var time = new Date().getTime();
-									var arr1 = self.eventType["render"];
-									if (arr1 && arr1 instanceof Array) {
-										for (var i = 0; i < arr1.length; i++) {
-											arr1[i] && arr1[i].call(self, pageNum, time - self.initTime, container)
-										}
-									}
-									if (pageNum === self.totalNum) {
-										self.progress.css({
-											width: "100%"
-										});
-										self.loadingBar.hide();
-										self.endTime = time - self.initTime;
-										if (options.zoomEnable) {
-											self.pinchZoom = new PinchZoom(self.viewer, {}, self.viewerContainer);
-											self.pinchZoom.done = function (scale) {
-												if (scale == 1) {
-													if (self.viewerContainer) {
-														self.viewerContainer.css({
-															'-webkit-overflow-scrolling': 'touch'
-														})
-													}
-
-												} else {
-													if (self.viewerContainer) {
-														self.viewerContainer.css({
-															'-webkit-overflow-scrolling': 'auto'
-														})
-													}
-												}
-												var arr1 = self.eventType["zoom"];
-												if (arr1 && arr1 instanceof Array) {
-													for (var i = 0; i < arr1.length; i++) {
-														arr1[i] && arr1[i].call(self)
-													}
-												}
-											}
-										}
-										var arr1 = self.eventType["complete"];
-										if (arr1 && arr1 instanceof Array) {
-											for (var i = 0; i < arr1.length; i++) {
-												arr1[i] && arr1[i].call(self, "success", "pdf加载完成", self.endTime)
-											}
-										}
-										var arr2 = self.eventType["success"];
-										if (arr2 && arr2 instanceof Array) {
-											for (var i = 0; i < arr2.length; i++) {
-												arr2[i] && arr2[i].call(self, self.endTime)
-											}
-										}
-									}
-								});
-							});
+							self.cache[pageNum+""].container = container;
+							self.cache[pageNum+""].scaledViewport = scaledViewport;
+							if(self.currentNum<pageNum && options.lazy){
+								return 
+							}
+							self.cache["1"].loaded = true;
+							return self.renderSvg(page,scaledViewport,pageNum,num,container,options)
 						});
 					}.bind(null, i));
 				}
 			}).catch(function (err) {
-				self.loading.hide()
 				var time = new Date().getTime();
 				self.endTime = time - self.initTime;
-				self.loading.hide();
 				var arr1 = self.eventType["complete"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
@@ -1106,6 +1074,78 @@
 					}
 				}
 			})
+		},
+		finalRender:function(options){
+			var time = new Date().getTime();
+			var self = this;
+			self.progress.css({
+				width: "100%"
+			});
+			self.loadingBar.hide();
+			self.endTime = time - self.initTime;
+			self.cache[(self.totalNum-1)+""].loaded = true;
+			if (options.zoomEnable) {
+				self.pinchZoom = new PinchZoom(self.viewer, {}, self.viewerContainer);
+				self.pinchZoom.done = function (scale) {
+					if (scale == 1) {
+						if (self.viewerContainer) {
+							self.viewerContainer.css({
+								'-webkit-overflow-scrolling': 'touch'
+							})
+						}
+
+					} else {
+						if (self.viewerContainer) {
+							self.viewerContainer.css({
+								'-webkit-overflow-scrolling': 'auto'
+							})
+						}
+					}
+					var arr1 = self.eventType["zoom"];
+					if (arr1 && arr1 instanceof Array) {
+						for (var i = 0; i < arr1.length; i++) {
+							arr1[i] && arr1[i].call(self)
+						}
+					}
+				}
+			}
+			var arr1 = self.eventType["complete"];
+			if (arr1 && arr1 instanceof Array) {
+				for (var i = 0; i < arr1.length; i++) {
+					arr1[i] && arr1[i].call(self, "success", "pdf加载完成", self.endTime)
+				}
+			}
+			var arr2 = self.eventType["success"];
+			if (arr2 && arr2 instanceof Array) {
+				for (var i = 0; i < arr2.length; i++) {
+					arr2[i] && arr2[i].call(self, self.endTime)
+				}
+			}
+		},
+		renderSvg:function(page,scaledViewport,pageNum,num,container,options){
+			var self = this;
+			return	page.getOperatorList().then(function (opList) {
+				var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
+				return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
+					container.children[0].style.display = "none";
+					container.appendChild(svg);
+					svg.style.width = "100%";
+					// self.viewer[0].style.width = document.querySelector('.pageContainer').getBoundingClientRect().width + 'px';
+					self.progress.css({
+						width: num * pageNum+ "%"
+					})
+					var time = new Date().getTime();
+					var arr1 = self.eventType["render"];
+					if (arr1 && arr1 instanceof Array) {
+						for (var i = 0; i < arr1.length; i++) {
+							arr1[i] && arr1[i].call(self, pageNum, time - self.initTime, container)
+						}
+					}
+					if (pageNum === self.totalNum) {
+						self.finalRender(options)
+					}
+				});
+			});
 		},
 		show: function (callback) {
 			this.container.show();
@@ -1206,7 +1246,6 @@
 			this.pageTotal = null;
 			this.loadingBar = null;
 			this.progress = null;
-			this.loading = null;
 			this.timer = null;
 			this.show = null;
 			this.hide = null;
@@ -1219,13 +1258,16 @@
 			}
 		}
 	}
+
 	if (typeof exports === 'object' && typeof module === 'object') {
 		module.exports = Pdfh5;
-	} else if (typeof define !== 'undefined' && define.amd) {
-		define(['jquery'], function ($) {
+	}else if(typeof exports === 'object'){
+		exports["pdfh5/dist/pdfh5"] = Pdfh5;
+	}else if (typeof define !== 'undefined' && define.amd) {
+		define("pdfh5/dist/pdfh5",[], function () {
 			return Pdfh5
 		});
 	} else if (typeof window !== 'undefined') {
-		window.Pdfh5 = Pdfh5
+		window["pdfh5/dist/pdfh5"] = window.Pdfh5 = Pdfh5
 	}
 }).call(this);
