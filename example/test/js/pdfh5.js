@@ -1,12 +1,23 @@
-(function () {
-	'use strict';
+
+;(function(g, fn) {
 	if (typeof require !== 'undefined') {
-		this.$ = require('./jquery-1.11.3.min.js');
-		this.pdfjsLib = require('./pdf.js');
-		var PdfjsWorker = require('./pdf.worker.js');
-		this.pdfjsLib.GlobalWorkerOptions.workerPort = new PdfjsWorker();
+		g.$ = require('./jquery-1.11.3.min.js');
+		g.pdfjsWorker = require('./pdf.worker.js');
+		g.pdfjsLib = require('./pdf.js');
+		// g.pdfjsLib.GlobalWorkerOptions.workerPort = new g.pdfjsWorker();
 	}
-	var pdfjsLib = this.pdfjsLib,$ = this.$;
+	var pdfjsLib = g.pdfjsLib,$ = g.$,pdfjsWorker=g.pdfjsWorker;
+	if(typeof define === 'function' && define.amd) {
+		define(function() {
+			return fn(g,pdfjsWorker,pdfjsLib,$)
+		})
+	} else if(typeof module !== 'undefined' && module.exports) {
+		module.exports = fn(g,pdfjsWorker,pdfjsLib,$)
+	} else {
+		g.Pdfh5 = fn(g,pdfjsWorker,pdfjsLib,$)
+	}
+})(typeof window !== 'undefined' ? window : this, function(g,pdfjsWorker,pdfjsLib,$) {
+	'use strict';
 	var definePinchZoom = function ($) {
 		var PinchZoom = function (el, options, viewerContainer) {
 			this.el = $(el);
@@ -532,7 +543,7 @@
 			bindEvents: function () {
 				detectGestures(this.container.eq(0), this, this.viewerContainer);
 				// Zepto and jQuery both know about `on`
-				$(window).on('resize', this.update.bind(this));
+				$(g).on('resize', this.update.bind(this));
 				$(this.el).find('img').on('load', this.update.bind(this));
 
 			},
@@ -802,6 +813,7 @@
 		this.docWidth = document.documentElement.clientWidth;
 		this.eventType = {};
 		this.cache = {};
+		this.cacheNum = 1;
 		this.init(options);
 	};
 	Pdfh5.prototype = {
@@ -866,7 +878,9 @@
 			if (!options.loadingBar) {
 				this.loadingBar.hide()
 			}
-			var height = document.documentElement.clientHeight * (1 / 3);
+			var containerH = this.container.height(), 
+				height = containerH * (1 / 3);
+			
 			if (!options.scrollEnable) {
 				this.viewerContainer.css({
 					"overflow": "hidden"
@@ -904,6 +918,9 @@
 							}
 							self.currentNum = index + 1
 						}
+						if (top <= containerH) {
+							self.cacheNum = index + 1
+						}
 					})
 				}
 				self.timer = setTimeout(function () {
@@ -912,11 +929,11 @@
 					}
 				}, 1500)
 				if(options.lazy){
-					if(!self.cache[self.currentNum+""].loaded){
+					if(!self.cache[self.cacheNum+""].loaded){
 						var num = Math.floor(100 / self.totalNum).toFixed(2);
-						var page = self.cache[self.currentNum+""].page;
-						var container = self.cache[self.currentNum+""].container;
-						var pageNum = self.currentNum;
+						var page = self.cache[self.cacheNum+""].page;
+						var container = self.cache[self.cacheNum+""].container;
+						var pageNum = self.cacheNum;
 						var scaledViewport = self.cache[pageNum+""].scaledViewport;
 						self.cache[pageNum+""].loaded = true;
 						self.renderSvg(page,scaledViewport,pageNum,num,container,options)
@@ -968,7 +985,7 @@
 			//获取url带的参数地址
 			function GetQueryString(name) {
 				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
-				var r = window.location.search.substr(1).match(reg);
+				var r = g.location.search.substr(1).match(reg);
 				if (r != null) return decodeURIComponent(r[2]);
 				return "";
 			}
@@ -1050,10 +1067,20 @@
 							self.viewer[0].appendChild(container);
 							self.cache[pageNum+""].container = container;
 							self.cache[pageNum+""].scaledViewport = scaledViewport;
-							if(self.currentNum<pageNum && options.lazy){
+							var sum=0,containerH=self.container.height();
+							self.pages = self.viewerContainer.find('.pageContainer');
+							if (self.pages && options.lazy) {
+								self.pages.each(function (index, obj) {
+									var top = obj.offsetTop;
+									if (top <= containerH) {
+										sum = index + 1;
+										self.cache[sum+""].loaded = true;
+									}
+								})
+							}
+							if(pageNum>sum && options.lazy){
 								return 
 							}
-							self.cache["1"].loaded = true;
 							return self.renderSvg(page,scaledViewport,pageNum,num,container,options)
 						});
 					}.bind(null, i));
@@ -1262,16 +1289,5 @@
 			}
 		}
 	}
-
-	if (typeof exports === 'object' && typeof module === 'object') {
-		module.exports = Pdfh5;
-	}else if(typeof exports === 'object'){
-		exports["pdfh5/dist/pdfh5"] = Pdfh5;
-	}else if (typeof define !== 'undefined' && define.amd) {
-		define("pdfh5/dist/pdfh5",[], function () {
-			return Pdfh5
-		});
-	} else if (typeof window !== 'undefined') {
-		window["pdfh5/dist/pdfh5"] = window.Pdfh5 = Pdfh5
-	}
-}).call(this);
+	return Pdfh5;
+});
