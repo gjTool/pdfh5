@@ -21,7 +21,7 @@ pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，�
 - 	1.引入css   
 
 ```
-<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/pdfh5.css" />
 ```
 
 - 	2.创建div  
