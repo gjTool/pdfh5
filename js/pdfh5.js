@@ -1,22 +1,22 @@
 
-;(function(g, fn) {
+; (function (g, fn) {
 	if (typeof require !== 'undefined') {
 		g.$ = require('./jquery-1.11.3.min.js');
 		g.pdfjsWorker = require('./pdf.worker.js');
 		g.pdfjsLib = require('./pdf.js');
 		// g.pdfjsLib.GlobalWorkerOptions.workerPort = new g.pdfjsWorker();
 	}
-	var pdfjsLib = g.pdfjsLib,$ = g.$,pdfjsWorker=g.pdfjsWorker;
-	if(typeof define === 'function' && define.amd) {
-		define(function() {
-			return fn(g,pdfjsWorker,pdfjsLib,$)
+	var pdfjsLib = g.pdfjsLib, $ = g.$, pdfjsWorker = g.pdfjsWorker;
+	if (typeof define === 'function' && define.amd) {
+		define(function () {
+			return fn(g, pdfjsWorker, pdfjsLib, $)
 		})
-	} else if(typeof module !== 'undefined' && module.exports) {
-		module.exports = fn(g,pdfjsWorker,pdfjsLib,$)
+	} else if (typeof module !== 'undefined' && module.exports) {
+		module.exports = fn(g, pdfjsWorker, pdfjsLib, $)
 	} else {
-		g.Pdfh5 = fn(g,pdfjsWorker,pdfjsLib,$)
+		g.Pdfh5 = fn(g, pdfjsWorker, pdfjsLib, $)
 	}
-})(typeof window !== 'undefined' ? window : this, function(g,pdfjsWorker,pdfjsLib,$) {
+})(typeof window !== 'undefined' ? window : this, function (g, pdfjsWorker, pdfjsLib, $) {
 	'use strict';
 	var definePinchZoom = function ($) {
 		var PinchZoom = function (el, options, viewerContainer) {
@@ -807,6 +807,7 @@
 		this.initTime = 0;
 		this.scale = 1.3;
 		this.currentNum = 1;
+		this.loadedCount = 0;
 		this.endTime = 0;
 		this.pinchZoom = null;
 		this.timer = null;
@@ -827,7 +828,7 @@
 				var arr1 = self.eventType["scroll"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
-						arr1[i] && arr1[i].call(self,self.initTime)
+						arr1[i] && arr1[i].call(self, self.initTime)
 					}
 				}
 			}, 0)
@@ -857,7 +858,7 @@
 				'</div>' +
 				' </div>' +
 				'<div class="backTop">' +
-				'</div>' ;
+				'</div>';
 			if (!this.container.find('.pageNum')[0]) {
 				this.container.append(html);
 			}
@@ -878,9 +879,9 @@
 			if (!options.loadingBar) {
 				this.loadingBar.hide()
 			}
-			var containerH = this.container.height(), 
+			var containerH = this.container.height(),
 				height = containerH * (1 / 3);
-			
+
 			if (!options.scrollEnable) {
 				this.viewerContainer.css({
 					"overflow": "hidden"
@@ -908,6 +909,7 @@
 				if (options.pageNum) {
 					self.pageNum.show();
 				}
+				var h =  containerH ;
 				if (self.pages) {
 					self.pages.each(function (index, obj) {
 						var top = obj.getBoundingClientRect().top;
@@ -916,11 +918,14 @@
 							if (options.pageNum) {
 								self.pageNow.text(index + 1)
 							}
-							self.currentNum = index + 1
+							self.currentNum = index + 1;
 						}
-						if (top <= containerH) {
-							self.cacheNum = index + 1
+						if (top <= h && bottom > h) {
+							self.cacheNum = index + 1;
 						}
+						// if (top <= containerH) {
+						// 	self.cacheNum = index + 1
+						// }
 					})
 				}
 				self.timer = setTimeout(function () {
@@ -928,30 +933,29 @@
 						self.pageNum.fadeOut(200);
 					}
 				}, 1500)
-				if(options.lazy){
-					if(!self.cache[self.cacheNum+""].loaded){
-						var num = Math.floor(100 / self.totalNum).toFixed(2);
-						var page = self.cache[self.cacheNum+""].page;
-						var container = self.cache[self.cacheNum+""].container;
+				if (options.lazy) {
+					var num = Math.floor(100 / self.totalNum).toFixed(2);
+					if (!self.cache[self.cacheNum + ""].loaded) {
+						var page = self.cache[self.cacheNum + ""].page;
+						var container = self.cache[self.cacheNum + ""].container;
 						var pageNum = self.cacheNum;
-						var scaledViewport = self.cache[pageNum+""].scaledViewport;
-						self.cache[pageNum+""].loaded = true;
-						self.renderSvg(page,scaledViewport,pageNum,num,container,options)
+						self.cache[pageNum + ""].loaded = true;
+						var scaledViewport = self.cache[pageNum + ""].scaledViewport;
+						self.renderSvg(page, scaledViewport, pageNum, num, container, options)
 					}
-					if(self.cache[(self.totalNum-1)+""].loaded && !self.cache[self.totalNum+""].loaded){
-						var num = Math.floor(100 / self.totalNum).toFixed(2);
-						var page = self.cache[self.totalNum+""].page;
-						var container = self.cache[self.totalNum+""].container;
+					if (self.cache[(self.totalNum - 1) + ""].loaded && !self.cache[self.totalNum + ""].loaded) {
+						var page = self.cache[self.totalNum + ""].page;
+						var container = self.cache[self.totalNum + ""].container;
 						var pageNum = self.totalNum;
-						var scaledViewport = self.cache[pageNum+""].scaledViewport;
-						self.cache[pageNum+""].loaded = true;
-						self.renderSvg(page,scaledViewport,pageNum,num,container,options)
+						self.cache[pageNum + ""].loaded = true;
+						var scaledViewport = self.cache[pageNum + ""].scaledViewport;
+						self.renderSvg(page, scaledViewport, pageNum, num, container, options)
 					}
 				}
 				var arr1 = self.eventType["scroll"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
-						arr1[i] && arr1[i].call(self,scrollTop)
+						arr1[i] && arr1[i].call(self, scrollTop)
 					}
 				}
 			})
@@ -1040,14 +1044,15 @@
 					width: "1%"
 				})
 				for (var i = 1; i <= self.totalNum; i++) {
+					self.cache[i + ""] = {
+						page: null,
+						loaded: false,
+						container: null,
+						scaledViewport: null
+					};
 					promise = promise.then(function (pageNum) {
 						return self.thePDF.getPage(pageNum).then(function (page) {
-							self.cache[pageNum+""] = {
-								page:page,
-								loaded:false,
-								container:null,
-								scaledViewport:null
-							};
+							self.cache[pageNum + ""].page = page
 							var viewport = page.getViewport(options.scale);
 							var scale = (self.docWidth / viewport.width).toFixed(2)
 							var scaledViewport = page.getViewport(scale)
@@ -1056,7 +1061,7 @@
 							container.className = 'pageContainer';
 							container.setAttribute('name', 'page=' + pageNum);
 							container.setAttribute('title', 'Page ' + pageNum);
-							if(options.fullscreen === false && viewport.width<self.docWidth){
+							if (options.fullscreen === false && viewport.width < self.docWidth) {
 								scaledViewport = viewport;
 								container.style.width = scaledViewport.width + 'px';
 							}
@@ -1065,23 +1070,23 @@
 							container.appendChild(loadEffect);
 							container.style.height = scaledViewport.height + 'px';
 							self.viewer[0].appendChild(container);
-							self.cache[pageNum+""].container = container;
-							self.cache[pageNum+""].scaledViewport = scaledViewport;
-							var sum=0,containerH=self.container.height();
+							self.cache[pageNum + ""].container = container;
+							self.cache[pageNum + ""].scaledViewport = scaledViewport;
+							var sum = 0, containerH = self.container.height();
 							self.pages = self.viewerContainer.find('.pageContainer');
 							if (self.pages && options.lazy) {
 								self.pages.each(function (index, obj) {
 									var top = obj.offsetTop;
 									if (top <= containerH) {
 										sum = index + 1;
-										self.cache[sum+""].loaded = true;
+										self.cache[sum + ""].loaded = true;
 									}
 								})
 							}
-							if(pageNum>sum && options.lazy){
-								return 
+							if (pageNum > sum && options.lazy) {
+								return
 							}
-							return self.renderSvg(page,scaledViewport,pageNum,num,container,options)
+							return self.renderSvg(page, scaledViewport, pageNum, num, container, options)
 						});
 					}.bind(null, i));
 				}
@@ -1102,7 +1107,7 @@
 				}
 			})
 		},
-		finalRender:function(options){
+		finalRender: function (options) {
 			var time = new Date().getTime();
 			var self = this;
 			self.progress.css({
@@ -1110,9 +1115,9 @@
 			});
 			self.loadingBar.hide();
 			self.endTime = time - self.initTime;
-			if(self.totalNum!==1){
-				self.cache[(self.totalNum-1)+""].loaded = true;
-			}else {
+			if (self.totalNum !== 1) {
+				self.cache[(self.totalNum - 1) + ""].loaded = true;
+			} else {
 				self.cache["1"].loaded = true;
 			}
 			if (options.zoomEnable) {
@@ -1153,17 +1158,18 @@
 				}
 			}
 		},
-		renderSvg:function(page,scaledViewport,pageNum,num,container,options){
+		renderSvg: function (page, scaledViewport, pageNum, num, container, options) {
 			var self = this;
-			return	page.getOperatorList().then(function (opList) {
+			return page.getOperatorList().then(function (opList) {
 				var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
 				return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
+					self.loadedCount++;
 					container.children[0].style.display = "none";
 					container.appendChild(svg);
 					svg.style.width = "100%";
 					// self.viewer[0].style.width = document.querySelector('.pageContainer').getBoundingClientRect().width + 'px';
 					self.progress.css({
-						width: num * pageNum+ "%"
+						width: num * self.loadedCount + "%"
 					})
 					var time = new Date().getTime();
 					var arr1 = self.eventType["render"];
@@ -1172,7 +1178,7 @@
 							arr1[i] && arr1[i].call(self, pageNum, time - self.initTime, container)
 						}
 					}
-					if (pageNum === self.totalNum) {
+					if (self.loadedCount === self.totalNum) {
 						self.finalRender(options)
 					}
 				});
@@ -1277,6 +1283,7 @@
 			this.pageTotal = null;
 			this.loadingBar = null;
 			this.progress = null;
+			this.loadedCount = 0;
 			this.timer = null;
 			this.show = null;
 			this.hide = null;
