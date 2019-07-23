@@ -6,7 +6,7 @@
 pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，支持懒加载（即分段加载）。
 - 最近才算闲下来了，新建了一个QQ前端学习交流群，欢迎加入前端交流h5，651601340，可以进来提pdfh5.js的bug、问题、建议等。
 
-### 更新信息
+## 更新信息
 
 - 2019.07.23更新：修复懒加载bug，优化懒加载。
 
@@ -14,12 +14,12 @@ pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，�
 
 - 2019.07.10更新：新增部分api，配置参数。内部渲染机制改动：canvas转img 改成 直接渲染svg。
 
-##### pdfh5在线预览 
+### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
 [http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf](http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf)  
 
-### 快速使用
+## 快速使用
 
-- 一、script标签引入方式
+#### 一、script标签引入方式
 
 - 	1.引入css   
 
@@ -50,7 +50,7 @@ var pdfh5 = new Pdfh5('#demo', {
 });
 ```
 
-- 二、npm安装方式（适应于vue）
+####  二、npm安装方式（适应于vue）
 
 - 	1.安装
 
