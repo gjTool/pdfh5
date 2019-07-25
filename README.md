@@ -4,7 +4,7 @@
 [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)
 
 pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，支持懒加载（即分段加载）。
-- 最近才算闲下来了，新建了一个QQ前端学习交流群，欢迎加入前端交流h5，651601340，可以进来提pdfh5.js的bug、问题、建议等。
+- 最近才算闲下来了，新建了一个QQ前端学习交流群，欢迎加入前端交流h5，651601340，可以进来提pdfh5.js的bug、问题、建议等。如果觉得插件还行，请帮忙随手点个star吧
 
 ## 更新信息
 
