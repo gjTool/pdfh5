@@ -8,6 +8,7 @@ pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，�
 - [**如果觉得插件还行，请帮忙随手点个star吧**](https://github.com/gjTool/pdfh5)
 
 ## 更新信息
+- 2019.07.29更新：小优化。
 
 - 2019.07.23更新：修复懒加载bug，优化懒加载。
 
@@ -20,7 +21,7 @@ pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，�
 
 ## 快速使用
 
-#### 一、script标签引入方式
+#### 一、script标签引入方式（需下载本项目文件夹css、js内所有文件）
 
 - 	1.引入css   
 
@@ -47,7 +48,7 @@ pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，�
 
 ```
 var pdfh5 = new Pdfh5('#demo', {
-    pdfurl: "./default.pdf"
+  pdfurl: "./default.pdf"
 });
 ```
 
@@ -62,28 +63,28 @@ npm install pdfh5
 
 ```
 <template>
-	<div id="app">
-		<div id="demo"></div>
-	</div>
+  <div id="app">
+	  <div id="demo"></div>
+  </div>
 </template>
 <script>
-	import Pdfh5 from "pdfh5";
-	export default {
-		name: 'App',
-		data() {
-			return {
-				pdfh5: null
-			};
-		},
-		mounted() {
-			this.pdfh5 = new Pdfh5("#demo", {
-				pdfurl: "./test.pdf" 
-			});
-			this.pdfh5.on("complete", function (status, msg, time) {
-				console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
-			})
-		}
+  import Pdfh5 from "pdfh5";
+  export default {
+    name: 'App',
+	data() {
+	  return {
+	    pdfh5: null
+	  };
+	},
+	mounted() {
+	  this.pdfh5 = new Pdfh5("#demo", {
+		pdfurl: "./test.pdf" 
+	  });
+	  this.pdfh5.on("complete", function (status, msg, time) {
+		console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
+	  })
 	}
+  }
 </script>
 
 <style>
@@ -160,7 +161,7 @@ pdfh5.on("success", function (time) {
 })
 ```
 
-- 	配置项参数 是否显示小部件 加载进度loadingBar 页面显示pageNum 回到顶部backTop  默认显示
+- 	配置项参数 是否显示小部件 顶部绿色加载进度条loadingBar 左上角页码显示pageNum 右下角回到顶部按钮backTop  默认显示
 
 ```
 var pdfh5 = new Pdfh5('.pdfjs', {
@@ -205,27 +206,27 @@ pdfh5.zoomEnable(true)允许pdf手势缩放，pdfh5.zoomEnable(false)不允许pd
 - 	pdfh5还原、销毁（附带回调函数）：   
 
 ```
-pdfh5.reset pdfh5.destroy 
+pdfh5.reset(callback) pdfh5.destroy(callback)
 ```
 
 - 	pdfh5显示、隐藏（附带回调函数）：  
 
 ``` 
-pdfh5.show pdfh5.hide 
+pdfh5.show(callback) pdfh5.hide(callback) 
 ```
 
-- 	on方法,监听各种事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
+- 	on方法,监听各种事件： 开始初始化init 准备渲染ready 加载完成complete 加载失败error 加载成功success 渲染中render
 	缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
 
 ```	
-pdfh5.on("init",function(){
+pdfh5.on("error",function(msg,time){
 		
 })
-pdfh5.on("ready",function(){
+pdfh5.on("zoom",function(scale){
 	
 })
-pdfh5.on("complete",function(status,msg,time){
-	this.zoomEnable(false)
+pdfh5.on("scroll",function(scrollTop){
+	
 })
 ```
 
