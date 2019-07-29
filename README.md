@@ -119,6 +119,15 @@ var pdfh5 = new Pdfh5('#demo', {
 		renderType:"canvas"
 });
 ```
+-  配置项参数 scale:2 渲染的清晰度比例，默认1.3
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+		pdfurl: "./default.pdf",
+		renderType:"canvas",
+		scale:2
+});
+```
 
 - 	配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
 

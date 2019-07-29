@@ -1216,7 +1216,7 @@
                 self.progress.css({
                     width: "1%"
                 })
-                
+                self.loadedCount =1;
                 self.thePDF.getPage(1).then(handlePages);
                 self.pageTotal.text(self.totalNum)
                 var time = new Date().getTime();
@@ -1252,7 +1252,7 @@
                     'width': viewport.width,
                     'height': viewport.height,
                     'canvas': canvas,
-                    'index': self.currentNum
+                    'index': self.loadedCount
                 }
                 var context = canvas.getContext('2d');
                 canvas.height = viewport.height;
@@ -1262,11 +1262,10 @@
                     canvasContext: context,
                     viewport: viewport
                 });
-                obj2.src = obj2.canvas.toDataURL("image/jpeg");
                 self.progress.css({
-                    width: num * obj2.index + "%"
+                    width: num * self.loadedCount + "%"
                 })
-              
+                obj2.src = obj2.canvas.toDataURL("image/jpeg");
                 self.pdfRender.promise.then(function () {
                     var img = new Image();
                     var time = new Date().getTime();
@@ -1299,10 +1298,9 @@
                     }
                 }).then(function () {
                     //开始下一页到绘制
-                    self.currentNum++;
-
-                    if (!self.pdfLoaded && self.thePDF && self.currentNum <= self.totalNum) {
-                        self.thePDF.getPage(self.currentNum).then(handlePages);
+                    self.loadedCount++;
+                    if (!self.pdfLoaded && self.thePDF && self.loadedCount <= self.totalNum) {
+                        self.thePDF.getPage(self.loadedCount).then(handlePages);
                     } else {
                         self.finalRender(options)
                     }
