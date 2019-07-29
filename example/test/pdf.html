@@ -26,7 +26,7 @@
         //优先顺序：  ？file= > pdfurl > data
         var pdfh5 = new Pdfh5('#demo', {
             pdfurl: "http://www.gjtool.cn/pdfh5/git.pdf",
-            renderType:"canvas"
+            renderType: "canvas"
         });
 
         //配置项参数 renderType:"canvas" 渲染模式为canvas，默认svg
@@ -34,7 +34,7 @@
         //     pdfurl: "./default.pdf",
         //     renderType:"canvas"
         // });
-        
+
         // 配置项参数 scale:2 渲染的清晰度比例，默认1.3
 
         // var pdfh5 = new Pdfh5('#demo', {
@@ -55,22 +55,6 @@
         //     pdfurl: "./default.pdf"
         // });
 
-        //pdf准备开始渲染，此时可以拿到pdf总页数
-        pdfh5.on("ready", function () {
-            console.log("总页数：" + this.totalNum)
-        })
-        //监听pdf渲染过程，currentPageDom当前加载的pdf的dom,currentNum当前加载的pdf页数,
-        pdfh5.on("render", function (currentNum, time, currentPageDom) {
-            console.log("当前渲染页：" + currentNum + "，耗时：" + time + "毫秒")
-        })
-        //监听完成事件，加载失败、渲染成功都会触发
-        pdfh5.on("complete", function (status, msg, time) {
-            console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
-        })
-        //监听pdf渲染成功
-        pdfh5.on("success", function (time) {
-            console.log("加载完成，耗时" + time + "毫秒")
-        })
         //配置项参数 是否显示小部件 顶部绿色加载进度条loadingBar 左上角页码显示pageNum 右下角回到顶部按钮backTop  默认显示
         //		var pdfh5 = new Pdfh5('#demo', {
         // 			 loadingBar: false,
@@ -92,13 +76,30 @@
 
         //配置项参数zoomEnable:false不允许pdf手势缩放,true允许pdf手势缩放  默认允许
         //		var pdfh5 = new Pdfh5('#demo', {
-        // 			zoomEnable:false,//是否允许pdf滚动
+        // 			zoomEnable:false,//是否允许pdf手势缩放
         // 			pdfurl: url
         // 		});
         //pdfh5.zoomEnable(true)允许pdf手势缩放，pdfh5.zoomEnable(false)不允许pdf手势缩放
 
         //pdfh5还原、销毁（附带回调函数）：   pdfh5.reset pdfh5.destroy 
         //pdfh5显示、隐藏（附带回调函数）：   pdfh5.show pdfh5.hide 
+
+        //pdf准备开始渲染，此时可以拿到pdf总页数
+        pdfh5.on("ready", function () {
+            console.log("总页数：" + this.totalNum)
+        })
+        //监听pdf渲染过程，currentPageDom当前加载的pdf的dom,currentNum当前加载的pdf页数,
+        pdfh5.on("render", function (currentNum, time, currentPageDom) {
+            console.log("当前渲染页：" + currentNum + "，耗时：" + time + "毫秒")
+        })
+        //监听完成事件，加载失败、渲染成功都会触发
+        pdfh5.on("complete", function (status, msg, time) {
+            console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
+        })
+        //监听pdf渲染成功
+        pdfh5.on("success", function (time) {
+            console.log("加载完成，耗时" + time + "毫秒")
+        })
 
         //on方法,监听各种事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
         // 缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable

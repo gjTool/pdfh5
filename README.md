@@ -214,7 +214,7 @@ pdfh5.scrollEnable(true)允许pdf滚动,pdfh5.scrollEnable(false)不允许pdf滚
 
 ```
 var pdfh5 = new Pdfh5('.pdfjs', {
-	zoomEnable:false,//是否允许pdf滚动
+	zoomEnable:false,//是否允许pdf手势缩放
 	pdfurl: url
 });
 ```
