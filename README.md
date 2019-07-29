@@ -8,7 +8,8 @@ pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，�
 - [**如果觉得插件还行，请帮忙随手点个star吧**](https://github.com/gjTool/pdfh5)
 
 ## 更新信息
-- 2019.07.29更新：小优化。
+- **2019.07.29 重要更新：**  新增配置项参数renderType，可以在实例化的时候选择渲染模式。默认是renderType:"svg",可以更改为renderType:"canvas"。
+新增这个参数是因为pdf.js有个bug，当渲染模式为svg的时候，pdf的电子签章（即红色印章）无法显示。只有渲染模式为canvas的时候才可以显示。不过canvas模式下，内存占用大，清晰度也不如svg。选择哪种渲染模式请使用者自行选择。当renderType:"canvas"时，懒加载无效。
 
 - 2019.07.23更新：修复懒加载bug，优化懒加载。
 
@@ -108,6 +109,14 @@ npm install pdfh5
 ```
 var pdfh5 = new Pdfh5('.pdfjs', {
 	pdfurl: "./default.pdf"
+});
+```
+-  配置项参数 renderType:"canvas" 渲染模式为canvas，默认svg
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+		pdfurl: "./default.pdf",
+		renderType:"canvas"
 });
 ```
 

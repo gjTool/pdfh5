@@ -15,7 +15,7 @@ export default {
   },
  mounted() {
     this.pdfh5 = new Pdfh5("#demo", {
-      pdfurl: "http://www.gjtool.cn/pdfh5/default.pdf",
+      pdfurl: "http://www.gjtool.cn/pdfh5/test.pdf",
       lazy:true 
     });
     this.pdfh5.on("render", function (pageNum, time) {

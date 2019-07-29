@@ -36,7 +36,10 @@ html,body {
 	background-color: white;
 	box-sizing: border-box;
 }
-
+.pdfjs .pdfViewer .pageContainer img {
+	width: 100%;
+	height: 100%;
+}
 .pdfjs .pageNum {
 	padding: 0px 7px;
 	height: 26px;
