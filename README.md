@@ -31,19 +31,19 @@ The new parameter is due to a bug in pdf.js. When the rendering mode is svg, the
 
 #### I. The introduction of script tags (all files in the project folder CSS and JS need to be downloaded)
 
-- 	1. Introducing CSS   
+- 	1.Introducing CSS   
 
 ```
 <link rel="stylesheet" href="css/pdfh5.css" />
 ```
 
-- 	2. Create div  
+- 	2.Create div  
 
 ```
 <div id="demo"></div>
 ```
 
-- 	3. Introducing JS in turn   
+- 	3.Introducing JS in turn   
 
 ```
 <script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
@@ -52,7 +52,7 @@ The new parameter is due to a bug in pdf.js. When the rendering mode is svg, the
 <script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
 ```
 
-- 	4. Instance
+- 	4.Instance
 
 ```
 var pdfh5 = new Pdfh5('#demo', {
@@ -62,12 +62,12 @@ var pdfh5 = new Pdfh5('#demo', {
 
 ####  II. NPM installation mode (suitable for vue)
 
-- 	1. Installation
+- 	1.Installation
 
 ```
 npm install pdfh5
 ```
-- 	2. Use
+- 	2.Use
 
 ```
 <template>

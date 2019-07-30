@@ -9,9 +9,9 @@ pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，�
 
 ## 语言
 
-- [English](https://github.com/gjTool/pdfh5/blob/master/README-EN.md)
+- [English](https://github.com/gjTool/pdfh5/blob/master/README.md)
 
-- [中文](https://github.com/gjTool/pdfh5/blob/master/README.md)
+- [中文](https://github.com/gjTool/pdfh5/blob/master/README-ZH.md)
 
 ## 更新信息
 - **2019.07.29 重要更新：**  新增配置项参数renderType，可以在实例化的时候选择渲染模式。默认是renderType:"svg",可以更改为renderType:"canvas"。
