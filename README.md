@@ -13,6 +13,8 @@ Pdfh5.js is based on pdf.js and jQuery. The mobile PDF preview plug-in can zoom 
 
 - [中文](https://github.com/gjTool/pdfh5/blob/master/README-ZH.md)
 
+![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
+
 ## Update information
 - **Important updates on 07.29, 2019：**  Adding a new configuration parameter renderType allows you to select render mode when instantiating. The default is renderType:"svg", which can be changed to renderType:"canvas".
 
