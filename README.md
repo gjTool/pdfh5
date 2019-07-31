@@ -3,49 +3,48 @@
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)
 [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)
 
-Pdfh5.js is based on pdf.js and jQuery. The mobile PDF preview plug-in can zoom in and support lazy loading.
+pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，支持懒加载（即分段加载）。
+- 最近才算闲下来了，新建了一个QQ前端学习交流群，欢迎加入前端交流h5，651601340，可以进来提pdfh5.js的bug、问题、建议等。
+- [**如果觉得插件还行，请帮忙随手点个star吧(GitHub)**](https://github.com/gjTool/pdfh5)
 
-- [**If you think the plug-in is OK, please help with  star(for GitHub).**](https://github.com/gjTool/pdfh5)
+## 语言
 
-## Language
+- [English](https://github.com/gjTool/pdfh5/blob/master/README—EN.md)
 
-- [English](https://github.com/gjTool/pdfh5/blob/master/README.md)
-
-- [中文](https://github.com/gjTool/pdfh5/blob/master/README-ZH.md)
+- [中文](https://github.com/gjTool/pdfh5/blob/master/README.md)
 
 ![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
 
-## Update information
-- **Important updates on 07.29, 2019：**  Adding a new configuration parameter renderType allows you to select render mode when instantiating. The default is renderType:"svg", which can be changed to renderType:"canvas".
+## 更新信息
+- **2019.07.29 重要更新：**  新增配置项参数renderType，可以在实例化的时候选择渲染模式。默认是renderType:"svg",可以更改为renderType:"canvas"。
+新增这个参数是因为pdf.js有个bug，当渲染模式为svg的时候，pdf的电子签章（即红色印章）无法显示。只有渲染模式为canvas的时候才可以显示。不过canvas模式下，内存占用大，清晰度也不如svg。选择哪种渲染模式请使用者自行选择。当renderType:"canvas"时，懒加载无效。
 
-The new parameter is due to a bug in pdf.js. When the rendering mode is svg, the electronic signature of PDF (i.e. red seal) cannot be displayed. Only when the rendering mode is canvas can it be displayed. However, in canvas mode, the memory consumption is large and the clarity is not as good as svg. The user can choose which rendering mode to use. When renderType: "canvas", lazy loading is invalid.
+- 2019.07.23更新：修复懒加载bug，优化懒加载。
 
-- Update on 07.23, 2019：Fix lazy loading bug and optimize lazy loading.
+- 2019.07.17更新：新增配置参数lazy，支持懒加载。
 
-- Update of 2019.07.17: Add configuration parameter lazy to support lazy loading.
+- 2019.07.10更新：新增部分api，配置参数。内部渲染机制改动：canvas转img 改成 直接渲染svg。
 
-- Update on 07.10, 2019：Add some api, configuration parameters. Internal rendering mechanism changes: canvas to img to direct rendering svg.
-
-### Pdfh5 online preview (recommend using Google Browser F12 mobile mode to open preview)
+### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
 [http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf](http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf)  
 
-## Quick Start
+## 快速使用
 
-#### I. The introduction of script tags (all files in the project folder CSS and JS need to be downloaded)
+#### 一、script标签引入方式（需下载本项目文件夹css、js内所有文件）
 
-- 	1.Introducing CSS   
+- 	1.引入css   
 
 ```
 <link rel="stylesheet" href="css/pdfh5.css" />
 ```
 
-- 	2.Create div  
+- 	2.创建div  
 
 ```
 <div id="demo"></div>
 ```
 
-- 	3.Introducing JS in turn   
+- 	3.依次引入js   
 
 ```
 <script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
@@ -54,7 +53,7 @@ The new parameter is due to a bug in pdf.js. When the rendering mode is svg, the
 <script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
 ```
 
-- 	4.Instance
+- 	4.实例化
 
 ```
 var pdfh5 = new Pdfh5('#demo', {
@@ -62,14 +61,14 @@ var pdfh5 = new Pdfh5('#demo', {
 });
 ```
 
-####  II. NPM installation mode (suitable for vue)
+####  二、npm安装方式（适应于vue）
 
-- 	1.Installation
+- 	1.安装
 
 ```
 npm install pdfh5
 ```
-- 	2.Use
+- 	2.使用
 
 ```
 <template>
@@ -91,7 +90,7 @@ npm install pdfh5
 		pdfurl: "./test.pdf" 
 	  });
 	  this.pdfh5.on("complete", function (status, msg, time) {
-		console.log("status:" + status + ",info:" + msg + ",time-consuming:" + time + "milliseconds, total pages:" + this.totalNum)
+		console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
 	  })
 	}
   }
@@ -110,17 +109,17 @@ npm install pdfh5
 </style>
 ```
 
-### API Interface Method
+### API接口方法
 
-- 	Currently, the default priority is to get the browser address bar? File = the following address. If the address bar does not exist, render PDF with pdfurl or data of the configuration item.
-	Priority：  ？file= > pdfurl > data
+- 	当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf
+	优先顺序：  ？file= > pdfurl > data
 
 ```
 var pdfh5 = new Pdfh5('.pdfjs', {
 	pdfurl: "./default.pdf"
 });
 ```
--  Configuration item parameter renderType: "canvas" rendering mode is canvas, default svg.
+-  配置项参数 renderType:"canvas" 渲染模式为canvas，默认svg
 
 ```
 var pdfh5 = new Pdfh5('#demo', {
@@ -128,7 +127,7 @@ var pdfh5 = new Pdfh5('#demo', {
 		renderType:"canvas"
 });
 ```
--  Configuration parameter scale: 2 rendering sharpness ratio, default 1.3
+-  配置项参数 scale:2 渲染的清晰度比例，默认1.3
 
 ```
 var pdfh5 = new Pdfh5('#demo', {
@@ -138,7 +137,7 @@ var pdfh5 = new Pdfh5('#demo', {
 });
 ```
 
-- 	Configuration parameter lazy: true opens lazy loading, default is false, do not open lazy loading.
+- 	配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
 
 ```
 var pdfh5 = new Pdfh5('#demo', {
@@ -147,7 +146,7 @@ var pdfh5 = new Pdfh5('#demo', {
 });
 ```
 
-- 	Configuration parameter URIenable: false can ignore address bar parameters and render PDF only with pdfurl or data of configuration item.
+- 	配置项参数 URIenable:false 可以无视地址栏参数，只拿配置项的pdfurl或者data来渲染pdf
 
 ```
 var pdfh5 = new Pdfh5('.pdfjs', {
@@ -156,39 +155,39 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 });
 ```
 
-- 	Pdf is ready to start rendering, at which point you can get the total number of PDF pages.
+- 	pdf准备开始渲染，此时可以拿到pdf总页数
 
 ```
 pdfh5.on("ready", function () {
-	console.log("total pages:" + this.totalNum)
+	console.log("总页数：" + this.totalNum)
 })
 ```
 
-- 	Monitor the PDF rendering process, the dom of PDF currentPageDom currently loaded, and the number of PDF pages currentNum currently loaded.
+- 	监听pdf渲染过程，currentPageDom当前加载的pdf的dom,currentNum当前加载的pdf页数,
 
 ```
 pdfh5.on("render", function (currentNum, time, currentPageDom) {
-	console.log("current rendering page:" + currentNum + ",time-consuming:" + time + "milliseconds")
+	console.log("当前渲染页：" + currentNum + "，耗时：" + time + "毫秒")
 })
 ```
 
-- 	Listen for completion events, loading failure, rendering success will trigger.
+- 	监听完成事件，加载失败、渲染成功都会触发
 
 ```
 pdfh5.on("complete", function (status, msg, time) {
-	console.log("status:" + status + ",info:" + msg + ",time-consuming:" + time + "milliseconds, total pages:" + this.totalNum)
+	console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
 })
 ```
 
-- 	Monitor PDF rendering success.
+- 	监听pdf渲染成功
 
 ```
 pdfh5.on("success", function (time) {
-	console.log("loading completed,time-consuming:"" + time + "milliseconds")
+	console.log("加载完成，耗时" + time + "毫秒")
 })
 ```
 
-- 	Listen for PDF rendering success configuration item parameters to show the green loading progress bar at the top of the widget loadingBar upper left page number shows page Num lower right corner back to the top button backTop default display.
+- 	配置项参数 是否显示小部件 顶部绿色加载进度条loadingBar 左上角页码显示pageNum 右下角回到顶部按钮backTop  默认显示
 
 ```
 var pdfh5 = new Pdfh5('.pdfjs', {
@@ -198,7 +197,7 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 });
 ```
 
-- 	Configuration item parameter data, file stream form into pdfurl and data.
+- 	配置项参数data，文件流形式传入  pdfurl和data二选一
 
 ```
 	var pdfh5 = new Pdfh5('.pdfjs', {
@@ -206,45 +205,44 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 	});
 ```
 
-- 	Configuration parameter scrollEnable: false does not allow PDF scrolling, true allows PDF scrolling by default.
+- 	配置项参数scrollEnable:false不允许pdf滚动,true允许pdf滚动  默认允许
 
 ```
 var pdfh5 = new Pdfh5('.pdfjs', {
-	scrollEnable:false,
+	scrollEnable:false,//是否允许pdf滚动
 	pdfurl: url
 });
 ```
 
 ```
-pdfh5.scrollEnable(true), allow PDF to scroll. pdfh5.scrollEnable(false), Pdf scrolling is not allowed.
+pdfh5.scrollEnable(true)允许pdf滚动,pdfh5.scrollEnable(false)不允许pdf滚动
 ```
 
-- 	Configuration parameter zoomEnable: false does not allow PDF gesture zooming, true allows PDF gesture zooming by default.
+- 	配置项参数zoomEnable:false不允许pdf手势缩放,true允许pdf手势缩放  默认允许
 
 ```
 var pdfh5 = new Pdfh5('.pdfjs', {
-	zoomEnable:false,
+	zoomEnable:false,//是否允许pdf手势缩放
 	pdfurl: url
 });
 ```
 ```
-pdfh5.zoomEnable(true), Allow PDF gesture zooming. pdfh5.zoomEnable(false),Pdf gesture zooming is not allowed.
+pdfh5.zoomEnable(true)允许pdf手势缩放，pdfh5.zoomEnable(false)不允许pdf手势缩放
 ```
-- 	Reduction and destruction of pdfh5 (with callback function):   
+- 	pdfh5还原、销毁（附带回调函数）：   
 
 ```
 pdfh5.reset(callback) pdfh5.destroy(callback)
 ```
 
-- 	Pdfh5 displays and hides (with callback functions): 
+- 	pdfh5显示、隐藏（附带回调函数）：  
 
 ``` 
 pdfh5.show(callback) pdfh5.hide(callback) 
 ```
 
-- 	On method, listen for all kinds of events: start initializing init, prepare to render read, complete loading failure, error loading success render
-
-Scaling zoom scroll shows show show hidden restore reset destroy destroy allow zoom Enable to allow scroll Enable
+- 	on方法,监听各种事件： 开始初始化init 准备渲染ready 加载完成complete 加载失败error 加载成功success 渲染中render
+	缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
 
 ```	
 pdfh5.on("error",function(msg,time){
