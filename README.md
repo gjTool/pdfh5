@@ -9,7 +9,7 @@ pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，�
 
 ## 语言
 
-- [English](https://github.com/gjTool/pdfh5/blob/master/README—EN.md)
+- [English](https://github.com/gjTool/pdfh5/blob/master/README-EN.md)
 
 - [中文](https://github.com/gjTool/pdfh5/blob/master/README.md)
 
@@ -137,7 +137,7 @@ var pdfh5 = new Pdfh5('#demo', {
 });
 ```
 
-- 	配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
+- 	配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载（当renderType:"canvas"时，懒加载无效）
 
 ```
 var pdfh5 = new Pdfh5('#demo', {

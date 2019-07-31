@@ -9,7 +9,7 @@ Pdfh5.js is based on pdf.js and jQuery. The mobile PDF preview plug-in can zoom 
 
 ## Language
 
-- [English](https://github.com/gjTool/pdfh5/blob/master/README—EN.md)
+- [English](https://github.com/gjTool/pdfh5/blob/master/README-EN.md)
 
 - [中文](https://github.com/gjTool/pdfh5/blob/master/README.md)
 
@@ -138,7 +138,7 @@ var pdfh5 = new Pdfh5('#demo', {
 });
 ```
 
-- 	Configuration parameter lazy: true opens lazy loading, default is false, do not open lazy loading.
+- 	Configuration parameter lazy: true opens lazy loading, default is false, do not open lazy loading. When renderType: "canvas", lazy loading is invalid.
 
 ```
 var pdfh5 = new Pdfh5('#demo', {
