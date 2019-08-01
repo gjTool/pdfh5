@@ -16,13 +16,16 @@ Pdfh5.js is based on pdf.js and jQuery. The mobile PDF preview plug-in can zoom 
 ![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
 
 ## Update information
+
+- Update on 08.01, 2019: Add a new configuration parameter type, which allows you to select the request mode when instantiating. The default is type:"fetch", which can be changed to type:"ajax". In some cases, the fetch request mode of pdf.js is very time-consuming, so adding Ajax request mode gives users a variety of choices.
+
 - **Important updates on 07.29, 2019：**  Adding a new configuration parameter renderType allows you to select render mode when instantiating. The default is renderType:"svg", which can be changed to renderType:"canvas".
 
 The new parameter is due to a bug in pdf.js. When the rendering mode is svg, the electronic signature of PDF (i.e. red seal) cannot be displayed. Only when the rendering mode is canvas can it be displayed. However, in canvas mode, the memory consumption is large and the clarity is not as good as svg. The user can choose which rendering mode to use. When renderType: "canvas", lazy loading is invalid.
 
 - Update on 07.23, 2019：Fix lazy loading bug and optimize lazy loading.
 
-- Update of 2019.07.17: Add configuration parameter lazy to support lazy loading.
+- Update on 07.17, 2019: Add configuration parameter lazy to support lazy loading.
 
 - Update on 07.10, 2019：Add some api, configuration parameters. Internal rendering mechanism changes: canvas to img to direct rendering svg.
 

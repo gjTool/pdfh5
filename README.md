@@ -16,6 +16,9 @@ pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，�
 ![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
 
 ## 更新信息
+
+- 2019.08.01更新：新增配置项参数type,可以在实例化的时候选择请求方式。默认是type:"fetch",可以更改为type:"ajax"。在某些情况下，pdf.js自带的fetch请求方式会耗时非常严重，所以增加ajax请求方式来给使用者多样化的选择。
+
 - **2019.07.29 重要更新：**  新增配置项参数renderType，可以在实例化的时候选择渲染模式。默认是renderType:"svg",可以更改为renderType:"canvas"。
 新增这个参数是因为pdf.js有个bug，当渲染模式为svg的时候，pdf的电子签章（即红色印章）无法显示。只有渲染模式为canvas的时候才可以显示。不过canvas模式下，内存占用大，清晰度也不如svg。选择哪种渲染模式请使用者自行选择。当renderType:"canvas"时，懒加载无效。
 
