@@ -132,6 +132,23 @@ var pdfh5 = new Pdfh5('#demo', {
 	});
 ```
 
+- Configuration item parameter maxZoom: 3 gesture zoom maximum multiple, default 4.
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+			pdfurl: "./default.pdf",
+			maxZoom:3
+	});
+```
+- Configuration item parameter tapZoomFactor: 3 double-click magnification, default 2。
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+			pdfurl: "./default.pdf",
+			tapZoomFactor:3
+	});
+```
+
 -  Configuration item parameter renderType: "canvas" rendering mode is canvas, default svg.
 
 ```

@@ -28,6 +28,11 @@
                 y: 0
             };
             this.options = $.extend({}, this.defaults, options);
+            this.options.tapZoomFactor = isNaN(options.tapZoomFactor) ? 2 : options.tapZoomFactor;
+            this.options.zoomOutFactor = isNaN(options.zoomOutFactor) ? 1.2 : options.zoomOutFactor;
+            this.options.animationDuration = isNaN(options.animationDuration) ? 300 : options.animationDuration;
+            this.options.maxZoom = isNaN(options.maxZoom) ? 4 : options.maxZoom;
+            this.options.minZoom = isNaN(options.minZoom) ? 0.8 : options.minZoom;
             this.setupMarkup();
             this.bindEvents();
             this.update();
@@ -1185,7 +1190,13 @@
                 }
             }
             if (options.zoomEnable) {
-                self.pinchZoom = new PinchZoom(self.viewer, {}, self.viewerContainer);
+                self.pinchZoom = new PinchZoom(self.viewer, {
+                    tapZoomFactor: options.tapZoomFactor,
+                    zoomOutFactor: options.zoomOutFactor,
+                    animationDuration: options.animationDuration,
+                    maxZoom: options.maxZoom,
+                    minZoom: options.minZoom
+                }, self.viewerContainer);
                 self.pinchZoom.done = function (scale) {
                     if (scale == 1) {
                         if (self.viewerContainer) {

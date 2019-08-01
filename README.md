@@ -130,6 +130,22 @@ var pdfh5 = new Pdfh5('#demo', {
 			type:"ajax"
 	});
 ```
+- 配置项参数 maxZoom:3 手势缩放最大倍数，默认4
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+			pdfurl: "./default.pdf",
+			maxZoom:3
+	});
+```
+- 配置项参数 tapZoomFactor:3 双击放大倍数，默认2
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+			pdfurl: "./default.pdf",
+			tapZoomFactor:3
+	});
+```
 
 -  配置项参数 renderType:"canvas" 渲染模式为canvas，默认svg
 
