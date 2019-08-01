@@ -122,6 +122,15 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 	pdfurl: "./default.pdf"
 });
 ```
+- 配置项参数 type:"ajax" 请求方式为ajax，默认fetch
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+			pdfurl: "./default.pdf",
+			type:"ajax"
+	});
+```
+
 -  配置项参数 renderType:"canvas" 渲染模式为canvas，默认svg
 
 ```

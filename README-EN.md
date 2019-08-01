@@ -123,6 +123,15 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 	pdfurl: "./default.pdf"
 });
 ```
+- Configuration item parameter type: "ajax" request mode is ajax, default fetch.
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+			pdfurl: "./default.pdf",
+			type:"ajax"
+	});
+```
+
 -  Configuration item parameter renderType: "canvas" rendering mode is canvas, default svg.
 
 ```
