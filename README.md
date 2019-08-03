@@ -282,5 +282,6 @@ pdfh5.on("scroll",function(scrollTop){
 	
 })
 ```
-
+## 扫码加入QQ群和更多小伙伴一起交流前端技术：
+![QQ群：651601340](https://img-blog.csdnimg.cn/20190803143537507.png)
 	
