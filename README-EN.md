@@ -29,7 +29,10 @@ The new parameter is due to a bug in pdf.js. When the rendering mode is svg, the
 - Update on 07.10, 2019：Add some api, configuration parameters. Internal rendering mechanism changes: canvas to img to direct rendering svg.
 
 ### Pdfh5 online preview (recommend using Google Browser F12 mobile mode to open preview)
-[http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf](http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf)  
+
+- http [http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf](http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf)  
+
+- https [https://www.gjtool.cn/pdfh5/pdf.html?file=https://www.gjtool.cn/pdfh5/default.pdf](https://www.gjtool.cn/pdfh5/pdf.html?file=https://www.gjtool.cn/pdfh5/default.pdf) 
 
 ## Quick Start
 
