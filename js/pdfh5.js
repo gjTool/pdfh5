@@ -36,7 +36,6 @@
             this.setupMarkup();
             this.bindEvents();
             this.update();
-            // default enable.
             this.enable();
             this.height = 0;
             this.load = false;
@@ -52,7 +51,6 @@
             };
 
         PinchZoom.prototype = {
-
             defaults: {
                 tapZoomFactor: 2,
                 zoomOutFactor: 1.2,
@@ -67,11 +65,6 @@
                 dragEndEventName: 'pz_dragend',
                 doubleTapEventName: 'pz_doubletap'
             },
-
-			/**
-			 * Event handler for 'dragstart'
-			 * @param event
-			 */
             handleDragStart: function (event) {
                 this.el.trigger(this.options.dragStartEventName);
                 this.stopAnimation();
@@ -79,11 +72,6 @@
                 this.hasInteraction = true;
                 this.handleDrag(event);
             },
-
-			/**
-			 * Event handler for 'drag'
-			 * @param event
-			 */
             handleDrag: function (event) {
 
                 if (this.zoomFactor > 1.0) {
@@ -98,11 +86,6 @@
                 this.el.trigger(this.options.dragEndEventName);
                 this.end();
             },
-
-			/**
-			 * Event handler for 'zoomstart'
-			 * @param event
-			 */
             handleZoomStart: function (event) {
                 this.el.trigger(this.options.zoomStartEventName);
                 this.stopAnimation();
@@ -111,19 +94,10 @@
                 this.lastZoomCenter = false;
                 this.hasInteraction = true;
             },
-
-			/**
-			 * Event handler for 'zoom'
-			 * @param event
-			 */
             handleZoom: function (event, newScale) {
-
-                // a relative scale factor is used
                 var touchCenter = this.getTouchCenter(this.getTouches(event)),
                     scale = newScale / this.lastScale;
                 this.lastScale = newScale;
-
-                // the first touch events are thrown away since they are not precise
                 this.nthZoom += 1;
                 if (this.nthZoom > 3) {
 
@@ -137,11 +111,6 @@
                 this.el.trigger(this.options.zoomEndEventName);
                 this.end();
             },
-
-			/**
-			 * Event handler for 'doubletap'
-			 * @param event
-			 */
             handleDoubleTap: function (event) {
                 var center = this.getTouches(event)[0],
                     zoomFactor = this.zoomFactor > 1 ? 1 : this.options.tapZoomFactor,
@@ -160,12 +129,6 @@
                 this.animate(this.options.animationDuration, updateProgress, this.swing);
                 this.el.trigger(this.options.doubleTapEventName);
             },
-
-			/**
-			 * Max / min values for the offset
-			 * @param offset
-			 * @return {Object} the sanitized offset
-			 */
             sanitizeOffset: function (offset) {
                 var maxX = (this.zoomFactor - 1) * this.getContainerX(),
                     maxY = (this.zoomFactor - 1) * this.getContainerY(),
@@ -183,21 +146,9 @@
                     y: y
                 };
             },
-
-			/**
-			 * Scale to a specific zoom factor (not relative)
-			 * @param zoomFactor
-			 * @param center
-			 */
             scaleTo: function (zoomFactor, center) {
                 this.scale(zoomFactor / this.zoomFactor, center);
             },
-
-			/**
-			 * Scales the element from specified center
-			 * @param scale
-			 * @param center
-			 */
             scale: function (scale, center) {
                 scale = this.scaleZoomFactor(scale);
                 this.addOffset({
@@ -205,28 +156,15 @@
                     y: (scale - 1) * (center.y + this.offset.y)
                 });
             },
-
-			/**
-			 * Scales the zoom factor relative to current state
-			 * @param scale
-			 * @return the actual scale (can differ because of max min zoom factor)
-			 */
             scaleZoomFactor: function (scale) {
                 var originalZoomFactor = this.zoomFactor;
                 this.zoomFactor *= scale;
                 this.zoomFactor = Math.min(this.options.maxZoom, Math.max(this.zoomFactor, this.options.minZoom));
                 return this.zoomFactor / originalZoomFactor;
             },
-
-			/**
-			 * Drags the element
-			 * @param center
-			 * @param lastCenter
-			 */
             drag: function (center, lastCenter, event) {
                 if (lastCenter) {
                     if (this.options.lockDragAxis) {
-                        // lock scroll to position that was changed the most
                         if (Math.abs(center.x - lastCenter.x) > Math.abs(center.y - lastCenter.y)) {
                             this.addOffset({
                                 x: -(center.x - lastCenter.x),
@@ -251,19 +189,9 @@
                     }
                 }
             },
-
-			/**
-			 * Calculates the touch center of multiple touches
-			 * @param touches
-			 * @return {Object}
-			 */
             getTouchCenter: function (touches) {
                 return this.getVectorAvg(touches);
             },
-
-			/**
-			 * Calculates the average of multiple vectors (x, y values)
-			 */
             getVectorAvg: function (vectors) {
                 return {
                     x: vectors.map(function (v) {
@@ -274,12 +202,6 @@
                     }).reduce(sum) / vectors.length
                 };
             },
-
-			/**
-			 * Adds an offset
-			 * @param offset the offset to add
-			 * @return return true when the offset change was accepted
-			 */
             addOffset: function (offset) {
                 this.offset = {
                     x: this.offset.x + offset.x,
@@ -294,21 +216,11 @@
                     this.sanitizeOffsetAnimation();
                 }
             },
-
-			/**
-			 * Checks if the offset is ok with the current zoom factor
-			 * @param offset
-			 * @return {Boolean}
-			 */
             isInsaneOffset: function (offset) {
                 var sanitizedOffset = this.sanitizeOffset(offset);
                 return sanitizedOffset.x !== offset.x ||
                     sanitizedOffset.y !== offset.y;
             },
-
-			/**
-			 * Creates an animation moving to a sane offset
-			 */
             sanitizeOffsetAnimation: function () {
                 var targetOffset = this.sanitizeOffset(this.offset),
                     startOffset = {
@@ -327,11 +239,6 @@
                     this.swing
                 );
             },
-
-			/**
-			 * Zooms back to the original position,
-			 * (no offset and zoom factor 1)
-			 */
             zoomOutAnimation: function () {
                 var startZoomFactor = this.zoomFactor,
                     zoomFactor = 1,
@@ -346,33 +253,16 @@
                     this.swing
                 );
             },
-
-			/**
-			 * Updates the aspect ratio
-			 */
             updateAspectRatio: function () {
                 this.setContainerY(this.getContainerX() / this.getAspectRatio());
             },
-
-			/**
-			 * Calculates the initial zoom factor (for the element to fit into the container)
-			 * @return the initial zoom factor
-			 */
             getInitialZoomFactor: function () {
-                // use .offsetWidth instead of width()
-                // because jQuery-width() return the original width but Zepto-width() will calculate width with transform.
-                // the same as .height()
                 if (this.container[0] && this.el[0]) {
                     return this.container[0].offsetWidth / this.el[0].offsetWidth;
                 } else {
                     return 0
                 }
             },
-
-			/**
-			 * Calculates the aspect ratio of the element
-			 * @return the aspect ratio
-			 */
             getAspectRatio: function () {
                 if (this.el[0]) {
                     var offsetHeight = this.el[0].offsetHeight;
@@ -382,30 +272,19 @@
                 }
 
             },
-
-			/**
-			 * Calculates the virtual zoom center for the current offset and zoom factor
-			 * (used for reverse zoom)
-			 * @return {Object} the current zoom center
-			 */
             getCurrentZoomCenter: function () {
-
-                // uses following formula to calculate the zoom center x value
-                // offset_left / offset_right = zoomcenter_x / (container_x - zoomcenter_x)
                 var length = this.container[0].offsetWidth * this.zoomFactor,
                     offsetLeft = this.offset.x,
                     offsetRight = length - offsetLeft - this.container[0].offsetWidth,
                     widthOffsetRatio = offsetLeft / offsetRight,
                     centerX = widthOffsetRatio * this.container[0].offsetWidth / (widthOffsetRatio + 1),
 
-                    // the same for the zoomcenter y
                     height = this.container[0].offsetHeight * this.zoomFactor,
                     offsetTop = this.offset.y,
                     offsetBottom = height - offsetTop - this.container[0].offsetHeight,
                     heightOffsetRatio = offsetTop / offsetBottom,
                     centerY = heightOffsetRatio * this.container[0].offsetHeight / (heightOffsetRatio + 1);
 
-                // prevents division by zero
                 if (offsetRight === 0) {
                     centerX = this.container[0].offsetWidth;
                 }
@@ -423,11 +302,6 @@
                 return !isCloseTo(this.zoomFactor, 1);
             },
 
-			/**
-			 * Returns the touches of an event relative to the container offset
-			 * @param event
-			 * @return array touches
-			 */
             getTouches: function (event) {
                 var position = this.container.offset();
                 return Array.prototype.slice.call(event.touches).map(function (touch) {
@@ -437,15 +311,6 @@
                     };
                 });
             },
-
-			/**
-			 * Animation loop
-			 * does not support simultaneous animations
-			 * @param duration
-			 * @param framefn
-			 * @param timefn
-			 * @param callback
-			 */
             animate: function (duration, framefn, timefn, callback) {
                 var startTime = new Date().getTime(),
                     renderFrame = (function () {
@@ -474,20 +339,10 @@
                 this.inAnimation = true;
                 requestAnimationFrame(renderFrame);
             },
-
-			/**
-			 * Stops the animation
-			 */
             stopAnimation: function () {
                 this.inAnimation = false;
 
             },
-
-			/**
-			 * Swing timing function for animations
-			 * @param p
-			 * @return {Number}
-			 */
             swing: function (p) {
                 return -Math.cos(p * Math.PI) / 2 + 0.5;
             },
@@ -507,10 +362,6 @@
                 y = y.toFixed(2);
                 return this.container.height(y);
             },
-
-			/**
-			 * Creates the expected html structure
-			 */
             setupMarkup: function () {
                 this.container = $('<div class="pinch-zoom-container"></div>');
                 this.el.before(this.container);
@@ -518,11 +369,8 @@
 
                 this.container.css({
                     'position': 'relative',
-                    //                  'width':'auto',
-                    //                  'height':'auto'
                 });
 
-                // Zepto doesn't recognize `webkitTransform..` style
                 this.el.css({
                     '-webkit-transform-origin': '0% 0%',
                     '-moz-transform-origin': '0% 0%',
@@ -540,21 +388,12 @@
                 this.update();
 
             },
-
-			/**
-			 * Binds all required event listeners
-			 */
             bindEvents: function () {
                 detectGestures(this.container.eq(0), this, this.viewerContainer);
-                // Zepto and jQuery both know about `on`
                 $(g).on('resize', this.update.bind(this));
                 $(this.el).find('img').on('load', this.update.bind(this));
 
             },
-
-			/**
-			 * Updates the css values according to the current zoom factor and offset
-			 */
             update: function () {
 
                 if (this.updatePlaned) {
@@ -579,13 +418,8 @@
                                 delete this.clone;
                             }
                         }).bind(this);
-                    // Scale 3d and translate3d are faster (at least on ios)
-                    // but they also reduce the quality.
-                    // PinchZoom uses the 3d transformations during interactions
-                    // after interactions it falls back to 2d transformations
                     if (!this.options.use2d || this.hasInteraction || this.inAnimation) {
                         this.is3d = true;
-                        //                      removeClone();
                         this.el.css({
                             '-webkit-transform': transform3d,
                             '-o-transform': transform2d,
@@ -594,16 +428,6 @@
                             'transform': transform3d
                         });
                     } else {
-
-                        // When changing from 3d to 2d transform webkit has some glitches.
-                        // To avoid this, a copy of the 3d transformed element is displayed in the
-                        // foreground while the element is converted from 3d to 2d transform
-                        if (this.is3d) {
-                            //                          this.clone = this.el.clone();
-                            //                          this.clone.css('pointer-events', 'none');
-                            //                          this.clone.appendTo(this.container);
-                            //                          setTimeout(removeClone, 200);
-                        }
                         this.el.css({
                             '-webkit-transform': transform2d,
                             '-o-transform': transform2d,
@@ -616,20 +440,12 @@
                     this.done && this.done.call(this, zoomFactor)
                 }).bind(this), 0);
             },
-
-			/**
-			 * Enables event handling for gestures
-			 */
             enable: function () {
                 this.enabled = true;
             },
-			/**
-			 * Disables event handling for gestures
-			 */
             disable: function () {
                 this.enabled = false;
             },
-            //销毁还原
             destroy: function () {
                 var dom = this.el.clone();
                 var p = this.container.parent();
@@ -762,9 +578,6 @@
                         lastclientY = event.changedTouches[0].clientY;
                         if (firstMove) {
                             updateInteraction(event);
-                            if (interaction) {
-                                //                          cancelEvent(event);
-                            }
                             startTouches = targetTouches(event.touches);
                         } else {
                             switch (interaction) {
@@ -776,7 +589,6 @@
                                     break;
                             }
                             if (interaction) {
-                                //                          cancelEvent(event);
                                 target.update(lastclientY);
                             }
                         }
@@ -1243,7 +1055,6 @@
                     container.appendChild(svg);
                     svg.style.width = "100%";
                     svg.style.height = "100%";
-                    // self.viewer[0].style.width = document.querySelector('.pageContainer').getBoundingClientRect().width + 'px';
                     self.progress.css({
                         width: num * self.loadedCount + "%"
                     })
