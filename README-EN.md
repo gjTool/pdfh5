@@ -4,14 +4,6 @@
 
 Pdfh5.js is based on pdf.js and jQuery. The mobile PDF preview plug-in can zoom in and support lazy loading.
 
-- [**If you think the plug-in is OK, please help with  star(for GitHub).**](https://github.com/gjTool/pdfh5)
-
-## Language
-
-- [English](https://github.com/gjTool/pdfh5/blob/master/README-EN.md)
-
-- [中文](https://github.com/gjTool/pdfh5/blob/master/README.md)
-
 ![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
 
 ## Update information
