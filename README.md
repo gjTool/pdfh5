@@ -163,7 +163,7 @@ var pdfh5 = new Pdfh5('#demo', {
 });
 ```
 
-- 	配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载（当renderType:"canvas"时，懒加载无效）
+- 	配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
 
 ```
 var pdfh5 = new Pdfh5('#demo', {

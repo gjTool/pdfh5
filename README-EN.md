@@ -161,7 +161,7 @@ var pdfh5 = new Pdfh5('#demo', {
 });
 ```
 
-- 	Configuration parameter lazy: true opens lazy loading, default is false, do not open lazy loading. When renderType: "canvas", lazy loading is invalid.
+- 	Configuration parameter lazy: true opens lazy loading, default is false, do not open lazy loading. 
 
 ```
 var pdfh5 = new Pdfh5('#demo', {
