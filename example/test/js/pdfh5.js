@@ -1079,7 +1079,7 @@
                 var arr1 = self.eventType["render"];
                 if (arr1 && arr1 instanceof Array) {
                     for (var i = 0; i < arr1.length; i++) {
-                        arr1[i] && arr1[i].call(self, self.loadedCount, time - self.initTime, container)
+                        arr1[i] && arr1[i].call(self, pageNum, time - self.initTime, container)
                     }
                 }
                 if (self.loadedCount === self.totalNum) {
