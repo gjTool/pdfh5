@@ -894,6 +894,10 @@
             var self = this;
             obj.cMapUrl = './cmaps/';
             obj.cMapPacked = true;
+            self.loadingBar.show();
+            self.progress.css({
+                width: "3%"
+            })
             pdfjsLib.getDocument(obj).then(function (pdf) {
                 self.loading.hide()
                 self.thePDF = pdf;
@@ -941,9 +945,6 @@
                 }
                 var promise = Promise.resolve();
                 var num = Math.floor(100 / self.totalNum).toFixed(2);
-                self.progress.css({
-                    width: "1%"
-                })
                 for (var i = 1; i <= self.totalNum; i++) {
                     self.cache[i + ""] = {
                         page: null,
@@ -1022,12 +1023,21 @@
                     container.appendChild(svg);
                     svg.style.width = "100%";
                     svg.style.height = "100%";
-                    self.progress.css({
-                        width: num * self.loadedCount + "%"
-                    })
-                    if (self.totalNum > 2 && self.loadedCount === self.totalNum - 3) {
+                    if (self.totalNum > 2 && self.loadedCount >= self.totalNum - 2) {
                         self.progress.css({
-                            width: "95%"
+                            width: "96%"
+                        })
+                    } else if (self.totalNum > 2 && self.loadedCount >= self.totalNum - 1) {
+                        self.progress.css({
+                            width: "98%"
+                        })
+                    } else if (self.totalNum > 2 && self.loadedCount == self.totalNum) {
+                        self.progress.css({
+                            width: "100%"
+                        })
+                    } else {
+                        self.progress.css({
+                            width: num * self.loadedCount + "%"
                         })
                     }
                     var time = new Date().getTime();
@@ -1059,12 +1069,21 @@
             canvas.height = viewport.height;
             canvas.width = viewport.width;
 
-            self.progress.css({
-                width: num * self.loadedCount + "%"
-            })
-            if (self.totalNum > 2 && self.loadedCount === self.totalNum - 3) {
+            if (self.totalNum > 2 && self.loadedCount >= self.totalNum - 2) {
                 self.progress.css({
-                    width: "95%"
+                    width: "96%"
+                })
+            } else if (self.totalNum > 2 && self.loadedCount >= self.totalNum - 1) {
+                self.progress.css({
+                    width: "98%"
+                })
+            } else if (self.totalNum > 2 && self.loadedCount == self.totalNum) {
+                self.progress.css({
+                    width: "100%"
+                })
+            } else {
+                self.progress.css({
+                    width: num * self.loadedCount + "%"
                 })
             }
             obj2.src = obj2.canvas.toDataURL("image/jpeg");
@@ -1103,7 +1122,9 @@
             self.progress.css({
                 width: "100%"
             });
-            self.loadingBar.hide();
+            setTimeout(function () {
+                self.loadingBar.hide();
+            }, 300)
             self.endTime = time - self.initTime;
             if (options.renderType === "svg") {
                 if (self.totalNum !== 1) {
