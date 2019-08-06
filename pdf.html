@@ -13,6 +13,13 @@
     <title>PDFH5</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/pdfh5.css" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 
 <body>
@@ -25,7 +32,9 @@
         //当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf
         //优先顺序：  ？file= > pdfurl > data
         var pdfh5 = new Pdfh5('#demo', {
-            pdfurl: "//www.gjtool.cn/pdfh5/git.pdf"
+            pdfurl: "//www.gjtool.cn/pdfh5/git.pdf",
+            renderType: "canvas",
+            lazy: true
         });
 
         //配置项参数 type:"ajax" 请求方式为ajax，默认fetch

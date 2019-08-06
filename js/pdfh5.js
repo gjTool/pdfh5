@@ -611,7 +611,6 @@
             }
 
         };
-
         return PinchZoom;
     };
     var PinchZoom = definePinchZoom($);
@@ -677,7 +676,7 @@
                 '</div>' +
                 ' </div>' +
                 '<div class="backTop">' +
-                '</div>'+
+                '</div>' +
                 '<div class="loadEffect loading"></div>';
             if (!this.container.find('.pageNum')[0]) {
                 this.container.append(html);
@@ -751,7 +750,7 @@
                         self.pageNum.fadeOut(200);
                     }
                 }, 1500)
-                if (options.lazy && options.renderType === "svg") {
+                if (options.lazy) {
                     var num = Math.floor(100 / self.totalNum).toFixed(2);
                     if (!self.cache[self.cacheNum + ""].loaded) {
                         var page = self.cache[self.cacheNum + ""].page;
@@ -759,7 +758,11 @@
                         var pageNum = self.cacheNum;
                         self.cache[pageNum + ""].loaded = true;
                         var scaledViewport = self.cache[pageNum + ""].scaledViewport;
-                        self.renderSvg(page, scaledViewport, pageNum, num, container, options)
+                        if (options.renderType === "svg") {
+                            self.renderSvg(page, scaledViewport, pageNum, num, container, options)
+                        } else {
+                            self.renderCanvas(page, scaledViewport, pageNum, num, container, options)
+                        }
                     }
                     if (self.cache[(self.totalNum - 1) + ""].loaded && !self.cache[self.totalNum + ""].loaded) {
                         var page = self.cache[self.totalNum + ""].page;
@@ -767,7 +770,11 @@
                         var pageNum = self.totalNum;
                         self.cache[pageNum + ""].loaded = true;
                         var scaledViewport = self.cache[pageNum + ""].scaledViewport;
-                        self.renderSvg(page, scaledViewport, pageNum, num, container, options)
+                        if (options.renderType === "svg") {
+                            self.renderSvg(page, scaledViewport, pageNum, num, container, options)
+                        } else {
+                            self.renderCanvas(page, scaledViewport, pageNum, num, container, options)
+                        }
                     }
                 }
                 var arr1 = self.eventType["scroll"];
@@ -822,7 +829,7 @@
                     $.ajax({
                         type: "get",
                         mimeType: 'text/plain; charset=x-user-defined',
-                        cache:false,
+                        cache: false,
                         url: url,
                         success: function (data) {
                             var rawLength = data.length;
@@ -830,15 +837,9 @@
                             for (i = 0; i < rawLength; i++) {
                                 array[i] = data.charCodeAt(i) & 0xff;
                             }
-                            if (options.renderType === "svg") {
-                                self.renderPdf(options, {
-                                    data: array
-                                })
-                            } else {
-                                self.renderOld(options, {
-                                    data: array
-                                })
-                            }
+                            self.renderPdf(options, {
+                                data: array
+                            })
                         },
                         error: function (err) {
                             self.loading.hide()
@@ -860,26 +861,14 @@
                         }
                     });
                 } else {
-                    if (options.renderType === "svg") {
-                        self.renderPdf(options, {
-                            url: url
-                        })
-                    } else {
-                        self.renderOld(options, {
-                            url: url
-                        })
-                    }
+                    self.renderPdf(options, {
+                        url: url
+                    })
                 }
             } else if (options.data) {
-                if (options.renderType === "svg") {
-                    self.renderPdf(options, {
-                        data: options.data
-                    })
-                } else {
-                    self.renderOld(options, {
-                        data: options.data
-                    })
-                }
+                self.renderPdf(options, {
+                    data: options.data
+                })
             } else {
                 var time = new Date().getTime();
                 self.endTime = time - self.initTime;
@@ -915,6 +904,40 @@
                     for (var i = 0; i < arr1.length; i++) {
                         arr1[i] && arr1[i].call(self)
                     }
+                }
+                self.pinchZoom = new PinchZoom(self.viewer, {
+                    tapZoomFactor: options.tapZoomFactor,
+                    zoomOutFactor: options.zoomOutFactor,
+                    animationDuration: options.animationDuration,
+                    maxZoom: options.maxZoom,
+                    minZoom: options.minZoom
+                }, self.viewerContainer);
+                self.pinchZoom.done = function (scale) {
+                    if (scale == 1) {
+                        if (self.viewerContainer) {
+                            self.viewerContainer.css({
+                                '-webkit-overflow-scrolling': 'touch'
+                            })
+                        }
+
+                    } else {
+                        if (self.viewerContainer) {
+                            self.viewerContainer.css({
+                                '-webkit-overflow-scrolling': 'auto'
+                            })
+                        }
+                    }
+                    var arr1 = self.eventType["zoom"];
+                    if (arr1 && arr1 instanceof Array) {
+                        for (var i = 0; i < arr1.length; i++) {
+                            arr1[i] && arr1[i].call(self, scale)
+                        }
+                    }
+                }
+                if (options.zoomEnable) {
+                    self.pinchZoom.enable()
+                } else {
+                    self.pinchZoom.disable()
                 }
                 var promise = Promise.resolve();
                 var num = Math.floor(100 / self.totalNum).toFixed(2);
@@ -964,7 +987,10 @@
                             if (pageNum > sum && options.lazy) {
                                 return
                             }
-                            return self.renderSvg(page, scaledViewport, pageNum, num, container, options)
+                            if (options.renderType === "svg") {
+                                return self.renderSvg(page, scaledViewport, pageNum, num, container, options)
+                            }
+                            return self.renderCanvas(page, scaledViewport, pageNum, num, container, options)
                         });
                     }.bind(null, i));
                 }
@@ -985,65 +1011,6 @@
                     }
                 }
             })
-        },
-        finalRender: function (options) {
-            var time = new Date().getTime();
-            var self = this;
-            self.progress.css({
-                width: "100%"
-            });
-            self.loadingBar.hide();
-            self.endTime = time - self.initTime;
-            if (options.renderType === "svg") {
-                if (self.totalNum !== 1) {
-                    self.cache[(self.totalNum - 1) + ""].loaded = true;
-                } else {
-                    self.cache["1"].loaded = true;
-                }
-            }
-            if (options.zoomEnable) {
-                self.pinchZoom = new PinchZoom(self.viewer, {
-                    tapZoomFactor: options.tapZoomFactor,
-                    zoomOutFactor: options.zoomOutFactor,
-                    animationDuration: options.animationDuration,
-                    maxZoom: options.maxZoom,
-                    minZoom: options.minZoom
-                }, self.viewerContainer);
-                self.pinchZoom.done = function (scale) {
-                    if (scale == 1) {
-                        if (self.viewerContainer) {
-                            self.viewerContainer.css({
-                                '-webkit-overflow-scrolling': 'touch'
-                            })
-                        }
-
-                    } else {
-                        if (self.viewerContainer) {
-                            self.viewerContainer.css({
-                                '-webkit-overflow-scrolling': 'auto'
-                            })
-                        }
-                    }
-                    var arr1 = self.eventType["zoom"];
-                    if (arr1 && arr1 instanceof Array) {
-                        for (var i = 0; i < arr1.length; i++) {
-                            arr1[i] && arr1[i].call(self, scale)
-                        }
-                    }
-                }
-            }
-            var arr1 = self.eventType["complete"];
-            if (arr1 && arr1 instanceof Array) {
-                for (var i = 0; i < arr1.length; i++) {
-                    arr1[i] && arr1[i].call(self, "success", "pdf加载完成", self.endTime)
-                }
-            }
-            var arr2 = self.eventType["success"];
-            if (arr2 && arr2 instanceof Array) {
-                for (var i = 0; i < arr2.length; i++) {
-                    arr2[i] && arr2[i].call(self, self.endTime)
-                }
-            }
         },
         renderSvg: function (page, scaledViewport, pageNum, num, container, options) {
             var self = this;
@@ -1071,108 +1038,90 @@
                 });
             });
         },
-        renderOld: function (options, obj) {
+        renderCanvas: function (page, viewport, pageNum, num, container, options) {
             var self = this;
-            obj.cMapUrl = './cmaps/';
-            obj.cMapPacked = true;
-            pdfjsLib.getDocument(obj).then(function (pdf) {
-                self.thePDF = pdf;
-                self.totalNum = pdf.numPages;
-                self.progress.css({
-                    width: "1%"
-                })
-                self.loadedCount = 1;
-                self.thePDF.getPage(1).then(handlePages);
-                self.pageTotal.text(self.totalNum)
+            var viewport = page.getViewport(options.scale);
+            var scale = (self.docWidth / viewport.width).toFixed(2)
+            var canvas = document.createElement("canvas");
+            var obj2 = {
+                'Cheight': viewport.height * scale,
+                'width': viewport.width,
+                'height': viewport.height,
+                'canvas': canvas,
+                'index': self.loadedCount
+            }
+            var context = canvas.getContext('2d');
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+
+            self.progress.css({
+                width: num * self.loadedCount + "%"
+            })
+            obj2.src = obj2.canvas.toDataURL("image/jpeg");
+            //在canvas上绘制
+            return self.pdfRender = page.render({
+                canvasContext: context,
+                viewport: viewport
+            }).then(function () {
+                self.loadedCount++;
+                var img = new Image();
                 var time = new Date().getTime();
-                var arr1 = self.eventType["ready"];
+                var time2 = 0;
+                if (self.renderTime == 0) {
+                    time2 = time - self.startTime
+                } else {
+                    time2 = time - self.renderTime
+                }
+                obj2.src = obj2.canvas.toDataURL("image/jpeg");
+                img.src = obj2.src;
+                container.appendChild(img);
+                var time = new Date().getTime();
+                var arr1 = self.eventType["render"];
                 if (arr1 && arr1 instanceof Array) {
                     for (var i = 0; i < arr1.length; i++) {
-                        arr1[i] && arr1[i].call(self)
+                        arr1[i] && arr1[i].call(self, self.loadedCount, time - self.initTime, container)
                     }
                 }
-            }).catch(function (err) {
-                self.loading.hide();
-                var time = new Date().getTime();
-                self.endTime = time - self.initTime;
-                var arr1 = self.eventType["complete"];
-                if (arr1 && arr1 instanceof Array) {
-                    for (var i = 0; i < arr1.length; i++) {
-                        arr1[i] && arr1[i].call(self, "error", err.message, self.endTime)
-                    }
-                }
-                var arr2 = self.eventType["error"];
-                if (arr2 && arr2 instanceof Array) {
-                    for (var i = 0; i < arr2.length; i++) {
-                        arr2[i] && arr2[i].call(self, err.message, self.endTime)
-                    }
+                if (self.loadedCount === self.totalNum) {
+                    self.finalRender(options)
                 }
             })
-            function handlePages(page) {
-                var num = Math.floor(100 / self.totalNum).toFixed(2);
-                var viewport = page.getViewport(options.scale);
-                var scale = (self.docWidth / viewport.width).toFixed(2)
-                var canvas = document.createElement("canvas");
-                var obj2 = {
-                    'Cheight': viewport.height * scale,
-                    'width': viewport.width,
-                    'height': viewport.height,
-                    'canvas': canvas,
-                    'index': self.loadedCount
+        },
+        finalRender: function (options) {
+            var time = new Date().getTime();
+            var self = this;
+            self.progress.css({
+                width: "100%"
+            });
+            self.loadingBar.hide();
+            self.endTime = time - self.initTime;
+            if (options.renderType === "svg") {
+                if (self.totalNum !== 1) {
+                    self.cache[(self.totalNum - 1) + ""].loaded = true;
+                } else {
+                    self.cache["1"].loaded = true;
                 }
-                var context = canvas.getContext('2d');
-                canvas.height = viewport.height;
-                canvas.width = viewport.width;
-                //在canvas上绘制
-                self.pdfRender = page.render({
-                    canvasContext: context,
-                    viewport: viewport
-                });
-                self.progress.css({
-                    width: num * self.loadedCount + "%"
-                })
-                obj2.src = obj2.canvas.toDataURL("image/jpeg");
-                self.pdfRender.promise.then(function () {
-                    var img = new Image();
-                    var time = new Date().getTime();
-                    var time2 = 0;
-                    if (self.renderTime == 0) {
-                        time2 = time - self.startTime
-                    } else {
-                        time2 = time - self.renderTime
-                    }
-                    obj2.src = obj2.canvas.toDataURL("image/jpeg");
-                    img.src = obj2.src;
-                    var container = document.createElement('div');
-                    container.id = 'pageContainer' + obj2.index;
-                    container.className = 'pageContainer';
-                    container.setAttribute('name', 'page=' + obj2.index);
-                    container.setAttribute('title', 'Page ' + obj2.index);
-                    $(container).css({
-                        'max-width': obj2.width
-                    })
-                    container.appendChild(img);
-                    if (self.viewer) {
-                        self.viewer.append(container);
-                    }
-                    var time = new Date().getTime();
-                    var arr1 = self.eventType["render"];
-                    if (arr1 && arr1 instanceof Array) {
-                        for (var i = 0; i < arr1.length; i++) {
-                            arr1[i] && arr1[i].call(self, obj2.index, time - self.initTime, container)
-                        }
-                    }
-                }).then(function () {
-                    //开始下一页到绘制
-                    self.loadedCount++;
-                    if (!self.pdfLoaded && self.thePDF && self.loadedCount <= self.totalNum) {
-                        self.thePDF.getPage(self.loadedCount).then(handlePages);
-                    } else {
-                        self.finalRender(options)
-                    }
-                }).catch(function (err) {
-                    console.log(err)
-                })
+            }
+            if (options.zoomEnable) {
+                if (self.pinchZoom) {
+                    self.pinchZoom.enable()
+                }
+            } else {
+                if (self.pinchZoom) {
+                    self.pinchZoom.disable()
+                }
+            }
+            var arr1 = self.eventType["complete"];
+            if (arr1 && arr1 instanceof Array) {
+                for (var i = 0; i < arr1.length; i++) {
+                    arr1[i] && arr1[i].call(self, "success", "pdf加载完成", self.endTime)
+                }
+            }
+            var arr2 = self.eventType["success"];
+            if (arr2 && arr2 instanceof Array) {
+                for (var i = 0; i < arr2.length; i++) {
+                    arr2[i] && arr2[i].call(self, self.endTime)
+                }
             }
         },
         show: function (callback) {
