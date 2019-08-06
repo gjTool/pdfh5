@@ -1025,6 +1025,11 @@
                     self.progress.css({
                         width: num * self.loadedCount + "%"
                     })
+                    if (self.totalNum > 2 && self.loadedCount === self.totalNum - 3) {
+                        self.progress.css({
+                            width: "95%"
+                        })
+                    }
                     var time = new Date().getTime();
                     var arr1 = self.eventType["render"];
                     if (arr1 && arr1 instanceof Array) {
@@ -1057,6 +1062,11 @@
             self.progress.css({
                 width: num * self.loadedCount + "%"
             })
+            if (self.totalNum > 2 && self.loadedCount === self.totalNum - 3) {
+                self.progress.css({
+                    width: "95%"
+                })
+            }
             obj2.src = obj2.canvas.toDataURL("image/jpeg");
             //在canvas上绘制
             return self.pdfRender = page.render({
