@@ -74,7 +74,7 @@ npm install pdfh5
 ```
 <template>
   <div id="app">
-	  <div id="demo"></div>
+	<div id="demo"></div>
   </div>
 </template>
 <script>
@@ -98,15 +98,15 @@ npm install pdfh5
 </script>
 
 <style>
-	@import "pdfh5/css/pdfh5.css";
-	*{
-		padding: 0;
-		margin: 0;
-	}
-	html,body,#app {
-		width: 100%;
-		height: 100%;
-	}
+@import "pdfh5/css/pdfh5.css";
+*{
+	padding: 0;
+	margin: 0;
+}
+html,body,#app {
+	width: 100%;
+	height: 100%;
+}
 </style>
 ```
 
@@ -124,57 +124,6 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 	pdfurl: "./default.pdf"
 });
 ```
-- 配置项参数 type:"ajax" 请求方式为ajax，默认fetch
-
-```
-var pdfh5 = new Pdfh5('#demo', {
-			pdfurl: "./default.pdf",
-			type:"ajax"
-	});
-```
-- 配置项参数 maxZoom:3 手势缩放最大倍数，默认4
-
-```
-var pdfh5 = new Pdfh5('#demo', {
-			pdfurl: "./default.pdf",
-			maxZoom:3
-	});
-```
-- 配置项参数 tapZoomFactor:3 双击放大倍数，默认2
-
-```
-var pdfh5 = new Pdfh5('#demo', {
-			pdfurl: "./default.pdf",
-			tapZoomFactor:3
-	});
-```
-
--  配置项参数 renderType:"canvas" 渲染模式为canvas，默认svg
-
-```
-var pdfh5 = new Pdfh5('#demo', {
-		pdfurl: "./default.pdf",
-		renderType:"canvas"
-});
-```
--  配置项参数 scale:2 渲染的清晰度比例，默认1.3
-
-```
-var pdfh5 = new Pdfh5('#demo', {
-		pdfurl: "./default.pdf",
-		renderType:"canvas",
-		scale:2
-});
-```
-
-- 	配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载（当renderType:"canvas"时，懒加载无效）
-
-```
-var pdfh5 = new Pdfh5('#demo', {
-		pdfurl: "./default.pdf",
-		lazy:true 
-});
-```
 
 - 	配置项参数 URIenable:false 可以无视地址栏参数，只拿配置项的pdfurl或者data来渲染pdf
 
@@ -182,6 +131,59 @@ var pdfh5 = new Pdfh5('#demo', {
 var pdfh5 = new Pdfh5('.pdfjs', {
 	URIenable:false,
 	pdfurl: "./default.pdf"
+});
+```
+
+- 配置项参数 type:"ajax" 请求方式为ajax，默认fetch
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+	pdfurl: "./default.pdf",
+	type:"ajax"
+});
+```
+
+-  配置项参数 renderType:"canvas" 渲染模式为canvas，默认svg
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+	pdfurl: "./default.pdf",
+	renderType:"canvas"
+});
+```
+-  配置项参数 scale:2 渲染的清晰度比例，默认1.3
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+	pdfurl: "./default.pdf",
+	renderType:"canvas",
+	scale:2
+});
+```
+
+- 	配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载（当renderType:"canvas"时，懒加载无效）
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+	pdfurl: "./default.pdf",
+	lazy:true 
+});
+```
+
+- 配置项参数 maxZoom:3 手势缩放最大倍数，默认4
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+	pdfurl: "./default.pdf",
+	maxZoom:3
+});
+```
+- 配置项参数 tapZoomFactor:3 双击放大倍数，默认2
+
+```
+var pdfh5 = new Pdfh5('#demo', {
+	pdfurl: "./default.pdf",
+	tapZoomFactor:3
 });
 ```
 
@@ -201,7 +203,7 @@ pdfh5.on("render", function (currentNum, time, currentPageDom) {
 })
 ```
 
-- 	监听完成事件，加载失败、渲染成功都会触发
+- 	监听完成事件，加载失败、渲染成功都会触发。status有两种状态success和error
 
 ```
 pdfh5.on("complete", function (status, msg, time) {
@@ -230,9 +232,9 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 - 	配置项参数data，文件流形式传入  pdfurl和data二选一
 
 ```
-	var pdfh5 = new Pdfh5('.pdfjs', {
-		data: data
-	});
+var pdfh5 = new Pdfh5('.pdfjs', {
+	data: data
+});
 ```
 
 - 	配置项参数scrollEnable:false不允许pdf滚动,true允许pdf滚动  默认允许
@@ -245,7 +247,8 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 ```
 
 ```
-pdfh5.scrollEnable(true)允许pdf滚动,pdfh5.scrollEnable(false)不允许pdf滚动
+pdfh5.scrollEnable(true) 允许pdf滚动
+pdfh5.scrollEnable(false) 不允许pdf滚动
 ```
 
 - 	配置项参数zoomEnable:false不允许pdf手势缩放,true允许pdf手势缩放  默认允许
@@ -257,12 +260,14 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 });
 ```
 ```
-pdfh5.zoomEnable(true)允许pdf手势缩放，pdfh5.zoomEnable(false)不允许pdf手势缩放
+pdfh5.zoomEnable(true) 允许pdf手势缩放
+pdfh5.zoomEnable(false) 不允许pdf手势缩放
 ```
 - 	pdfh5还原、销毁（附带回调函数）：   
 
 ```
-pdfh5.reset(callback) pdfh5.destroy(callback)
+pdfh5.reset(callback) 
+pdfh5.destroy(callback)
 ```
 
 - 	pdfh5显示、隐藏（附带回调函数）：  
@@ -276,6 +281,9 @@ pdfh5.show(callback) pdfh5.hide(callback)
 
 ```	
 pdfh5.on("error",function(msg,time){
+		
+})
+pdfh5.on("success",function(msg,time){
 		
 })
 pdfh5.on("zoom",function(scale){
