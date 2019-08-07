@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>PDF移动端插件</title>
+    <meta name="keywords" content="pdfh5.js,pdf.js,gjTool,gjtool.cn,www.gjtool.cn,gjTool.js" />
+    <meta name="description" content="PDF移动端插件-pdfh5.js" />
+    <title>PDF移动端插件-pdfh5.js</title>
     <link rel="stylesheet" href="css/style.css" />
     <style>
         html,
@@ -13,7 +15,7 @@
             width: 100%;
             height: 100%;
         }
-        
+
         .docs-header-content {
             max-width: 388px;
             float: left;
@@ -26,8 +28,9 @@
             -webkit-animation-duration: 2s;
             -moz-animation-duration: 2s;
             animation-duration: 2s;
+            background: #fff;
         }
-        
+
         .docs-subtitle {
             max-width: 750px;
             margin: 0 auto 20px;
@@ -39,12 +42,12 @@
             font-size: 41px;
             line-height: 60px;
         }
-        
+
         .github-btn {
             overflow: hidden;
             border: 0;
         }
-        
+
         .phone {
             margin: 10px auto;
             position: relative;
@@ -59,7 +62,7 @@
             float: right;
             transform: translateX(-8%);
         }
-        
+
         .phone iframe {
             width: 270px;
             height: 100%;
@@ -67,7 +70,7 @@
             width: 100%;
             margin-top: 15px;
         }
-        
+
         .phone:before {
             content: '';
             width: 60px;
@@ -79,7 +82,7 @@
             background: #333;
             top: 50px;
         }
-        
+
         .phone:after {
             content: '';
             position: absolute;
@@ -92,7 +95,7 @@
             box-sizing: border-box;
             border: 5px solid #333;
         }
-        
+
         .phone .statusbar {
             position: absolute;
             width: 270px;
@@ -104,14 +107,14 @@
             -webkit-background-size: 100% auto;
             background-size: 100% auto;
         }
-        
-         :before,
-         :after {
+
+        :before,
+        :after {
             -webkit-box-sizing: border-box;
             -moz-box-sizing: border-box;
             box-sizing: border-box;
         }
-        
+
         .phone-link {
             position: absolute;
             width: 100%;
@@ -121,7 +124,7 @@
             margin-top: 25px;
             margin-bottom: 25px;
         }
-        
+
         a,
         a:focus,
         a:active,
@@ -129,14 +132,14 @@
             color: #018efb;
             text-decoration: underline;
         }
-        
+
         ol {
             width: 90%;
             margin-left: 40px;
             list-style: decimal;
             text-align: left;
         }
-        
+
         ol li {
             margin: 10px 0;
         }
@@ -147,46 +150,80 @@
     <div style="max-width:1024px;margin:0 auto;">
         <div class="docs-header-content" style="transform:none;-webkit-transform:none;">
             <p class="docs-subtitle">pdfh5.js - 移动端预览PDF插件，基于pdf.js和jQuery</p>
-            <a href="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=pdfh5&amp;type=watch&amp;count=true" style="display:block;margin-bottom:30px;">
+            <a href="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=pdfh5&amp;type=watch&amp;count=true"
+                style="display:block;margin-bottom:30px;">
                 <div id="code"></div>
             </a>
-            <iframe class="github-btn" src="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=pdfh5&amp;type=watch&amp;count=true" width="100" height="20">
+            <iframe class="github-btn"
+                src="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=pdfh5&amp;type=watch&amp;count=true" width="100"
+                height="20">
             </iframe>
-            <iframe class="github-btn" src="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=pdfh5&amp;type=fork&amp;count=true" width="100" height="20">
+            <iframe class="github-btn"
+                src="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=pdfh5&amp;type=fork&amp;count=true" width="100"
+                height="20">
             </iframe>
             <p style="text-align: left;margin-top: 20px;">本插件所需文件如下：</p>
             <ol>
-                <li><a target="_blank" download="js" href="//www.gjtool.cn/pdfh5/js/cmaps.zip">cmaps文件夹-解决字体不全问题（下载压缩包解压） 下载大小：1.11MB</a></li>
+                <li><a target="_blank" download="js"
+                        href="//www.gjtool.cn/pdfh5/js/cmaps.zip">cmaps文件夹-解决字体不全问题（下载压缩包解压） 下载大小：1.11MB</a></li>
                 <li><a target="_blank" download="js" href="//www.gjtool.cn/pdfh5/js/pdf.js">pdf.js 下载大小：656kb</a></li>
-                <li><a target="_blank" download="js" href="//www.gjtool.cn/pdfh5/js/pdf.worker.js">pdf.worker.js 下载大小：736kb</a></li>
-                <li><a target="_blank" download="js" href="//www.gjtool.cn/pdfh5/js/jquery-1.11.3.min.js">jquery-1.11.3.min.js 下载大小：94kb</a></li>
-                <li><a target="_blank" download="js" href="//www.gjtool.cn/pdfh5/js/pdfh5.js">pdfh5.js 下载大小：55kb</a></li>
-                <li><a target="_blank" download="css" href="//www.gjtool.cn/pdfh5/css/pdfh5.css">pdfh5.css 下载大小：9kb</a></li>
+                <li><a target="_blank" download="js" href="//www.gjtool.cn/pdfh5/js/pdf.worker.js">pdf.worker.js
+                        下载大小：736kb</a></li>
+                <li><a target="_blank" download="js"
+                        href="//www.gjtool.cn/pdfh5/js/jquery-1.11.3.min.js">jquery-1.11.3.min.js 下载大小：94kb</a></li>
+                <li><a target="_blank" download="js" href="//www.gjtool.cn/pdfh5/js/pdfh5.js">pdfh5.js 下载大小：55kb</a>
+                </li>
+                <li><a target="_blank" download="css" href="//www.gjtool.cn/pdfh5/css/pdfh5.css">pdfh5.css 下载大小：9kb</a>
+                </li>
             </ol>
-            <p style="text-align: left;margin-top: 20px;">pdfh5支持在线预览，修改地址栏file=后的地址就行，如果不填写，就在实例化的时候传入pdf地址：</p>
-            <a target="_blank" href="//www.gjtool.cn/pdfh5/pdf.html?file=//www.gjtool.cn/pdfh5/test.pdf">https://www.gjtool.cn/pdfh5/pdf.html?file=//www.gjtool.cn/pdfh5/test.pdf</a>
-            <p style="text-align: left;margin-top: 20px;">默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf。pdfh5实例初始化：</p>
-            <pre style="text-align: left;margin-top: 20px;background: #111;color:aqua">
-           
 
+        </div>
+        <p style="text-align: left;margin-top: 20px;">pdfh5支持在线预览，修改地址栏file=后的地址就行，如果不填写，就在实例化的时候传入pdf地址：</p>
+        <a target="_blank"
+            href="//www.gjtool.cn/pdfh5/pdf.html?file=//www.gjtool.cn/pdfh5/test.pdf">https://www.gjtool.cn/pdfh5/pdf.html?file=//www.gjtool.cn/pdfh5/test.pdf</a>
+        <p style="text-align: left;margin-top: 20px;">
+            默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf。pdfh5实例初始化：</p>
+<pre style="text-align: left;margin-top: 20px;background: #111;color:aqua">
     var pdfh5 = new Pdfh5('.pdfjs', {
         pdfurl: 'default.pdf'
     });
-            </pre>
-        </div>
+</pre>
         <div class="phone">
             <iframe src="pdf.html" frameborder="0" scrolling="no"></iframe>
             <div class="statusbar"></div>
-            <a href="pdf.html" target="_blank" style="display:block;width:60px;height:60px;position: absolute;bottom:20PX;left:50%;margin-left: -30px;z-index:100;"></a>
+            <a href="pdf.html" target="_blank"
+                style="display:block;width:60px;height:60px;position: absolute;bottom:20PX;left:50%;margin-left: -30px;z-index:100;"></a>
             <p class="phone-link">
                 <a target="_blank" href="pdf.html">Open it in a new page</a>
             </p>
+            <p style="position: absolute;bottom: -96px;left: 0;color: #777;font-size: 14px;
+            text-indent: 70px;">鄂ICP备19002193号-1</p>
         </div>
+
     </div>
     <script src="js/jquery-1.11.3.min.js"></script>
     <script src="js/jquery.qrcode.min.js"></script>
     <script>
         $('#code').qrcode(location.href);
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?d924028c274d650b6f12d391ec251143";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+        (function () {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
     </script>
 </body>
 
