@@ -123,7 +123,7 @@ new Pdfh5(selector, options);
 
 ## options配置项参数列表
 
-- 	配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
+- **示例：** 配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
 
 ```javascript
 var pdfh5 = new Pdfh5('#demo', {
@@ -149,7 +149,7 @@ var pdfh5 = new Pdfh5('#demo', {
 
 ## methods 方法列表
 
-- 是否允许pdf滚动
+- **示例：** 是否允许pdf滚动
 
 ```javascript
 pdfh5.scrollEnable(true) //允许pdf滚动
@@ -170,7 +170,7 @@ pdfh5.scrollEnable(false) //不允许pdf滚动
 
 ## on方法监所有事件-事件名列表
 
-- 监听pdf准备开始渲染，此时可以拿到pdf总页数
+- **示例：** 监听pdf准备开始渲染，此时可以拿到pdf总页数
 
 ```javascript
 pdfh5.on("ready", function () {
