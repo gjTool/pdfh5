@@ -158,7 +158,6 @@ pdfh5.scrollEnable(false) //不允许pdf滚动
 
 |参数名称|类型|取值|作用|
 |:---:|:---:|:---:|:---:|
-|type| {String}|"ajax"、"fetch"，默认"fetch"|请求pdf方式|
 |scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动|
 |zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
 |show| {Fuction}|带一个回调函数参数|pdfh5显示|
