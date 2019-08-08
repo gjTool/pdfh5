@@ -37,19 +37,19 @@ pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，�
 
 - 	1.引入css   
 
-```
+```javascript
 <link rel="stylesheet" href="css/pdfh5.css" />
 ```
 
 - 	2.创建div  
 
-```
+```javascript
 <div id="demo"></div>
 ```
 
 - 	3.依次引入js   
 
-```
+```javascript
 <script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/pdf.worker.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
@@ -58,7 +58,7 @@ pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，�
 
 - 	4.实例化
 
-```
+```javascript
 var pdfh5 = new Pdfh5('#demo', {
   pdfurl: "./default.pdf"
 });
@@ -73,7 +73,7 @@ npm install pdfh5
 ```
 - 	2.使用
 
-```
+```javascript
 <template>
   <div id="app">
 	<div id="demo"></div>
@@ -121,7 +121,7 @@ html,body,#app {
 - 	当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf
 	优先顺序：  ？file= > pdfurl > data
 
-```
+```javascript
 var pdfh5 = new Pdfh5('.pdfjs', {
 	pdfurl: "./default.pdf"
 });
@@ -129,7 +129,7 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 
 - 	配置项参数 URIenable:false 可以无视地址栏参数，只拿配置项的pdfurl或者data来渲染pdf
 
-```
+```javascript
 var pdfh5 = new Pdfh5('.pdfjs', {
 	URIenable:false,
 	pdfurl: "./default.pdf"
@@ -138,7 +138,7 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 
 - 配置项参数 type:"ajax" 请求方式为ajax，默认fetch
 
-```
+```javascript
 var pdfh5 = new Pdfh5('#demo', {
 	pdfurl: "./default.pdf",
 	type:"ajax"
@@ -147,7 +147,7 @@ var pdfh5 = new Pdfh5('#demo', {
 
 -  配置项参数 renderType:"canvas" 渲染模式为canvas，默认svg
 
-```
+```javascript
 var pdfh5 = new Pdfh5('#demo', {
 	pdfurl: "./default.pdf",
 	renderType:"canvas"
@@ -155,7 +155,7 @@ var pdfh5 = new Pdfh5('#demo', {
 ```
 -  配置项参数 scale:2 渲染的清晰度比例，默认1.3
 
-```
+```javascript
 var pdfh5 = new Pdfh5('#demo', {
 	pdfurl: "./default.pdf",
 	renderType:"canvas",
@@ -165,7 +165,7 @@ var pdfh5 = new Pdfh5('#demo', {
 
 - 	配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
 
-```
+```javascript
 var pdfh5 = new Pdfh5('#demo', {
 	pdfurl: "./default.pdf",
 	lazy:true 
@@ -174,7 +174,7 @@ var pdfh5 = new Pdfh5('#demo', {
 
 - 配置项参数 maxZoom:3 手势缩放最大倍数，默认4
 
-```
+```javascript
 var pdfh5 = new Pdfh5('#demo', {
 	pdfurl: "./default.pdf",
 	maxZoom:3
@@ -182,7 +182,7 @@ var pdfh5 = new Pdfh5('#demo', {
 ```
 - 配置项参数 tapZoomFactor:3 双击放大倍数，默认2
 
-```
+```javascript
 var pdfh5 = new Pdfh5('#demo', {
 	pdfurl: "./default.pdf",
 	tapZoomFactor:3
@@ -191,7 +191,7 @@ var pdfh5 = new Pdfh5('#demo', {
 
 - 	pdf准备开始渲染，此时可以拿到pdf总页数
 
-```
+```javascript
 pdfh5.on("ready", function () {
 	console.log("总页数：" + this.totalNum)
 })
@@ -199,7 +199,7 @@ pdfh5.on("ready", function () {
 
 - 	监听pdf渲染过程，currentPageDom当前加载的pdf的dom,currentNum当前加载的pdf页数,
 
-```
+```javascript
 pdfh5.on("render", function (currentNum, time, currentPageDom) {
 	console.log("当前渲染页：" + currentNum + "，耗时：" + time + "毫秒")
 })
@@ -207,7 +207,7 @@ pdfh5.on("render", function (currentNum, time, currentPageDom) {
 
 - 	监听完成事件，加载失败、渲染成功都会触发。status有两种状态success和error
 
-```
+```javascript
 pdfh5.on("complete", function (status, msg, time) {
 	console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
 })
@@ -215,7 +215,7 @@ pdfh5.on("complete", function (status, msg, time) {
 
 - 	监听pdf渲染成功
 
-```
+```javascript
 pdfh5.on("success", function (time) {
 	console.log("加载完成，耗时" + time + "毫秒")
 })
@@ -223,7 +223,7 @@ pdfh5.on("success", function (time) {
 
 - 	配置项参数 是否显示小部件 顶部绿色加载进度条loadingBar 左上角页码显示pageNum 右下角回到顶部按钮backTop  默认显示
 
-```
+```javascript
 var pdfh5 = new Pdfh5('.pdfjs', {
 	loadingBar: false,
 	pageNum:false,
@@ -233,7 +233,7 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 
 - 	配置项参数data，文件流形式传入  pdfurl和data二选一
 
-```
+```javascript
 var pdfh5 = new Pdfh5('.pdfjs', {
 	data: data
 });
@@ -241,47 +241,48 @@ var pdfh5 = new Pdfh5('.pdfjs', {
 
 - 	配置项参数scrollEnable:false不允许pdf滚动,true允许pdf滚动  默认允许
 
-```
+```javascript
 var pdfh5 = new Pdfh5('.pdfjs', {
 	scrollEnable:false,//是否允许pdf滚动
 	pdfurl: url
 });
 ```
 
-```
-pdfh5.scrollEnable(true) 允许pdf滚动
-pdfh5.scrollEnable(false) 不允许pdf滚动
+```javascript
+pdfh5.scrollEnable(true) //允许pdf滚动
+pdfh5.scrollEnable(false) //不允许pdf滚动
 ```
 
 - 	配置项参数zoomEnable:false不允许pdf手势缩放,true允许pdf手势缩放  默认允许
 
-```
+```javascript
 var pdfh5 = new Pdfh5('.pdfjs', {
 	zoomEnable:false,//是否允许pdf手势缩放
 	pdfurl: url
 });
 ```
-```
-pdfh5.zoomEnable(true) 允许pdf手势缩放
-pdfh5.zoomEnable(false) 不允许pdf手势缩放
+```javascript
+pdfh5.zoomEnable(true) //允许pdf手势缩放
+pdfh5.zoomEnable(false) //不允许pdf手势缩放
 ```
 - 	pdfh5还原、销毁（附带回调函数）：   
 
-```
+```javascript
 pdfh5.reset(callback) 
 pdfh5.destroy(callback)
 ```
 
 - 	pdfh5显示、隐藏（附带回调函数）：  
 
-``` 
-pdfh5.show(callback) pdfh5.hide(callback) 
+``` javascript
+pdfh5.show(callback) 
+pdfh5.hide(callback) 
 ```
 
 - 	on方法,监听各种事件： 开始初始化init 准备渲染ready 加载完成complete 加载失败error 加载成功success 渲染中render
 	缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
 
-```	
+```javascript
 pdfh5.on("error",function(msg,time){
 		
 })
