@@ -1,10 +1,8 @@
-# pdfh5
+# pdfh5.js
 
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)   [![npm downloads](https://img.shields.io/npm/dw/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
-pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，支持懒加载（即分段加载）。
-
-- **注意： pdf路径地址用相对路径加载速度最快，网络地址比较慢，本地绝对路径地址不能加载。** 
+**pdfh5.js 基于pdf.js和jQuery，移动端PDF预览插件，可手势缩放，支持懒加载（即分段加载）。**
 
 - 前端学习交流QQ群，651601340，可以进来提pdfh5.js的bug、问题、建议等。
 
@@ -112,56 +110,23 @@ html,body,#app {
 </style>
 ```
 
-### API接口方法
+# API接口方法
 
 - **注意： pdf路径地址用相对路径加载速度最快，网络地址比较慢，本地绝对路径地址不能加载。** 
 - **注意： pdf路径地址用相对路径加载速度最快，网络地址比较慢，本地绝对路径地址不能加载。** 
 - **注意： pdf路径地址用相对路径加载速度最快，网络地址比较慢，本地绝对路径地址不能加载。** 
 
-- 	当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf
-	优先顺序：  ？file= > pdfurl > data
-
+## 实例化
+- **pdfh5实例化的时候传两个参数，selector选择器，options配置项参数，options可以不填写，会自动获取浏览器地址栏？file=后面的地址** 
 ```javascript
-var pdfh5 = new Pdfh5('.pdfjs', {
-	pdfurl: "./default.pdf"
-});
+new Pdfh5(selector, options);
 ```
+|参数名称|类型|取值|是否必须|作用|
+|:---:|:---:|:---:|:---:|:---:|
+|selector|  {String} | - | √ |pdfh5的容器选择器|
+|options|  {Object} | - | × |pdfh5的配置项参数|
 
-- 	配置项参数 URIenable:false 可以无视地址栏参数，只拿配置项的pdfurl或者data来渲染pdf
-
-```javascript
-var pdfh5 = new Pdfh5('.pdfjs', {
-	URIenable:false,
-	pdfurl: "./default.pdf"
-});
-```
-
-- 配置项参数 type:"ajax" 请求方式为ajax，默认fetch
-
-```javascript
-var pdfh5 = new Pdfh5('#demo', {
-	pdfurl: "./default.pdf",
-	type:"ajax"
-});
-```
-
--  配置项参数 renderType:"canvas" 渲染模式为canvas，默认svg
-
-```javascript
-var pdfh5 = new Pdfh5('#demo', {
-	pdfurl: "./default.pdf",
-	renderType:"canvas"
-});
-```
--  配置项参数 scale:2 渲染的清晰度比例，默认1.3
-
-```javascript
-var pdfh5 = new Pdfh5('#demo', {
-	pdfurl: "./default.pdf",
-	renderType:"canvas",
-	scale:2
-});
-```
+## options配置项参数列表
 
 - 	配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
 
@@ -172,130 +137,67 @@ var pdfh5 = new Pdfh5('#demo', {
 });
 ```
 
-- 配置项参数 maxZoom:3 手势缩放最大倍数，默认4
+|参数名称|类型|取值|作用|
+|:---:|:---:|:---:|:---:|
+|pdfurl|  {String} | - |pdf地址，当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf，优先顺序： ？file= > pdfurl > data |
+|URIenable|  {Boolean} |true、false， 默认true | 可以无视地址栏参数，只拿配置项的pdfurl或者data来渲染pdf |
+|type| {String}|"ajax"、"fetch"，默认"fetch"|请求pdf方式|
+|renderType| {String}|"canvas"、"svg"，默认"svg"|pdf渲染模式|
+|scale| {Number}|默认1.3|渲染的清晰度比例|
+|lazy| {Boolean}|true、false， 默认false|是否开启懒加载|
+|maxZoom|  {Number}|默认4|手势缩放最大倍数|
+|tapZoomFactor|  {Number}|默认2| 双击放大倍数|
+|scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动|
+|zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
 
-```javascript
-var pdfh5 = new Pdfh5('#demo', {
-	pdfurl: "./default.pdf",
-	maxZoom:3
-});
-```
-- 配置项参数 tapZoomFactor:3 双击放大倍数，默认2
 
-```javascript
-var pdfh5 = new Pdfh5('#demo', {
-	pdfurl: "./default.pdf",
-	tapZoomFactor:3
-});
-```
+## methods 方法列表
 
-- 	pdf准备开始渲染，此时可以拿到pdf总页数
-
-```javascript
-pdfh5.on("ready", function () {
-	console.log("总页数：" + this.totalNum)
-})
-```
-
-- 	监听pdf渲染过程，currentPageDom当前加载的pdf的dom,currentNum当前加载的pdf页数,
-
-```javascript
-pdfh5.on("render", function (currentNum, time, currentPageDom) {
-	console.log("当前渲染页：" + currentNum + "，耗时：" + time + "毫秒")
-})
-```
-
-- 	监听完成事件，加载失败、渲染成功都会触发。status有两种状态success和error
-
-```javascript
-pdfh5.on("complete", function (status, msg, time) {
-	console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
-})
-```
-
-- 	监听pdf渲染成功
-
-```javascript
-pdfh5.on("success", function (time) {
-	console.log("加载完成，耗时" + time + "毫秒")
-})
-```
-
-- 	配置项参数 是否显示小部件 顶部绿色加载进度条loadingBar 左上角页码显示pageNum 右下角回到顶部按钮backTop  默认显示
-
-```javascript
-var pdfh5 = new Pdfh5('.pdfjs', {
-	loadingBar: false,
-	pageNum:false,
-	backTop:false
-});
-```
-
-- 	配置项参数data，文件流形式传入  pdfurl和data二选一
-
-```javascript
-var pdfh5 = new Pdfh5('.pdfjs', {
-	data: data
-});
-```
-
-- 	配置项参数scrollEnable:false不允许pdf滚动,true允许pdf滚动  默认允许
-
-```javascript
-var pdfh5 = new Pdfh5('.pdfjs', {
-	scrollEnable:false,//是否允许pdf滚动
-	pdfurl: url
-});
-```
+- 是否允许pdf滚动
 
 ```javascript
 pdfh5.scrollEnable(true) //允许pdf滚动
 pdfh5.scrollEnable(false) //不允许pdf滚动
 ```
 
-- 	配置项参数zoomEnable:false不允许pdf手势缩放,true允许pdf手势缩放  默认允许
+|参数名称|类型|取值|作用|
+|:---:|:---:|:---:|:---:|
+|type| {String}|"ajax"、"fetch"，默认"fetch"|请求pdf方式|
+|scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动|
+|zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
+|show| {Fuction}|带一个回调函数参数|pdfh5显示|
+|hide| {Fuction}|带一个回调函数参数|pdfh5隐藏|
+|reset| {Fuction}|带一个回调函数参数|pdfh5还原|
+|destroy| {Fuction}|带一个回调函数参数|pdfh5销毁|
+|on| {Fuction(method, callback)}|method监听的事件名，callback监听的事件回调|on方法监所有事件|
+
+
+## on方法监所有事件-事件名列表
+
+- 监听pdf准备开始渲染，此时可以拿到pdf总页数
 
 ```javascript
-var pdfh5 = new Pdfh5('.pdfjs', {
-	zoomEnable:false,//是否允许pdf手势缩放
-	pdfurl: url
-});
-```
-```javascript
-pdfh5.zoomEnable(true) //允许pdf手势缩放
-pdfh5.zoomEnable(false) //不允许pdf手势缩放
-```
-- 	pdfh5还原、销毁（附带回调函数）：   
-
-```javascript
-pdfh5.reset(callback) 
-pdfh5.destroy(callback)
-```
-
-- 	pdfh5显示、隐藏（附带回调函数）：  
-
-``` javascript
-pdfh5.show(callback) 
-pdfh5.hide(callback) 
-```
-
-- 	on方法,监听各种事件： 开始初始化init 准备渲染ready 加载完成complete 加载失败error 加载成功success 渲染中render
-	缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
-
-```javascript
-pdfh5.on("error",function(msg,time){
-		
-})
-pdfh5.on("success",function(msg,time){
-		
-})
-pdfh5.on("zoom",function(scale){
-	
-})
-pdfh5.on("scroll",function(scrollTop){
-	
+pdfh5.on("ready", function () {
+	console.log("总页数：" + this.totalNum)
 })
 ```
+|参数名称|回调|作用|
+|:---:|:---:|:---:|
+|init| {Fuction()}|监听pdfh5开始初始化|
+|ready| {Fuction()}|监听pdf准备开始渲染，此时可以拿到pdf总页数|
+|error| {Fuction(msg,time))}|监听加载失败，msg信息，time耗时 |
+|success| {Fuction(msg,time))}| 监听pdf渲染成功，msg信息，time耗时|
+|complete| {Fuction(status, msg, time)}| 监听pdf加载完成事件，加载失败、渲染成功都会触发。status有两种状态success和error|
+|render| {Fuction(currentNum, time, currentPageDom)}| 监听pdf渲染过程，currentPageDom当前加载的pdf的dom,currentNum当前加载的pdf页数,|
+|zoom| {Fuction(scale)}| 监听缩放，scale缩放比例|
+|scroll| {Fuction(scrollTop)}| 监听滚动，scrollTop滚动条高度|
+|zoomEnable| {Fuction(falg)}| 监听允许缩放，falg：true，false|
+|scrollEnable| {Fuction(falg)}| 监听允许滚动，falg：true，false|
+|show | {Fuction(callback)}| 监听显示，callback：回调函数|
+|hide | {Fuction(callback)}| 监听隐藏，callback：回调函数|
+|reset | {Fuction(callback)}| 监听还原，callback：回调函数|
+|destroy | {Fuction(callback)}| 监听销毁，callback：回调函数|
+
 ## 扫码加入QQ群和更多小伙伴一起交流前端技术：
 ![QQ群：651601340](http://www.gjtool.cn/qq.png)
 	
