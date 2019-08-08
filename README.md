@@ -136,6 +136,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |:---:|:---:|:---:|:---:|
 |pdfurl|  {String} | - |pdf地址，当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf，优先顺序： ？file= > pdfurl > data |
 |URIenable|  {Boolean} |true、false， 默认true | 可以无视地址栏参数，只拿配置项的pdfurl或者data来渲染pdf |
+|data|  {Array(Uint8Array)} | - |pdf文件流 ，与pdfurl二选一|
 |type| {String}|"ajax"、"fetch"，默认"fetch"|请求pdf方式|
 |renderType| {String}|"canvas"、"svg"，默认"svg"|pdf渲染模式|
 |scale| {Number}|默认1.3|渲染的清晰度比例|
