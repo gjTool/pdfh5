@@ -186,8 +186,8 @@ pdfh5.on("ready", function () {
 |render| {Fuction(currentNum, time, currentPageDom)}| 监听pdf渲染过程，currentPageDom当前加载的pdf的dom,currentNum当前加载的pdf页数,|
 |zoom| {Fuction(scale)}| 监听pdf缩放，scale缩放比例|
 |scroll| {Fuction(scrollTop)}| 监听pdf滚动，scrollTop滚动条高度|
-|zoomEnable| {Fuction(falg)}| 监听允许缩放，falg：true，false|
-|scrollEnable| {Fuction(falg)}| 监听允许滚动，falg：true，false|
+|zoomEnable| {Fuction(flag)}| 监听允许缩放，flag：true，false|
+|scrollEnable| {Fuction(flag)}| 监听允许滚动，flag：true，false|
 |show | {Fuction}| 监听pdfh5显示|
 |hide | {Fuction}| 监听pdfh5隐藏|
 |reset | {Fuction}| 监听pdfh5还原|
