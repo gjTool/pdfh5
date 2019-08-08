@@ -164,10 +164,10 @@ pdfh5.scrollEnable(false) //不允许pdf滚动
 |hide| {Fuction}|带一个回调函数参数|pdfh5隐藏|
 |reset| {Fuction}|带一个回调函数参数|pdfh5还原|
 |destroy| {Fuction}|带一个回调函数参数|pdfh5销毁|
-|on| {Fuction(method, callback)}|method监听的事件名，callback监听的事件回调|on方法监所有事件|
+|on| {Fuction(method, callback)}|method监听的事件名，callback监听的事件回调|on方法监听所有事件|
 
 
-## on方法监所有事件-事件名列表
+## on方法监听所有事件-事件名列表
 
 - **示例：** 监听pdf准备开始渲染，此时可以拿到pdf总页数
 
