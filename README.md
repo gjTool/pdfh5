@@ -164,7 +164,7 @@ pdfh5.scrollEnable(false) //不允许pdf滚动
 |hide| {Fuction}|带一个回调函数参数|pdfh5隐藏|
 |reset| {Fuction}|带一个回调函数参数|pdfh5还原|
 |destroy| {Fuction}|带一个回调函数参数|pdfh5销毁|
-|on| {Fuction(method, callback)}|method监听的事件名，callback监听的事件回调|on方法监听所有事件|
+|on| {String, Fuction}|String：监听的事件名，Fuction：监听的事件回调|on方法监听所有事件|
 
 
 ## on方法监听所有事件-事件名列表
@@ -178,8 +178,8 @@ pdfh5.on("ready", function () {
 ```
 |参数名称|回调|作用|
 |:---:|:---:|:---:|
-|init| {Fuction()}|监听pdfh5开始初始化|
-|ready| {Fuction()}|监听pdf准备开始渲染，此时可以拿到pdf总页数|
+|init| {Fuction}|监听pdfh5开始初始化|
+|ready| {Fuction}|监听pdf准备开始渲染，此时可以拿到pdf总页数|
 |error| {Fuction(msg,time))}|监听加载失败，msg信息，time耗时 |
 |success| {Fuction(msg,time))}| 监听pdf渲染成功，msg信息，time耗时|
 |complete| {Fuction(status, msg, time)}| 监听pdf加载完成事件，加载失败、渲染成功都会触发。status有两种状态success和error|
@@ -188,10 +188,10 @@ pdfh5.on("ready", function () {
 |scroll| {Fuction(scrollTop)}| 监听pdf滚动，scrollTop滚动条高度|
 |zoomEnable| {Fuction(falg)}| 监听允许缩放，falg：true，false|
 |scrollEnable| {Fuction(falg)}| 监听允许滚动，falg：true，false|
-|show | {Fuction()}| 监听pdfh5显示|
-|hide | {Fuction()}| 监听pdfh5隐藏|
-|reset | {Fuction()}| 监听pdfh5还原|
-|destroy | {Fuction()}| 监听pdfh5销毁|
+|show | {Fuction}| 监听pdfh5显示|
+|hide | {Fuction}| 监听pdfh5隐藏|
+|reset | {Fuction}| 监听pdfh5还原|
+|destroy | {Fuction}| 监听pdfh5销毁|
 
 ## 扫码加入QQ群和更多小伙伴一起交流前端技术：
 ![QQ群：651601340](http://www.gjtool.cn/qq.png)
