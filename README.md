@@ -10,18 +10,13 @@
 
 ## 更新信息
 
-- **2019.08.06 重要更新：**  1.renderType:"canvas"模式下也可以懒加载了。2.在没有渲染完成时也可以手势缩放（即在懒加载时也可以手势缩放）。
+- 2019.08.06 更新：  1.renderType:"canvas"模式下也可以懒加载了。2.在没有渲染完成时也可以手势缩放（即在懒加载时也可以手势缩放）。
 
 - 2019.08.01更新：新增配置项参数type,可以在实例化的时候选择请求方式。默认是type:"fetch",可以更改为type:"ajax"。在某些情况下，pdf.js自带的fetch请求方式会耗时非常严重，所以增加ajax请求方式来给使用者多样化的选择。
 
-- **2019.07.29 重要更新：**  新增配置项参数renderType，可以在实例化的时候选择渲染模式。默认是renderType:"svg",可以更改为renderType:"canvas"。
+- 2019.07.29 更新：  新增配置项参数renderType，可以在实例化的时候选择渲染模式。默认是renderType:"svg",可以更改为renderType:"canvas"。
 新增这个参数是因为pdf.js有个bug，当渲染模式为svg的时候，pdf的电子签章（即红色印章）无法显示。只有渲染模式为canvas的时候才可以显示。不过canvas模式下，内存占用大，清晰度也不如svg。选择哪种渲染模式请使用者自行选择。当renderType:"canvas"时，懒加载无效。
 
-- 2019.07.23更新：修复懒加载bug，优化懒加载。
-
-- 2019.07.17更新：新增配置参数lazy，支持懒加载。
-
-- 2019.07.10更新：新增部分api，配置参数。内部渲染机制改动：canvas转img 改成 直接渲染svg。
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
 
@@ -31,7 +26,7 @@
 
 ## 快速使用
 
-#### 一、script标签引入方式（需下载本项目文件夹css、js内所有文件）
+#### 一、script标签引入方式（需下载本项目文件夹css/pdfh5.css、js内所有文件）
 
 - 	1.引入css   
 
@@ -189,14 +184,14 @@ pdfh5.on("ready", function () {
 |success| {Fuction(msg,time))}| 监听pdf渲染成功，msg信息，time耗时|
 |complete| {Fuction(status, msg, time)}| 监听pdf加载完成事件，加载失败、渲染成功都会触发。status有两种状态success和error|
 |render| {Fuction(currentNum, time, currentPageDom)}| 监听pdf渲染过程，currentPageDom当前加载的pdf的dom,currentNum当前加载的pdf页数,|
-|zoom| {Fuction(scale)}| 监听缩放，scale缩放比例|
-|scroll| {Fuction(scrollTop)}| 监听滚动，scrollTop滚动条高度|
+|zoom| {Fuction(scale)}| 监听pdf缩放，scale缩放比例|
+|scroll| {Fuction(scrollTop)}| 监听pdf滚动，scrollTop滚动条高度|
 |zoomEnable| {Fuction(falg)}| 监听允许缩放，falg：true，false|
 |scrollEnable| {Fuction(falg)}| 监听允许滚动，falg：true，false|
-|show | {Fuction(callback)}| 监听显示，callback：回调函数|
-|hide | {Fuction(callback)}| 监听隐藏，callback：回调函数|
-|reset | {Fuction(callback)}| 监听还原，callback：回调函数|
-|destroy | {Fuction(callback)}| 监听销毁，callback：回调函数|
+|show | {Fuction()}| 监听pdfh5显示|
+|hide | {Fuction()}| 监听pdfh5隐藏|
+|reset | {Fuction()}| 监听pdfh5还原|
+|destroy | {Fuction()}| 监听pdfh5销毁|
 
 ## 扫码加入QQ群和更多小伙伴一起交流前端技术：
 ![QQ群：651601340](http://www.gjtool.cn/qq.png)
