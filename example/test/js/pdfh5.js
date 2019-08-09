@@ -1088,7 +1088,7 @@
             }
             obj2.src = obj2.canvas.toDataURL("image/jpeg");
             //在canvas上绘制
-            return self.pdfRender = page.render({
+            return page.render({
                 canvasContext: context,
                 viewport: viewport
             }).then(function () {

@@ -24,7 +24,7 @@
 
 - https [https://www.gjtool.cn/pdfh5/pdf.html?file=https://www.gjtool.cn/pdfh5/default.pdf](https://www.gjtool.cn/pdfh5/pdf.html?file=https://www.gjtool.cn/pdfh5/default.pdf) 
 
-## 快速使用
+## 快速使用（有两种方式）
 
 #### 一、script标签引入方式（需下载本项目文件夹css/pdfh5.css、js内所有文件）
 
@@ -82,9 +82,11 @@ npm install pdfh5
 	  };
 	},
 	mounted() {
+		//实例化
 	  this.pdfh5 = new Pdfh5("#demo", {
 		pdfurl: "./test.pdf" 
 	  });
+	  //监听完成事件
 	  this.pdfh5.on("complete", function (status, msg, time) {
 		console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
 	  })
@@ -93,15 +95,15 @@ npm install pdfh5
 </script>
 
 <style>
-@import "pdfh5/css/pdfh5.css";
-*{
+	@import "pdfh5/css/pdfh5.css";
+	*{
 	padding: 0;
 	margin: 0;
-}
-html,body,#app {
+	}
+	html,body,#app {
 	width: 100%;
 	height: 100%;
-}
+	}
 </style>
 ```
 
@@ -112,9 +114,9 @@ html,body,#app {
 - **注意： pdf路径地址用相对路径加载速度最快，网络地址比较慢，本地绝对路径地址不能加载。** 
 
 ## 实例化
-- **pdfh5实例化的时候传两个参数，selector选择器，options配置项参数，options可以不填写，会自动获取浏览器地址栏？file=后面的地址** 
+- **pdfh5实例化的时候传两个参数，selector选择器，options配置项参数，options可以不填写，会自动获取浏览器地址栏？file=后面的地址。会返回一个pdfh5实例对象，可以用来操作pdf，监听相关事件** 
 ```javascript
-new Pdfh5(selector, options);
+var pdfh5 = new Pdfh5(selector, options);
 ```
 |参数名称|类型|取值|是否必须|作用|
 |:---:|:---:|:---:|:---:|:---:|
