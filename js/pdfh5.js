@@ -953,7 +953,7 @@
                         scaledViewport: null
                     };
                     promise = promise.then(function (pageNum) {
-                        return self.thePDF.getPage(pageNum).then(function (page) {
+                        return  self.thePDF.getPage(pageNum).then(function (page) {
                             self.cache[pageNum + ""].page = page
                             var viewport = page.getViewport(options.scale);
                             var scale = (self.docWidth / viewport.width).toFixed(2)
@@ -1015,8 +1015,8 @@
         },
         renderSvg: function (page, scaledViewport, pageNum, num, container, options) {
             var self = this;
-            return page.getOperatorList().then(function (opList) {
-                var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
+            return  page.getOperatorList().then(function (opList) {
+                var svgGfx =  new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
                 return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
                     self.loadedCount++;
                     container.children[0].style.display = "none";
