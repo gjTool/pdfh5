@@ -10,6 +10,8 @@
 
 ## 更新信息
 
+- 2019.08.19更新：  新增配置参数cMapUrl，解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径。
+
 - 2019.08.06 更新：  1.renderType:"canvas"模式下也可以懒加载了。2.在没有渲染完成时也可以手势缩放（即在懒加载时也可以手势缩放）。
 
 - 2019.08.01更新：新增配置项参数type,可以在实例化的时候选择请求方式。默认是type:"fetch",可以更改为type:"ajax"。在某些情况下，pdf.js自带的fetch请求方式会耗时非常严重，所以增加ajax请求方式来给使用者多样化的选择。
@@ -147,6 +149,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |tapZoomFactor|  {Number}|默认2| 双击放大倍数|
 |scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动|
 |zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
+|cMapUrl| {String}| 默认"./js/cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径|
 
 
 ## methods 方法列表

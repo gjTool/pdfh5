@@ -637,8 +637,6 @@
         init: function (options) {
             this.container.addClass("pdfjs")
             var self = this;
-            pdfjsLib.cMapUrl = './cmaps/';
-            pdfjsLib.cMapPacked = true;
             this.initTime = new Date().getTime();
             setTimeout(function () {
                 var arr1 = self.eventType["scroll"];
@@ -886,13 +884,14 @@
                 }
                 throw Error("Expect options.pdfurl or options.data!")
             }
-
-
-
         },
         renderPdf: function (options, obj) {
             var self = this;
-            obj.cMapUrl = './cmaps/';
+            if(options.cMapUrl){
+                obj.cMapUrl = options.cMapUrl;
+            }else {
+                obj.cMapUrl = './js/cmaps/';
+            }
             obj.cMapPacked = true;
             self.loadingBar.show();
             self.progress.css({
