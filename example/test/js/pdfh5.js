@@ -659,6 +659,9 @@
             options.fullscreen = options.fullscreen === false ? false : true;
             options.lazy = options.lazy === true ? true : false;
             options.renderType = options.renderType === "canvas" ? "canvas" : "svg";
+            if(options.renderType === "canvas"){
+                options.scale = 2;
+            }
             options.type = options.type === "ajax" ? "ajax" : "fetch";
             var html = '<div class="loadingBar">' +
                 '<div class="progress">' +
@@ -965,7 +968,7 @@
                             var loadEffect = document.createElement('div');
                             loadEffect.className = 'loadEffect';
                             container.appendChild(loadEffect);
-                            container.style.height = viewport.height * scale + 'px';
+                            // container.style.height = viewport.height * scale + 'px';
                             $(container).css({
                                 'max-width': viewport.width,
                                 "max-height": viewport.height
@@ -1225,7 +1228,7 @@
             var arr = this.eventType["reset"];
             if (arr && arr instanceof Array) {
                 for (var i = 0; i < arr.length; i++) {
-                    arr[i] && arr[i].call(this, flag)
+                    arr[i] && arr[i].call(this)
                 }
             }
         },
@@ -1261,7 +1264,7 @@
             var arr = this.eventType["destroy"];
             if (arr && arr instanceof Array) {
                 for (var i = 0; i < arr.length; i++) {
-                    arr[i] && arr[i].call(this, flag)
+                    arr[i] && arr[i].call(this)
                 }
             }
         }
