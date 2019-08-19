@@ -34,9 +34,14 @@
         var pdfh5 = new Pdfh5('#demo', {
             pdfurl: "git.pdf"
         });
-        window.orientationChange = function(){
-            pdfh5.reset()
-        }
+        // window.onorientationchange = function () {
+        //     pdfh5.destroy()
+        //     setTimeout(() => {
+        //         pdfh5 = new Pdfh5('#demo', {
+        //             pdfurl: "git.pdf"
+        //         });
+        //     }, 300);
+        // }
         //配置项参数 type:"ajax" 请求方式为ajax，默认fetch
         // var pdfh5 = new Pdfh5('#demo', {
         //     pdfurl: "./default.pdf",

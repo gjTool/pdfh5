@@ -1,7 +1,9 @@
 
 ; (function (g, fn) {
     if (typeof require !== 'undefined') {
-        g.$ = require('./jquery-1.11.3.min.js');
+        if(g.$ === undefined){
+            g.$ = require('./jquery-1.11.3.min.js');
+        }
         g.pdfjsWorker = require('./pdf.worker.js');
         g.pdfjsLib = require('./pdf.js');
     }
@@ -727,7 +729,7 @@
                     self.pages = self.viewerContainer.find('.pageContainer');
                 }
                 clearTimeout(self.timer);
-                if (options.pageNum) {
+                if (options.pageNum && self.pageNum) {
                     self.pageNum.show();
                 }
                 var h = containerH;
@@ -747,7 +749,7 @@
                     })
                 }
                 self.timer = setTimeout(function () {
-                    if (options.pageNum) {
+                    if (options.pageNum && self.pageNum) {
                         self.pageNum.fadeOut(200);
                     }
                 }, 1500)
