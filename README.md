@@ -10,6 +10,8 @@
 
 ## 更新信息
 
+- 2019.08.20更新：  配置参数data更改，可以传普通文件流blob，也可以传转过码的Uint8Array。
+
 - 2019.08.19更新：  1.新增配置参数cMapUrl，解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径。2.修复屏幕旋转的时候比例失调。3.canvas模式下，清晰度比例默认为2。
 
 - 2019.08.06 更新：  1.renderType:"canvas"模式下也可以懒加载了。2.在没有渲染完成时也可以手势缩放（即在懒加载时也可以手势缩放）。
@@ -140,7 +142,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |:---:|:---:|:---:|:---:|
 |pdfurl|  {String} | - |pdf地址，当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf，优先顺序： ？file= > pdfurl > data |
 |URIenable|  {Boolean} |true、false， 默认true | 可以无视地址栏参数，只拿配置项的pdfurl或者data来渲染pdf |
-|data|  {Array(Uint8Array)} | - |pdf文件流 ，与pdfurl二选一|
+|data|  {String(blob)|Array(Uint8Array)} | - |pdf文件流 ，与pdfurl二选一。可以传普通文件流blob，也可以传转过码的Uint8Array|
 |type| {String}|"ajax"、"fetch"，默认"fetch"|请求pdf方式|
 |renderType| {String}|"canvas"、"svg"，默认"svg"|pdf渲染模式|
 |scale| {Number}|默认1.3。canvas模式下，为2|渲染的清晰度比例|

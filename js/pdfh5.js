@@ -1,7 +1,8 @@
-
 ; (function (g, fn) {
+    var version = "1.2.9";
+    console.log("The latest version and API of pdfh5 from: https://github.com/gjTool/pdfh5  (pdfh5.js: "+version+")")
     if (typeof require !== 'undefined') {
-        if(g.$ === undefined){
+        if (g.$ === undefined) {
             g.$ = require('./jquery-1.11.3.min.js');
         }
         g.pdfjsWorker = require('./pdf.worker.js');
@@ -10,14 +11,14 @@
     var pdfjsLib = g.pdfjsLib, $ = g.$, pdfjsWorker = g.pdfjsWorker;
     if (typeof define === 'function' && define.amd) {
         define(function () {
-            return fn(g, pdfjsWorker, pdfjsLib, $)
+            return fn(g, pdfjsWorker, pdfjsLib, $,version)
         })
     } else if (typeof module !== 'undefined' && module.exports) {
-        module.exports = fn(g, pdfjsWorker, pdfjsLib, $)
+        module.exports = fn(g, pdfjsWorker, pdfjsLib, $,version)
     } else {
-        g.Pdfh5 = fn(g, pdfjsWorker, pdfjsLib, $)
+        g.Pdfh5 = fn(g, pdfjsWorker, pdfjsLib, $,version)
     }
-})(typeof window !== 'undefined' ? window : this, function (g, pdfjsWorker, pdfjsLib, $) {
+})(typeof window !== 'undefined' ? window : this, function (g, pdfjsWorker, pdfjsLib, $,version) {
     'use strict';
     var definePinchZoom = function ($) {
         var PinchZoom = function (el, options, viewerContainer) {
@@ -617,6 +618,7 @@
     };
     var PinchZoom = definePinchZoom($);
     var Pdfh5 = function (dom, options) {
+        this.version = version;
         this.container = $(dom);
         this.thePDF = null;
         this.totalNum = null;
@@ -661,7 +663,7 @@
             options.fullscreen = options.fullscreen === false ? false : true;
             options.lazy = options.lazy === true ? true : false;
             options.renderType = options.renderType === "canvas" ? "canvas" : "svg";
-            if(options.renderType === "canvas"){
+            if (options.renderType === "canvas") {
                 options.scale = 2;
             }
             options.type = options.type === "ajax" ? "ajax" : "fetch";
@@ -836,9 +838,13 @@
                         url: url,
                         success: function (data) {
                             var rawLength = data.length;
-                            var array = new Uint8Array(new ArrayBuffer(rawLength));
+                            // var array = new Uint8Array(new ArrayBuffer(rawLength));
+                            // for (i = 0; i < rawLength; i++) {
+                            //     array[i] = data.charCodeAt(i) & 0xff;
+                            // }
+                            var array = [];
                             for (i = 0; i < rawLength; i++) {
-                                array[i] = data.charCodeAt(i) & 0xff;
+                                array.push(data.charCodeAt(i) & 0xff);
                             }
                             self.renderPdf(options, {
                                 data: array
@@ -869,9 +875,40 @@
                     })
                 }
             } else if (options.data) {
-                self.renderPdf(options, {
-                    data: options.data
-                })
+                var data = options.data;
+                var rawLength = data.length;
+                if (typeof data === "string" && data != "") {
+                    var array = [];
+                    for (i = 0; i < rawLength; i++) {
+                        array.push(data.charCodeAt(i) & 0xff);
+                    }
+                    self.renderPdf(options, {
+                        data: array
+                    })
+                } else if (typeof data === "object") {
+                    if (data[0] === 0) {
+                        var time = new Date().getTime();
+                        self.endTime = time - self.initTime;
+                        var arr1 = self.eventType["complete"];
+                        if (arr1 && arr1 instanceof Array) {
+                            for (var i = 0; i < arr1.length; i++) {
+                                arr1[i] && arr1[i].call(self, "error", "options.data is empty Array", self.endTime)
+                            }
+                        }
+                        var arr2 = self.eventType["error"];
+                        if (arr2 && arr2 instanceof Array) {
+                            for (var i = 0; i < arr2.length; i++) {
+                                arr2[i] && arr2[i].call(self, "options.data is empty Array", self.endTime)
+                            }
+                        }
+                        throw Error("options.data is empty Array")
+                    } else {
+                        self.renderPdf(options, {
+                            data: data
+                        })
+                    }
+                }
+
             } else {
                 var time = new Date().getTime();
                 self.endTime = time - self.initTime;
@@ -892,9 +929,9 @@
         },
         renderPdf: function (options, obj) {
             var self = this;
-            if(options.cMapUrl){
+            if (options.cMapUrl) {
                 obj.cMapUrl = options.cMapUrl;
-            }else {
+            } else {
                 obj.cMapUrl = './js/cmaps/';
             }
             obj.cMapPacked = true;
@@ -957,7 +994,7 @@
                         scaledViewport: null
                     };
                     promise = promise.then(function (pageNum) {
-                        return  self.thePDF.getPage(pageNum).then(function (page) {
+                        return self.thePDF.getPage(pageNum).then(function (page) {
                             self.cache[pageNum + ""].page = page
                             var viewport = page.getViewport(options.scale);
                             var scale = (self.docWidth / viewport.width).toFixed(2)
@@ -1019,8 +1056,8 @@
         },
         renderSvg: function (page, scaledViewport, pageNum, num, container, options) {
             var self = this;
-            return  page.getOperatorList().then(function (opList) {
-                var svgGfx =  new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
+            return page.getOperatorList().then(function (opList) {
+                var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
                 return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
                     self.loadedCount++;
                     container.children[0].style.display = "none";
@@ -1246,7 +1283,6 @@
             }
             if (this.container) {
                 this.container.html('');
-                this.container = null;
             }
             this.totalNum = null;
             this.pages = null;
