@@ -153,6 +153,21 @@ var pdfh5 = new Pdfh5('#demo', {
 |zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
 |cMapUrl| {String}| 默认"./js/cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径|
 
+## 	pdf文件流请求示例（以jq ajax为例）
+
+```javascript
+$.ajax({
+	url: "http://gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
+	type: "get",
+	mimeType: 'text/plain; charset=x-user-defined',//jq ajax请求文件流的方式
+	cache: false,
+	success: function (data) {
+		var pdfh5 = new Pdfh5('#demo', {
+			data: data
+		});
+	}
+});
+```
 
 ## methods 方法列表
 
