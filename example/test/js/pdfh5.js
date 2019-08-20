@@ -1,5 +1,5 @@
 ; (function (g, fn) {
-    var version = "1.2.9";
+    var version = "1.2.10";
     console.log("The latest version and API of pdfh5 from: https://github.com/gjTool/pdfh5  (pdfh5.js: "+version+")")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {
@@ -749,6 +749,12 @@
                             self.cacheNum = index + 1;
                         }
                     })
+                }
+                if(scrollTop+ self.container.height() >=self.viewer[0].offsetHeight){
+                    self.pageNow.text(self.totalNum)
+                }
+                if(scrollTop === 0){
+                    self.pageNow.text(1)
                 }
                 self.timer = setTimeout(function () {
                     if (options.pageNum && self.pageNum) {
