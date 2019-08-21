@@ -10,7 +10,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "pdfh5": "^1.2.11",
+    "pdfh5": "^1.2.12",
     "vue": "^2.5.2"
   },
   "devDependencies": {

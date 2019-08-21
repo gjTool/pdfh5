@@ -1,6 +1,6 @@
 ; (function (g, fn) {
-    var version = "1.2.11";
-    console.log("The latest version and API of pdfh5 from: https://github.com/gjTool/pdfh5  (pdfh5.js: "+version+")")
+    var version = "1.2.12";
+    console.log("The latest version and API of pdfh5 from: https://github.com/gjTool/pdfh5  (pdfh5.js: " + version + ")")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {
             g.$ = require('./jquery-1.11.3.min.js');
@@ -11,14 +11,14 @@
     var pdfjsLib = g.pdfjsLib, $ = g.$, pdfjsWorker = g.pdfjsWorker;
     if (typeof define === 'function' && define.amd) {
         define(function () {
-            return fn(g, pdfjsWorker, pdfjsLib, $,version)
+            return fn(g, pdfjsWorker, pdfjsLib, $, version)
         })
     } else if (typeof module !== 'undefined' && module.exports) {
-        module.exports = fn(g, pdfjsWorker, pdfjsLib, $,version)
+        module.exports = fn(g, pdfjsWorker, pdfjsLib, $, version)
     } else {
-        g.Pdfh5 = fn(g, pdfjsWorker, pdfjsLib, $,version)
+        g.Pdfh5 = fn(g, pdfjsWorker, pdfjsLib, $, version)
     }
-})(typeof window !== 'undefined' ? window : this, function (g, pdfjsWorker, pdfjsLib, $,version) {
+})(typeof window !== 'undefined' ? window : this, function (g, pdfjsWorker, pdfjsLib, $, version) {
     'use strict';
     var definePinchZoom = function ($) {
         var PinchZoom = function (el, options, viewerContainer) {
@@ -631,10 +631,12 @@
         this.pinchZoom = null;
         this.timer = null;
         this.docWidth = document.documentElement.clientWidth;
+        this.winWidth = $(window).width();
         this.eventType = {};
         this.cache = {};
         this.cacheNum = 1;
         this.options = options;
+        this.resizeEvent = false;
         this.init(options);
     };
     Pdfh5.prototype = {
@@ -663,6 +665,7 @@
             options.fullscreen = options.fullscreen === false ? false : true;
             options.lazy = options.lazy === true ? true : false;
             options.renderType = options.renderType === "canvas" ? "canvas" : "svg";
+            options.resize = options.resize === false ? false : true;
             if (options.renderType === "canvas") {
                 options.scale = 2;
             }
@@ -750,10 +753,10 @@
                         }
                     })
                 }
-                if(scrollTop+ self.container.height() >=self.viewer[0].offsetHeight){
+                if (scrollTop + self.container.height() >= self.viewer[0].offsetHeight) {
                     self.pageNow.text(self.totalNum)
                 }
-                if(scrollTop === 0){
+                if (scrollTop === 0) {
                     self.pageNow.text(1)
                 }
                 self.timer = setTimeout(function () {
@@ -1017,13 +1020,16 @@
                             $(container).css({
                                 'max-width': viewport.width,
                                 "max-height": viewport.height,
-                                "min-height":viewport.height * scale + 'px'
-                            })
+                                "min-height": viewport.height * scale + 'px'
+                            }).attr("data-height", viewport.height * scale)
                             self.viewer[0].appendChild(container);
                             self.cache[pageNum + ""].container = container;
                             self.cache[pageNum + ""].scaledViewport = scaledViewport;
                             var sum = 0, containerH = self.container.height();
                             self.pages = self.viewerContainer.find('.pageContainer');
+                            if(options.resize){
+                                self.resize()
+                            }
                             if (self.pages && options.lazy) {
                                 self.pages.each(function (index, obj) {
                                     var top = obj.offsetTop;
@@ -1043,6 +1049,7 @@
                         });
                     }.bind(null, i));
                 }
+
             }).catch(function (err) {
                 self.loading.hide();
                 var time = new Date().getTime();
@@ -1201,6 +1208,36 @@
                 for (var i = 0; i < arr2.length; i++) {
                     arr2[i] && arr2[i].call(self, self.endTime)
                 }
+            }
+        },
+        resize: function () {
+            var self = this;
+            var timer;
+            if (self.resizeEvent) {
+                return
+            }
+            self.resizeEvent = true;
+            if (self.pages) {
+                var height = self.pages.attr("data-height");
+                $(window).on("resize", function () {
+                    var winWidth = $(window).width();
+                    if (self.winWidth === winWidth) {
+                        self.pages.css({
+                            "min-height": height + 'px'
+                        })
+                    } else {
+                        self.pages.css({
+                            "min-height": 'auto'
+                        })
+                        clearTimeout(timer)
+                        timer = setTimeout(function () {
+                            var h = self.pages.height();
+                            self.pages.css({
+                                "min-height": h + 'px'
+                            })
+                        }, 0)
+                    }
+                })
             }
         },
         show: function (callback) {
