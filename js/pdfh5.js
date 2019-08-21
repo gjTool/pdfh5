@@ -1,5 +1,5 @@
 ; (function (g, fn) {
-    var version = "1.2.12";
+    var version = "1.2.13";
     console.log("The latest version and API of pdfh5 from: https://github.com/gjTool/pdfh5  (pdfh5.js: " + version + ")")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {
@@ -1095,6 +1095,9 @@
                             width: num * self.loadedCount + "%"
                         })
                     }
+                    $(container).css({
+                        "min-height": $(svg).height() + 'px'
+                    }).attr("data-height", $(svg).height())
                     var time = new Date().getTime();
                     var arr1 = self.eventType["render"];
                     if (arr1 && arr1 instanceof Array) {
@@ -1159,6 +1162,12 @@
                 obj2.src = obj2.canvas.toDataURL("image/jpeg");
                 img.src = obj2.src;
                 container.appendChild(img);
+                img.onload = function(){
+                    $(container).css({
+                        "min-height": img.height + 'px'
+                    }).attr("data-height", img.height)
+                }
+                
                 var time = new Date().getTime();
                 var arr1 = self.eventType["render"];
                 if (arr1 && arr1 instanceof Array) {
@@ -1225,6 +1234,7 @@
                         self.pages.css({
                             "min-height": height + 'px'
                         })
+                        console.log(height)
                     } else {
                         self.pages.css({
                             "min-height": 'auto'
@@ -1235,6 +1245,7 @@
                             self.pages.css({
                                 "min-height": h + 'px'
                             })
+                            console.log(h)
                         }, 0)
                     }
                 })
