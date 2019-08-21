@@ -1,5 +1,5 @@
 ; (function (g, fn) {
-    var version = "1.2.10";
+    var version = "1.2.11";
     console.log("The latest version and API of pdfh5 from: https://github.com/gjTool/pdfh5  (pdfh5.js: "+version+")")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {
@@ -1001,7 +1001,7 @@
                     };
                     promise = promise.then(function (pageNum) {
                         return self.thePDF.getPage(pageNum).then(function (page) {
-                            self.cache[pageNum + ""].page = page
+                            self.cache[pageNum + ""].page = page;
                             var viewport = page.getViewport(options.scale);
                             var scale = (self.docWidth / viewport.width).toFixed(2)
                             var scaledViewport = page.getViewport(scale)
@@ -1016,7 +1016,8 @@
                             // container.style.height = viewport.height * scale + 'px';
                             $(container).css({
                                 'max-width': viewport.width,
-                                "max-height": viewport.height
+                                "max-height": viewport.height,
+                                "min-height":viewport.height * scale + 'px'
                             })
                             self.viewer[0].appendChild(container);
                             self.cache[pageNum + ""].container = container;
