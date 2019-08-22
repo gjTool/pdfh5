@@ -1,5 +1,5 @@
 ; (function (g, fn) {
-    var version = "1.2.13";
+    var version = "1.2.14";
     console.log("The latest version and API of pdfh5 from: https://github.com/gjTool/pdfh5  (pdfh5.js: " + version + ")")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {
@@ -1021,13 +1021,13 @@
                                 'max-width': viewport.width,
                                 "max-height": viewport.height,
                                 "min-height": viewport.height * scale + 'px'
-                            }).attr("data-height", viewport.height * scale)
+                            }).attr("data-scale", viewport.width / viewport.height)
                             self.viewer[0].appendChild(container);
                             self.cache[pageNum + ""].container = container;
                             self.cache[pageNum + ""].scaledViewport = scaledViewport;
                             var sum = 0, containerH = self.container.height();
                             self.pages = self.viewerContainer.find('.pageContainer');
-                            if(options.resize){
+                            if (options.resize) {
                                 self.resize()
                             }
                             if (self.pages && options.lazy) {
@@ -1097,7 +1097,7 @@
                     }
                     $(container).css({
                         "min-height": $(svg).height() + 'px'
-                    }).attr("data-height", $(svg).height())
+                    })
                     var time = new Date().getTime();
                     var arr1 = self.eventType["render"];
                     if (arr1 && arr1 instanceof Array) {
@@ -1162,12 +1162,12 @@
                 obj2.src = obj2.canvas.toDataURL("image/jpeg");
                 img.src = obj2.src;
                 container.appendChild(img);
-                img.onload = function(){
+                img.onload = function () {
                     $(container).css({
                         "min-height": img.height + 'px'
-                    }).attr("data-height", img.height)
+                    })
                 }
-                
+
                 var time = new Date().getTime();
                 var arr1 = self.eventType["render"];
                 if (arr1 && arr1 instanceof Array) {
@@ -1221,32 +1221,22 @@
         },
         resize: function () {
             var self = this;
-            var timer;
             if (self.resizeEvent) {
                 return
             }
             self.resizeEvent = true;
             if (self.pages) {
-                var height = self.pages.attr("data-height");
                 $(window).on("resize", function () {
                     var winWidth = $(window).width();
                     if (self.winWidth === winWidth) {
-                        self.pages.css({
-                            "min-height": height + 'px'
-                        })
-                        console.log(height)
+                        
                     } else {
-                        self.pages.css({
-                            "min-height": 'auto'
-                        })
-                        clearTimeout(timer)
-                        timer = setTimeout(function () {
-                            var h = self.pages.height();
-                            self.pages.css({
-                                "min-height": h + 'px'
+                        self.pages.each(function (i, item) {
+                            var w = $(item).width(), s = $(item).attr("data-scale");
+                            $(item).css({
+                                "min-height": w/s + 'px'
                             })
-                            console.log(h)
-                        }, 0)
+                        })
                     }
                 })
             }
