@@ -1,5 +1,5 @@
 ; (function (g, fn) {
-    var version = "1.2.14";
+    var version = "1.2.15";
     console.log("The latest version and API of pdfh5 from: https://github.com/gjTool/pdfh5  (pdfh5.js: " + version + ")")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {

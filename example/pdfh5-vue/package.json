@@ -10,7 +10,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "pdfh5": "^1.2.14",
+    "webpack-bundle-analyzer": "^3.3.2",
+    "pdfh5": "^1.2.15",
     "vue": "^2.5.2"
   },
   "devDependencies": {
@@ -47,7 +48,7 @@
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
     "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-dev-server": "^2.9.1",
+    "webpack-dev-server": "^3.1.11",
     "webpack-merge": "^4.1.0"
   },
   "engines": {
