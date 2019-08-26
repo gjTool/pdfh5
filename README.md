@@ -216,8 +216,8 @@ pdfh5.on("ready", function () {
 |destroy | {Fuction}| 监听pdfh5销毁|
 
 ## 打赏赞助作者：
-![支付宝二维码](https://www.gjtool.cn/zfb.png)
-![微信二维码](https://www.gjtool.cn/wx.png)
+![支付宝二维码](https://www.gjtool.cn/zfb.jpg)
+![微信二维码](https://www.gjtool.cn/wx.jpg)
 
 ## 扫码加入QQ群和更多小伙伴一起交流前端技术：
 ![QQ群：651601340](https://www.gjtool.cn/qq.png)
