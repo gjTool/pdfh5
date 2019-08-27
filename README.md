@@ -186,7 +186,7 @@ pdfh5.scrollEnable(false) //不允许pdf滚动
 |hide| {Function}|带一个回调函数参数|pdfh5隐藏|
 |reset| {Function}|带一个回调函数参数|pdfh5还原|
 |destroy| {Function}|带一个回调函数参数|pdfh5销毁|
-|on| {String, Function}|String：监听的事件名，Fuction：监听的事件回调|on方法监听所有事件|
+|on| {String, Function}|String：监听的事件名，Function：监听的事件回调|on方法监听所有事件|
 
 
 ## on方法监听所有事件-事件名列表
