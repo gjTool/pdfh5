@@ -182,11 +182,11 @@ pdfh5.scrollEnable(false) //不允许pdf滚动
 |:---:|:---:|:---:|:---:|
 |scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动|
 |zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
-|show| {Fuction}|带一个回调函数参数|pdfh5显示|
-|hide| {Fuction}|带一个回调函数参数|pdfh5隐藏|
-|reset| {Fuction}|带一个回调函数参数|pdfh5还原|
-|destroy| {Fuction}|带一个回调函数参数|pdfh5销毁|
-|on| {String, Fuction}|String：监听的事件名，Fuction：监听的事件回调|on方法监听所有事件|
+|show| {Function}|带一个回调函数参数|pdfh5显示|
+|hide| {Function}|带一个回调函数参数|pdfh5隐藏|
+|reset| {Function}|带一个回调函数参数|pdfh5还原|
+|destroy| {Function}|带一个回调函数参数|pdfh5销毁|
+|on| {String, Function}|String：监听的事件名，Fuction：监听的事件回调|on方法监听所有事件|
 
 
 ## on方法监听所有事件-事件名列表
@@ -200,20 +200,20 @@ pdfh5.on("ready", function () {
 ```
 |参数名称|回调|作用|
 |:---:|:---:|:---:|
-|init| {Fuction}|监听pdfh5开始初始化|
-|ready| {Fuction}|监听pdf准备开始渲染，此时可以拿到pdf总页数|
-|error| {Fuction(msg,time))}|监听加载失败，msg信息，time耗时 |
-|success| {Fuction(msg,time))}| 监听pdf渲染成功，msg信息，time耗时|
-|complete| {Fuction(status, msg, time)}| 监听pdf加载完成事件，加载失败、渲染成功都会触发。status有两种状态success和error|
-|render| {Fuction(currentNum, time, currentPageDom)}| 监听pdf渲染过程，currentPageDom当前加载的pdf的dom,currentNum当前加载的pdf页数,|
-|zoom| {Fuction(scale)}| 监听pdf缩放，scale缩放比例|
-|scroll| {Fuction(scrollTop)}| 监听pdf滚动，scrollTop滚动条高度|
-|zoomEnable| {Fuction(flag)}| 监听允许缩放，flag：true，false|
-|scrollEnable| {Fuction(flag)}| 监听允许滚动，flag：true，false|
-|show | {Fuction}| 监听pdfh5显示|
-|hide | {Fuction}| 监听pdfh5隐藏|
-|reset | {Fuction}| 监听pdfh5还原|
-|destroy | {Fuction}| 监听pdfh5销毁|
+|init| {Function}|监听pdfh5开始初始化|
+|ready| {Function}|监听pdf准备开始渲染，此时可以拿到pdf总页数|
+|error| {Function(msg,time))}|监听加载失败，msg信息，time耗时 |
+|success| {Function(msg,time))}| 监听pdf渲染成功，msg信息，time耗时|
+|complete| {Function(status, msg, time)}| 监听pdf加载完成事件，加载失败、渲染成功都会触发。status有两种状态success和error|
+|render| {Function(currentNum, time, currentPageDom)}| 监听pdf渲染过程，currentPageDom当前加载的pdf的dom,currentNum当前加载的pdf页数,|
+|zoom| {Function(scale)}| 监听pdf缩放，scale缩放比例|
+|scroll| {Function(scrollTop)}| 监听pdf滚动，scrollTop滚动条高度|
+|zoomEnable| {Function(flag)}| 监听允许缩放，flag：true，false|
+|scrollEnable| {Function(flag)}| 监听允许滚动，flag：true，false|
+|show | {Function}| 监听pdfh5显示|
+|hide | {Function}| 监听pdfh5隐藏|
+|reset | {Function}| 监听pdfh5还原|
+|destroy | {Function}| 监听pdfh5销毁|
 
 ## 打赏赞助作者：
 ![支付宝二维码](http://www.gjtool.cn/zfb.jpg)
