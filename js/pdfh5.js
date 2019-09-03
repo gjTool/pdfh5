@@ -702,6 +702,7 @@
             this.pageTotal = this.pageNum.find('.pageTotal');
             this.loadingBar = this.container.find('.loadingBar');
             this.progress = this.loadingBar.find('.progress');
+            this.progressDom = this.progress[0];
             this.backTop = this.container.find('.backTop');
             this.loading = this.container.find('.loading');
             if (!options.loadingBar) {
@@ -1070,6 +1071,7 @@
         },
         renderSvg: function (page, scaledViewport, pageNum, num, container, options) {
             var self = this;
+          
             return page.getOperatorList().then(function (opList) {
                 var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
                 return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
@@ -1078,23 +1080,9 @@
                     container.appendChild(svg);
                     svg.style.width = "100%";
                     svg.style.height = "100%";
-                    if (self.totalNum > 2 && self.loadedCount >= self.totalNum - 2) {
-                        self.progress.css({
-                            width: "96%"
-                        })
-                    } else if (self.totalNum > 2 && self.loadedCount >= self.totalNum - 1) {
-                        self.progress.css({
-                            width: "98%"
-                        })
-                    } else if (self.totalNum > 2 && self.loadedCount == self.totalNum) {
-                        self.progress.css({
-                            width: "100%"
-                        })
-                    } else {
-                        self.progress.css({
-                            width: num * self.loadedCount + "%"
-                        })
-                    }
+                    self.progress.css({
+                        width: num * self.loadedCount + "%"
+                    })
                     $(container).css({
                         "min-height": $(svg).height() + 'px'
                     })
@@ -1127,23 +1115,9 @@
             canvas.height = viewport.height;
             canvas.width = viewport.width;
 
-            if (self.totalNum > 2 && self.loadedCount >= self.totalNum - 2) {
-                self.progress.css({
-                    width: "96%"
-                })
-            } else if (self.totalNum > 2 && self.loadedCount >= self.totalNum - 1) {
-                self.progress.css({
-                    width: "98%"
-                })
-            } else if (self.totalNum > 2 && self.loadedCount == self.totalNum) {
-                self.progress.css({
-                    width: "100%"
-                })
-            } else {
-                self.progress.css({
-                    width: num * self.loadedCount + "%"
-                })
-            }
+            self.progress.css({
+                width: num * self.loadedCount + "%"
+            })
             obj2.src = obj2.canvas.toDataURL("image/jpeg");
             //在canvas上绘制
             return page.render({
