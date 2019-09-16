@@ -15,7 +15,9 @@ export default {
   mounted() {
     //实例化
     this.pdfh5 = new Pdfh5("#demo", {
-      pdfurl: "../../static/test.pdf"
+      pdfurl: "//www.gjtool.cn/pdfh5/git.pdf",
+      renderType:"canvas",
+      lazy:true
     });
     //监听完成事件
     this.pdfh5.on("complete", function(status, msg, time) {
