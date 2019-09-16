@@ -1,6 +1,6 @@
 # pdfh5.js v1.2.15
 
-[![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)   [![npm downloads](https://img.shields.io/npm/dw/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
+[![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)   [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
 **pdfh5.js 基于pdf.js和jQuery，web/h5/移动端PDF预览插件。支持canvas和svg两种渲染模式，支持ajax和fetch两种请求方式。支持懒加载时手势缩放。**
 
@@ -216,9 +216,9 @@ pdfh5.on("ready", function () {
 |destroy | {Function}| 监听pdfh5销毁|
 
 ## 打赏赞助作者：
-![支付宝二维码](http://www.gjtool.cn/zfb.jpg)
-![微信二维码](http://www.gjtool.cn/wx.jpg)
+![支付宝二维码](http://www.gjtool.cn/download/zfb.jpg)
+![微信二维码](http://www.gjtool.cn/download/wx.jpg)
 
 ## 扫码加入QQ群和更多小伙伴一起交流前端技术：
-![QQ群：651601340](http://www.gjtool.cn/qq.png)
+![QQ群：651601340](http://www.gjtool.cn/download/qq.png)
 	

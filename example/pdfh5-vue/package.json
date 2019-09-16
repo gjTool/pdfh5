@@ -1,5 +1,5 @@
 {
-  "name": "pdf-vue",
+  "name": "pdfh5-vue",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "gjTool <861366490@qq.com>",
@@ -46,8 +46,8 @@
     "vue-style-loader": "^3.0.1",
     "vue-template-compiler": "^2.5.2",
     "webpack": "^3.6.0",
-    "webpack-bundle-analyzer": "^3.3.2",
-    "webpack-dev-server": "^3.1.11",
+    "webpack-bundle-analyzer": "^2.9.0",
+    "webpack-dev-server": "^2.9.1",
     "webpack-merge": "^4.1.0"
   },
   "engines": {
