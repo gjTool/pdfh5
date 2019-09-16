@@ -88,7 +88,7 @@ npm install pdfh5
 	mounted() {
 		//实例化
 	  this.pdfh5 = new Pdfh5("#demo", {
-		pdfurl: "./test.pdf" 
+		pdfurl: "../../static/test.pdf"
 	  });
 	  //监听完成事件
 	  this.pdfh5.on("complete", function (status, msg, time) {
