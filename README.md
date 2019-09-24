@@ -217,7 +217,7 @@ pdfh5.on("ready", function () {
 
 
 ## 打赏榜单
-- [JayLin](https://github.com/110117ab)
+-  [JayLin](https://github.com/110117ab) ￥6.66
 
 ## 扫码加入QQ群和更多小伙伴一起交流前端技术：
 ![QQ群：651601340](http://www.gjtool.cn/download/qq.png)
