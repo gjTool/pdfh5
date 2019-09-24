@@ -214,6 +214,11 @@ pdfh5.on("ready", function () {
 ![支付宝二维码](http://www.gjtool.cn/download/zfb.jpg)
 ![微信二维码](http://www.gjtool.cn/download/wx.jpg)
 
+- 感谢打赏！请打赏的童鞋留下github、QQ、微信。方便我列个打赏榜。然后，我会对打赏过的童鞋的问题及时响应。（当然是在我不忙的时候啦）
+
+## 打赏榜单
+- [JayLin](https://github.com/JayLin)
+
 ## 扫码加入QQ群和更多小伙伴一起交流前端技术：
 ![QQ群：651601340](http://www.gjtool.cn/download/qq.png)
 	
