@@ -32,14 +32,16 @@
         //当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf
         //优先顺序：  ？file= > pdfurl > data
         var pdfh5 = new Pdfh5('#demo', {
-            pdfurl: "//www.gjtool.cn/pdfh5/git.pdf"
+            pdfurl: "http://www.gjtool.cn/pdfh5/test.pdf"
         });
-        // window.onorientationchange = function () {
-        //     pdfh5.destroy()
-        //     setTimeout(() => {
-        //         pdfh5.init(pdfh5.options)
-        //     }, 2000);
-        // }
+        // setTimeout(() => {
+        //     var pdfh5 = new Pdfh5('#demo', {
+        //         pdfurl: "http://www.gjtool.cn/pdfh5/git.pdf"
+        //     });
+        //     pdfh5.on("complete", function (status, msg, time) {
+        //         console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
+        //     })
+        // }, 5000);
         //配置项参数 type:"ajax" 请求方式为ajax，默认fetch
         // var pdfh5 = new Pdfh5('#demo', {
         //     pdfurl: "./default.pdf",

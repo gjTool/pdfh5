@@ -1,4 +1,4 @@
-# pdfh5.js v1.2.17
+# pdfh5.js v1.2.18
 
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)   [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
@@ -6,11 +6,15 @@
 
 - 前端学习交流QQ群，651601340，可以进来提pdfh5.js的bug、问题、建议等。
 
+- [pdfh5项目GitHub地址](https://github.com/gjTool/pdfh5)  
+
+- [pdfh5打包下载](http://www.gjtool.cn/download/pdfh5.zip)  
+
 ![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
 
 ## 更新信息
 
-- 2019.09.16更新：  1.更新pdf.js版本至官网v2.1.266。2.修改重复在同一个div容器里渲染pdf时不会刷新pdf的问题。
+- 2019.09.19更新：  1.更新一个小问题（pdf.js引用了fs模块，但实际上浏览器环境没有用到fs，配置文件就没有安装fs，导致找不到fs报错。vue-cli2.0本身已避免这个问题了，但是还是有很多人重复出现这个问题，也不去看issue解决办法。所以我动手更新一下吧）。
 
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
