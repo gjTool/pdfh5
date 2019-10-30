@@ -1,4 +1,4 @@
-# pdfh5.js v1.2.18
+# pdfh5.js v1.2.19
 
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)   [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
@@ -8,18 +8,18 @@
 
 - [pdfh5项目GitHub地址](https://github.com/gjTool/pdfh5)  
 
-- [pdfh5打包下载](http://www.gjtool.cn/download/pdfh5.zip)  
+- [pdfh5打包下载](https://www.gjtool.cn/download/pdfh5.zip)  
 
 ![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
 
 ## 更新信息
 
-- 2019.09.19更新：  1.更新一个小问题（pdf.js引用了fs模块，但实际上浏览器环境没有用到fs，配置文件就没有安装fs，导致找不到fs报错。vue-cli2.0本身已避免这个问题了，但是还是有很多人重复出现这个问题，也不去看issue解决办法。所以我动手更新一下吧）。
+- 2019.10.31更新：  1. 修复在IE11浏览器svg模式显示样式不正常的问题。
 
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
 
--  [http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf](http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf)  
+-  [https://www.gjtool.cn/pdfh5/pdf.html?file=https://www.gjtool.cn/pdfh5/default.pdf](https://www.gjtool.cn/pdfh5/pdf.html?file=https://www.gjtool.cn/pdfh5/default.pdf)  
 
 
 ## 快速使用（有两种方式）
@@ -151,7 +151,7 @@ var pdfh5 = new Pdfh5('#demo', {
 
 ```javascript
 $.ajax({
-	url: "http://gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
+	url: "https://gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
 	type: "get",
 	mimeType: 'text/plain; charset=x-user-defined',//jq ajax请求文件流的方式
 	cache: false,
@@ -211,9 +211,9 @@ pdfh5.on("ready", function () {
 |destroy | {Function}| 监听pdfh5销毁|
 
 ## 打赏赞助作者：
-![支付宝二维码](http://www.gjtool.cn/download/zfb.jpg) ![微信二维码](http://www.gjtool.cn/download/wx.jpg)
+![支付宝二维码](https://www.gjtool.cn/download/zfb.jpg) ![微信二维码](https://www.gjtool.cn/download/wx.jpg)
 
-- 感谢打赏！请打赏的童鞋在[pdfh5.js打赏榜](http://www.gjtool.cn/articles/2019/09/24/1569327833358.html)留下github、QQ、微信 。然后，我会对打赏过的童鞋的问题及时响应。（当然是在我不忙的时候啦）
+- 感谢打赏！请打赏的童鞋在[pdfh5.js打赏榜](https://www.gjtool.cn/articles/2019/09/24/1569327833358.html)留下github、QQ、微信 。然后，我会对打赏过的童鞋的问题及时响应。（当然是在我不忙的时候啦）
 
 
 ## 打赏榜单
@@ -222,5 +222,5 @@ pdfh5.on("ready", function () {
 
 
 ## 扫码加入QQ群和更多小伙伴一起交流前端技术：
-![QQ群：651601340](http://www.gjtool.cn/download/qq.png)
+![QQ群：651601340](https://www.gjtool.cn/download/qq.png)
 	

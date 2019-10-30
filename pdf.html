@@ -13,6 +13,7 @@
     <title>PDFH5</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/pdfh5.css" />
+    <link rel="stylesheet" href="css/mui.css" />
     <link href="//www.gjtool.cn/download/pdfh5.png" type="image/x-icon" rel="shortcut icon" />
     <style>
         html,
@@ -34,11 +35,12 @@
         //优先顺序：  ？file= > pdfurl > data
         var pdfh5 = new Pdfh5('#demo', {
             pdfurl: "git.pdf",
+            // renderType:"canvas",
             lazy:true
         });
         // setTimeout(() => {
         //     var pdfh5 = new Pdfh5('#demo', {
-        //         pdfurl: "http://www.gjtool.cn/pdfh5/git.pdf"
+        //         pdfurl: "https://www.gjtool.cn/pdfh5/git.pdf"
         //     });
         //     setTimeout(() => {
         //         var pdfh5 = new Pdfh5('#demo', {
