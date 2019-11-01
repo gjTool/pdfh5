@@ -1,4 +1,4 @@
-# pdfh5.js v1.2.20
+# pdfh5.js v1.2.21
 
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)   [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
@@ -14,7 +14,7 @@
 
 ## 更新信息
 
-- 2019.11.01 更新：  1. 修复svg模式下chrome等浏览器pdf只有一页时显示高度不正常。
+- 2019.11.01 更新：  1. 修复svg模式下chrome等浏览器显示高度不正常。
 
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
