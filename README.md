@@ -6,9 +6,13 @@
 
 - 前端学习交流QQ群，651601340，可以进来提pdfh5.js的bug、问题、建议等。
 
+- [pdfh5博客主页](https://www.gjtool.cn/)  
+
 - [pdfh5项目GitHub地址](https://github.com/gjTool/pdfh5)  
 
 - [pdfh5打包下载](https://www.gjtool.cn/download/pdfh5.zip)  
+
+
 
 ![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
 
@@ -219,7 +223,7 @@ pdfh5.on("ready", function () {
 ## 打赏榜单
 - [JayLin](https://github.com/110117ab) ￥6.66
 - [靓仔城](https://github.com/ljc7877376) ￥6.67
-
+- 南蓝 ￥8.80
 
 ## 扫码加入QQ群和更多小伙伴一起交流前端技术：
 ![QQ群：651601340](https://www.gjtool.cn/download/qq.png)

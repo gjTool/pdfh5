@@ -66,14 +66,14 @@
     <script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         $(function () {
-            $("#app").remove()
-            $("#demo").show()
+            // $("#app").remove()
+            // $("#demo").show()
             //当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf
             //优先顺序：  ？file= > pdfurl > data
             var pdfh5 = new Pdfh5('#demo', {
-                pdfurl: "https://www.gjtool.cn/pdfh5/git.pdf",
+                pdfurl: "https://yxq.linksign.cn/api/v1.0/file/downSignFile?fileCode=15729209200281073563943",
                 // pdfurl: "testPDF/1.pdf",
-                // renderType:"canvas",
+                renderType:"canvas",
                 // type:"ajax",
                 lazy: true
             });
