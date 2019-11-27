@@ -1,4 +1,4 @@
-# pdfh5.js v1.2.21
+# pdfh5.js v1.2.22
 
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)   [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
@@ -18,7 +18,7 @@
 
 ## 更新信息
 
-- 2019.11.01 更新：  1. 修复svg模式下chrome等浏览器显示高度不正常。
+- 2019.11.27 更新：  1. 新增配置项属性limit，限制pdf加载最大页数。
 
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
@@ -150,6 +150,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动|
 |zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
 |cMapUrl| {String}| 默认"./js/cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径|
+|limit| {Number}| 默认0 |限制pdf加载最大页数|
 
 ## 	pdf文件流请求示例（以jq ajax为例）
 
@@ -224,6 +225,7 @@ pdfh5.on("ready", function () {
 - [JayLin](https://github.com/110117ab) ￥6.66
 - [靓仔城](https://github.com/ljc7877376) ￥6.67
 - 南蓝 ￥8.80
+- 我是太阳 ￥29.99
 
 ## 扫码加入QQ群和更多小伙伴一起交流前端技术：
 ![QQ群：651601340](https://www.gjtool.cn/download/qq.png)

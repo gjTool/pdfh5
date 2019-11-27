@@ -1,5 +1,5 @@
 ; (function (g, fn) {
-    var version = "1.2.21", pdfjsVersion = "2.1.266";
+    var version = "1.2.22", pdfjsVersion = "2.1.266";
     console.log("The latest version and API of pdfh5 from: https://www.gjtool.cn  (pdf.js: " + pdfjsVersion + " , pdfh5.js: " + version + ")")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {
@@ -670,6 +670,12 @@
             options.lazy = options.lazy === true ? true : false;
             options.renderType = options.renderType === "canvas" ? "canvas" : "svg";
             options.resize = options.resize === false ? false : true;
+			if(options.limit){
+				var n = parseFloat(options.limit)
+				options.limit = isNaN(n) ? 0 : n < 0 ? 0 : n;
+			}else{
+				options.limit = 0
+			}
             if (options.renderType === "canvas") {
                 options.scale = 2;
             }
@@ -958,6 +964,9 @@
                 self.loading.hide()
                 self.thePDF = pdf;
                 self.totalNum = pdf.numPages;
+				if(options.limit>0){
+					 self.totalNum = options.limit
+				}
                 self.pageTotal.text(self.totalNum)
                 var arr1 = self.eventType["ready"];
                 if (arr1 && arr1 instanceof Array) {
