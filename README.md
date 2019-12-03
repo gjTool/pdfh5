@@ -226,7 +226,7 @@ pdfh5.on("ready", function () {
 - [靓仔城](https://github.com/ljc7877376) ￥6.67
 - 南蓝 ￥8.80
 - 我是太阳 ￥29.99
-
+- *小波 ￥1.00 【支付宝留言：“打赏一块钱，我做两天都做不好双指缩放”】
 ## 扫码加入QQ群和更多小伙伴一起交流前端技术：
 ![QQ群：651601340](https://www.gjtool.cn/download/qq.png)
 	
