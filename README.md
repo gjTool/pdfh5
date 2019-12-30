@@ -149,7 +149,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |tapZoomFactor|  {Number}|默认2| 双击放大倍数|
 |scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动|
 |zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
-|cMapUrl| {String}| 默认"./js/cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径|
+|cMapUrl| {String}| 默认"./js/cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径，例如 cMapUrl:"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"|
 |limit| {Number}| 默认0 |限制pdf加载最大页数|
 
 ## 	pdf文件流请求示例（以jq ajax为例）
