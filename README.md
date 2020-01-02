@@ -4,7 +4,6 @@
 
 **pdfh5.js 基于pdf.js和jQuery，web/h5/移动端PDF预览手势缩放插件。支持canvas和svg两种渲染模式，支持ajax和fetch两种请求方式。支持懒加载。**
 
-- 前端学习交流QQ群，651601340，可以进来提pdfh5.js的bug、问题、建议等。
 
 - [pdfh5博客主页](https://www.gjtool.cn/)  
 
