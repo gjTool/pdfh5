@@ -23,7 +23,7 @@
 
         #demo {
             display: none;
-			height: 50%;
+			/* height: 50%; */
         }
     </style>
 </head>
@@ -173,7 +173,10 @@
             pdfh5.on("success", function (time) {
                 console.log("加载完成，耗时" + time + "毫秒")
             })
-
+			//监听scroll
+            pdfh5.on("scroll", function (scrollTop) {
+                console.log("监听scrollTop：" ,scrollTop )
+            })
             //on方法,监听各种事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
             // 缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
             // 		pdfh5.on("init",function(){

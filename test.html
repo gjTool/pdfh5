@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+		<meta http-equiv="pragma" content="no-cache">
+		<meta http-equiv="cache-control" content="no-cache">
+		<meta http-equiv="expires" content="0">
+		<title>demo</title>
+		<style>
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			html,
+			body {
+				width: 100%;
+				height: 100%;
+			}
+
+			#app {
+				display: -webkit-box;
+				display: -ms-flexbox;
+				display: flex;
+				-webkit-box-pack: center;
+				-ms-flex-pack: center;
+				justify-content: center;
+				-webkit-box-align: center;
+				-ms-flex-align: center;
+				align-items: center;
+				height: 100%;
+				background: rgba(249, 249, 249, 0.9);
+				overflow: hidden;
+			}
+
+			.text-wrapper {
+				padding: 0 1rem;
+				max-width: 50rem;
+				width: 100%;
+				text-align: center;
+			}
+
+			.text {
+				font-size: 8em;
+				text-transform: uppercase;
+				letter-spacing: -14px;
+			}
+
+			.text .letter {
+				position: relative;
+				display: inline-block;
+				-webkit-transition: all .4s;
+				transition: all .4s;
+			}
+
+			.text .letter .character {
+				opacity: 0.65;
+				-webkit-transition: color .4s;
+				transition: color .4s;
+				cursor: pointer;
+			}
+
+			.text .letter span {
+				position: absolute;
+				bottom: .8rem;
+				left: .4rem;
+				display: block;
+				width: 100%;
+				height: 15px;
+			}
+
+			.text .letter span::before {
+				content: '';
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 0;
+				height: 0;
+				-webkit-transform: translate(-50%, -50%);
+				transform: translate(-50%, -50%);
+				border-radius: 50%;
+				background: rgba(0, 0, 0, 0.25);
+			}
+
+			.text .letter:hover .character {
+				color: #fff !important;
+			}
+
+
+
+			.text.part1 .letter:nth-child(1) .character {
+				color: #f44336;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 0.33333s;
+				animation-delay: 0.33333s;
+			}
+
+			.text.part1 .letter:nth-child(1) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 0.33333s;
+				animation-delay: 0.33333s;
+			}
+
+
+			.text.part1 .letter:nth-child(2) .character {
+				color: #9C27B0;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 0.66667s;
+				animation-delay: 0.66667s;
+			}
+
+			.text.part1 .letter:nth-child(2) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 0.66667s;
+				animation-delay: 0.66667s;
+			}
+
+
+
+			.text.part1 .letter:nth-child(3) .character {
+				color: #f99b0c;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 1s;
+				animation-delay: 1s;
+			}
+
+			.text.part1 .letter:nth-child(3) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 1s;
+				animation-delay: 1s;
+			}
+
+			.text.part1 .letter:nth-child(4) .character {
+				color: #cee007;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 1.33333s;
+				animation-delay: 1.33333s;
+			}
+
+			.text.part1 .letter:nth-child(4) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 1.33333s;
+				animation-delay: 1.33333s;
+			}
+
+
+			.text.part1 .letter:nth-child(5) .character {
+				color: #00c6b2;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 1.66667s;
+				animation-delay: 1.66667s;
+			}
+
+			.text.part1 .letter:nth-child(5) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 1.66667s;
+				animation-delay: 1.66667s;
+			}
+
+	
+
+			.text.part1 .letter:nth-child(6) .character {
+				color: #f44336;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 2s;
+				animation-delay: 2s;
+			}
+
+			.text.part1 .letter:nth-child(6) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 2s;
+				animation-delay: 2s;
+			}
+
+	
+			.text.part1 .letter:nth-child(7) .character {
+				color: #4CAF50;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 2s;
+				animation-delay: 2.5s;
+			}
+
+			.text.part1 .letter:nth-child(7) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 2s;
+				animation-delay: 3s;
+			}
+
+
+			.text.part2 span:nth-child(1) .character {
+				color: #ff5a5f;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 2.33333s;
+				animation-delay: 2.33333s;
+			}
+
+			.text.part2 span:nth-child(1) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 2.33333s;
+				animation-delay: 2.33333s;
+			}
+
+
+
+			.text.part2 span:nth-child(2) .character {
+				color: #f99b0c;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 2.66667s;
+				animation-delay: 2.66667s;
+			}
+
+			.text.part2 span:nth-child(2) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 2.66667s;
+				animation-delay: 2.66667s;
+			}
+
+
+			.text.part2 span:nth-child(3) .character {
+				color: #cee007;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 3s;
+				animation-delay: 3s;
+			}
+
+			.text.part2 span:nth-child(3) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 3s;
+				animation-delay: 3s;
+			}
+
+
+			.text.part2 span:nth-child(4) .character {
+				color: #00c6b2;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 3.33333s;
+				animation-delay: 3.33333s;
+			}
+
+			.text.part2 span:nth-child(4) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 3.33333s;
+				animation-delay: 3.33333s;
+			}
+
+
+
+			.text.part2 span:nth-child(5) .character {
+				color: #4e2a84;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 3.66667s;
+				animation-delay: 3.66667s;
+			}
+
+			.text.part2 span:nth-child(5) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 3.66667s;
+				animation-delay: 3.66667s;
+			}
+
+
+
+			.text.part2 span:nth-child(6) .character {
+				color: #9C27B0;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 4s;
+				animation-delay: 4s;
+			}
+
+			.text.part2 span:nth-child(6) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 4s;
+				animation-delay: 4s;
+			}
+
+	
+
+			.text.part2 span:nth-child(7) .character {
+				color: #f99b0c;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 4.33333s;
+				animation-delay: 4.33333s;
+			}
+
+			.text.part2 span:nth-child(7) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 4.33333s;
+				animation-delay: 4.33333s;
+			}
+
+	
+
+			.text.part2 span:nth-child(8) .character {
+				color: #cee007;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 4.66667s;
+				animation-delay: 4.66667s;
+			}
+
+			.text.part2 span:nth-child(8) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 4.66667s;
+				animation-delay: 4.66667s;
+			}
+
+		
+
+			.text.part2 span:nth-child(9) .character {
+				color: #00c6b2;
+				-webkit-animation: wave 1.2s linear infinite;
+				animation: wave 1.2s linear infinite;
+				-webkit-animation-delay: 5s;
+				animation-delay: 5s;
+			}
+
+			.text.part2 span:nth-child(9) span::before {
+				-webkit-animation: shadow 1.2s linear infinite;
+				animation: shadow 1.2s linear infinite;
+				-webkit-animation-delay: 5s;
+				animation-delay: 5s;
+			}
+
+			@-webkit-keyframes wave {
+				0% {
+					-webkit-transform: translateY(0);
+					transform: translateY(0);
+				}
+
+				50% {
+					-webkit-transform: translateY(-10px);
+					transform: translateY(-10px);
+				}
+
+				100% {
+					-webkit-transform: translateY(0);
+					transform: translateY(0);
+				}
+			}
+
+			@keyframes wave {
+				0% {
+					-webkit-transform: translateY(0);
+					transform: translateY(0);
+				}
+
+				50% {
+					-webkit-transform: translateY(-10px);
+					transform: translateY(-10px);
+				}
+
+				100% {
+					-webkit-transform: translateY(0);
+					transform: translateY(0);
+				}
+			}
+
+			@-webkit-keyframes shadow {
+				0% {
+					width: 0;
+					height: 0;
+				}
+
+				50% {
+					width: 100%;
+					height: 100%;
+				}
+
+				100% {
+					width: 0;
+					height: 0;
+				}
+			}
+
+			@keyframes shadow {
+				0% {
+					width: 0;
+					height: 0;
+				}
+
+				50% {
+					width: 100%;
+					height: 100%;
+				}
+
+				100% {
+					width: 0;
+					height: 0;
+				}
+			}
+
+			.how-to {
+				margin: 2rem 0 2rem 1rem;
+				font-family: "Opens Sans", sans-serif;
+				font-weight: 300;
+				font-size: .85em;
+				letter-spacing: 4px;
+				color: rgba(0, 0, 0, 0.8);
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="app">
+			<div class="text-wrapper">
+				<div class="text part1">
+					<div>
+						<span class="letter">
+							<div class="character">L</div> <span></span>
+						</span>
+						<span class="letter">
+							<div class="character">o</div> <span></span>
+						</span>
+						<span class="letter">
+							<div class="character">a</div> <span></span>
+						</span>
+						<span class="letter">
+							<div class="character">d</div> <span></span>
+						</span>
+						<span class="letter">
+							<div class="character">i</div> <span></span>
+						</span>
+						<span class="letter">
+							<div class="character">n</div> <span></span>
+						</span>
+						<span class="letter">
+							<div class="character">g</div> <span></span>
+						</span>
+					</div>
+				</div>
+				<div class="how-to"><span>正在加载中，请您耐心等待...</span></div>
+			</div>
+		</div>
+	</body>
+
+</html>

@@ -4,7 +4,6 @@
 
 **pdfh5.js 基于pdf.js和jQuery，web/h5/移动端PDF预览手势缩放插件。支持canvas和svg两种渲染模式，支持ajax和fetch两种请求方式。支持懒加载。**
 
-- 前端学习交流QQ群，651601340，可以进来提pdfh5.js的bug、问题、建议等。
 
 - [pdfh5博客主页](https://www.gjtool.cn/)  
 
@@ -149,7 +148,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |tapZoomFactor|  {Number}|默认2| 双击放大倍数|
 |scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动|
 |zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
-|cMapUrl| {String}| 默认"./js/cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径|
+|cMapUrl| {String}| 默认"./js/cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径，例如 cMapUrl:"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"|
 |limit| {Number}| 默认0 |限制pdf加载最大页数|
 
 ## 	pdf文件流请求示例（以jq ajax为例）
@@ -226,7 +225,10 @@ pdfh5.on("ready", function () {
 - [靓仔城](https://github.com/ljc7877376) ￥6.67
 - 南蓝 ￥8.80
 - 我是太阳 ￥29.99
-
+- *小波 ￥1.00 【支付宝留言：“打赏一块钱，我做两天都做不好双指缩放”】
+- *鑫 ¥9.99
+- *手 ¥9.99
+- *勇 ￥19.99 【支付宝留言：“鼓励共享优质代码”】
 ## 扫码加入QQ群和更多小伙伴一起交流前端技术：
 ![QQ群：651601340](https://www.gjtool.cn/download/qq.png)
 	
