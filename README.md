@@ -152,7 +152,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |limit| {Number}| 默认0 |限制pdf加载最大页数|
 
 ## 	pdf文件流请求示例（以jq ajax为例）
-
+1.
 ```javascript
 $.ajax({
 	url: "https://gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
@@ -166,7 +166,44 @@ $.ajax({
 	}
 });
 ```
-
+2.
+```javascript
+$.ajax({
+	url: "https://gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
+	type: "get",
+	mimeType: 'text/plain; charset=x-user-defined',//jq ajax请求文件流的方式
+	cache: false,
+	success: function (data) {
+		var rawLength = data.length;
+		var array = new Uint8Array(new ArrayBuffer(rawLength));
+		for (i = 0; i < rawLength; i++) {
+		    array[i] = data.charCodeAt(i) & 0xff;
+		}
+		var pdfh5 = new Pdfh5('#demo', {
+			data: array
+		});
+	}
+});
+```
+3.
+```javascript
+$.ajax({
+	url: "https://gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
+	type: "get",
+	mimeType: 'text/plain; charset=x-user-defined',//jq ajax请求文件流的方式
+	cache: false,
+	success: function (data) {
+		var rawLength = data.length;
+		var array = [];
+		for (i = 0; i < rawLength; i++) {
+		    array.push(data.charCodeAt(i) & 0xff);
+		}
+		var pdfh5 = new Pdfh5('#demo', {
+			data: array
+		});
+	}
+});
+```
 ## methods 方法列表
 
 - **示例：** 是否允许pdf滚动
