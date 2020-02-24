@@ -252,7 +252,7 @@ pdfh5.on("ready", function () {
 |destroy | {Function}| 监听pdfh5销毁|
 
 ## 打赏赞助作者：
-![支付宝二维码](https://www.gjtool.cn/download/zfb.jpg) ![微信二维码](https://www.gjtool.cn/download/wx.jpg)
+
 
 - 感谢打赏！请打赏的童鞋在[pdfh5.js打赏榜](https://www.gjtool.cn/articles/2019/09/24/1569327833358.html)留下github、QQ、微信 。然后，我会对打赏过的童鞋的问题及时响应。（当然是在我不忙的时候啦）
 
@@ -267,3 +267,4 @@ pdfh5.on("ready", function () {
 - *手 ¥9.99
 - *勇 ￥19.99 【支付宝留言：“鼓励共享优质代码”】
 - *爷 ¥5.00
+- *超 ¥20.00
