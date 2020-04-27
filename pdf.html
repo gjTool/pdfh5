@@ -13,7 +13,7 @@
     <title>PDFH5</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/pdfh5.css" />
-    <link href="//www.gjtool.cn/download/pdfh5.png" type="image/x-icon" rel="shortcut icon" />
+    <link href="https://www.gjtool.cn/download/pdfh5.png" type="image/x-icon" rel="shortcut icon" />
     <style>
         html,
         body {
@@ -61,22 +61,17 @@
 
     </div>
     <div id="demo"></div>
-    <script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
-    <script src="js/pdf.worker.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/pdf.js"></script>
+    <script src="js/pdf.worker.js"></script>
     <script src="js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
+        var pdfh5;
         $(function () {
             $("#app").remove()
             $("#demo").show()
-            //当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf
-            //优先顺序：  ？file= > pdfurl > data
-            var pdfh5 = new Pdfh5('#demo', {
-                pdfurl: "git.pdf",
-				// limit:2, // 限制加载最大页数
-                renderType:"canvas",
-                // type:"ajax",
-                lazy: true
+             pdfh5 = new Pdfh5('#demo', {
+                pdfurl: "git.pdf"
             });
             // setTimeout(() => {
             //     var pdfh5 = new Pdfh5('#demo', {
@@ -96,24 +91,11 @@
             //         }, 5000);
             //     }, 5000);
             // }, 5000);
-            //配置项参数 type:"ajax" 请求方式为ajax，默认fetch
+
+            //配置项参数 renderType:"svg" 渲染模式为svg，默认canvas
             // var pdfh5 = new Pdfh5('#demo', {
             //     pdfurl: "./default.pdf",
-            //     type:"ajax"
-            // });
-
-            //配置项参数 renderType:"canvas" 渲染模式为canvas，默认svg
-            // var pdfh5 = new Pdfh5('#demo', {
-            //     pdfurl: "./default.pdf",
-            //     renderType:"canvas"
-            // });
-
-            // 配置项参数 scale:2 渲染的清晰度比例，默认1.3
-
-            // var pdfh5 = new Pdfh5('#demo', {
-            //         pdfurl: "./default.pdf",
-            //         renderType:"canvas",
-            //         scale:2
+            //     renderType:"svg"
             // });
 
             //配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
@@ -122,7 +104,7 @@
             //     lazy:true 
             // });
 
-            //配置项参数 URIenable:false 可以无视地址栏参数，只拿配置项的pdfurl或者data来渲染pdf
+            //配置项参数 URIenable:true 开启获取地址栏file参数，获取地址栏pdf路径?file=xxx.pdf，默认false不开启
             // var pdfh5 = new Pdfh5('#demo', {
             //     URIenable:false,
             //     pdfurl: "./default.pdf"
@@ -159,35 +141,23 @@
 
             //pdf准备开始渲染，此时可以拿到pdf总页数
             pdfh5.on("ready", function () {
-                console.log("总页数：" + this.totalNum)
-            })
-            //监听pdf渲染过程，currentPageDom当前加载的pdf的dom,currentNum当前加载的pdf页数,
-            pdfh5.on("render", function (currentNum, time, currentPageDom) {
-                console.log("当前渲染页：" + currentNum + "，耗时：" + time + "毫秒")
-            })
-            //监听完成事件，加载失败、渲染成功都会触发
-            pdfh5.on("complete", function (status, msg, time) {
-                console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
+                console.log("pdf准备开始渲染，总页数：" + this.totalNum)
             })
             //监听pdf渲染成功
             pdfh5.on("success", function (time) {
-                console.log("加载完成，耗时" + time + "毫秒")
+                time = time/1000
+                console.log("pdf渲染完成，总耗时" + time + "秒")
             })
-			//监听scroll
-            pdfh5.on("scroll", function (scrollTop) {
-                console.log("监听scrollTop：" ,scrollTop )
-            })
-            //on方法,监听各种事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
+            //监听pdf渲染失败
+            // pdfh5.on("error", function (time) {
+            //     console.log("渲染失败，总耗时" + time + "毫秒")
+            // })
+             //监听完成事件，加载失败、渲染成功都会触发
+            //  pdfh5.on("complete", function (status, msg, time) {
+            //     console.log("状态：" + status + "，信息：" + msg + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum)
+            // })
+            //on方法,监听事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
             // 缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
-            // 		pdfh5.on("init",function(){
-            // 			
-            // 		})
-            // 		pdfh5.on("ready",function(){
-            // 			
-            // 		})
-            // 		pdfh5.on("complete",function(status,msg,time){
-            // 			this.zoomEnable(false)
-            // 		})
 
             //pdfh5支持在线预览 
             //http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf

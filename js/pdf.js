@@ -1,11 +1,9395 @@
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define("./pdf.js",[],t):"object"==typeof exports?exports["./pdf.js"]=t():e["./pdf.js"]=e.pdfjsLib=t()}(this,function(){return function(e){function t(n){if(r[n])return r[n].exports;var i=r[n]={i:n,l:!1,exports:{}};return e[n].call(i.exports,i,i.exports,t),i.l=!0,i.exports}var r={};return t.m=e,t.c=r,t.d=function(e,r,n){t.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:n})},t.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},t.t=function(e,r){if(1&r&&(e=t(e)),8&r)return e;if(4&r&&"object"==typeof e&&e&&e.__esModule)return e;var n=Object.create(null);if(t.r(n),Object.defineProperty(n,"default",{enumerable:!0,value:e}),2&r&&"string"!=typeof e)for(var i in e)t.d(n,i,function(t){return e[t]}.bind(null,i));return n},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=0)}([function(e,t,r){"use strict";var n=r(1),i=r(146),a=r(162),o=r(163),s=r(151),u=r(164),c=r(156),l=r(153),h=r(4);if(h()){var d=r(165).PDFNodeStream;i.setPDFNetworkStreamFactory(function(e){return new d(e)})}else if("undefined"!=typeof Response&&"body"in Response.prototype&&"undefined"!=typeof ReadableStream){var f=r(168).PDFFetchStream;i.setPDFNetworkStreamFactory(function(e){return new f(e)})}else{var p=r(169).PDFNetworkStream;i.setPDFNetworkStreamFactory(function(e){return new p(e)})}t.build=i.build,t.version=i.version,t.getDocument=i.getDocument,t.LoopbackPort=i.LoopbackPort,t.PDFDataRangeTransport=i.PDFDataRangeTransport,t.PDFWorker=i.PDFWorker,t.renderTextLayer=a.renderTextLayer,t.AnnotationLayer=o.AnnotationLayer,t.createPromiseCapability=n.createPromiseCapability,t.PasswordResponses=n.PasswordResponses,t.InvalidPDFException=n.InvalidPDFException,t.MissingPDFException=n.MissingPDFException,t.SVGGraphics=u.SVGGraphics,t.NativeImageDecoding=n.NativeImageDecoding,t.CMapCompressionType=n.CMapCompressionType,t.PermissionFlag=n.PermissionFlag,t.UnexpectedResponseException=n.UnexpectedResponseException,t.OPS=n.OPS,t.VerbosityLevel=n.VerbosityLevel,t.UNSUPPORTED_FEATURES=n.UNSUPPORTED_FEATURES,t.createValidAbsoluteUrl=n.createValidAbsoluteUrl,t.createObjectURL=n.createObjectURL,t.removeNullCharacters=n.removeNullCharacters,t.shadow=n.shadow,t.Util=n.Util,t.ReadableStream=n.ReadableStream,t.URL=n.URL,t.RenderingCancelledException=s.RenderingCancelledException,t.getFilenameFromUrl=s.getFilenameFromUrl,t.LinkTarget=s.LinkTarget,t.addLinkAttributes=s.addLinkAttributes,t.loadScript=s.loadScript,t.GlobalWorkerOptions=c.GlobalWorkerOptions,t.apiCompatibilityParams=l.apiCompatibilityParams},function(e,t,r){"use strict";function n(e){return(n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function i(e){Number.isInteger(e)&&(ae=e)}function a(){return ae}function o(e){ae>=ee.INFOS}function s(e){ae>=ee.WARNINGS}function u(e){}function c(e){throw new Error(e)}function l(e,t){e||c(t)}function h(e,t){try{var r=new U.URL(e);if(!r.origin||"null"===r.origin)return!1}catch(e){return!1}var n=new U.URL(t,r);return r.origin===n.origin}function d(e){if(!e)return!1;switch(e.protocol){case"http:":case"https:":case"ftp:":case"mailto:":case"tel:":return!0;default:return!1}}function f(e,t){if(!e)return null;try{var r=t?new U.URL(e,t):new U.URL(e);if(d(r))return r}catch(e){}return null}function p(e,t,r){return Object.defineProperty(e,t,{value:r,enumerable:!0,configurable:!0,writable:!1}),r}function v(e){var t;return function(){return e&&(t=Object.create(null),e(t),e=null),t}}function m(e){return"string"!=typeof e?(s("The argument for removeNullCharacters must be a string."),e):e.replace(me,"")}function g(e){l(null!==e&&"object"===n(e)&&void 0!==e.length,"Invalid argument for bytesToString");var t=e.length,r=8192;if(t<r)return String.fromCharCode.apply(null,e);for(var i=[],a=0;a<t;a+=r){var o=Math.min(a+r,t),s=e.subarray(a,o);i.push(String.fromCharCode.apply(null,s))}return i.join("")}function y(e){l("string"==typeof e,"Invalid argument for stringToBytes");for(var t=e.length,r=new Uint8Array(t),n=0;n<t;++n)r[n]=255&e.charCodeAt(n);return r}function b(e){return void 0!==e.length?e.length:(l(void 0!==e.byteLength),e.byteLength)}function _(e){if(1===e.length&&e[0]instanceof Uint8Array)return e[0];var t,r,n,i=0,a=e.length;for(t=0;t<a;t++)r=e[t],n=b(r),i+=n;var o=0,s=new Uint8Array(i);for(t=0;t<a;t++)r=e[t],r instanceof Uint8Array||(r="string"==typeof r?y(r):new Uint8Array(r)),n=r.byteLength,s.set(r,o),o+=n;return s}function A(e){return String.fromCharCode(e>>24&255,e>>16&255,e>>8&255,255&e)}function S(e){return e<=0?0:Math.ceil(Math.log2(e))}function w(e,t){return e[t]<<24>>24}function k(e,t){return e[t]<<8|e[t+1]}function x(e,t){return(e[t]<<24|e[t+1]<<16|e[t+2]<<8|e[t+3])>>>0}function P(){var e=new Uint8Array(4);e[0]=1;var t=new Uint32Array(e.buffer,0,1);return 1===t[0]}function C(){try{return new Function(""),!0}catch(e){return!1}}function R(e){for(var t,r=e.dict,n=e.key,i=e.getArray,a=void 0!==i&&i,o=e.stopWhenFound,u=void 0===o||o,c=100,l=0;r;){var h=a?r.getArray(n):r.get(n);if(void 0!==h){if(u)return h;t||(t=[]),t.push(h)}if(++l>c){s('getInheritableProperty: maximum loop count exceeded for "'.concat(n,'"'));break}r=r.get("Parent")}return t}function E(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1];l(Number.isInteger(e)&&e>0,"The number should be a positive integer.");for(var r,n=[];e>=1e3;)e-=1e3,n.push("M");r=e/100|0,e%=100,n.push(ye[r]),r=e/10|0,e%=10,n.push(ye[10+r]),n.push(ye[20+e]);var i=n.join("");return t?i.toLowerCase():i}function T(e){var t,r=e.length,n=[];if("þ"===e[0]&&"ÿ"===e[1])for(t=2;t<r;t+=2)n.push(String.fromCharCode(e.charCodeAt(t)<<8|e.charCodeAt(t+1)));else for(t=0;t<r;++t){var i=be[e.charCodeAt(t)];n.push(i?String.fromCharCode(i):e.charAt(t))}return n.join("")}function O(e){return decodeURIComponent(escape(e))}function F(e){return unescape(encodeURIComponent(e))}function I(e){for(var t in e)return!1;return!0}function L(e){return"boolean"==typeof e}function j(e){return"number"==typeof e}function M(e){return"string"==typeof e}function D(e){return"object"===n(e)&&null!==e&&void 0!==e.byteLength}function N(e){return 32===e||9===e||13===e||10===e}function q(){var e=Object.create(null),t=!1;return Object.defineProperty(e,"settled",{get:function(){return t}}),e.promise=new Promise(function(r,n){e.resolve=function(e){t=!0,r(e)},e.reject=function(e){t=!0,n(e)}}),e}Object.defineProperty(t,"__esModule",{value:!0}),t.toRomanNumerals=E,t.arrayByteLength=b,t.arraysToBytes=_,t.assert=l,t.bytesToString=g,t.createPromiseCapability=q,t.deprecated=u,t.getInheritableProperty=R,t.getLookupTableFactory=v,t.getVerbosityLevel=a,t.info=o,t.isArrayBuffer=D,t.isBool=L,t.isEmptyObj=I,t.isNum=j,t.isString=M,t.isSpace=N,t.isSameOrigin=h,t.createValidAbsoluteUrl=f,t.isLittleEndian=P,t.isEvalSupported=C,t.log2=S,t.readInt8=w,t.readUint16=k,t.readUint32=x,t.removeNullCharacters=m,t.setVerbosityLevel=i,t.shadow=p,t.string32=A,t.stringToBytes=y,t.stringToPDFString=T,t.stringToUTF8String=O,t.utf8StringToString=F,t.warn=s,t.unreachable=c,Object.defineProperty(t,"ReadableStream",{enumerable:!0,get:function(){return W.ReadableStream}}),Object.defineProperty(t,"URL",{enumerable:!0,get:function(){return U.URL}}),t.createObjectURL=t.FormatError=t.XRefParseException=t.XRefEntryException=t.Util=t.UnknownErrorException=t.UnexpectedResponseException=t.TextRenderingMode=t.StreamType=t.PermissionFlag=t.PasswordResponses=t.PasswordException=t.NativeImageDecoding=t.MissingPDFException=t.MissingDataException=t.InvalidPDFException=t.AbortException=t.CMapCompressionType=t.ImageKind=t.FontType=t.AnnotationType=t.AnnotationFlag=t.AnnotationFieldFlag=t.AnnotationBorderStyleType=t.UNSUPPORTED_FEATURES=t.VerbosityLevel=t.OPS=t.IDENTITY_MATRIX=t.FONT_IDENTITY_MATRIX=void 0,r(2);var W=r(142),U=r(144),B=[1,0,0,1,0,0];t.IDENTITY_MATRIX=B;var z=[.001,0,0,.001,0,0];t.FONT_IDENTITY_MATRIX=z;var G={NONE:"none",DECODE:"decode",DISPLAY:"display"};t.NativeImageDecoding=G;var H={PRINT:4,MODIFY_CONTENTS:8,COPY:16,MODIFY_ANNOTATIONS:32,FILL_INTERACTIVE_FORMS:256,COPY_FOR_ACCESSIBILITY:512,ASSEMBLE:1024,PRINT_HIGH_QUALITY:2048};t.PermissionFlag=H;var X={FILL:0,STROKE:1,FILL_STROKE:2,INVISIBLE:3,FILL_ADD_TO_PATH:4,STROKE_ADD_TO_PATH:5,FILL_STROKE_ADD_TO_PATH:6,ADD_TO_PATH:7,FILL_STROKE_MASK:3,ADD_TO_PATH_FLAG:4};t.TextRenderingMode=X;var Y={GRAYSCALE_1BPP:1,RGB_24BPP:2,RGBA_32BPP:3};t.ImageKind=Y;var V={TEXT:1,LINK:2,FREETEXT:3,LINE:4,SQUARE:5,CIRCLE:6,POLYGON:7,POLYLINE:8,HIGHLIGHT:9,UNDERLINE:10,SQUIGGLY:11,STRIKEOUT:12,STAMP:13,CARET:14,INK:15,POPUP:16,FILEATTACHMENT:17,SOUND:18,MOVIE:19,WIDGET:20,SCREEN:21,PRINTERMARK:22,TRAPNET:23,WATERMARK:24,THREED:25,REDACT:26};t.AnnotationType=V;var Q={INVISIBLE:1,HIDDEN:2,PRINT:4,NOZOOM:8,NOROTATE:16,NOVIEW:32,READONLY:64,LOCKED:128,TOGGLENOVIEW:256,LOCKEDCONTENTS:512};t.AnnotationFlag=Q;var K={READONLY:1,REQUIRED:2,NOEXPORT:4,MULTILINE:4096,PASSWORD:8192,NOTOGGLETOOFF:16384,RADIO:32768,PUSHBUTTON:65536,COMBO:131072,EDIT:262144,SORT:524288,FILESELECT:1048576,MULTISELECT:2097152,DONOTSPELLCHECK:4194304,DONOTSCROLL:8388608,COMB:16777216,RICHTEXT:33554432,RADIOSINUNISON:33554432,COMMITONSELCHANGE:67108864};t.AnnotationFieldFlag=K;var J={SOLID:1,DASHED:2,BEVELED:3,INSET:4,UNDERLINE:5};t.AnnotationBorderStyleType=J;var Z={UNKNOWN:0,FLATE:1,LZW:2,DCT:3,JPX:4,JBIG:5,A85:6,AHX:7,CCF:8,RL:9};t.StreamType=Z;var $={UNKNOWN:0,TYPE1:1,TYPE1C:2,CIDFONTTYPE0:3,CIDFONTTYPE0C:4,TRUETYPE:5,CIDFONTTYPE2:6,TYPE3:7,OPENTYPE:8,TYPE0:9,MMTYPE1:10};t.FontType=$;var ee={ERRORS:0,WARNINGS:1,INFOS:5};t.VerbosityLevel=ee;var te={NONE:0,BINARY:1,STREAM:2};t.CMapCompressionType=te;var re={dependency:1,setLineWidth:2,setLineCap:3,setLineJoin:4,setMiterLimit:5,setDash:6,setRenderingIntent:7,setFlatness:8,setGState:9,save:10,restore:11,transform:12,moveTo:13,lineTo:14,curveTo:15,curveTo2:16,curveTo3:17,closePath:18,rectangle:19,stroke:20,closeStroke:21,fill:22,eoFill:23,fillStroke:24,eoFillStroke:25,closeFillStroke:26,closeEOFillStroke:27,endPath:28,clip:29,eoClip:30,beginText:31,endText:32,setCharSpacing:33,setWordSpacing:34,setHScale:35,setLeading:36,setFont:37,setTextRenderingMode:38,setTextRise:39,moveText:40,setLeadingMoveText:41,setTextMatrix:42,nextLine:43,showText:44,showSpacedText:45,nextLineShowText:46,nextLineSetSpacingShowText:47,setCharWidth:48,setCharWidthAndBounds:49,setStrokeColorSpace:50,setFillColorSpace:51,setStrokeColor:52,setStrokeColorN:53,setFillColor:54,setFillColorN:55,setStrokeGray:56,setFillGray:57,setStrokeRGBColor:58,setFillRGBColor:59,setStrokeCMYKColor:60,setFillCMYKColor:61,shadingFill:62,beginInlineImage:63,beginImageData:64,endInlineImage:65,paintXObject:66,markPoint:67,markPointProps:68,beginMarkedContent:69,beginMarkedContentProps:70,endMarkedContent:71,beginCompat:72,endCompat:73,paintFormXObjectBegin:74,paintFormXObjectEnd:75,beginGroup:76,endGroup:77,beginAnnotations:78,endAnnotations:79,beginAnnotation:80,endAnnotation:81,paintJpegXObject:82,paintImageMaskXObject:83,paintImageMaskXObjectGroup:84,paintImageXObject:85,paintInlineImageXObject:86,paintInlineImageXObjectGroup:87,paintImageXObjectRepeat:88,paintImageMaskXObjectRepeat:89,paintSolidColorImageMask:90,constructPath:91};t.OPS=re;var ne={unknown:"unknown",forms:"forms",javaScript:"javaScript",smask:"smask",shadingPattern:"shadingPattern",font:"font"};t.UNSUPPORTED_FEATURES=ne;var ie={NEED_PASSWORD:1,INCORRECT_PASSWORD:2};t.PasswordResponses=ie;var ae=ee.WARNINGS,oe=function(){function e(e,t){this.name="PasswordException",this.message=e,this.code=t}return e.prototype=new Error,e.constructor=e,e}();t.PasswordException=oe;var se=function(){function e(e,t){this.name="UnknownErrorException",this.message=e,this.details=t}return e.prototype=new Error,e.constructor=e,e}();t.UnknownErrorException=se;var ue=function(){function e(e){this.name="InvalidPDFException",this.message=e}return e.prototype=new Error,e.constructor=e,e}();t.InvalidPDFException=ue;var ce=function(){function e(e){this.name="MissingPDFException",this.message=e}return e.prototype=new Error,e.constructor=e,e}();t.MissingPDFException=ce;var le=function(){function e(e,t){this.name="UnexpectedResponseException",this.message=e,this.status=t}return e.prototype=new Error,e.constructor=e,e}();t.UnexpectedResponseException=le;var he=function(){function e(e,t){this.begin=e,this.end=t,this.message="Missing data ["+e+", "+t+")"}return e.prototype=new Error,e.prototype.name="MissingDataException",e.constructor=e,e}();t.MissingDataException=he;var de=function(){function e(e){this.message=e}return e.prototype=new Error,e.prototype.name="XRefEntryException",e.constructor=e,e}();t.XRefEntryException=de;var fe=function(){function e(e){this.message=e}return e.prototype=new Error,e.prototype.name="XRefParseException",e.constructor=e,e}();t.XRefParseException=fe;var pe=function(){function e(e){this.message=e}return e.prototype=new Error,e.prototype.name="FormatError",e.constructor=e,e}();t.FormatError=pe;var ve=function(){function e(e){this.name="AbortException",this.message=e}return e.prototype=new Error,e.constructor=e,e}();t.AbortException=ve;var me=/\x00/g,ge=function(){function e(){}var t=["rgb(",0,",",0,",",0,")"];return e.makeCssRgb=function(e,r,n){return t[1]=e,t[3]=r,t[5]=n,t.join("")},e.transform=function(e,t){return[e[0]*t[0]+e[2]*t[1],e[1]*t[0]+e[3]*t[1],e[0]*t[2]+e[2]*t[3],e[1]*t[2]+e[3]*t[3],e[0]*t[4]+e[2]*t[5]+e[4],e[1]*t[4]+e[3]*t[5]+e[5]]},e.applyTransform=function(e,t){var r=e[0]*t[0]+e[1]*t[2]+t[4],n=e[0]*t[1]+e[1]*t[3]+t[5];return[r,n]},e.applyInverseTransform=function(e,t){var r=t[0]*t[3]-t[1]*t[2],n=(e[0]*t[3]-e[1]*t[2]+t[2]*t[5]-t[4]*t[3])/r,i=(-e[0]*t[1]+e[1]*t[0]+t[4]*t[1]-t[5]*t[0])/r;return[n,i]},e.getAxialAlignedBoundingBox=function(t,r){var n=e.applyTransform(t,r),i=e.applyTransform(t.slice(2,4),r),a=e.applyTransform([t[0],t[3]],r),o=e.applyTransform([t[2],t[1]],r);return[Math.min(n[0],i[0],a[0],o[0]),Math.min(n[1],i[1],a[1],o[1]),Math.max(n[0],i[0],a[0],o[0]),Math.max(n[1],i[1],a[1],o[1])]},e.inverseTransform=function(e){var t=e[0]*e[3]-e[1]*e[2];return[e[3]/t,-e[1]/t,-e[2]/t,e[0]/t,(e[2]*e[5]-e[4]*e[3])/t,(e[4]*e[1]-e[5]*e[0])/t]},e.apply3dTransform=function(e,t){return[e[0]*t[0]+e[1]*t[1]+e[2]*t[2],e[3]*t[0]+e[4]*t[1]+e[5]*t[2],e[6]*t[0]+e[7]*t[1]+e[8]*t[2]]},e.singularValueDecompose2dScale=function(e){var t=[e[0],e[2],e[1],e[3]],r=e[0]*t[0]+e[1]*t[2],n=e[0]*t[1]+e[1]*t[3],i=e[2]*t[0]+e[3]*t[2],a=e[2]*t[1]+e[3]*t[3],o=(r+a)/2,s=Math.sqrt((r+a)*(r+a)-4*(r*a-i*n))/2,u=o+s||1,c=o-s||1;return[Math.sqrt(u),Math.sqrt(c)]},e.normalizeRect=function(e){var t=e.slice(0);return e[0]>e[2]&&(t[0]=e[2],t[2]=e[0]),e[1]>e[3]&&(t[1]=e[3],t[3]=e[1]),t},e.intersect=function(t,r){function n(e,t){return e-t}var i=[t[0],t[2],r[0],r[2]].sort(n),a=[t[1],t[3],r[1],r[3]].sort(n),o=[];return t=e.normalizeRect(t),r=e.normalizeRect(r),(i[0]===t[0]&&i[1]===r[0]||i[0]===r[0]&&i[1]===t[0])&&(o[0]=i[1],o[2]=i[2],(a[0]===t[1]&&a[1]===r[1]||a[0]===r[1]&&a[1]===t[1])&&(o[1]=a[1],o[3]=a[2],o))},e}();t.Util=ge;var ye=["","C","CC","CCC","CD","D","DC","DCC","DCCC","CM","","X","XX","XXX","XL","L","LX","LXX","LXXX","XC","","I","II","III","IV","V","VI","VII","VIII","IX"],be=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,728,711,710,729,733,731,730,732,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,8226,8224,8225,8230,8212,8211,402,8260,8249,8250,8722,8240,8222,8220,8221,8216,8217,8218,8482,64257,64258,321,338,352,376,381,305,322,339,353,382,0,8364],_e=function(){var e="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";return function(t,r){var n=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if(!n&&U.URL.createObjectURL){var i=new Blob([t],{type:r});return U.URL.createObjectURL(i)}for(var a="data:"+r+";base64,",o=0,s=t.length;o<s;o+=3){var u=255&t[o],c=255&t[o+1],l=255&t[o+2],h=u>>2,d=(3&u)<<4|c>>4,f=o+1<s?(15&c)<<2|l>>6:64,p=o+2<s?63&l:64;a+=e[h]+e[d]+e[f]+e[p]}return a}}();t.createObjectURL=_e},function(e,t,r){"use strict";function n(e){return(n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}var i=r(3);if(!i._pdfjsCompatibilityChecked){i._pdfjsCompatibilityChecked=!0;var a=r(4),o="object"===("undefined"==typeof window?"undefined":n(window))&&"object"===("undefined"==typeof document?"undefined":n(document));!function(){!i.btoa&&a()&&(i.btoa=function(e){return Buffer.from(e,"binary").toString("base64")})}(),function(){!i.atob&&a()&&(i.atob=function(e){return Buffer.from(e,"base64").toString("binary")})}(),function(){o&&"undefined"==typeof Element.prototype.remove&&(Element.prototype.remove=function(){this.parentNode&&this.parentNode.removeChild(this)})}(),function(){if(o&&!a()){var e=document.createElement("div");if(e.classList.add("testOne","testTwo"),e.classList.contains("testOne")!==!0||e.classList.contains("testTwo")!==!0){var t=DOMTokenList.prototype.add,r=DOMTokenList.prototype.remove;DOMTokenList.prototype.add=function(){for(var e=arguments.length,r=new Array(e),n=0;n<e;n++)r[n]=arguments[n];for(var i=0;i<r.length;i++){var a=r[i];t.call(this,a)}},DOMTokenList.prototype.remove=function(){for(var e=arguments.length,t=new Array(e),n=0;n<e;n++)t[n]=arguments[n];for(var i=0;i<t.length;i++){var a=t[i];r.call(this,a)}}}}}(),function(){if(o&&!a()){var e=document.createElement("div");e.classList.toggle("test",0)!==!1&&(DOMTokenList.prototype.toggle=function(e){var t=arguments.length>1?!!arguments[1]:!this.contains(e);return this[t?"add":"remove"](e),t})}}(),function(){String.prototype.startsWith||r(5)}(),function(){String.prototype.endsWith||r(35)}(),function(){String.prototype.includes||r(37)}(),function(){Array.prototype.includes||r(39)}(),function(){Array.from||r(46)}(),function(){Object.assign||r(69)}(),function(){Math.log2||(Math.log2=r(74))}(),function(){Number.isNaN||(Number.isNaN=r(76))}(),function(){Number.isInteger||(Number.isInteger=r(78))}(),function(){i.Promise&&i.Promise.prototype&&i.Promise.prototype.finally||(i.Promise=r(81))}(),function(){i.WeakMap||(i.WeakMap=r(101))}(),function(){i.WeakSet||(i.WeakSet=r(118))}(),function(){String.codePointAt||(String.codePointAt=r(122))}(),function(){String.fromCodePoint||(String.fromCodePoint=r(124))}(),function(){i.Symbol||r(126)}(),function(){String.prototype.padStart||r(133)}(),function(){String.prototype.padEnd||r(137)}(),function(){Object.values||(Object.values=r(139))}()}},function(e,t,r){"use strict";e.exports="undefined"!=typeof window&&window.Math===Math?window:"undefined"!=typeof global&&global.Math===Math?global:"undefined"!=typeof self&&self.Math===Math?self:{}},function(e,t,r){"use strict";function n(e){return(n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}e.exports=function(){return"object"===("undefined"==typeof process?"undefined":n(process))&&process+""=="[object process]"&&!process.versions.nw}},function(e,t,r){"use strict";r(6),e.exports=r(9).String.startsWith},function(e,t,r){"use strict";var n=r(7),i=r(25),a=r(27),o="startsWith",s=""[o];n(n.P+n.F*r(34)(o),"String",{startsWith:function(e){var t=a(this,e,o),r=i(Math.min(arguments.length>1?arguments[1]:void 0,t.length)),n=String(e);return s?s.call(t,n,r):t.slice(r,r+n.length)===n}})},function(e,t,r){"use strict";var n=r(8),i=r(9),a=r(10),o=r(20),s=r(23),u="prototype",c=function e(t,r,c){var l,h,d,f,p=t&e.F,v=t&e.G,m=t&e.S,g=t&e.P,y=t&e.B,b=v?n:m?n[r]||(n[r]={}):(n[r]||{})[u],_=v?i:i[r]||(i[r]={}),A=_[u]||(_[u]={});v&&(c=r);for(l in c)h=!p&&b&&void 0!==b[l],d=(h?b:c)[l],f=y&&h?s(d,n):g&&"function"==typeof d?s(Function.call,d):d,b&&o(b,l,d,t&e.U),_[l]!=d&&a(_,l,f),g&&A[l]!=d&&(A[l]=d)};n.core=i,c.F=1,c.G=2,c.S=4,c.P=8,c.B=16,c.W=32,c.U=64,c.R=128,e.exports=c},function(e,t,r){"use strict";var n=e.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=n)},function(e,t,r){"use strict";var n=e.exports={version:"2.6.2"};"number"==typeof __e&&(__e=n)},function(e,t,r){"use strict";var n=r(11),i=r(19);e.exports=r(15)?function(e,t,r){return n.f(e,t,i(1,r))}:function(e,t,r){return e[t]=r,e}},function(e,t,r){"use strict";var n=r(12),i=r(14),a=r(18),o=Object.defineProperty;t.f=r(15)?Object.defineProperty:function(e,t,r){if(n(e),t=a(t,!0),n(r),i)try{return o(e,t,r)}catch(e){}if("get"in r||"set"in r)throw TypeError("Accessors not supported!");return"value"in r&&(e[t]=r.value),e}},function(e,t,r){"use strict";var n=r(13);e.exports=function(e){if(!n(e))throw TypeError(e+" is not an object!");return e}},function(e,t,r){"use strict";function n(e){return(n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}e.exports=function(e){return"object"===n(e)?null!==e:"function"==typeof e}},function(e,t,r){"use strict";e.exports=!r(15)&&!r(16)(function(){return 7!=Object.defineProperty(r(17)("div"),"a",{get:function(){return 7}}).a})},function(e,t,r){"use strict";e.exports=!r(16)(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a})},function(e,t,r){"use strict";e.exports=function(e){try{return!!e()}catch(e){return!0}}},function(e,t,r){"use strict";var n=r(13),i=r(8).document,a=n(i)&&n(i.createElement);e.exports=function(e){return a?i.createElement(e):{}}},function(e,t,r){"use strict";var n=r(13);e.exports=function(e,t){if(!n(e))return e;var r,i;if(t&&"function"==typeof(r=e.toString)&&!n(i=r.call(e)))return i;if("function"==typeof(r=e.valueOf)&&!n(i=r.call(e)))return i;if(!t&&"function"==typeof(r=e.toString)&&!n(i=r.call(e)))return i;throw TypeError("Can't convert object to primitive value")}},function(e,t,r){"use strict";e.exports=function(e,t){return{enumerable:!(1&e),configurable:!(2&e),writable:!(4&e),value:t}}},function(e,t,r){"use strict";var n=r(8),i=r(10),a=r(21),o=r(22)("src"),s="toString",u=Function[s],c=(""+u).split(s);r(9).inspectSource=function(e){return u.call(e)},(e.exports=function(e,t,r,s){var u="function"==typeof r;u&&(a(r,"name")||i(r,"name",t)),e[t]!==r&&(u&&(a(r,o)||i(r,o,e[t]?""+e[t]:c.join(String(t)))),e===n?e[t]=r:s?e[t]?e[t]=r:i(e,t,r):(delete e[t],i(e,t,r)))})(Function.prototype,s,function(){return"function"==typeof this&&this[o]||u.call(this)})},function(e,t,r){"use strict";var n={}.hasOwnProperty;e.exports=function(e,t){return n.call(e,t)}},function(e,t,r){"use strict";var n=0,i=Math.random();e.exports=function(e){return"Symbol(".concat(void 0===e?"":e,")_",(++n+i).toString(36))}},function(e,t,r){"use strict";var n=r(24);e.exports=function(e,t,r){if(n(e),void 0===t)return e;switch(r){case 1:return function(r){return e.call(t,r)};case 2:return function(r,n){return e.call(t,r,n)};case 3:return function(r,n,i){return e.call(t,r,n,i)}}return function(){return e.apply(t,arguments)}}},function(e,t,r){"use strict";e.exports=function(e){if("function"!=typeof e)throw TypeError(e+" is not a function!");return e}},function(e,t,r){"use strict";var n=r(26),i=Math.min;e.exports=function(e){return e>0?i(n(e),9007199254740991):0}},function(e,t,r){"use strict";var n=Math.ceil,i=Math.floor;e.exports=function(e){return isNaN(e=+e)?0:(e>0?i:n)(e)}},function(e,t,r){"use strict";var n=r(28),i=r(33);e.exports=function(e,t,r){if(n(t))throw TypeError("String#"+r+" doesn't accept regex!");return String(i(e))}},function(e,t,r){"use strict";var n=r(13),i=r(29),a=r(30)("match");e.exports=function(e){var t;return n(e)&&(void 0!==(t=e[a])?!!t:"RegExp"==i(e))}},function(e,t,r){"use strict";var n={}.toString;e.exports=function(e){return n.call(e).slice(8,-1)}},function(e,t,r){"use strict";var n=r(31)("wks"),i=r(22),a=r(8).Symbol,o="function"==typeof a,s=e.exports=function(e){return n[e]||(n[e]=o&&a[e]||(o?a:i)("Symbol."+e))};s.store=n},function(e,t,r){"use strict";var n=r(9),i=r(8),a="__core-js_shared__",o=i[a]||(i[a]={});(e.exports=function(e,t){return o[e]||(o[e]=void 0!==t?t:{})})("versions",[]).push({version:n.version,mode:r(32)?"pure":"global",copyright:"© 2019 Denis Pushkarev (zloirock.ru)"})},function(e,t,r){"use strict";e.exports=!1},function(e,t,r){"use strict";e.exports=function(e){if(void 0==e)throw TypeError("Can't call method on  "+e);return e}},function(e,t,r){"use strict";var n=r(30)("match");e.exports=function(e){var t=/./;try{"/./"[e](t)}catch(r){try{return t[n]=!1,!"/./"[e](t)}catch(e){}}return!0}},function(e,t,r){"use strict";r(36),e.exports=r(9).String.endsWith},function(e,t,r){"use strict";var n=r(7),i=r(25),a=r(27),o="endsWith",s=""[o];n(n.P+n.F*r(34)(o),"String",{endsWith:function(e){var t=a(this,e,o),r=arguments.length>1?arguments[1]:void 0,n=i(t.length),u=void 0===r?n:Math.min(i(r),n),c=String(e);return s?s.call(t,c,u):t.slice(u-c.length,u)===c}})},function(e,t,r){"use strict";r(38),e.exports=r(9).String.includes},function(e,t,r){"use strict";var n=r(7),i=r(27),a="includes";n(n.P+n.F*r(34)(a),"String",{includes:function(e){return!!~i(this,e,a).indexOf(e,arguments.length>1?arguments[1]:void 0)}})},function(e,t,r){"use strict";r(40),e.exports=r(9).Array.includes},function(e,t,r){"use strict";var n=r(7),i=r(41)(!0);n(n.P,"Array",{includes:function(e){return i(this,e,arguments.length>1?arguments[1]:void 0)}}),r(45)("includes")},function(e,t,r){"use strict";var n=r(42),i=r(25),a=r(44);e.exports=function(e){return function(t,r,o){var s,u=n(t),c=i(u.length),l=a(o,c);if(e&&r!=r){for(;c>l;)if(s=u[l++],s!=s)return!0}else for(;c>l;l++)if((e||l in u)&&u[l]===r)return e||l||0;return!e&&-1}}},function(e,t,r){"use strict";var n=r(43),i=r(33);e.exports=function(e){return n(i(e))}},function(e,t,r){"use strict";var n=r(29);e.exports=Object("z").propertyIsEnumerable(0)?Object:function(e){return"String"==n(e)?e.split(""):Object(e)}},function(e,t,r){"use strict";var n=r(26),i=Math.max,a=Math.min;e.exports=function(e,t){return e=n(e),e<0?i(e+t,0):a(e,t)}},function(e,t,r){"use strict";var n=r(30)("unscopables"),i=Array.prototype;void 0==i[n]&&r(10)(i,n,{}),e.exports=function(e){i[n][e]=!0}},function(e,t,r){"use strict";r(47),r(62),e.exports=r(9).Array.from},function(e,t,r){"use strict";var n=r(48)(!0);r(49)(String,"String",function(e){this._t=String(e),this._i=0},function(){var e,t=this._t,r=this._i;return r>=t.length?{value:void 0,done:!0}:(e=n(t,r),this._i+=e.length,{value:e,done:!1})})},function(e,t,r){"use strict";var n=r(26),i=r(33);e.exports=function(e){return function(t,r){var a,o,s=String(i(t)),u=n(r),c=s.length;return u<0||u>=c?e?"":void 0:(a=s.charCodeAt(u),a<55296||a>56319||u+1===c||(o=s.charCodeAt(u+1))<56320||o>57343?e?s.charAt(u):a:e?s.slice(u,u+2):(a-55296<<10)+(o-56320)+65536)}}},function(e,t,r){"use strict";var n=r(32),i=r(7),a=r(20),o=r(10),s=r(50),u=r(51),c=r(59),l=r(60),h=r(30)("iterator"),d=!([].keys&&"next"in[].keys()),f="@@iterator",p="keys",v="values",m=function(){return this};e.exports=function(e,t,r,g,y,b,_){u(r,t,g);var A,S,w,k=function(e){if(!d&&e in R)return R[e];switch(e){case p:return function(){return new r(this,e)};case v:return function(){return new r(this,e)}}return function(){return new r(this,e)}},x=t+" Iterator",P=y==v,C=!1,R=e.prototype,E=R[h]||R[f]||y&&R[y],T=E||k(y),O=y?P?k("entries"):T:void 0,F="Array"==t?R.entries||E:E;if(F&&(w=l(F.call(new e)),w!==Object.prototype&&w.next&&(c(w,x,!0),n||"function"==typeof w[h]||o(w,h,m))),P&&E&&E.name!==v&&(C=!0,T=function(){return E.call(this)}),n&&!_||!d&&!C&&R[h]||o(R,h,T),s[t]=T,s[x]=m,y)if(A={values:P?T:k(v),keys:b?T:k(p),entries:O},_)for(S in A)S in R||a(R,S,A[S]);else i(i.P+i.F*(d||C),t,A);return A}},function(e,t,r){"use strict";e.exports={}},function(e,t,r){"use strict";var n=r(52),i=r(19),a=r(59),o={};r(10)(o,r(30)("iterator"),function(){return this}),e.exports=function(e,t,r){e.prototype=n(o,{next:i(1,r)}),a(e,t+" Iterator")}},function(e,t,r){"use strict";var n=r(12),i=r(53),a=r(57),o=r(56)("IE_PROTO"),s=function(){},u="prototype",c=function(){var e,t=r(17)("iframe"),n=a.length,i="<",o=">";for(t.style.display="none",r(58).appendChild(t),t.src="javascript:",e=t.contentWindow.document,e.open(),e.write(i+"script"+o+"document.F=Object"+i+"/script"+o),e.close(),c=e.F;n--;)delete c[u][a[n]];return c()};e.exports=Object.create||function(e,t){var r;return null!==e?(s[u]=n(e),r=new s,s[u]=null,r[o]=e):r=c(),void 0===t?r:i(r,t)}},function(e,t,r){"use strict";var n=r(11),i=r(12),a=r(54);e.exports=r(15)?Object.defineProperties:function(e,t){i(e);for(var r,o=a(t),s=o.length,u=0;s>u;)n.f(e,r=o[u++],t[r]);return e}},function(e,t,r){"use strict";var n=r(55),i=r(57);e.exports=Object.keys||function(e){return n(e,i)}},function(e,t,r){"use strict";var n=r(21),i=r(42),a=r(41)(!1),o=r(56)("IE_PROTO");e.exports=function(e,t){var r,s=i(e),u=0,c=[];for(r in s)r!=o&&n(s,r)&&c.push(r);for(;t.length>u;)n(s,r=t[u++])&&(~a(c,r)||c.push(r));return c}},function(e,t,r){"use strict";var n=r(31)("keys"),i=r(22);e.exports=function(e){return n[e]||(n[e]=i(e))}},function(e,t,r){"use strict";e.exports="constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(",")},function(e,t,r){"use strict";var n=r(8).document;e.exports=n&&n.documentElement},function(e,t,r){"use strict";var n=r(11).f,i=r(21),a=r(30)("toStringTag");e.exports=function(e,t,r){e&&!i(e=r?e:e.prototype,a)&&n(e,a,{configurable:!0,value:t})}},function(e,t,r){"use strict";var n=r(21),i=r(61),a=r(56)("IE_PROTO"),o=Object.prototype;e.exports=Object.getPrototypeOf||function(e){return e=i(e),n(e,a)?e[a]:"function"==typeof e.constructor&&e instanceof e.constructor?e.constructor.prototype:e instanceof Object?o:null}},function(e,t,r){"use strict";var n=r(33);e.exports=function(e){return Object(n(e))}},function(e,t,r){"use strict";var n=r(23),i=r(7),a=r(61),o=r(63),s=r(64),u=r(25),c=r(65),l=r(66);i(i.S+i.F*!r(68)(function(e){Array.from(e)}),"Array",{from:function(e){var t,r,i,h,d=a(e),f="function"==typeof this?this:Array,p=arguments.length,v=p>1?arguments[1]:void 0,m=void 0!==v,g=0,y=l(d);if(m&&(v=n(v,p>2?arguments[2]:void 0,2)),void 0==y||f==Array&&s(y))for(t=u(d.length),r=new f(t);t>g;g++)c(r,g,m?v(d[g],g):d[g]);else for(h=y.call(d),r=new f;!(i=h.next()).done;g++)c(r,g,m?o(h,v,[i.value,g],!0):i.value);return r.length=g,r}})},function(e,t,r){"use strict";var n=r(12);e.exports=function(e,t,r,i){try{return i?t(n(r)[0],r[1]):t(r)}catch(t){var a=e.return;throw void 0!==a&&n(a.call(e)),t}}},function(e,t,r){"use strict";var n=r(50),i=r(30)("iterator"),a=Array.prototype;e.exports=function(e){return void 0!==e&&(n.Array===e||a[i]===e)}},function(e,t,r){"use strict";var n=r(11),i=r(19);e.exports=function(e,t,r){t in e?n.f(e,t,i(0,r)):e[t]=r}},function(e,t,r){"use strict";var n=r(67),i=r(30)("iterator"),a=r(50);e.exports=r(9).getIteratorMethod=function(e){if(void 0!=e)return e[i]||e["@@iterator"]||a[n(e)]}},function(e,t,r){"use strict";var n=r(29),i=r(30)("toStringTag"),a="Arguments"==n(function(){return arguments}()),o=function(e,t){try{return e[t]}catch(e){}};e.exports=function(e){var t,r,s;return void 0===e?"Undefined":null===e?"Null":"string"==typeof(r=o(t=Object(e),i))?r:a?n(t):"Object"==(s=n(t))&&"function"==typeof t.callee?"Arguments":s}},function(e,t,r){"use strict";var n=r(30)("iterator"),i=!1;try{var a=[7][n]();a.return=function(){i=!0},Array.from(a,function(){throw 2})}catch(e){}e.exports=function(e,t){if(!t&&!i)return!1;
-var r=!1;try{var a=[7],o=a[n]();o.next=function(){return{done:r=!0}},a[n]=function(){return o},e(a)}catch(e){}return r}},function(e,t,r){"use strict";r(70),e.exports=r(9).Object.assign},function(e,t,r){"use strict";var n=r(7);n(n.S+n.F,"Object",{assign:r(71)})},function(e,t,r){"use strict";var n=r(54),i=r(72),a=r(73),o=r(61),s=r(43),u=Object.assign;e.exports=!u||r(16)(function(){var e={},t={},r=Symbol(),n="abcdefghijklmnopqrst";return e[r]=7,n.split("").forEach(function(e){t[e]=e}),7!=u({},e)[r]||Object.keys(u({},t)).join("")!=n})?function(e,t){for(var r=o(e),u=arguments.length,c=1,l=i.f,h=a.f;u>c;)for(var d,f=s(arguments[c++]),p=l?n(f).concat(l(f)):n(f),v=p.length,m=0;v>m;)h.call(f,d=p[m++])&&(r[d]=f[d]);return r}:u},function(e,t,r){"use strict";t.f=Object.getOwnPropertySymbols},function(e,t,r){"use strict";t.f={}.propertyIsEnumerable},function(e,t,r){"use strict";r(75),e.exports=r(9).Math.log2},function(e,t,r){"use strict";var n=r(7);n(n.S,"Math",{log2:function(e){return Math.log(e)/Math.LN2}})},function(e,t,r){"use strict";r(77),e.exports=r(9).Number.isNaN},function(e,t,r){"use strict";var n=r(7);n(n.S,"Number",{isNaN:function(e){return e!=e}})},function(e,t,r){"use strict";r(79),e.exports=r(9).Number.isInteger},function(e,t,r){"use strict";var n=r(7);n(n.S,"Number",{isInteger:r(80)})},function(e,t,r){"use strict";var n=r(13),i=Math.floor;e.exports=function(e){return!n(e)&&isFinite(e)&&i(e)===e}},function(e,t,r){"use strict";r(82),r(47),r(83),r(86),r(99),r(100),e.exports=r(9).Promise},function(e,t,r){"use strict";var n=r(67),i={};i[r(30)("toStringTag")]="z",i+""!="[object z]"&&r(20)(Object.prototype,"toString",function(){return"[object "+n(this)+"]"},!0)},function(e,t,r){"use strict";for(var n=r(84),i=r(54),a=r(20),o=r(8),s=r(10),u=r(50),c=r(30),l=c("iterator"),h=c("toStringTag"),d=u.Array,f={CSSRuleList:!0,CSSStyleDeclaration:!1,CSSValueList:!1,ClientRectList:!1,DOMRectList:!1,DOMStringList:!1,DOMTokenList:!0,DataTransferItemList:!1,FileList:!1,HTMLAllCollection:!1,HTMLCollection:!1,HTMLFormElement:!1,HTMLSelectElement:!1,MediaList:!0,MimeTypeArray:!1,NamedNodeMap:!1,NodeList:!0,PaintRequestList:!1,Plugin:!1,PluginArray:!1,SVGLengthList:!1,SVGNumberList:!1,SVGPathSegList:!1,SVGPointList:!1,SVGStringList:!1,SVGTransformList:!1,SourceBufferList:!1,StyleSheetList:!0,TextTrackCueList:!1,TextTrackList:!1,TouchList:!1},p=i(f),v=0;v<p.length;v++){var m,g=p[v],y=f[g],b=o[g],_=b&&b.prototype;if(_&&(_[l]||s(_,l,d),_[h]||s(_,h,g),u[g]=d,y))for(m in n)_[m]||a(_,m,n[m],!0)}},function(e,t,r){"use strict";var n=r(45),i=r(85),a=r(50),o=r(42);e.exports=r(49)(Array,"Array",function(e,t){this._t=o(e),this._i=0,this._k=t},function(){var e=this._t,t=this._k,r=this._i++;return!e||r>=e.length?(this._t=void 0,i(1)):"keys"==t?i(0,r):"values"==t?i(0,e[r]):i(0,[r,e[r]])},"values"),a.Arguments=a.Array,n("keys"),n("values"),n("entries")},function(e,t,r){"use strict";e.exports=function(e,t){return{value:t,done:!!e}}},function(e,t,r){"use strict";var n,i,a,o,s=r(32),u=r(8),c=r(23),l=r(67),h=r(7),d=r(13),f=r(24),p=r(87),v=r(88),m=r(89),g=r(90).set,y=r(92)(),b=r(93),_=r(94),A=r(95),S=r(96),w="Promise",k=u.TypeError,x=u.process,P=x&&x.versions,C=P&&P.v8||"",R=u[w],E="process"==l(x),T=function(){},O=i=b.f,F=!!function(){try{var e=R.resolve(1),t=(e.constructor={})[r(30)("species")]=function(e){e(T,T)};return(E||"function"==typeof PromiseRejectionEvent)&&e.then(T)instanceof t&&0!==C.indexOf("6.6")&&A.indexOf("Chrome/66")===-1}catch(e){}}(),I=function(e){var t;return!(!d(e)||"function"!=typeof(t=e.then))&&t},L=function(e,t){if(!e._n){e._n=!0;var r=e._c;y(function(){for(var n=e._v,i=1==e._s,a=0,o=function(t){var r,a,o,s=i?t.ok:t.fail,u=t.resolve,c=t.reject,l=t.domain;try{s?(i||(2==e._h&&D(e),e._h=1),s===!0?r=n:(l&&l.enter(),r=s(n),l&&(l.exit(),o=!0)),r===t.promise?c(k("Promise-chain cycle")):(a=I(r))?a.call(r,u,c):u(r)):c(n)}catch(e){l&&!o&&l.exit(),c(e)}};r.length>a;)o(r[a++]);e._c=[],e._n=!1,t&&!e._h&&j(e)})}},j=function(e){g.call(u,function(){var t,r,n,i=e._v,a=M(e);if(a&&(t=_(function(){E?x.emit("unhandledRejection",i,e):(r=u.onunhandledrejection)?r({promise:e,reason:i}):(n=u.console)&&n.error&&n.error("Unhandled promise rejection",i)}),e._h=E||M(e)?2:1),e._a=void 0,a&&t.e)throw t.v})},M=function(e){return 1!==e._h&&0===(e._a||e._c).length},D=function(e){g.call(u,function(){var t;E?x.emit("rejectionHandled",e):(t=u.onrejectionhandled)&&t({promise:e,reason:e._v})})},N=function(e){var t=this;t._d||(t._d=!0,t=t._w||t,t._v=e,t._s=2,t._a||(t._a=t._c.slice()),L(t,!0))},q=function e(t){var r,n=this;if(!n._d){n._d=!0,n=n._w||n;try{if(n===t)throw k("Promise can't be resolved itself");(r=I(t))?y(function(){var i={_w:n,_d:!1};try{r.call(t,c(e,i,1),c(N,i,1))}catch(e){N.call(i,e)}}):(n._v=t,n._s=1,L(n,!1))}catch(e){N.call({_w:n,_d:!1},e)}}};F||(R=function(e){p(this,R,w,"_h"),f(e),n.call(this);try{e(c(q,this,1),c(N,this,1))}catch(e){N.call(this,e)}},n=function(e){this._c=[],this._a=void 0,this._s=0,this._d=!1,this._v=void 0,this._h=0,this._n=!1},n.prototype=r(97)(R.prototype,{then:function(e,t){var r=O(m(this,R));return r.ok="function"!=typeof e||e,r.fail="function"==typeof t&&t,r.domain=E?x.domain:void 0,this._c.push(r),this._a&&this._a.push(r),this._s&&L(this,!1),r.promise},catch:function(e){return this.then(void 0,e)}}),a=function(){var e=new n;this.promise=e,this.resolve=c(q,e,1),this.reject=c(N,e,1)},b.f=O=function(e){return e===R||e===o?new a(e):i(e)}),h(h.G+h.W+h.F*!F,{Promise:R}),r(59)(R,w),r(98)(w),o=r(9)[w],h(h.S+h.F*!F,w,{reject:function(e){var t=O(this),r=t.reject;return r(e),t.promise}}),h(h.S+h.F*(s||!F),w,{resolve:function(e){return S(s&&this===o?R:this,e)}}),h(h.S+h.F*!(F&&r(68)(function(e){R.all(e).catch(T)})),w,{all:function(e){var t=this,r=O(t),n=r.resolve,i=r.reject,a=_(function(){var r=[],a=0,o=1;v(e,!1,function(e){var s=a++,u=!1;r.push(void 0),o++,t.resolve(e).then(function(e){u||(u=!0,r[s]=e,--o||n(r))},i)}),--o||n(r)});return a.e&&i(a.v),r.promise},race:function(e){var t=this,r=O(t),n=r.reject,i=_(function(){v(e,!1,function(e){t.resolve(e).then(r.resolve,n)})});return i.e&&n(i.v),r.promise}})},function(e,t,r){"use strict";e.exports=function(e,t,r,n){if(!(e instanceof t)||void 0!==n&&n in e)throw TypeError(r+": incorrect invocation!");return e}},function(e,t,r){"use strict";var n=r(23),i=r(63),a=r(64),o=r(12),s=r(25),u=r(66),c={},l={},h=e.exports=function(e,t,r,h,d){var f,p,v,m,g=d?function(){return e}:u(e),y=n(r,h,t?2:1),b=0;if("function"!=typeof g)throw TypeError(e+" is not iterable!");if(a(g)){for(f=s(e.length);f>b;b++)if(m=t?y(o(p=e[b])[0],p[1]):y(e[b]),m===c||m===l)return m}else for(v=g.call(e);!(p=v.next()).done;)if(m=i(v,y,p.value,t),m===c||m===l)return m};h.BREAK=c,h.RETURN=l},function(e,t,r){"use strict";var n=r(12),i=r(24),a=r(30)("species");e.exports=function(e,t){var r,o=n(e).constructor;return void 0===o||void 0==(r=n(o)[a])?t:i(r)}},function(e,t,r){"use strict";var n,i,a,o=r(23),s=r(91),u=r(58),c=r(17),l=r(8),h=l.process,d=l.setImmediate,f=l.clearImmediate,p=l.MessageChannel,v=l.Dispatch,m=0,g={},y="onreadystatechange",b=function(){var e=+this;if(g.hasOwnProperty(e)){var t=g[e];delete g[e],t()}},_=function(e){b.call(e.data)};d&&f||(d=function(e){for(var t=[],r=1;arguments.length>r;)t.push(arguments[r++]);return g[++m]=function(){s("function"==typeof e?e:Function(e),t)},n(m),m},f=function(e){delete g[e]},"process"==r(29)(h)?n=function(e){h.nextTick(o(b,e,1))}:v&&v.now?n=function(e){v.now(o(b,e,1))}:p?(i=new p,a=i.port2,i.port1.onmessage=_,n=o(a.postMessage,a,1)):l.addEventListener&&"function"==typeof postMessage&&!l.importScripts?(n=function(e){l.postMessage(e+"","*")},l.addEventListener("message",_,!1)):n=y in c("script")?function(e){u.appendChild(c("script"))[y]=function(){u.removeChild(this),b.call(e)}}:function(e){setTimeout(o(b,e,1),0)}),e.exports={set:d,clear:f}},function(e,t,r){"use strict";e.exports=function(e,t,r){var n=void 0===r;switch(t.length){case 0:return n?e():e.call(r);case 1:return n?e(t[0]):e.call(r,t[0]);case 2:return n?e(t[0],t[1]):e.call(r,t[0],t[1]);case 3:return n?e(t[0],t[1],t[2]):e.call(r,t[0],t[1],t[2]);case 4:return n?e(t[0],t[1],t[2],t[3]):e.call(r,t[0],t[1],t[2],t[3])}return e.apply(r,t)}},function(e,t,r){"use strict";var n=r(8),i=r(90).set,a=n.MutationObserver||n.WebKitMutationObserver,o=n.process,s=n.Promise,u="process"==r(29)(o);e.exports=function(){var e,t,r,c=function(){var n,i;for(u&&(n=o.domain)&&n.exit();e;){i=e.fn,e=e.next;try{i()}catch(n){throw e?r():t=void 0,n}}t=void 0,n&&n.enter()};if(u)r=function(){o.nextTick(c)};else if(!a||n.navigator&&n.navigator.standalone)if(s&&s.resolve){var l=s.resolve(void 0);r=function(){l.then(c)}}else r=function(){i.call(n,c)};else{var h=!0,d=document.createTextNode("");new a(c).observe(d,{characterData:!0}),r=function(){d.data=h=!h}}return function(n){var i={fn:n,next:void 0};t&&(t.next=i),e||(e=i,r()),t=i}}},function(e,t,r){"use strict";function n(e){var t,r;this.promise=new e(function(e,n){if(void 0!==t||void 0!==r)throw TypeError("Bad Promise constructor");t=e,r=n}),this.resolve=i(t),this.reject=i(r)}var i=r(24);e.exports.f=function(e){return new n(e)}},function(e,t,r){"use strict";e.exports=function(e){try{return{e:!1,v:e()}}catch(e){return{e:!0,v:e}}}},function(e,t,r){"use strict";var n=r(8),i=n.navigator;e.exports=i&&i.userAgent||""},function(e,t,r){"use strict";var n=r(12),i=r(13),a=r(93);e.exports=function(e,t){if(n(e),i(t)&&t.constructor===e)return t;var r=a.f(e),o=r.resolve;return o(t),r.promise}},function(e,t,r){"use strict";var n=r(20);e.exports=function(e,t,r){for(var i in t)n(e,i,t[i],r);return e}},function(e,t,r){"use strict";var n=r(8),i=r(11),a=r(15),o=r(30)("species");e.exports=function(e){var t=n[e];a&&t&&!t[o]&&i.f(t,o,{configurable:!0,get:function(){return this}})}},function(e,t,r){"use strict";var n=r(7),i=r(9),a=r(8),o=r(89),s=r(96);n(n.P+n.R,"Promise",{finally:function(e){var t=o(this,i.Promise||a.Promise),r="function"==typeof e;return this.then(r?function(r){return s(t,e()).then(function(){return r})}:e,r?function(r){return s(t,e()).then(function(){throw r})}:e)}})},function(e,t,r){"use strict";var n=r(7),i=r(93),a=r(94);n(n.S,"Promise",{try:function(e){var t=i.f(this),r=a(e);return(r.e?t.reject:t.resolve)(r.v),t.promise}})},function(e,t,r){"use strict";r(82),r(83),r(102),r(114),r(116),e.exports=r(9).WeakMap},function(e,t,r){"use strict";var n,i=r(103)(0),a=r(20),o=r(107),s=r(71),u=r(108),c=r(13),l=r(16),h=r(109),d="WeakMap",f=o.getWeak,p=Object.isExtensible,v=u.ufstore,m={},g=function(e){return function(){return e(this,arguments.length>0?arguments[0]:void 0)}},y={get:function(e){if(c(e)){var t=f(e);return t===!0?v(h(this,d)).get(e):t?t[this._i]:void 0}},set:function(e,t){return u.def(h(this,d),e,t)}},b=e.exports=r(110)(d,g,y,u,!0,!0);l(function(){return 7!=(new b).set((Object.freeze||Object)(m),7).get(m)})&&(n=u.getConstructor(g,d),s(n.prototype,y),o.NEED=!0,i(["delete","has","get","set"],function(e){var t=b.prototype,r=t[e];a(t,e,function(t,i){if(c(t)&&!p(t)){this._f||(this._f=new n);var a=this._f[e](t,i);return"set"==e?this:a}return r.call(this,t,i)})}))},function(e,t,r){"use strict";var n=r(23),i=r(43),a=r(61),o=r(25),s=r(104);e.exports=function(e,t){var r=1==e,u=2==e,c=3==e,l=4==e,h=6==e,d=5==e||h,f=t||s;return function(t,s,p){for(var v,m,g=a(t),y=i(g),b=n(s,p,3),_=o(y.length),A=0,S=r?f(t,_):u?f(t,0):void 0;_>A;A++)if((d||A in y)&&(v=y[A],m=b(v,A,g),e))if(r)S[A]=m;else if(m)switch(e){case 3:return!0;case 5:return v;case 6:return A;case 2:S.push(v)}else if(l)return!1;return h?-1:c||l?l:S}}},function(e,t,r){"use strict";var n=r(105);e.exports=function(e,t){return new(n(e))(t)}},function(e,t,r){"use strict";var n=r(13),i=r(106),a=r(30)("species");e.exports=function(e){var t;return i(e)&&(t=e.constructor,"function"!=typeof t||t!==Array&&!i(t.prototype)||(t=void 0),n(t)&&(t=t[a],null===t&&(t=void 0))),void 0===t?Array:t}},function(e,t,r){"use strict";var n=r(29);e.exports=Array.isArray||function(e){return"Array"==n(e)}},function(e,t,r){"use strict";function n(e){return(n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}var i=r(22)("meta"),a=r(13),o=r(21),s=r(11).f,u=0,c=Object.isExtensible||function(){return!0},l=!r(16)(function(){return c(Object.preventExtensions({}))}),h=function(e){s(e,i,{value:{i:"O"+ ++u,w:{}}})},d=function(e,t){if(!a(e))return"symbol"==n(e)?e:("string"==typeof e?"S":"P")+e;if(!o(e,i)){if(!c(e))return"F";if(!t)return"E";h(e)}return e[i].i},f=function(e,t){if(!o(e,i)){if(!c(e))return!0;if(!t)return!1;h(e)}return e[i].w},p=function(e){return l&&v.NEED&&c(e)&&!o(e,i)&&h(e),e},v=e.exports={KEY:i,NEED:!1,fastKey:d,getWeak:f,onFreeze:p}},function(e,t,r){"use strict";var n=r(97),i=r(107).getWeak,a=r(12),o=r(13),s=r(87),u=r(88),c=r(103),l=r(21),h=r(109),d=c(5),f=c(6),p=0,v=function(e){return e._l||(e._l=new m)},m=function(){this.a=[]},g=function(e,t){return d(e.a,function(e){return e[0]===t})};m.prototype={get:function(e){var t=g(this,e);if(t)return t[1]},has:function(e){return!!g(this,e)},set:function(e,t){var r=g(this,e);r?r[1]=t:this.a.push([e,t])},delete:function(e){var t=f(this.a,function(t){return t[0]===e});return~t&&this.a.splice(t,1),!!~t}},e.exports={getConstructor:function(e,t,r,a){var c=e(function(e,n){s(e,c,t,"_i"),e._t=t,e._i=p++,e._l=void 0,void 0!=n&&u(n,r,e[a],e)});return n(c.prototype,{delete:function(e){if(!o(e))return!1;var r=i(e);return r===!0?v(h(this,t)).delete(e):r&&l(r,this._i)&&delete r[this._i]},has:function(e){if(!o(e))return!1;var r=i(e);return r===!0?v(h(this,t)).has(e):r&&l(r,this._i)}}),c},def:function(e,t,r){var n=i(a(t),!0);return n===!0?v(e).set(t,r):n[e._i]=r,e},ufstore:v}},function(e,t,r){"use strict";var n=r(13);e.exports=function(e,t){if(!n(e)||e._t!==t)throw TypeError("Incompatible receiver, "+t+" required!");return e}},function(e,t,r){"use strict";var n=r(8),i=r(7),a=r(20),o=r(97),s=r(107),u=r(88),c=r(87),l=r(13),h=r(16),d=r(68),f=r(59),p=r(111);e.exports=function(e,t,r,v,m,g){var y=n[e],b=y,_=m?"set":"add",A=b&&b.prototype,S={},w=function(e){var t=A[e];a(A,e,"delete"==e?function(e){return!(g&&!l(e))&&t.call(this,0===e?0:e)}:"has"==e?function(e){return!(g&&!l(e))&&t.call(this,0===e?0:e)}:"get"==e?function(e){return g&&!l(e)?void 0:t.call(this,0===e?0:e)}:"add"==e?function(e){return t.call(this,0===e?0:e),this}:function(e,r){return t.call(this,0===e?0:e,r),this})};if("function"==typeof b&&(g||A.forEach&&!h(function(){(new b).entries().next()}))){var k=new b,x=k[_](g?{}:-0,1)!=k,P=h(function(){k.has(1)}),C=d(function(e){new b(e)}),R=!g&&h(function(){for(var e=new b,t=5;t--;)e[_](t,t);return!e.has(-0)});C||(b=t(function(t,r){c(t,b,e);var n=p(new y,t,b);return void 0!=r&&u(r,m,n[_],n),n}),b.prototype=A,A.constructor=b),(P||R)&&(w("delete"),w("has"),m&&w("get")),(R||x)&&w(_),g&&A.clear&&delete A.clear}else b=v.getConstructor(t,e,m,_),o(b.prototype,r),s.NEED=!0;return f(b,e),S[e]=b,i(i.G+i.W+i.F*(b!=y),S),g||v.setStrong(b,e,m),b}},function(e,t,r){"use strict";var n=r(13),i=r(112).set;e.exports=function(e,t,r){var a,o=t.constructor;return o!==r&&"function"==typeof o&&(a=o.prototype)!==r.prototype&&n(a)&&i&&i(e,a),e}},function(e,t,r){"use strict";var n=r(13),i=r(12),a=function(e,t){if(i(e),!n(t)&&null!==t)throw TypeError(t+": can't set as prototype!")};e.exports={set:Object.setPrototypeOf||("__proto__"in{}?function(e,t,n){try{n=r(23)(Function.call,r(113).f(Object.prototype,"__proto__").set,2),n(e,[]),t=!(e instanceof Array)}catch(e){t=!0}return function(e,r){return a(e,r),t?e.__proto__=r:n(e,r),e}}({},!1):void 0),check:a}},function(e,t,r){"use strict";var n=r(73),i=r(19),a=r(42),o=r(18),s=r(21),u=r(14),c=Object.getOwnPropertyDescriptor;t.f=r(15)?c:function(e,t){if(e=a(e),t=o(t,!0),u)try{return c(e,t)}catch(e){}if(s(e,t))return i(!n.f.call(e,t),e[t])}},function(e,t,r){"use strict";r(115)("WeakMap")},function(e,t,r){"use strict";var n=r(7);e.exports=function(e){n(n.S,e,{of:function(){for(var e=arguments.length,t=new Array(e);e--;)t[e]=arguments[e];return new this(t)}})}},function(e,t,r){"use strict";r(117)("WeakMap")},function(e,t,r){"use strict";var n=r(7),i=r(24),a=r(23),o=r(88);e.exports=function(e){n(n.S,e,{from:function(e){var t,r,n,s,u=arguments[1];return i(this),t=void 0!==u,t&&i(u),void 0==e?new this:(r=[],t?(n=0,s=a(u,arguments[2],2),o(e,!1,function(e){r.push(s(e,n++))})):o(e,!1,r.push,r),new this(r))}})}},function(e,t,r){"use strict";r(82),r(83),r(119),r(120),r(121),e.exports=r(9).WeakSet},function(e,t,r){"use strict";var n=r(108),i=r(109),a="WeakSet";r(110)(a,function(e){return function(){return e(this,arguments.length>0?arguments[0]:void 0)}},{add:function(e){return n.def(i(this,a),e,!0)}},n,!1,!0)},function(e,t,r){"use strict";r(115)("WeakSet")},function(e,t,r){"use strict";r(117)("WeakSet")},function(e,t,r){"use strict";r(123),e.exports=r(9).String.codePointAt},function(e,t,r){"use strict";var n=r(7),i=r(48)(!1);n(n.P,"String",{codePointAt:function(e){return i(this,e)}})},function(e,t,r){"use strict";r(125),e.exports=r(9).String.fromCodePoint},function(e,t,r){"use strict";var n=r(7),i=r(44),a=String.fromCharCode,o=String.fromCodePoint;n(n.S+n.F*(!!o&&1!=o.length),"String",{fromCodePoint:function(e){for(var t,r=[],n=arguments.length,o=0;n>o;){if(t=+arguments[o++],i(t,1114111)!==t)throw RangeError(t+" is not a valid code point");r.push(t<65536?a(t):a(((t-=65536)>>10)+55296,t%1024+56320))}return r.join("")}})},function(e,t,r){"use strict";r(127),r(82),e.exports=r(9).Symbol},function(e,t,r){"use strict";function n(e){return(n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}var i=r(8),a=r(21),o=r(15),s=r(7),u=r(20),c=r(107).KEY,l=r(16),h=r(31),d=r(59),f=r(22),p=r(30),v=r(128),m=r(129),g=r(130),y=r(106),b=r(12),_=r(13),A=r(42),S=r(18),w=r(19),k=r(52),x=r(131),P=r(113),C=r(11),R=r(54),E=P.f,T=C.f,O=x.f,F=i.Symbol,I=i.JSON,L=I&&I.stringify,j="prototype",M=p("_hidden"),D=p("toPrimitive"),N={}.propertyIsEnumerable,q=h("symbol-registry"),W=h("symbols"),U=h("op-symbols"),B=Object[j],z="function"==typeof F,G=i.QObject,H=!G||!G[j]||!G[j].findChild,X=o&&l(function(){return 7!=k(T({},"a",{get:function(){return T(this,"a",{value:7}).a}})).a})?function(e,t,r){var n=E(B,t);n&&delete B[t],T(e,t,r),n&&e!==B&&T(B,t,n)}:T,Y=function(e){var t=W[e]=k(F[j]);return t._k=e,t},V=z&&"symbol"==n(F.iterator)?function(e){return"symbol"==n(e)}:function(e){return e instanceof F},Q=function(e,t,r){return e===B&&Q(U,t,r),b(e),t=S(t,!0),b(r),a(W,t)?(r.enumerable?(a(e,M)&&e[M][t]&&(e[M][t]=!1),r=k(r,{enumerable:w(0,!1)})):(a(e,M)||T(e,M,w(1,{})),e[M][t]=!0),X(e,t,r)):T(e,t,r)},K=function(e,t){b(e);for(var r,n=g(t=A(t)),i=0,a=n.length;a>i;)Q(e,r=n[i++],t[r]);return e},J=function(e,t){return void 0===t?k(e):K(k(e),t)},Z=function(e){var t=N.call(this,e=S(e,!0));return!(this===B&&a(W,e)&&!a(U,e))&&(!(t||!a(this,e)||!a(W,e)||a(this,M)&&this[M][e])||t)},$=function(e,t){if(e=A(e),t=S(t,!0),e!==B||!a(W,t)||a(U,t)){var r=E(e,t);return!r||!a(W,t)||a(e,M)&&e[M][t]||(r.enumerable=!0),r}},ee=function(e){for(var t,r=O(A(e)),n=[],i=0;r.length>i;)a(W,t=r[i++])||t==M||t==c||n.push(t);return n},te=function(e){for(var t,r=e===B,n=O(r?U:A(e)),i=[],o=0;n.length>o;)!a(W,t=n[o++])||r&&!a(B,t)||i.push(W[t]);return i};z||(F=function(){if(this instanceof F)throw TypeError("Symbol is not a constructor!");var e=f(arguments.length>0?arguments[0]:void 0),t=function t(r){this===B&&t.call(U,r),a(this,M)&&a(this[M],e)&&(this[M][e]=!1),X(this,e,w(1,r))};return o&&H&&X(B,e,{configurable:!0,set:t}),Y(e)},u(F[j],"toString",function(){return this._k}),P.f=$,C.f=Q,r(132).f=x.f=ee,r(73).f=Z,r(72).f=te,o&&!r(32)&&u(B,"propertyIsEnumerable",Z,!0),v.f=function(e){return Y(p(e))}),s(s.G+s.W+s.F*!z,{Symbol:F});for(var re="hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(","),ne=0;re.length>ne;)p(re[ne++]);for(var ie=R(p.store),ae=0;ie.length>ae;)m(ie[ae++]);s(s.S+s.F*!z,"Symbol",{for:function(e){return a(q,e+="")?q[e]:q[e]=F(e)},keyFor:function(e){if(!V(e))throw TypeError(e+" is not a symbol!");for(var t in q)if(q[t]===e)return t},useSetter:function(){H=!0},useSimple:function(){H=!1}}),s(s.S+s.F*!z,"Object",{create:J,defineProperty:Q,defineProperties:K,getOwnPropertyDescriptor:$,getOwnPropertyNames:ee,getOwnPropertySymbols:te}),I&&s(s.S+s.F*(!z||l(function(){var e=F();return"[null]"!=L([e])||"{}"!=L({a:e})||"{}"!=L(Object(e))})),"JSON",{stringify:function(e){for(var t,r,n=[e],i=1;arguments.length>i;)n.push(arguments[i++]);if(r=t=n[1],(_(t)||void 0!==e)&&!V(e))return y(t)||(t=function(e,t){if("function"==typeof r&&(t=r.call(this,e,t)),!V(t))return t}),n[1]=t,L.apply(I,n)}}),F[j][D]||r(10)(F[j],D,F[j].valueOf),d(F,"Symbol"),d(Math,"Math",!0),d(i.JSON,"JSON",!0)},function(e,t,r){"use strict";t.f=r(30)},function(e,t,r){"use strict";var n=r(8),i=r(9),a=r(32),o=r(128),s=r(11).f;e.exports=function(e){var t=i.Symbol||(i.Symbol=a?{}:n.Symbol||{});"_"==e.charAt(0)||e in t||s(t,e,{value:o.f(e)})}},function(e,t,r){"use strict";var n=r(54),i=r(72),a=r(73);e.exports=function(e){var t=n(e),r=i.f;if(r)for(var o,s=r(e),u=a.f,c=0;s.length>c;)u.call(e,o=s[c++])&&t.push(o);return t}},function(e,t,r){"use strict";function n(e){return(n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}var i=r(42),a=r(132).f,o={}.toString,s="object"==("undefined"==typeof window?"undefined":n(window))&&window&&Object.getOwnPropertyNames?Object.getOwnPropertyNames(window):[],u=function(e){try{return a(e)}catch(e){return s.slice()}};e.exports.f=function(e){return s&&"[object Window]"==o.call(e)?u(e):a(i(e))}},function(e,t,r){"use strict";var n=r(55),i=r(57).concat("length","prototype");t.f=Object.getOwnPropertyNames||function(e){return n(e,i)}},function(e,t,r){"use strict";r(134),e.exports=r(9).String.padStart},function(e,t,r){"use strict";var n=r(7),i=r(135),a=r(95);n(n.P+n.F*/Version\/10\.\d+(\.\d+)? Safari\//.test(a),"String",{padStart:function(e){return i(this,e,arguments.length>1?arguments[1]:void 0,!0)}})},function(e,t,r){"use strict";var n=r(25),i=r(136),a=r(33);e.exports=function(e,t,r,o){var s=String(a(e)),u=s.length,c=void 0===r?" ":String(r),l=n(t);if(l<=u||""==c)return s;var h=l-u,d=i.call(c,Math.ceil(h/c.length));return d.length>h&&(d=d.slice(0,h)),o?d+s:s+d}},function(e,t,r){"use strict";var n=r(26),i=r(33);e.exports=function(e){var t=String(i(this)),r="",a=n(e);if(a<0||a==1/0)throw RangeError("Count can't be negative");for(;a>0;(a>>>=1)&&(t+=t))1&a&&(r+=t);return r}},function(e,t,r){"use strict";r(138),e.exports=r(9).String.padEnd},function(e,t,r){"use strict";var n=r(7),i=r(135),a=r(95);n(n.P+n.F*/Version\/10\.\d+(\.\d+)? Safari\//.test(a),"String",{padEnd:function(e){return i(this,e,arguments.length>1?arguments[1]:void 0,!1)}})},function(e,t,r){"use strict";r(140),e.exports=r(9).Object.values},function(e,t,r){"use strict";var n=r(7),i=r(141)(!1);n(n.S,"Object",{values:function(e){return i(e)}})},function(e,t,r){"use strict";var n=r(54),i=r(42),a=r(73).f;e.exports=function(e){return function(t){for(var r,o=i(t),s=n(o),u=s.length,c=0,l=[];u>c;)a.call(o,r=s[c++])&&l.push(e?[r,o[r]]:o[r]);return l}}},function(e,t,r){"use strict";var n=!1;if("undefined"!=typeof ReadableStream)try{new ReadableStream({start:function(e){e.close()}}),n=!0}catch(e){}n?t.ReadableStream=ReadableStream:t.ReadableStream=r(143).ReadableStream},function(e,t,r){"use strict";function n(e){return(n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}!function(e,t){for(var r in t)e[r]=t[r]}(t,function(e){function t(n){if(r[n])return r[n].exports;var i=r[n]={i:n,l:!1,exports:{}};return e[n].call(i.exports,i,i.exports,t),i.l=!0,i.exports}var r={};return t.m=e,t.c=r,t.i=function(e){return e},t.d=function(e,r,n){t.o(e,r)||Object.defineProperty(e,r,{configurable:!1,enumerable:!0,get:n})},t.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return t.d(r,"a",r),r},t.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},t.p="",t(t.s=7)}([function(e,t,r){function i(e){return"string"==typeof e||"symbol"===("undefined"==typeof e?"undefined":o(e))}function a(e,t,r){if("function"!=typeof e)throw new TypeError("Argument is not a function");return Function.prototype.apply.call(e,t,r)}var o="function"==typeof Symbol&&"symbol"===n(Symbol.iterator)?function(e){return n(e)}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":n(e)},s=r(1),u=s.assert;t.typeIsObject=function(e){return"object"===("undefined"==typeof e?"undefined":o(e))&&null!==e||"function"==typeof e},t.createDataProperty=function(e,r,n){u(t.typeIsObject(e)),Object.defineProperty(e,r,{value:n,writable:!0,enumerable:!0,configurable:!0})},t.createArrayFromList=function(e){return e.slice()},t.ArrayBufferCopy=function(e,t,r,n,i){new Uint8Array(e).set(new Uint8Array(r,n,i),t)},t.CreateIterResultObject=function(e,t){u("boolean"==typeof t);var r={};return Object.defineProperty(r,"value",{value:e,enumerable:!0,writable:!0,configurable:!0}),Object.defineProperty(r,"done",{value:t,enumerable:!0,writable:!0,configurable:!0}),r},t.IsFiniteNonNegativeNumber=function(e){return!Number.isNaN(e)&&(e!==1/0&&!(e<0))},t.InvokeOrNoop=function(e,t,r){u(void 0!==e),u(i(t)),u(Array.isArray(r));var n=e[t];if(void 0!==n)return a(n,e,r)},t.PromiseInvokeOrNoop=function(e,r,n){u(void 0!==e),u(i(r)),u(Array.isArray(n));try{return Promise.resolve(t.InvokeOrNoop(e,r,n))}catch(e){return Promise.reject(e)}},t.PromiseInvokeOrPerformFallback=function(e,t,r,n,o){u(void 0!==e),u(i(t)),u(Array.isArray(r)),u(Array.isArray(o));var s=void 0;try{s=e[t]}catch(e){return Promise.reject(e)}if(void 0===s)return n.apply(null,o);try{return Promise.resolve(a(s,e,r))}catch(e){return Promise.reject(e)}},t.TransferArrayBuffer=function(e){return e.slice()},t.ValidateAndNormalizeHighWaterMark=function(e){if(e=Number(e),Number.isNaN(e)||e<0)throw new RangeError("highWaterMark property of a queuing strategy must be non-negative and non-NaN");return e},t.ValidateAndNormalizeQueuingStrategy=function(e,r){if(void 0!==e&&"function"!=typeof e)throw new TypeError("size property of a queuing strategy must be a function");return r=t.ValidateAndNormalizeHighWaterMark(r),{size:e,highWaterMark:r}}},function(e,t,r){function n(e){e&&e.constructor===i&&setTimeout(function(){throw e},0)}function i(e){this.name="AssertionError",this.message=e||"",this.stack=(new Error).stack}function a(e,t){if(!e)throw new i(t)}i.prototype=Object.create(Error.prototype),i.prototype.constructor=i,e.exports={rethrowAssertionErrorRejection:n,AssertionError:i,assert:a}},function(e,t,r){function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e){return new be(e)}function a(e){return!!ce(e)&&!!Object.prototype.hasOwnProperty.call(e,"_writableStreamController")}function o(e){return he(a(e)===!0,"IsWritableStreamLocked should only be used on known writable streams"),void 0!==e._writer}function s(e,t){var r=e._state;if("closed"===r)return Promise.resolve(void 0);if("errored"===r)return Promise.reject(e._storedError);var n=new TypeError("Requested to abort");if(void 0!==e._pendingAbortRequest)return Promise.reject(n);he("writable"===r||"erroring"===r,"state must be writable or erroring");var i=!1;"erroring"===r&&(i=!0,t=void 0);var a=new Promise(function(r,n){e._pendingAbortRequest={_resolve:r,_reject:n,_reason:t,_wasAlreadyErroring:i}});return i===!1&&l(e,n),a}function u(e){he(o(e)===!0),he("writable"===e._state);var t=new Promise(function(t,r){var n={_resolve:t,_reject:r};e._writeRequests.push(n)});return t}function c(e,t){var r=e._state;return"writable"===r?void l(e,t):(he("erroring"===r),void h(e))}function l(e,t){he(void 0===e._storedError,"stream._storedError === undefined"),he("writable"===e._state,"state must be writable");var r=e._writableStreamController;he(void 0!==r,"controller must not be undefined"),e._state="erroring",e._storedError=t;var n=e._writer;void 0!==n&&C(n,t),g(e)===!1&&r._started===!0&&h(e)}function h(e){he("erroring"===e._state,"stream._state === erroring"),he(g(e)===!1,"WritableStreamHasOperationMarkedInFlight(stream) === false"),e._state="errored",e._writableStreamController.__errorSteps();for(var t=e._storedError,r=0;r<e._writeRequests.length;r++){var n=e._writeRequests[r];n._reject(t)}if(e._writeRequests=[],void 0===e._pendingAbortRequest)return void _(e);var i=e._pendingAbortRequest;if(e._pendingAbortRequest=void 0,i._wasAlreadyErroring===!0)return i._reject(t),void _(e);var a=e._writableStreamController.__abortSteps(i._reason);a.then(function(){i._resolve(),_(e)},function(t){i._reject(t),_(e)})}function d(e){he(void 0!==e._inFlightWriteRequest),e._inFlightWriteRequest._resolve(void 0),e._inFlightWriteRequest=void 0}function f(e,t){he(void 0!==e._inFlightWriteRequest),e._inFlightWriteRequest._reject(t),e._inFlightWriteRequest=void 0,he("writable"===e._state||"erroring"===e._state),c(e,t)}function p(e){he(void 0!==e._inFlightCloseRequest),e._inFlightCloseRequest._resolve(void 0),e._inFlightCloseRequest=void 0;var t=e._state;he("writable"===t||"erroring"===t),"erroring"===t&&(e._storedError=void 0,void 0!==e._pendingAbortRequest&&(e._pendingAbortRequest._resolve(),e._pendingAbortRequest=void 0)),e._state="closed";var r=e._writer;void 0!==r&&K(r),he(void 0===e._pendingAbortRequest,"stream._pendingAbortRequest === undefined"),he(void 0===e._storedError,"stream._storedError === undefined")}function v(e,t){he(void 0!==e._inFlightCloseRequest),e._inFlightCloseRequest._reject(t),e._inFlightCloseRequest=void 0,he("writable"===e._state||"erroring"===e._state),void 0!==e._pendingAbortRequest&&(e._pendingAbortRequest._reject(t),e._pendingAbortRequest=void 0),c(e,t)}function m(e){return void 0!==e._closeRequest||void 0!==e._inFlightCloseRequest}function g(e){return void 0!==e._inFlightWriteRequest||void 0!==e._inFlightCloseRequest}function y(e){he(void 0===e._inFlightCloseRequest),he(void 0!==e._closeRequest),e._inFlightCloseRequest=e._closeRequest,e._closeRequest=void 0}function b(e){he(void 0===e._inFlightWriteRequest,"there must be no pending write request"),he(0!==e._writeRequests.length,"writeRequests must not be empty"),e._inFlightWriteRequest=e._writeRequests.shift()}function _(e){he("errored"===e._state,'_stream_.[[state]] is `"errored"`'),void 0!==e._closeRequest&&(he(void 0===e._inFlightCloseRequest),e._closeRequest._reject(e._storedError),e._closeRequest=void 0);var t=e._writer;void 0!==t&&(V(t,e._storedError),t._closedPromise.catch(function(){}))}function A(e,t){he("writable"===e._state),he(m(e)===!1);var r=e._writer;void 0!==r&&t!==e._backpressure&&(t===!0?te(r):(he(t===!1),ne(r))),e._backpressure=t}function S(e){return!!ce(e)&&!!Object.prototype.hasOwnProperty.call(e,"_ownerWritableStream")}function w(e,t){var r=e._ownerWritableStream;return he(void 0!==r),s(r,t)}function k(e){var t=e._ownerWritableStream;he(void 0!==t);var r=t._state;if("closed"===r||"errored"===r)return Promise.reject(new TypeError("The stream (in "+r+" state) is not in the writable state and cannot be closed"));he("writable"===r||"erroring"===r),he(m(t)===!1);var n=new Promise(function(e,r){var n={_resolve:e,_reject:r};t._closeRequest=n});return t._backpressure===!0&&"writable"===r&&ne(e),O(t._writableStreamController),n}function x(e){var t=e._ownerWritableStream;he(void 0!==t);var r=t._state;return m(t)===!0||"closed"===r?Promise.resolve():"errored"===r?Promise.reject(t._storedError):(he("writable"===r||"erroring"===r),k(e))}function P(e,t){"pending"===e._closedPromiseState?V(e,t):Q(e,t),e._closedPromise.catch(function(){});
-}function C(e,t){"pending"===e._readyPromiseState?ee(e,t):re(e,t),e._readyPromise.catch(function(){})}function R(e){var t=e._ownerWritableStream,r=t._state;return"errored"===r||"erroring"===r?null:"closed"===r?0:I(t._writableStreamController)}function E(e){var t=e._ownerWritableStream;he(void 0!==t),he(t._writer===e);var r=new TypeError("Writer was released and can no longer be used to monitor the stream's closedness");C(e,r),P(e,r),t._writer=void 0,e._ownerWritableStream=void 0}function T(e,t){var r=e._ownerWritableStream;he(void 0!==r);var n=r._writableStreamController,i=F(n,t);if(r!==e._ownerWritableStream)return Promise.reject(G("write to"));var a=r._state;if("errored"===a)return Promise.reject(r._storedError);if(m(r)===!0||"closed"===a)return Promise.reject(new TypeError("The stream is closing or closed and cannot be written to"));if("erroring"===a)return Promise.reject(r._storedError);he("writable"===a);var o=u(r);return L(n,t,i),o}function O(e){ve(e,"close",0),M(e)}function F(e,t){var r=e._strategySize;if(void 0===r)return 1;try{return r(t)}catch(t){return D(e,t),1}}function I(e){return e._strategyHWM-e._queueTotalSize}function L(e,t,r){var n={chunk:t};try{ve(e,n,r)}catch(t){return void D(e,t)}var i=e._controlledWritableStream;if(m(i)===!1&&"writable"===i._state){var a=W(e);A(i,a)}M(e)}function j(e){return!!ce(e)&&!!Object.prototype.hasOwnProperty.call(e,"_underlyingSink")}function M(e){var t=e._controlledWritableStream;if(e._started!==!1&&void 0===t._inFlightWriteRequest){var r=t._state;if("closed"!==r&&"errored"!==r){if("erroring"===r)return void h(t);if(0!==e._queue.length){var n=me(e);"close"===n?N(e):q(e,n.chunk)}}}}function D(e,t){"writable"===e._controlledWritableStream._state&&U(e,t)}function N(e){var t=e._controlledWritableStream;y(t),pe(e),he(0===e._queue.length,"queue must be empty once the final write record is dequeued");var r=se(e._underlyingSink,"close",[]);r.then(function(){p(t)},function(e){v(t,e)}).catch(de)}function q(e,t){var r=e._controlledWritableStream;b(r);var n=se(e._underlyingSink,"write",[t,e]);n.then(function(){d(r);var t=r._state;if(he("writable"===t||"erroring"===t),pe(e),m(r)===!1&&"writable"===t){var n=W(e);A(r,n)}M(e)},function(e){f(r,e)}).catch(de)}function W(e){var t=I(e);return t<=0}function U(e,t){var r=e._controlledWritableStream;he("writable"===r._state),l(r,t)}function B(e){return new TypeError("WritableStream.prototype."+e+" can only be used on a WritableStream")}function z(e){return new TypeError("WritableStreamDefaultWriter.prototype."+e+" can only be used on a WritableStreamDefaultWriter")}function G(e){return new TypeError("Cannot "+e+" a stream using a released writer")}function H(e){e._closedPromise=new Promise(function(t,r){e._closedPromise_resolve=t,e._closedPromise_reject=r,e._closedPromiseState="pending"})}function X(e,t){e._closedPromise=Promise.reject(t),e._closedPromise_resolve=void 0,e._closedPromise_reject=void 0,e._closedPromiseState="rejected"}function Y(e){e._closedPromise=Promise.resolve(void 0),e._closedPromise_resolve=void 0,e._closedPromise_reject=void 0,e._closedPromiseState="resolved"}function V(e,t){he(void 0!==e._closedPromise_resolve,"writer._closedPromise_resolve !== undefined"),he(void 0!==e._closedPromise_reject,"writer._closedPromise_reject !== undefined"),he("pending"===e._closedPromiseState,"writer._closedPromiseState is pending"),e._closedPromise_reject(t),e._closedPromise_resolve=void 0,e._closedPromise_reject=void 0,e._closedPromiseState="rejected"}function Q(e,t){he(void 0===e._closedPromise_resolve,"writer._closedPromise_resolve === undefined"),he(void 0===e._closedPromise_reject,"writer._closedPromise_reject === undefined"),he("pending"!==e._closedPromiseState,"writer._closedPromiseState is not pending"),e._closedPromise=Promise.reject(t),e._closedPromiseState="rejected"}function K(e){he(void 0!==e._closedPromise_resolve,"writer._closedPromise_resolve !== undefined"),he(void 0!==e._closedPromise_reject,"writer._closedPromise_reject !== undefined"),he("pending"===e._closedPromiseState,"writer._closedPromiseState is pending"),e._closedPromise_resolve(void 0),e._closedPromise_resolve=void 0,e._closedPromise_reject=void 0,e._closedPromiseState="resolved"}function J(e){e._readyPromise=new Promise(function(t,r){e._readyPromise_resolve=t,e._readyPromise_reject=r}),e._readyPromiseState="pending"}function Z(e,t){e._readyPromise=Promise.reject(t),e._readyPromise_resolve=void 0,e._readyPromise_reject=void 0,e._readyPromiseState="rejected"}function $(e){e._readyPromise=Promise.resolve(void 0),e._readyPromise_resolve=void 0,e._readyPromise_reject=void 0,e._readyPromiseState="fulfilled"}function ee(e,t){he(void 0!==e._readyPromise_resolve,"writer._readyPromise_resolve !== undefined"),he(void 0!==e._readyPromise_reject,"writer._readyPromise_reject !== undefined"),e._readyPromise_reject(t),e._readyPromise_resolve=void 0,e._readyPromise_reject=void 0,e._readyPromiseState="rejected"}function te(e){he(void 0===e._readyPromise_resolve,"writer._readyPromise_resolve === undefined"),he(void 0===e._readyPromise_reject,"writer._readyPromise_reject === undefined"),e._readyPromise=new Promise(function(t,r){e._readyPromise_resolve=t,e._readyPromise_reject=r}),e._readyPromiseState="pending"}function re(e,t){he(void 0===e._readyPromise_resolve,"writer._readyPromise_resolve === undefined"),he(void 0===e._readyPromise_reject,"writer._readyPromise_reject === undefined"),e._readyPromise=Promise.reject(t),e._readyPromiseState="rejected"}function ne(e){he(void 0!==e._readyPromise_resolve,"writer._readyPromise_resolve !== undefined"),he(void 0!==e._readyPromise_reject,"writer._readyPromise_reject !== undefined"),e._readyPromise_resolve(void 0),e._readyPromise_resolve=void 0,e._readyPromise_reject=void 0,e._readyPromiseState="fulfilled"}var ie=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}(),ae=r(0),oe=ae.InvokeOrNoop,se=ae.PromiseInvokeOrNoop,ue=ae.ValidateAndNormalizeQueuingStrategy,ce=ae.typeIsObject,le=r(1),he=le.assert,de=le.rethrowAssertionErrorRejection,fe=r(3),pe=fe.DequeueValue,ve=fe.EnqueueValueWithSize,me=fe.PeekQueueValue,ge=fe.ResetQueue,ye=function(){function e(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},i=r.size,a=r.highWaterMark,o=void 0===a?1:a;n(this,e),this._state="writable",this._storedError=void 0,this._writer=void 0,this._writableStreamController=void 0,this._writeRequests=[],this._inFlightWriteRequest=void 0,this._closeRequest=void 0,this._inFlightCloseRequest=void 0,this._pendingAbortRequest=void 0,this._backpressure=!1;var s=t.type;if(void 0!==s)throw new RangeError("Invalid type is specified");this._writableStreamController=new _e(this,t,i,o),this._writableStreamController.__startSteps()}return ie(e,[{key:"abort",value:function(e){return a(this)===!1?Promise.reject(B("abort")):o(this)===!0?Promise.reject(new TypeError("Cannot abort a stream that already has a writer")):s(this,e)}},{key:"getWriter",value:function(){if(a(this)===!1)throw B("getWriter");return i(this)}},{key:"locked",get:function(){if(a(this)===!1)throw B("locked");return o(this)}}]),e}();e.exports={AcquireWritableStreamDefaultWriter:i,IsWritableStream:a,IsWritableStreamLocked:o,WritableStream:ye,WritableStreamAbort:s,WritableStreamDefaultControllerError:U,WritableStreamDefaultWriterCloseWithErrorPropagation:x,WritableStreamDefaultWriterRelease:E,WritableStreamDefaultWriterWrite:T,WritableStreamCloseQueuedOrInFlight:m};var be=function(){function e(t){if(n(this,e),a(t)===!1)throw new TypeError("WritableStreamDefaultWriter can only be constructed with a WritableStream instance");if(o(t)===!0)throw new TypeError("This stream has already been locked for exclusive writing by another writer");this._ownerWritableStream=t,t._writer=this;var r=t._state;if("writable"===r)m(t)===!1&&t._backpressure===!0?J(this):$(this),H(this);else if("erroring"===r)Z(this,t._storedError),this._readyPromise.catch(function(){}),H(this);else if("closed"===r)$(this),Y(this);else{he("errored"===r,"state must be errored");var i=t._storedError;Z(this,i),this._readyPromise.catch(function(){}),X(this,i),this._closedPromise.catch(function(){})}}return ie(e,[{key:"abort",value:function(e){return S(this)===!1?Promise.reject(z("abort")):void 0===this._ownerWritableStream?Promise.reject(G("abort")):w(this,e)}},{key:"close",value:function(){if(S(this)===!1)return Promise.reject(z("close"));var e=this._ownerWritableStream;return void 0===e?Promise.reject(G("close")):m(e)===!0?Promise.reject(new TypeError("cannot close an already-closing stream")):k(this)}},{key:"releaseLock",value:function(){if(S(this)===!1)throw z("releaseLock");var e=this._ownerWritableStream;void 0!==e&&(he(void 0!==e._writer),E(this))}},{key:"write",value:function(e){return S(this)===!1?Promise.reject(z("write")):void 0===this._ownerWritableStream?Promise.reject(G("write to")):T(this,e)}},{key:"closed",get:function(){return S(this)===!1?Promise.reject(z("closed")):this._closedPromise}},{key:"desiredSize",get:function(){if(S(this)===!1)throw z("desiredSize");if(void 0===this._ownerWritableStream)throw G("desiredSize");return R(this)}},{key:"ready",get:function(){return S(this)===!1?Promise.reject(z("ready")):this._readyPromise}}]),e}(),_e=function(){function e(t,r,i,o){if(n(this,e),a(t)===!1)throw new TypeError("WritableStreamDefaultController can only be constructed with a WritableStream instance");if(void 0!==t._writableStreamController)throw new TypeError("WritableStreamDefaultController instances can only be created by the WritableStream constructor");this._controlledWritableStream=t,this._underlyingSink=r,this._queue=void 0,this._queueTotalSize=void 0,ge(this),this._started=!1;var s=ue(i,o);this._strategySize=s.size,this._strategyHWM=s.highWaterMark;var u=W(this);A(t,u)}return ie(e,[{key:"error",value:function(e){if(j(this)===!1)throw new TypeError("WritableStreamDefaultController.prototype.error can only be used on a WritableStreamDefaultController");var t=this._controlledWritableStream._state;"writable"===t&&U(this,e)}},{key:"__abortSteps",value:function(e){return se(this._underlyingSink,"abort",[e])}},{key:"__errorSteps",value:function(){ge(this)}},{key:"__startSteps",value:function(){var e=this,t=oe(this._underlyingSink,"start",[this]),r=this._controlledWritableStream;Promise.resolve(t).then(function(){he("writable"===r._state||"erroring"===r._state),e._started=!0,M(e)},function(t){he("writable"===r._state||"erroring"===r._state),e._started=!0,c(r,t)}).catch(de)}}]),e}()},function(e,t,r){var n=r(0),i=n.IsFiniteNonNegativeNumber,a=r(1),o=a.assert;t.DequeueValue=function(e){o("_queue"in e&&"_queueTotalSize"in e,"Spec-level failure: DequeueValue should only be used on containers with [[queue]] and [[queueTotalSize]]."),o(e._queue.length>0,"Spec-level failure: should never dequeue from an empty queue.");var t=e._queue.shift();return e._queueTotalSize-=t.size,e._queueTotalSize<0&&(e._queueTotalSize=0),t.value},t.EnqueueValueWithSize=function(e,t,r){if(o("_queue"in e&&"_queueTotalSize"in e,"Spec-level failure: EnqueueValueWithSize should only be used on containers with [[queue]] and [[queueTotalSize]]."),r=Number(r),!i(r))throw new RangeError("Size must be a finite, non-NaN, non-negative number.");e._queue.push({value:t,size:r}),e._queueTotalSize+=r},t.PeekQueueValue=function(e){o("_queue"in e&&"_queueTotalSize"in e,"Spec-level failure: PeekQueueValue should only be used on containers with [[queue]] and [[queueTotalSize]]."),o(e._queue.length>0,"Spec-level failure: should never peek at an empty queue.");var t=e._queue[0];return t.value},t.ResetQueue=function(e){o("_queue"in e&&"_queueTotalSize"in e,"Spec-level failure: ResetQueue should only be used on containers with [[queue]] and [[queueTotalSize]]."),e._queue=[],e._queueTotalSize=0}},function(e,t,r){function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e){return new tt(e)}function a(e){return new et(e)}function o(e){return!!Me(e)&&!!Object.prototype.hasOwnProperty.call(e,"_readableStreamController")}function s(e){return Ne(o(e)===!0,"IsReadableStreamDisturbed should only be used on known readable streams"),e._disturbed}function u(e){return Ne(o(e)===!0,"IsReadableStreamLocked should only be used on known readable streams"),void 0!==e._reader}function c(e,t){Ne(o(e)===!0),Ne("boolean"==typeof t);var r=a(e),n={closedOrErrored:!1,canceled1:!1,canceled2:!1,reason1:void 0,reason2:void 0};n.promise=new Promise(function(e){n._resolve=e});var i=l();i._reader=r,i._teeState=n,i._cloneForBranch2=t;var s=h();s._stream=e,s._teeState=n;var u=d();u._stream=e,u._teeState=n;var c=Object.create(Object.prototype);je(c,"pull",i),je(c,"cancel",s);var f=new $e(c),p=Object.create(Object.prototype);je(p,"pull",i),je(p,"cancel",u);var v=new $e(p);return i._branch1=f._readableStreamController,i._branch2=v._readableStreamController,r._closedPromise.catch(function(e){n.closedOrErrored!==!0&&(M(i._branch1,e),M(i._branch2,e),n.closedOrErrored=!0)}),[f,v]}function l(){function e(){var t=e._reader,r=e._branch1,n=e._branch2,i=e._teeState;return T(t).then(function(e){Ne(Me(e));var t=e.value,a=e.done;if(Ne("boolean"==typeof a),a===!0&&i.closedOrErrored===!1&&(i.canceled1===!1&&L(r),i.canceled2===!1&&L(n),i.closedOrErrored=!0),i.closedOrErrored!==!0){var o=t,s=t;i.canceled1===!1&&j(r,o),i.canceled2===!1&&j(n,s)}})}return e}function h(){function e(t){var r=e._stream,n=e._teeState;if(n.canceled1=!0,n.reason1=t,n.canceled2===!0){var i=Le([n.reason1,n.reason2]),a=v(r,i);n._resolve(a)}return n.promise}return e}function d(){function e(t){var r=e._stream,n=e._teeState;if(n.canceled2=!0,n.reason2=t,n.canceled1===!0){var i=Le([n.reason1,n.reason2]),a=v(r,i);n._resolve(a)}return n.promise}return e}function f(e){Ne(k(e._reader)===!0),Ne("readable"===e._state||"closed"===e._state);var t=new Promise(function(t,r){var n={_resolve:t,_reject:r};e._reader._readIntoRequests.push(n)});return t}function p(e){Ne(x(e._reader)===!0),Ne("readable"===e._state);var t=new Promise(function(t,r){var n={_resolve:t,_reject:r};e._reader._readRequests.push(n)});return t}function v(e,t){if(e._disturbed=!0,"closed"===e._state)return Promise.resolve(void 0);if("errored"===e._state)return Promise.reject(e._storedError);m(e);var r=e._readableStreamController.__cancelSteps(t);return r.then(function(){})}function m(e){Ne("readable"===e._state),e._state="closed";var t=e._reader;if(void 0!==t){if(x(t)===!0){for(var r=0;r<t._readRequests.length;r++){var n=t._readRequests[r]._resolve;n(Pe(void 0,!0))}t._readRequests=[]}ge(t)}}function g(e,t){Ne(o(e)===!0,"stream must be ReadableStream"),Ne("readable"===e._state,"state must be readable"),e._state="errored",e._storedError=t;var r=e._reader;if(void 0!==r){if(x(r)===!0){for(var n=0;n<r._readRequests.length;n++){var i=r._readRequests[n];i._reject(t)}r._readRequests=[]}else{Ne(k(r),"reader must be ReadableStreamBYOBReader");for(var a=0;a<r._readIntoRequests.length;a++){var s=r._readIntoRequests[a];s._reject(t)}r._readIntoRequests=[]}ve(r,t),r._closedPromise.catch(function(){})}}function y(e,t,r){var n=e._reader;Ne(n._readIntoRequests.length>0);var i=n._readIntoRequests.shift();i._resolve(Pe(t,r))}function b(e,t,r){var n=e._reader;Ne(n._readRequests.length>0);var i=n._readRequests.shift();i._resolve(Pe(t,r))}function _(e){return e._reader._readIntoRequests.length}function A(e){return e._reader._readRequests.length}function S(e){var t=e._reader;return void 0!==t&&k(t)!==!1}function w(e){var t=e._reader;return void 0!==t&&x(t)!==!1}function k(e){return!!Me(e)&&!!Object.prototype.hasOwnProperty.call(e,"_readIntoRequests")}function x(e){return!!Me(e)&&!!Object.prototype.hasOwnProperty.call(e,"_readRequests")}function P(e,t){e._ownerReadableStream=t,t._reader=e,"readable"===t._state?de(e):"closed"===t._state?pe(e):(Ne("errored"===t._state,"state must be errored"),fe(e,t._storedError),e._closedPromise.catch(function(){}))}function C(e,t){var r=e._ownerReadableStream;return Ne(void 0!==r),v(r,t)}function R(e){Ne(void 0!==e._ownerReadableStream),Ne(e._ownerReadableStream._reader===e),"readable"===e._ownerReadableStream._state?ve(e,new TypeError("Reader was released and can no longer be used to monitor the stream's closedness")):me(e,new TypeError("Reader was released and can no longer be used to monitor the stream's closedness")),e._closedPromise.catch(function(){}),e._ownerReadableStream._reader=void 0,e._ownerReadableStream=void 0}function E(e,t){var r=e._ownerReadableStream;return Ne(void 0!==r),r._disturbed=!0,"errored"===r._state?Promise.reject(r._storedError):J(r._readableStreamController,t)}function T(e){var t=e._ownerReadableStream;return Ne(void 0!==t),t._disturbed=!0,"closed"===t._state?Promise.resolve(Pe(void 0,!0)):"errored"===t._state?Promise.reject(t._storedError):(Ne("readable"===t._state),t._readableStreamController.__pullSteps())}function O(e){return!!Me(e)&&!!Object.prototype.hasOwnProperty.call(e,"_underlyingSource")}function F(e){var t=I(e);if(t!==!1){if(e._pulling===!0)return void(e._pullAgain=!0);Ne(e._pullAgain===!1),e._pulling=!0;var r=Ee(e._underlyingSource,"pull",[e]);r.then(function(){if(e._pulling=!1,e._pullAgain===!0)return e._pullAgain=!1,F(e)},function(t){D(e,t)}).catch(qe)}}function I(e){var t=e._controlledReadableStream;if("closed"===t._state||"errored"===t._state)return!1;if(e._closeRequested===!0)return!1;if(e._started===!1)return!1;if(u(t)===!0&&A(t)>0)return!0;var r=N(e);return r>0}function L(e){var t=e._controlledReadableStream;Ne(e._closeRequested===!1),Ne("readable"===t._state),e._closeRequested=!0,0===e._queue.length&&m(t)}function j(e,t){var r=e._controlledReadableStream;if(Ne(e._closeRequested===!1),Ne("readable"===r._state),u(r)===!0&&A(r)>0)b(r,t,!1);else{var n=1;if(void 0!==e._strategySize){var i=e._strategySize;try{n=i(t)}catch(t){throw D(e,t),t}}try{Be(e,t,n)}catch(t){throw D(e,t),t}}F(e)}function M(e,t){var r=e._controlledReadableStream;Ne("readable"===r._state),ze(e),g(r,t)}function D(e,t){"readable"===e._controlledReadableStream._state&&M(e,t)}function N(e){var t=e._controlledReadableStream,r=t._state;return"errored"===r?null:"closed"===r?0:e._strategyHWM-e._queueTotalSize}function q(e){return!!Me(e)&&!!Object.prototype.hasOwnProperty.call(e,"_underlyingByteSource")}function W(e){return!!Me(e)&&!!Object.prototype.hasOwnProperty.call(e,"_associatedReadableByteStreamController")}function U(e){var t=re(e);if(t!==!1){if(e._pulling===!0)return void(e._pullAgain=!0);Ne(e._pullAgain===!1),e._pulling=!0;var r=Ee(e._underlyingByteSource,"pull",[e]);r.then(function(){e._pulling=!1,e._pullAgain===!0&&(e._pullAgain=!1,U(e))},function(t){"readable"===e._controlledReadableStream._state&&ae(e,t)}).catch(qe)}}function B(e){Q(e),e._pendingPullIntos=[]}function z(e,t){Ne("errored"!==e._state,"state must not be errored");var r=!1;"closed"===e._state&&(Ne(0===t.bytesFilled),r=!0);var n=G(t);"default"===t.readerType?b(e,n,r):(Ne("byob"===t.readerType),y(e,n,r))}function G(e){var t=e.bytesFilled,r=e.elementSize;return Ne(t<=e.byteLength),Ne(t%r===0),new e.ctor(e.buffer,e.byteOffset,t/r)}function H(e,t,r,n){e._queue.push({buffer:t,byteOffset:r,byteLength:n}),e._queueTotalSize+=n}function X(e,t){var r=t.elementSize,n=t.bytesFilled-t.bytesFilled%r,i=Math.min(e._queueTotalSize,t.byteLength-t.bytesFilled),a=t.bytesFilled+i,o=a-a%r,s=i,u=!1;o>n&&(s=o-t.bytesFilled,u=!0);for(var c=e._queue;s>0;){var l=c[0],h=Math.min(s,l.byteLength),d=t.byteOffset+t.bytesFilled;xe(t.buffer,d,l.buffer,l.byteOffset,h),l.byteLength===h?c.shift():(l.byteOffset+=h,l.byteLength-=h),e._queueTotalSize-=h,Y(e,h,t),s-=h}return u===!1&&(Ne(0===e._queueTotalSize,"queue must be empty"),Ne(t.bytesFilled>0),Ne(t.bytesFilled<t.elementSize)),u}function Y(e,t,r){Ne(0===e._pendingPullIntos.length||e._pendingPullIntos[0]===r),Q(e),r.bytesFilled+=t}function V(e){Ne("readable"===e._controlledReadableStream._state),0===e._queueTotalSize&&e._closeRequested===!0?m(e._controlledReadableStream):U(e)}function Q(e){void 0!==e._byobRequest&&(e._byobRequest._associatedReadableByteStreamController=void 0,e._byobRequest._view=void 0,e._byobRequest=void 0)}function K(e){for(Ne(e._closeRequested===!1);e._pendingPullIntos.length>0;){if(0===e._queueTotalSize)return;var t=e._pendingPullIntos[0];X(e,t)===!0&&(te(e),z(e._controlledReadableStream,t))}}function J(e,t){var r=e._controlledReadableStream,n=1;t.constructor!==DataView&&(n=t.constructor.BYTES_PER_ELEMENT);var i=t.constructor,a={buffer:t.buffer,byteOffset:t.byteOffset,byteLength:t.byteLength,bytesFilled:0,elementSize:n,ctor:i,readerType:"byob"};if(e._pendingPullIntos.length>0)return a.buffer=Te(a.buffer),e._pendingPullIntos.push(a),f(r);if("closed"===r._state){var o=new t.constructor(a.buffer,a.byteOffset,0);return Promise.resolve(Pe(o,!0))}if(e._queueTotalSize>0){if(X(e,a)===!0){var s=G(a);return V(e),Promise.resolve(Pe(s,!1))}if(e._closeRequested===!0){var u=new TypeError("Insufficient bytes to fill elements in the given buffer");return ae(e,u),Promise.reject(u)}}a.buffer=Te(a.buffer),e._pendingPullIntos.push(a);var c=f(r);return U(e),c}function Z(e,t){t.buffer=Te(t.buffer),Ne(0===t.bytesFilled,"bytesFilled must be 0");var r=e._controlledReadableStream;if(S(r)===!0)for(;_(r)>0;){var n=te(e);z(r,n)}}function $(e,t,r){if(r.bytesFilled+t>r.byteLength)throw new RangeError("bytesWritten out of range");if(Y(e,t,r),!(r.bytesFilled<r.elementSize)){te(e);var n=r.bytesFilled%r.elementSize;if(n>0){var i=r.byteOffset+r.bytesFilled,a=r.buffer.slice(i-n,i);H(e,a,0,a.byteLength)}r.buffer=Te(r.buffer),r.bytesFilled-=n,z(e._controlledReadableStream,r),K(e)}}function ee(e,t){var r=e._pendingPullIntos[0],n=e._controlledReadableStream;if("closed"===n._state){if(0!==t)throw new TypeError("bytesWritten must be 0 when calling respond() on a closed stream");Z(e,r)}else Ne("readable"===n._state),$(e,t,r)}function te(e){var t=e._pendingPullIntos.shift();return Q(e),t}function re(e){var t=e._controlledReadableStream;return"readable"===t._state&&(e._closeRequested!==!0&&(e._started!==!1&&(w(t)===!0&&A(t)>0||(S(t)===!0&&_(t)>0||oe(e)>0))))}function ne(e){var t=e._controlledReadableStream;if(Ne(e._closeRequested===!1),Ne("readable"===t._state),e._queueTotalSize>0)return void(e._closeRequested=!0);if(e._pendingPullIntos.length>0){var r=e._pendingPullIntos[0];if(r.bytesFilled>0){var n=new TypeError("Insufficient bytes to fill elements in the given buffer");throw ae(e,n),n}}m(t)}function ie(e,t){var r=e._controlledReadableStream;Ne(e._closeRequested===!1),Ne("readable"===r._state);var n=t.buffer,i=t.byteOffset,a=t.byteLength,o=Te(n);if(w(r)===!0)if(0===A(r))H(e,o,i,a);else{Ne(0===e._queue.length);var s=new Uint8Array(o,i,a);b(r,s,!1)}else S(r)===!0?(H(e,o,i,a),K(e)):(Ne(u(r)===!1,"stream must not be locked"),H(e,o,i,a))}function ae(e,t){var r=e._controlledReadableStream;Ne("readable"===r._state),B(e),ze(e),g(r,t)}function oe(e){var t=e._controlledReadableStream,r=t._state;return"errored"===r?null:"closed"===r?0:e._strategyHWM-e._queueTotalSize}function se(e,t){if(t=Number(t),Ce(t)===!1)throw new RangeError("bytesWritten must be a finite");Ne(e._pendingPullIntos.length>0),ee(e,t)}function ue(e,t){Ne(e._pendingPullIntos.length>0);var r=e._pendingPullIntos[0];if(r.byteOffset+r.bytesFilled!==t.byteOffset)throw new RangeError("The region specified by view does not match byobRequest");if(r.byteLength!==t.byteLength)throw new RangeError("The buffer of view has different capacity than byobRequest");r.buffer=t.buffer,ee(e,t.byteLength)}function ce(e){return new TypeError("ReadableStream.prototype."+e+" can only be used on a ReadableStream")}function le(e){return new TypeError("Cannot "+e+" a stream using a released reader")}function he(e){return new TypeError("ReadableStreamDefaultReader.prototype."+e+" can only be used on a ReadableStreamDefaultReader")}function de(e){e._closedPromise=new Promise(function(t,r){e._closedPromise_resolve=t,e._closedPromise_reject=r})}function fe(e,t){e._closedPromise=Promise.reject(t),e._closedPromise_resolve=void 0,e._closedPromise_reject=void 0}function pe(e){e._closedPromise=Promise.resolve(void 0),e._closedPromise_resolve=void 0,e._closedPromise_reject=void 0}function ve(e,t){Ne(void 0!==e._closedPromise_resolve),Ne(void 0!==e._closedPromise_reject),e._closedPromise_reject(t),e._closedPromise_resolve=void 0,e._closedPromise_reject=void 0}function me(e,t){Ne(void 0===e._closedPromise_resolve),Ne(void 0===e._closedPromise_reject),e._closedPromise=Promise.reject(t)}function ge(e){Ne(void 0!==e._closedPromise_resolve),Ne(void 0!==e._closedPromise_reject),e._closedPromise_resolve(void 0),e._closedPromise_resolve=void 0,e._closedPromise_reject=void 0}function ye(e){return new TypeError("ReadableStreamBYOBReader.prototype."+e+" can only be used on a ReadableStreamBYOBReader")}function be(e){return new TypeError("ReadableStreamDefaultController.prototype."+e+" can only be used on a ReadableStreamDefaultController")}function _e(e){return new TypeError("ReadableStreamBYOBRequest.prototype."+e+" can only be used on a ReadableStreamBYOBRequest")}function Ae(e){return new TypeError("ReadableByteStreamController.prototype."+e+" can only be used on a ReadableByteStreamController")}function Se(e){try{Promise.prototype.then.call(e,void 0,function(){})}catch(e){}}var we=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}(),ke=r(0),xe=ke.ArrayBufferCopy,Pe=ke.CreateIterResultObject,Ce=ke.IsFiniteNonNegativeNumber,Re=ke.InvokeOrNoop,Ee=ke.PromiseInvokeOrNoop,Te=ke.TransferArrayBuffer,Oe=ke.ValidateAndNormalizeQueuingStrategy,Fe=ke.ValidateAndNormalizeHighWaterMark,Ie=r(0),Le=Ie.createArrayFromList,je=Ie.createDataProperty,Me=Ie.typeIsObject,De=r(1),Ne=De.assert,qe=De.rethrowAssertionErrorRejection,We=r(3),Ue=We.DequeueValue,Be=We.EnqueueValueWithSize,ze=We.ResetQueue,Ge=r(2),He=Ge.AcquireWritableStreamDefaultWriter,Xe=Ge.IsWritableStream,Ye=Ge.IsWritableStreamLocked,Ve=Ge.WritableStreamAbort,Qe=Ge.WritableStreamDefaultWriterCloseWithErrorPropagation,Ke=Ge.WritableStreamDefaultWriterRelease,Je=Ge.WritableStreamDefaultWriterWrite,Ze=Ge.WritableStreamCloseQueuedOrInFlight,$e=function(){function e(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},i=r.size,a=r.highWaterMark;n(this,e),this._state="readable",this._reader=void 0,this._storedError=void 0,this._disturbed=!1,this._readableStreamController=void 0;var o=t.type,s=String(o);if("bytes"===s)void 0===a&&(a=0),this._readableStreamController=new it(this,t,a);else{if(void 0!==o)throw new RangeError("Invalid type is specified");void 0===a&&(a=1),this._readableStreamController=new rt(this,t,i,a)}}return we(e,[{key:"cancel",value:function(e){return o(this)===!1?Promise.reject(ce("cancel")):u(this)===!0?Promise.reject(new TypeError("Cannot cancel a stream that already has a reader")):v(this,e)}},{key:"getReader",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=e.mode;if(o(this)===!1)throw ce("getReader");if(void 0===t)return a(this);if(t=String(t),"byob"===t)return i(this);throw new RangeError("Invalid mode is specified")}},{key:"pipeThrough",value:function(e,t){var r=e.writable,n=e.readable,i=this.pipeTo(r,t);return Se(i),n}},{key:"pipeTo",value:function(e){var t=this,r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},n=r.preventClose,i=r.preventAbort,s=r.preventCancel;if(o(this)===!1)return Promise.reject(ce("pipeTo"));if(Xe(e)===!1)return Promise.reject(new TypeError("ReadableStream.prototype.pipeTo's first argument must be a WritableStream"));if(n=Boolean(n),i=Boolean(i),s=Boolean(s),u(this)===!0)return Promise.reject(new TypeError("ReadableStream.prototype.pipeTo cannot be used on a locked ReadableStream"));if(Ye(e)===!0)return Promise.reject(new TypeError("ReadableStream.prototype.pipeTo cannot be used on a locked WritableStream"));var c=a(this),l=He(e),h=!1,d=Promise.resolve();return new Promise(function(r,a){function o(){return d=Promise.resolve(),h===!0?Promise.resolve():l._readyPromise.then(function(){return T(c).then(function(e){var t=e.value,r=e.done;r!==!0&&(d=Je(l,t).catch(function(){}))})}).then(o)}function u(){var e=d;return d.then(function(){return e!==d?u():void 0})}function f(e,t,r){"errored"===e._state?r(e._storedError):t.catch(r).catch(qe)}function p(e,t,r){"closed"===e._state?r():t.then(r).catch(qe)}function m(t,r,n){function i(){t().then(function(){return y(r,n)},function(e){return y(!0,e)}).catch(qe)}h!==!0&&(h=!0,"writable"===e._state&&Ze(e)===!1?u().then(i):i())}function g(t,r){h!==!0&&(h=!0,"writable"===e._state&&Ze(e)===!1?u().then(function(){return y(t,r)}).catch(qe):y(t,r))}function y(e,t){Ke(l),R(c),e?a(t):r(void 0)}if(f(t,c._closedPromise,function(t){i===!1?m(function(){return Ve(e,t)},!0,t):g(!0,t)}),f(e,l._closedPromise,function(e){s===!1?m(function(){return v(t,e)},!0,e):g(!0,e)}),p(t,c._closedPromise,function(){n===!1?m(function(){return Qe(l)}):g()}),Ze(e)===!0||"closed"===e._state){var b=new TypeError("the destination writable stream closed before all data could be piped to it");s===!1?m(function(){return v(t,b)},!0,b):g(!0,b)}o().catch(function(e){d=Promise.resolve(),qe(e)})})}},{key:"tee",value:function(){if(o(this)===!1)throw ce("tee");var e=c(this,!1);return Le(e)}},{key:"locked",get:function(){if(o(this)===!1)throw ce("locked");return u(this)}}]),e}();e.exports={ReadableStream:$e,IsReadableStreamDisturbed:s,ReadableStreamDefaultControllerClose:L,ReadableStreamDefaultControllerEnqueue:j,ReadableStreamDefaultControllerError:M,ReadableStreamDefaultControllerGetDesiredSize:N};var et=function(){function e(t){if(n(this,e),o(t)===!1)throw new TypeError("ReadableStreamDefaultReader can only be constructed with a ReadableStream instance");if(u(t)===!0)throw new TypeError("This stream has already been locked for exclusive reading by another reader");P(this,t),this._readRequests=[]}return we(e,[{key:"cancel",value:function(e){return x(this)===!1?Promise.reject(he("cancel")):void 0===this._ownerReadableStream?Promise.reject(le("cancel")):C(this,e)}},{key:"read",value:function(){return x(this)===!1?Promise.reject(he("read")):void 0===this._ownerReadableStream?Promise.reject(le("read from")):T(this)}},{key:"releaseLock",value:function(){if(x(this)===!1)throw he("releaseLock");if(void 0!==this._ownerReadableStream){if(this._readRequests.length>0)throw new TypeError("Tried to release a reader lock when that reader has pending read() calls un-settled");R(this)}}},{key:"closed",get:function(){return x(this)===!1?Promise.reject(he("closed")):this._closedPromise}}]),e}(),tt=function(){function e(t){if(n(this,e),!o(t))throw new TypeError("ReadableStreamBYOBReader can only be constructed with a ReadableStream instance given a byte source");if(q(t._readableStreamController)===!1)throw new TypeError("Cannot construct a ReadableStreamBYOBReader for a stream not constructed with a byte source");if(u(t))throw new TypeError("This stream has already been locked for exclusive reading by another reader");P(this,t),this._readIntoRequests=[]}return we(e,[{key:"cancel",value:function(e){return k(this)?void 0===this._ownerReadableStream?Promise.reject(le("cancel")):C(this,e):Promise.reject(ye("cancel"))}},{key:"read",value:function(e){return k(this)?void 0===this._ownerReadableStream?Promise.reject(le("read from")):ArrayBuffer.isView(e)?0===e.byteLength?Promise.reject(new TypeError("view must have non-zero byteLength")):E(this,e):Promise.reject(new TypeError("view must be an array buffer view")):Promise.reject(ye("read"))}},{key:"releaseLock",value:function(){if(!k(this))throw ye("releaseLock");if(void 0!==this._ownerReadableStream){
-if(this._readIntoRequests.length>0)throw new TypeError("Tried to release a reader lock when that reader has pending read() calls un-settled");R(this)}}},{key:"closed",get:function(){return k(this)?this._closedPromise:Promise.reject(ye("closed"))}}]),e}(),rt=function(){function e(t,r,i,a){if(n(this,e),o(t)===!1)throw new TypeError("ReadableStreamDefaultController can only be constructed with a ReadableStream instance");if(void 0!==t._readableStreamController)throw new TypeError("ReadableStreamDefaultController instances can only be created by the ReadableStream constructor");this._controlledReadableStream=t,this._underlyingSource=r,this._queue=void 0,this._queueTotalSize=void 0,ze(this),this._started=!1,this._closeRequested=!1,this._pullAgain=!1,this._pulling=!1;var s=Oe(i,a);this._strategySize=s.size,this._strategyHWM=s.highWaterMark;var u=this,c=Re(r,"start",[this]);Promise.resolve(c).then(function(){u._started=!0,Ne(u._pulling===!1),Ne(u._pullAgain===!1),F(u)},function(e){D(u,e)}).catch(qe)}return we(e,[{key:"close",value:function(){if(O(this)===!1)throw be("close");if(this._closeRequested===!0)throw new TypeError("The stream has already been closed; do not close it again!");var e=this._controlledReadableStream._state;if("readable"!==e)throw new TypeError("The stream (in "+e+" state) is not in the readable state and cannot be closed");L(this)}},{key:"enqueue",value:function(e){if(O(this)===!1)throw be("enqueue");if(this._closeRequested===!0)throw new TypeError("stream is closed or draining");var t=this._controlledReadableStream._state;if("readable"!==t)throw new TypeError("The stream (in "+t+" state) is not in the readable state and cannot be enqueued to");return j(this,e)}},{key:"error",value:function(e){if(O(this)===!1)throw be("error");var t=this._controlledReadableStream;if("readable"!==t._state)throw new TypeError("The stream is "+t._state+" and so cannot be errored");M(this,e)}},{key:"__cancelSteps",value:function(e){return ze(this),Ee(this._underlyingSource,"cancel",[e])}},{key:"__pullSteps",value:function(){var e=this._controlledReadableStream;if(this._queue.length>0){var t=Ue(this);return this._closeRequested===!0&&0===this._queue.length?m(e):F(this),Promise.resolve(Pe(t,!1))}var r=p(e);return F(this),r}},{key:"desiredSize",get:function(){if(O(this)===!1)throw be("desiredSize");return N(this)}}]),e}(),nt=function(){function e(t,r){n(this,e),this._associatedReadableByteStreamController=t,this._view=r}return we(e,[{key:"respond",value:function(e){if(W(this)===!1)throw _e("respond");if(void 0===this._associatedReadableByteStreamController)throw new TypeError("This BYOB request has been invalidated");se(this._associatedReadableByteStreamController,e)}},{key:"respondWithNewView",value:function(e){if(W(this)===!1)throw _e("respond");if(void 0===this._associatedReadableByteStreamController)throw new TypeError("This BYOB request has been invalidated");if(!ArrayBuffer.isView(e))throw new TypeError("You can only respond with array buffer views");ue(this._associatedReadableByteStreamController,e)}},{key:"view",get:function(){return this._view}}]),e}(),it=function(){function e(t,r,i){if(n(this,e),o(t)===!1)throw new TypeError("ReadableByteStreamController can only be constructed with a ReadableStream instance given a byte source");if(void 0!==t._readableStreamController)throw new TypeError("ReadableByteStreamController instances can only be created by the ReadableStream constructor given a byte source");this._controlledReadableStream=t,this._underlyingByteSource=r,this._pullAgain=!1,this._pulling=!1,B(this),this._queue=this._queueTotalSize=void 0,ze(this),this._closeRequested=!1,this._started=!1,this._strategyHWM=Fe(i);var a=r.autoAllocateChunkSize;if(void 0!==a&&(Number.isInteger(a)===!1||a<=0))throw new RangeError("autoAllocateChunkSize must be a positive integer");this._autoAllocateChunkSize=a,this._pendingPullIntos=[];var s=this,u=Re(r,"start",[this]);Promise.resolve(u).then(function(){s._started=!0,Ne(s._pulling===!1),Ne(s._pullAgain===!1),U(s)},function(e){"readable"===t._state&&ae(s,e)}).catch(qe)}return we(e,[{key:"close",value:function(){if(q(this)===!1)throw Ae("close");if(this._closeRequested===!0)throw new TypeError("The stream has already been closed; do not close it again!");var e=this._controlledReadableStream._state;if("readable"!==e)throw new TypeError("The stream (in "+e+" state) is not in the readable state and cannot be closed");ne(this)}},{key:"enqueue",value:function(e){if(q(this)===!1)throw Ae("enqueue");if(this._closeRequested===!0)throw new TypeError("stream is closed or draining");var t=this._controlledReadableStream._state;if("readable"!==t)throw new TypeError("The stream (in "+t+" state) is not in the readable state and cannot be enqueued to");if(!ArrayBuffer.isView(e))throw new TypeError("You can only enqueue array buffer views when using a ReadableByteStreamController");ie(this,e)}},{key:"error",value:function(e){if(q(this)===!1)throw Ae("error");var t=this._controlledReadableStream;if("readable"!==t._state)throw new TypeError("The stream is "+t._state+" and so cannot be errored");ae(this,e)}},{key:"__cancelSteps",value:function(e){if(this._pendingPullIntos.length>0){var t=this._pendingPullIntos[0];t.bytesFilled=0}return ze(this),Ee(this._underlyingByteSource,"cancel",[e])}},{key:"__pullSteps",value:function(){var e=this._controlledReadableStream;if(Ne(w(e)===!0),this._queueTotalSize>0){Ne(0===A(e));var t=this._queue.shift();this._queueTotalSize-=t.byteLength,V(this);var r=void 0;try{r=new Uint8Array(t.buffer,t.byteOffset,t.byteLength)}catch(e){return Promise.reject(e)}return Promise.resolve(Pe(r,!1))}var n=this._autoAllocateChunkSize;if(void 0!==n){var i=void 0;try{i=new ArrayBuffer(n)}catch(e){return Promise.reject(e)}var a={buffer:i,byteOffset:0,byteLength:n,bytesFilled:0,elementSize:1,ctor:Uint8Array,readerType:"default"};this._pendingPullIntos.push(a)}var o=p(e);return U(this),o}},{key:"byobRequest",get:function(){if(q(this)===!1)throw Ae("byobRequest");if(void 0===this._byobRequest&&this._pendingPullIntos.length>0){var e=this._pendingPullIntos[0],t=new Uint8Array(e.buffer,e.byteOffset+e.bytesFilled,e.byteLength-e.bytesFilled);this._byobRequest=new nt(this,t)}return this._byobRequest}},{key:"desiredSize",get:function(){if(q(this)===!1)throw Ae("desiredSize");return oe(this)}}]),e}()},function(e,t,r){var n=r(6),i=r(4),a=r(2);t.TransformStream=n.TransformStream,t.ReadableStream=i.ReadableStream,t.IsReadableStreamDisturbed=i.IsReadableStreamDisturbed,t.ReadableStreamDefaultControllerClose=i.ReadableStreamDefaultControllerClose,t.ReadableStreamDefaultControllerEnqueue=i.ReadableStreamDefaultControllerEnqueue,t.ReadableStreamDefaultControllerError=i.ReadableStreamDefaultControllerError,t.ReadableStreamDefaultControllerGetDesiredSize=i.ReadableStreamDefaultControllerGetDesiredSize,t.AcquireWritableStreamDefaultWriter=a.AcquireWritableStreamDefaultWriter,t.IsWritableStream=a.IsWritableStream,t.IsWritableStreamLocked=a.IsWritableStreamLocked,t.WritableStream=a.WritableStream,t.WritableStreamAbort=a.WritableStreamAbort,t.WritableStreamDefaultControllerError=a.WritableStreamDefaultControllerError,t.WritableStreamDefaultWriterCloseWithErrorPropagation=a.WritableStreamDefaultWriterCloseWithErrorPropagation,t.WritableStreamDefaultWriterRelease=a.WritableStreamDefaultWriterRelease,t.WritableStreamDefaultWriterWrite=a.WritableStreamDefaultWriterWrite},function(e,t,r){function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e){if(e._errored===!0)throw new TypeError("TransformStream is already errored");if(e._readableClosed===!0)throw new TypeError("Readable side is already closed");s(e)}function a(e,t){if(e._errored===!0)throw new TypeError("TransformStream is already errored");if(e._readableClosed===!0)throw new TypeError("Readable side is already closed");var r=e._readableController;try{E(r,t)}catch(t){throw e._readableClosed=!0,u(e,t),e._storedError}var n=O(r),i=n<=0;i===!0&&e._backpressure===!1&&h(e,!0)}function o(e,t){if(e._errored===!0)throw new TypeError("TransformStream is already errored");c(e,t)}function s(e){_(e._errored===!1),_(e._readableClosed===!1);try{R(e._readableController)}catch(e){_(!1)}e._readableClosed=!0}function u(e,t){e._errored===!1&&c(e,t)}function c(e,t){_(e._errored===!1),e._errored=!0,e._storedError=t,e._writableDone===!1&&L(e._writableController,t),e._readableClosed===!1&&T(e._readableController,t)}function l(e){return _(void 0!==e._backpressureChangePromise,"_backpressureChangePromise should have been initialized"),e._backpressure===!1?Promise.resolve():(_(e._backpressure===!0,"_backpressure should have been initialized"),e._backpressureChangePromise)}function h(e,t){_(e._backpressure!==t,"TransformStreamSetBackpressure() should be called only when backpressure is changed"),void 0!==e._backpressureChangePromise&&e._backpressureChangePromise_resolve(t),e._backpressureChangePromise=new Promise(function(t){e._backpressureChangePromise_resolve=t}),e._backpressureChangePromise.then(function(e){_(e!==t,"_backpressureChangePromise should be fulfilled only when backpressure is changed")}),e._backpressure=t}function d(e,t){var r=t._controlledTransformStream;return a(r,e),Promise.resolve()}function f(e,t){_(e._errored===!1),_(e._transforming===!1),_(e._backpressure===!1),e._transforming=!0;var r=e._transformer,n=e._transformStreamController,i=w(r,"transform",[t,n],d,[t,n]);return i.then(function(){return e._transforming=!1,l(e)},function(t){return u(e,t),Promise.reject(t)})}function p(e){return!!x(e)&&!!Object.prototype.hasOwnProperty.call(e,"_controlledTransformStream")}function v(e){return!!x(e)&&!!Object.prototype.hasOwnProperty.call(e,"_transformStreamController")}function m(e){return new TypeError("TransformStreamDefaultController.prototype."+e+" can only be used on a TransformStreamDefaultController")}function g(e){return new TypeError("TransformStream.prototype."+e+" can only be used on a TransformStream")}var y=function(){function e(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(t,r,n){return r&&e(t.prototype,r),n&&e(t,n),t}}(),b=r(1),_=b.assert,A=r(0),S=A.InvokeOrNoop,w=A.PromiseInvokeOrPerformFallback,k=A.PromiseInvokeOrNoop,x=A.typeIsObject,P=r(4),C=P.ReadableStream,R=P.ReadableStreamDefaultControllerClose,E=P.ReadableStreamDefaultControllerEnqueue,T=P.ReadableStreamDefaultControllerError,O=P.ReadableStreamDefaultControllerGetDesiredSize,F=r(2),I=F.WritableStream,L=F.WritableStreamDefaultControllerError,j=function(){function e(t,r){n(this,e),this._transformStream=t,this._startPromise=r}return y(e,[{key:"start",value:function(e){var t=this._transformStream;return t._writableController=e,this._startPromise.then(function(){return l(t)})}},{key:"write",value:function(e){var t=this._transformStream;return f(t,e)}},{key:"abort",value:function(){var e=this._transformStream;e._writableDone=!0,c(e,new TypeError("Writable side aborted"))}},{key:"close",value:function(){var e=this._transformStream;_(e._transforming===!1),e._writableDone=!0;var t=k(e._transformer,"flush",[e._transformStreamController]);return t.then(function(){return e._errored===!0?Promise.reject(e._storedError):(e._readableClosed===!1&&s(e),Promise.resolve())}).catch(function(t){return u(e,t),Promise.reject(e._storedError)})}}]),e}(),M=function(){function e(t,r){n(this,e),this._transformStream=t,this._startPromise=r}return y(e,[{key:"start",value:function(e){var t=this._transformStream;return t._readableController=e,this._startPromise.then(function(){return _(void 0!==t._backpressureChangePromise,"_backpressureChangePromise should have been initialized"),t._backpressure===!0?Promise.resolve():(_(t._backpressure===!1,"_backpressure should have been initialized"),t._backpressureChangePromise)})}},{key:"pull",value:function(){var e=this._transformStream;return _(e._backpressure===!0,"pull() should be never called while _backpressure is false"),_(void 0!==e._backpressureChangePromise,"_backpressureChangePromise should have been initialized"),h(e,!1),e._backpressureChangePromise}},{key:"cancel",value:function(){var e=this._transformStream;e._readableClosed=!0,c(e,new TypeError("Readable side canceled"))}}]),e}(),D=function(){function e(t){if(n(this,e),v(t)===!1)throw new TypeError("TransformStreamDefaultController can only be constructed with a TransformStream instance");if(void 0!==t._transformStreamController)throw new TypeError("TransformStreamDefaultController instances can only be created by the TransformStream constructor");this._controlledTransformStream=t}return y(e,[{key:"enqueue",value:function(e){if(p(this)===!1)throw m("enqueue");a(this._controlledTransformStream,e)}},{key:"close",value:function(){if(p(this)===!1)throw m("close");i(this._controlledTransformStream)}},{key:"error",value:function(e){if(p(this)===!1)throw m("error");o(this._controlledTransformStream,e)}},{key:"desiredSize",get:function(){if(p(this)===!1)throw m("desiredSize");var e=this._controlledTransformStream,t=e._readableController;return O(t)}}]),e}(),N=function(){function e(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};n(this,e),this._transformer=t;var r=t.readableStrategy,i=t.writableStrategy;this._transforming=!1,this._errored=!1,this._storedError=void 0,this._writableController=void 0,this._readableController=void 0,this._transformStreamController=void 0,this._writableDone=!1,this._readableClosed=!1,this._backpressure=void 0,this._backpressureChangePromise=void 0,this._backpressureChangePromise_resolve=void 0,this._transformStreamController=new D(this);var a=void 0,o=new Promise(function(e){a=e}),s=new M(this,o);this._readable=new C(s,r);var u=new j(this,o);this._writable=new I(u,i),_(void 0!==this._writableController),_(void 0!==this._readableController);var c=O(this._readableController);h(this,c<=0);var l=this,d=S(t,"start",[l._transformStreamController]);a(d),o.catch(function(e){l._errored===!1&&(l._errored=!0,l._storedError=e)})}return y(e,[{key:"readable",get:function(){if(v(this)===!1)throw g("readable");return this._readable}},{key:"writable",get:function(){if(v(this)===!1)throw g("writable");return this._writable}}]),e}();e.exports={TransformStream:N}},function(e,t,r){e.exports=r(5)}]))},function(e,t,r){"use strict";function n(e){return(n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}var i=!1;try{if("function"==typeof URL&&"object"===n(URL.prototype)&&"origin"in URL.prototype){var a=new URL("b","http://a");a.pathname="c%20d",i="http://a/c%20d"===a.href}}catch(e){}if(i)t.URL=URL;else{var o=r(145).URL,s=r(3).URL;s&&(o.createObjectURL=function(e){return s.createObjectURL.apply(s,arguments)},o.revokeObjectURL=function(e){s.revokeObjectURL(e)}),t.URL=o}},function(e,t,r){"use strict";!function(){function e(e){return void 0!==c[e]}function r(){s.call(this),this._isInvalid=!0}function n(e){return""===e&&r.call(this),e.toLowerCase()}function i(e){var t=e.charCodeAt(0);return t>32&&t<127&&[34,35,60,62,63,96].indexOf(t)===-1?e:encodeURIComponent(e)}function a(e){var t=e.charCodeAt(0);return t>32&&t<127&&[34,35,60,62,96].indexOf(t)===-1?e:encodeURIComponent(e)}function o(t,o,s){function u(e){b.push(e)}var p=o||"scheme start",v=0,m="",g=!1,y=!1,b=[];e:for(;(t[v-1]!==h||0===v)&&!this._isInvalid;){var _=t[v];switch(p){case"scheme start":if(!_||!d.test(_)){if(o){u("Invalid scheme.");break e}m="",p="no scheme";continue}m+=_.toLowerCase(),p="scheme";break;case"scheme":if(_&&f.test(_))m+=_.toLowerCase();else{if(":"!==_){if(o){if(_===h)break e;u("Code point not allowed in scheme: "+_);break e}m="",v=0,p="no scheme";continue}if(this._scheme=m,m="",o)break e;e(this._scheme)&&(this._isRelative=!0),p="file"===this._scheme?"relative":this._isRelative&&s&&s._scheme===this._scheme?"relative or authority":this._isRelative?"authority first slash":"scheme data"}break;case"scheme data":"?"===_?(this._query="?",p="query"):"#"===_?(this._fragment="#",p="fragment"):_!==h&&"\t"!==_&&"\n"!==_&&"\r"!==_&&(this._schemeData+=i(_));break;case"no scheme":if(s&&e(s._scheme)){p="relative";continue}u("Missing scheme."),r.call(this);break;case"relative or authority":if("/"!==_||"/"!==t[v+1]){u("Expected /, got: "+_),p="relative";continue}p="authority ignore slashes";break;case"relative":if(this._isRelative=!0,"file"!==this._scheme&&(this._scheme=s._scheme),_===h){this._host=s._host,this._port=s._port,this._path=s._path.slice(),this._query=s._query,this._username=s._username,this._password=s._password;break e}if("/"===_||"\\"===_)"\\"===_&&u("\\ is an invalid code point."),p="relative slash";else if("?"===_)this._host=s._host,this._port=s._port,this._path=s._path.slice(),this._query="?",this._username=s._username,this._password=s._password,p="query";else{if("#"!==_){var A=t[v+1],S=t[v+2];("file"!==this._scheme||!d.test(_)||":"!==A&&"|"!==A||S!==h&&"/"!==S&&"\\"!==S&&"?"!==S&&"#"!==S)&&(this._host=s._host,this._port=s._port,this._username=s._username,this._password=s._password,this._path=s._path.slice(),this._path.pop()),p="relative path";continue}this._host=s._host,this._port=s._port,this._path=s._path.slice(),this._query=s._query,this._fragment="#",this._username=s._username,this._password=s._password,p="fragment"}break;case"relative slash":if("/"!==_&&"\\"!==_){"file"!==this._scheme&&(this._host=s._host,this._port=s._port,this._username=s._username,this._password=s._password),p="relative path";continue}"\\"===_&&u("\\ is an invalid code point."),p="file"===this._scheme?"file host":"authority ignore slashes";break;case"authority first slash":if("/"!==_){u("Expected '/', got: "+_),p="authority ignore slashes";continue}p="authority second slash";break;case"authority second slash":if(p="authority ignore slashes","/"!==_){u("Expected '/', got: "+_);continue}break;case"authority ignore slashes":if("/"!==_&&"\\"!==_){p="authority";continue}u("Expected authority, got: "+_);break;case"authority":if("@"===_){g&&(u("@ already seen."),m+="%40"),g=!0;for(var w=0;w<m.length;w++){var k=m[w];if("\t"!==k&&"\n"!==k&&"\r"!==k)if(":"!==k||null!==this._password){var x=i(k);null!==this._password?this._password+=x:this._username+=x}else this._password="";else u("Invalid whitespace in authority.")}m=""}else{if(_===h||"/"===_||"\\"===_||"?"===_||"#"===_){v-=m.length,m="",p="host";continue}m+=_}break;case"file host":if(_===h||"/"===_||"\\"===_||"?"===_||"#"===_){2!==m.length||!d.test(m[0])||":"!==m[1]&&"|"!==m[1]?0===m.length?p="relative path start":(this._host=n.call(this,m),m="",p="relative path start"):p="relative path";continue}"\t"===_||"\n"===_||"\r"===_?u("Invalid whitespace in file host."):m+=_;break;case"host":case"hostname":if(":"!==_||y){if(_===h||"/"===_||"\\"===_||"?"===_||"#"===_){if(this._host=n.call(this,m),m="",p="relative path start",o)break e;continue}"\t"!==_&&"\n"!==_&&"\r"!==_?("["===_?y=!0:"]"===_&&(y=!1),m+=_):u("Invalid code point in host/hostname: "+_)}else if(this._host=n.call(this,m),m="",p="port","hostname"===o)break e;break;case"port":if(/[0-9]/.test(_))m+=_;else{if(_===h||"/"===_||"\\"===_||"?"===_||"#"===_||o){if(""!==m){var P=parseInt(m,10);P!==c[this._scheme]&&(this._port=P+""),m=""}if(o)break e;p="relative path start";continue}"\t"===_||"\n"===_||"\r"===_?u("Invalid code point in port: "+_):r.call(this)}break;case"relative path start":if("\\"===_&&u("'\\' not allowed in path."),p="relative path","/"!==_&&"\\"!==_)continue;break;case"relative path":if(_!==h&&"/"!==_&&"\\"!==_&&(o||"?"!==_&&"#"!==_))"\t"!==_&&"\n"!==_&&"\r"!==_&&(m+=i(_));else{"\\"===_&&u("\\ not allowed in relative path.");var C;(C=l[m.toLowerCase()])&&(m=C),".."===m?(this._path.pop(),"/"!==_&&"\\"!==_&&this._path.push("")):"."===m&&"/"!==_&&"\\"!==_?this._path.push(""):"."!==m&&("file"===this._scheme&&0===this._path.length&&2===m.length&&d.test(m[0])&&"|"===m[1]&&(m=m[0]+":"),this._path.push(m)),m="","?"===_?(this._query="?",p="query"):"#"===_&&(this._fragment="#",p="fragment")}break;case"query":o||"#"!==_?_!==h&&"\t"!==_&&"\n"!==_&&"\r"!==_&&(this._query+=a(_)):(this._fragment="#",p="fragment");break;case"fragment":_!==h&&"\t"!==_&&"\n"!==_&&"\r"!==_&&(this._fragment+=_)}v++}}function s(){this._scheme="",this._schemeData="",this._username="",this._password=null,this._host="",this._port="",this._path=[],this._query="",this._fragment="",this._isInvalid=!1,this._isRelative=!1}function u(e,t){void 0===t||t instanceof u||(t=new u(String(t))),this._url=e,s.call(this);var r=e.replace(/^[ \t\r\n\f]+|[ \t\r\n\f]+$/g,"");o.call(this,r,null,t)}var c=Object.create(null);c.ftp=21,c.file=0,c.gopher=70,c.http=80,c.https=443,c.ws=80,c.wss=443;var l=Object.create(null);l["%2e"]=".",l[".%2e"]="..",l["%2e."]="..",l["%2e%2e"]="..";var h,d=/[a-zA-Z]/,f=/[a-zA-Z0-9\+\-\.]/;u.prototype={toString:function(){return this.href},get href(){if(this._isInvalid)return this._url;var e="";return""===this._username&&null===this._password||(e=this._username+(null!==this._password?":"+this._password:"")+"@"),this.protocol+(this._isRelative?"//"+e+this.host:"")+this.pathname+this._query+this._fragment},set href(e){s.call(this),o.call(this,e)},get protocol(){return this._scheme+":"},set protocol(e){this._isInvalid||o.call(this,e+":","scheme start")},get host(){return this._isInvalid?"":this._port?this._host+":"+this._port:this._host},set host(e){!this._isInvalid&&this._isRelative&&o.call(this,e,"host")},get hostname(){return this._host},set hostname(e){!this._isInvalid&&this._isRelative&&o.call(this,e,"hostname")},get port(){return this._port},set port(e){!this._isInvalid&&this._isRelative&&o.call(this,e,"port")},get pathname(){return this._isInvalid?"":this._isRelative?"/"+this._path.join("/"):this._schemeData},set pathname(e){!this._isInvalid&&this._isRelative&&(this._path=[],o.call(this,e,"relative path start"))},get search(){return this._isInvalid||!this._query||"?"===this._query?"":this._query},set search(e){!this._isInvalid&&this._isRelative&&(this._query="?","?"===e[0]&&(e=e.slice(1)),o.call(this,e,"query"))},get hash(){return this._isInvalid||!this._fragment||"#"===this._fragment?"":this._fragment},set hash(e){this._isInvalid||(this._fragment="#","#"===e[0]&&(e=e.slice(1)),o.call(this,e,"fragment"))},get origin(){var e;if(this._isInvalid||!this._scheme)return"";switch(this._scheme){case"data":case"file":case"javascript":case"mailto":return"null";case"blob":try{return new u(this._schemeData).origin||"null"}catch(e){}return"null"}return e=this.host,e?this._scheme+"://"+e:""}},t.URL=u}()},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function i(e,t,r,n,i,a,o){try{var s=e[a](o),u=s.value}catch(e){return void r(e)}s.done?t(u):Promise.resolve(u).then(n,i)}function a(e){return function(){var t=this,r=arguments;return new Promise(function(n,a){function o(e){i(u,n,a,o,s,"next",e)}function s(e){i(u,n,a,o,s,"throw",e)}var u=e.apply(t,r);o(void 0)})}}function o(e,t){return c(e)||u(e,t)||s()}function s(){throw new TypeError("Invalid attempt to destructure non-iterable instance")}function u(e,t){var r=[],n=!0,i=!1,a=void 0;try{for(var o,s=e[Symbol.iterator]();!(n=(o=s.next()).done)&&(r.push(o.value),!t||r.length!==t);n=!0);}catch(e){i=!0,a=e}finally{try{n||null==s.return||s.return()}finally{if(i)throw a}}return r}function c(e){if(Array.isArray(e))return e}function l(e){return f(e)||d(e)||h()}function h(){throw new TypeError("Invalid attempt to spread non-iterable instance")}function d(e){if(Symbol.iterator in Object(e)||"[object Arguments]"===Object.prototype.toString.call(e))return Array.from(e)}function f(e){if(Array.isArray(e)){for(var t=0,r=new Array(e.length);t<e.length;t++)r[t]=e[t];return r}}function p(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function v(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function m(e,t,r){return t&&v(e.prototype,t),r&&v(e,r),e}function g(e){return(g="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function y(e){W=e}function b(e){var t,r=new U;if("string"==typeof e)t={url:e};else if((0,w.isArrayBuffer)(e))t={data:e};else if(e instanceof B)t={range:e};else{if("object"!==g(e))throw new Error("Invalid parameter in getDocument, need either Uint8Array, string or a parameter object");if(!e.url&&!e.data&&!e.range)throw new Error("Invalid parameter object: need either .data, .range or .url");t=e}var n=Object.create(null),i=null,a=null;for(var o in t)if("url"!==o||"undefined"==typeof window)if("range"!==o)if("worker"!==o)if("data"!==o||t[o]instanceof Uint8Array)n[o]=t[o];else{var s=t[o];if("string"==typeof s)n[o]=(0,w.stringToBytes)(s);else if("object"!==g(s)||null===s||isNaN(s.length)){if(!(0,w.isArrayBuffer)(s))throw new Error("Invalid PDF binary data: either typed array, string or array-like object is expected in the data property.");n[o]=new Uint8Array(s)}else n[o]=new Uint8Array(s)}else a=t[o];else i=t[o];else n[o]=new w.URL(t[o],window.location).href;n.rangeChunkSize=n.rangeChunkSize||L,n.CMapReaderFactory=n.CMapReaderFactory||k.DOMCMapReaderFactory,n.ignoreErrors=n.stopAtErrors!==!0,n.pdfBug=n.pdfBug===!0;var u=Object.values(w.NativeImageDecoding);if(void 0!==n.nativeImageDecoderSupport&&u.includes(n.nativeImageDecoderSupport)||(n.nativeImageDecoderSupport=P.apiCompatibilityParams.nativeImageDecoderSupport||w.NativeImageDecoding.DECODE),Number.isInteger(n.maxImageSize)||(n.maxImageSize=-1),"boolean"!=typeof n.isEvalSupported&&(n.isEvalSupported=!0),"boolean"!=typeof n.disableFontFace&&(n.disableFontFace=P.apiCompatibilityParams.disableFontFace||!1),"boolean"!=typeof n.disableRange&&(n.disableRange=!1),"boolean"!=typeof n.disableStream&&(n.disableStream=!1),"boolean"!=typeof n.disableAutoFetch&&(n.disableAutoFetch=!1),"boolean"!=typeof n.disableCreateObjectURL&&(n.disableCreateObjectURL=P.apiCompatibilityParams.disableCreateObjectURL||!1),(0,w.setVerbosityLevel)(n.verbosity),!a){var c={postMessageTransfers:n.postMessageTransfers,verbosity:n.verbosity,port:E.GlobalWorkerOptions.workerPort};a=c.port?X.fromPort(c):new X(c),r._worker=a}var l=r.docId;return a.promise.then(function(){if(r.destroyed)throw new Error("Loading aborted");return _(a,n,i,l).then(function(e){if(r.destroyed)throw new Error("Loading aborted");var t;i?t=new F.PDFDataTransportStream({length:n.length,initialData:n.initialData,disableRange:n.disableRange,disableStream:n.disableStream},i):n.data||(t=W({url:n.url,length:n.length,httpHeaders:n.httpHeaders,withCredentials:n.withCredentials,rangeChunkSize:n.rangeChunkSize,disableRange:n.disableRange,disableStream:n.disableStream}));var o=new T.MessageHandler(l,e,a.port);o.postMessageTransfers=a.postMessageTransfers;var s=new Y(o,r,t,n);r._transport=s,o.send("Ready",null)})}).catch(r._capability.reject),r}function _(e,t,r,n){return e.destroyed?Promise.reject(new Error("Worker was destroyed")):(r&&(t.length=r.length,t.initialData=r.initialData),e.messageHandler.sendWithPromise("GetDocRequest",{docId:n,apiVersion:"2.1.266",source:{data:t.data,url:t.url,password:t.password,disableAutoFetch:t.disableAutoFetch,rangeChunkSize:t.rangeChunkSize,length:t.length},maxImageSize:t.maxImageSize,disableFontFace:t.disableFontFace,disableCreateObjectURL:t.disableCreateObjectURL,postMessageTransfers:e.postMessageTransfers,docBaseUrl:t.docBaseUrl,nativeImageDecoderSupport:t.nativeImageDecoderSupport,ignoreErrors:t.ignoreErrors,isEvalSupported:t.isEvalSupported}).then(function(t){if(e.destroyed)throw new Error("Worker was destroyed");return t}))}Object.defineProperty(t,"__esModule",{value:!0}),t.getDocument=b,t.setPDFNetworkStreamFactory=y,t.build=t.version=t.PDFPageProxy=t.PDFDocumentProxy=t.PDFWorker=t.PDFDataRangeTransport=t.LoopbackPort=void 0;var A,S=n(r(147)),w=r(1),k=r(151),x=r(152),P=r(153),C=r(154),R=n(r(3)),E=r(156),T=r(157),O=r(158),F=r(160),I=r(161),L=65536,j=!1,M=null,D=!1;"undefined"==typeof window?(j=!0,"undefined"==typeof require.ensure,D=!0):"undefined"!=typeof require&&"function"==typeof require.ensure&&(D=!0),"undefined"!=typeof requirejs&&requirejs.toUrl&&(A=requirejs.toUrl("pdfjs-dist/build/pdf.worker.js"));var N="undefined"!=typeof requirejs&&requirejs.load;if(M=D?function(){return new Promise(function(e,t){require.ensure([],function(){try{var r;r=require("./pdf.worker.js"),e(r.WorkerMessageHandler)}catch(e){t(e)}},t,"pdfjsWorker")})}:N?function(){return new Promise(function(e,t){requirejs(["pdfjs-dist/build/pdf.worker"],function(r){try{e(r.WorkerMessageHandler)}catch(e){t(e)}},t)})}:null,!A&&"object"===("undefined"==typeof document?"undefined":g(document))&&"currentScript"in document){var q=document.currentScript&&document.currentScript.src;q&&(A=q.replace(/(\.(?:min\.)?js)(\?.*)?$/i,".worker$1$2"))}var W,U=function(){var e=0,t=function(){function t(){p(this,t),this._capability=(0,w.createPromiseCapability)(),this._transport=null,this._worker=null,this.docId="d"+e++,this.destroyed=!1,this.onPassword=null,this.onProgress=null,this.onUnsupportedFeature=null}return m(t,[{key:"destroy",value:function(){var e=this;this.destroyed=!0;var t=this._transport?this._transport.destroy():Promise.resolve();return t.then(function(){e._transport=null,e._worker&&(e._worker.destroy(),e._worker=null)})}},{key:"then",value:function(e,t){return(0,w.deprecated)("PDFDocumentLoadingTask.then method, use the `promise` getter instead."),this.promise.then.apply(this.promise,arguments)}},{key:"promise",get:function(){return this._capability.promise}}]),t}();return t}(),B=function(){function e(t,r){p(this,e),this.length=t,this.initialData=r,this._rangeListeners=[],this._progressListeners=[],this._progressiveReadListeners=[],this._readyCapability=(0,w.createPromiseCapability)()}return m(e,[{key:"addRangeListener",value:function(e){this._rangeListeners.push(e)}},{key:"addProgressListener",value:function(e){this._progressListeners.push(e)}},{key:"addProgressiveReadListener",value:function(e){this._progressiveReadListeners.push(e)}},{key:"onDataRange",value:function(e,t){var r=!0,n=!1,i=void 0;try{for(var a,o=this._rangeListeners[Symbol.iterator]();!(r=(a=o.next()).done);r=!0){var s=a.value;s(e,t)}}catch(e){n=!0,i=e}finally{try{r||null==o.return||o.return()}finally{if(n)throw i}}}},{key:"onDataProgress",value:function(e){var t=this;this._readyCapability.promise.then(function(){var r=!0,n=!1,i=void 0;try{for(var a,o=t._progressListeners[Symbol.iterator]();!(r=(a=o.next()).done);r=!0){var s=a.value;s(e)}}catch(e){n=!0,i=e}finally{try{r||null==o.return||o.return()}finally{if(n)throw i}}})}},{key:"onDataProgressiveRead",value:function(e){var t=this;this._readyCapability.promise.then(function(){var r=!0,n=!1,i=void 0;try{for(var a,o=t._progressiveReadListeners[Symbol.iterator]();!(r=(a=o.next()).done);r=!0){var s=a.value;s(e)}}catch(e){n=!0,i=e}finally{try{r||null==o.return||o.return()}finally{if(n)throw i}}})}},{key:"transportReady",value:function(){this._readyCapability.resolve()}},{key:"requestDataRange",value:function(e,t){(0,w.unreachable)("Abstract method PDFDataRangeTransport.requestDataRange")}},{key:"abort",value:function(){}}]),e}();t.PDFDataRangeTransport=B;var z=function(){function e(t,r,n){p(this,e),this.loadingTask=n,this._pdfInfo=t,this._transport=r}return m(e,[{key:"getPage",value:function(e){return this._transport.getPage(e)}},{key:"getPageIndex",value:function(e){return this._transport.getPageIndex(e)}},{key:"getDestinations",value:function(){return this._transport.getDestinations()}},{key:"getDestination",value:function(e){return this._transport.getDestination(e)}},{key:"getPageLabels",value:function(){return this._transport.getPageLabels()}},{key:"getPageMode",value:function(){return this._transport.getPageMode();
-}},{key:"getOpenActionDestination",value:function(){return this._transport.getOpenActionDestination()}},{key:"getAttachments",value:function(){return this._transport.getAttachments()}},{key:"getJavaScript",value:function(){return this._transport.getJavaScript()}},{key:"getOutline",value:function(){return this._transport.getOutline()}},{key:"getPermissions",value:function(){return this._transport.getPermissions()}},{key:"getMetadata",value:function(){return this._transport.getMetadata()}},{key:"getData",value:function(){return this._transport.getData()}},{key:"getDownloadInfo",value:function(){return this._transport.downloadInfoCapability.promise}},{key:"getStats",value:function(){return this._transport.getStats()}},{key:"cleanup",value:function(){this._transport.startCleanup()}},{key:"destroy",value:function(){return this.loadingTask.destroy()}},{key:"numPages",get:function(){return this._pdfInfo.numPages}},{key:"fingerprint",get:function(){return this._pdfInfo.fingerprint}},{key:"loadingParams",get:function(){return this._transport.loadingParams}}]),e}();t.PDFDocumentProxy=z;var G=function(){function e(t,r,n){var i=arguments.length>3&&void 0!==arguments[3]&&arguments[3];p(this,e),this.pageIndex=t,this._pageInfo=r,this._transport=n,this._stats=i?new k.StatTimer:k.DummyStatTimer,this._pdfBug=i,this.commonObjs=n.commonObjs,this.objs=new V,this.cleanupAfterRender=!1,this.pendingCleanup=!1,this.intentStates=Object.create(null),this.destroyed=!1}return m(e,[{key:"getViewport",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=e.scale,r=e.rotation,n=void 0===r?this.rotate:r,i=e.dontFlip,a=void 0!==i&&i;return(arguments.length>1||"number"==typeof arguments[0])&&((0,w.deprecated)("getViewport is called with obsolete arguments."),t=arguments[0],n="number"==typeof arguments[1]?arguments[1]:this.rotate,a="boolean"==typeof arguments[2]&&arguments[2]),new k.PageViewport({viewBox:this.view,scale:t,rotation:n,dontFlip:a})}},{key:"getAnnotations",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=e.intent,r=void 0===t?null:t;return this.annotationsPromise&&this.annotationsIntent===r||(this.annotationsPromise=this._transport.getAnnotations(this.pageIndex,r),this.annotationsIntent=r),this.annotationsPromise}},{key:"render",value:function(e){var t=this,r=e.canvasContext,n=e.viewport,i=e.intent,a=void 0===i?"display":i,o=e.enableWebGL,s=void 0!==o&&o,u=e.renderInteractiveForms,c=void 0!==u&&u,l=e.transform,h=void 0===l?null:l,d=e.imageLayer,f=void 0===d?null:d,p=e.canvasFactory,v=void 0===p?null:p,m=e.background,g=void 0===m?null:m,y=this._stats;y.time("Overall"),this.pendingCleanup=!1;var b="print"===a?"print":"display",_=v||new k.DOMCanvasFactory,A=new I.WebGLContext({enable:s});this.intentStates[b]||(this.intentStates[b]=Object.create(null));var S=this.intentStates[b];S.displayReadyCapability||(S.receivingOperatorList=!0,S.displayReadyCapability=(0,w.createPromiseCapability)(),S.operatorList={fnArray:[],argsArray:[],lastChunk:!1},y.time("Page Request"),this._transport.messageHandler.send("RenderPageRequest",{pageIndex:this.pageNumber-1,intent:b,renderInteractiveForms:c===!0}));var x=function(e){var r=S.renderTasks.indexOf(P);r>=0&&S.renderTasks.splice(r,1),t.cleanupAfterRender&&(t.pendingCleanup=!0),t._tryCleanup(),e?P.capability.reject(e):P.capability.resolve(),y.timeEnd("Rendering"),y.timeEnd("Overall")},P=new K({callback:x,params:{canvasContext:r,viewport:n,transform:h,imageLayer:f,background:g},objs:this.objs,commonObjs:this.commonObjs,operatorList:S.operatorList,pageNumber:this.pageNumber,canvasFactory:_,webGLContext:A,useRequestAnimationFrame:"print"!==b,pdfBug:this._pdfBug});S.renderTasks||(S.renderTasks=[]),S.renderTasks.push(P);var C=P.task;return S.displayReadyCapability.promise.then(function(e){return t.pendingCleanup?void x():(y.time("Rendering"),P.initializeGraphics(e),void P.operatorListChanged())}).catch(x),C}},{key:"getOperatorList",value:function(){function e(){if(n.operatorList.lastChunk){n.opListReadCapability.resolve(n.operatorList);var e=n.renderTasks.indexOf(r);e>=0&&n.renderTasks.splice(e,1)}}var t="oplist";this.intentStates[t]||(this.intentStates[t]=Object.create(null));var r,n=this.intentStates[t];return n.opListReadCapability||(r={},r.operatorListChanged=e,n.receivingOperatorList=!0,n.opListReadCapability=(0,w.createPromiseCapability)(),n.renderTasks=[],n.renderTasks.push(r),n.operatorList={fnArray:[],argsArray:[],lastChunk:!1},this._stats.time("Page Request"),this._transport.messageHandler.send("RenderPageRequest",{pageIndex:this.pageIndex,intent:t})),n.opListReadCapability.promise}},{key:"streamTextContent",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=e.normalizeWhitespace,r=void 0!==t&&t,n=e.disableCombineTextItems,i=void 0!==n&&n,a=100;return this._transport.messageHandler.sendWithStream("GetTextContent",{pageIndex:this.pageNumber-1,normalizeWhitespace:r===!0,combineTextItems:i!==!0},{highWaterMark:a,size:function(e){return e.items.length}})}},{key:"getTextContent",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=this.streamTextContent(e);return new Promise(function(e,r){function n(){i.read().then(function(t){var r,i=t.value,o=t.done;return o?void e(a):(Object.assign(a.styles,i.styles),(r=a.items).push.apply(r,l(i.items)),void n())},r)}var i=t.getReader(),a={items:[],styles:Object.create(null)};n()})}},{key:"_destroy",value:function(){this.destroyed=!0,this._transport.pageCache[this.pageIndex]=null;var e=[];return Object.keys(this.intentStates).forEach(function(t){if("oplist"!==t){var r=this.intentStates[t];r.renderTasks.forEach(function(t){var r=t.capability.promise.catch(function(){});e.push(r),t.cancel()})}},this),this.objs.clear(),this.annotationsPromise=null,this.pendingCleanup=!1,Promise.all(e)}},{key:"cleanup",value:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];this.pendingCleanup=!0,this._tryCleanup(e)}},{key:"_tryCleanup",value:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];this.pendingCleanup&&!Object.keys(this.intentStates).some(function(e){var t=this.intentStates[e];return 0!==t.renderTasks.length||t.receivingOperatorList},this)&&(Object.keys(this.intentStates).forEach(function(e){delete this.intentStates[e]},this),this.objs.clear(),this.annotationsPromise=null,e&&this._stats instanceof k.StatTimer&&(this._stats=new k.StatTimer),this.pendingCleanup=!1)}},{key:"_startRenderPage",value:function(e,t){var r=this.intentStates[t];r.displayReadyCapability&&r.displayReadyCapability.resolve(e)}},{key:"_renderPageChunk",value:function(e,t){for(var r=this.intentStates[t],n=0,i=e.length;n<i;n++)r.operatorList.fnArray.push(e.fnArray[n]),r.operatorList.argsArray.push(e.argsArray[n]);r.operatorList.lastChunk=e.lastChunk;for(var a=0;a<r.renderTasks.length;a++)r.renderTasks[a].operatorListChanged();e.lastChunk&&(r.receivingOperatorList=!1,this._tryCleanup())}},{key:"pageNumber",get:function(){return this.pageIndex+1}},{key:"rotate",get:function(){return this._pageInfo.rotate}},{key:"ref",get:function(){return this._pageInfo.ref}},{key:"userUnit",get:function(){return this._pageInfo.userUnit}},{key:"view",get:function(){return this._pageInfo.view}},{key:"stats",get:function(){return this._stats instanceof k.StatTimer?this._stats:null}}]),e}();t.PDFPageProxy=G;var H=function(){function e(){var t=!(arguments.length>0&&void 0!==arguments[0])||arguments[0];p(this,e),this._listeners=[],this._defer=t,this._deferred=Promise.resolve(void 0)}return m(e,[{key:"postMessage",value:function(e,t){function r(e){if("object"!==g(e)||null===e)return e;if(i.has(e))return i.get(e);var n,a;if((n=e.buffer)&&(0,w.isArrayBuffer)(n)){var o=t&&t.includes(n);return a=e===n?e:o?new e.constructor(n,e.byteOffset,e.byteLength):new e.constructor(e),i.set(e,a),a}a=Array.isArray(e)?[]:{},i.set(e,a);for(var s in e){for(var u=void 0,c=e;!(u=Object.getOwnPropertyDescriptor(c,s));)c=Object.getPrototypeOf(c);"undefined"!=typeof u.value&&"function"!=typeof u.value&&(a[s]=r(u.value))}return a}var n=this;if(!this._defer)return void this._listeners.forEach(function(t){t.call(this,{data:e})},this);var i=new WeakMap,a={data:r(e)};this._deferred.then(function(){n._listeners.forEach(function(e){e.call(this,a)},n)})}},{key:"addEventListener",value:function(e,t){this._listeners.push(t)}},{key:"removeEventListener",value:function(e,t){var r=this._listeners.indexOf(t);this._listeners.splice(r,1)}},{key:"terminate",value:function(){this._listeners=[]}}]),e}();t.LoopbackPort=H;var X=function(){function e(){if(E.GlobalWorkerOptions.workerSrc)return E.GlobalWorkerOptions.workerSrc;if("undefined"!=typeof A)return A;throw new Error('No "GlobalWorkerOptions.workerSrc" specified.')}function t(){try{if("undefined"!=typeof window)return window.pdfjsWorker&&window.pdfjsWorker.WorkerMessageHandler}catch(e){}return null}function r(){if(i)return i.promise;i=(0,w.createPromiseCapability)();var r=t();if(r)return i.resolve(r),i.promise;var n=M||function(){return(0,k.loadScript)(e()).then(function(){return window.pdfjsWorker.WorkerMessageHandler})};return n().then(i.resolve,i.reject),i.promise}function n(e){var t="importScripts('"+e+"');";return w.URL.createObjectURL(new Blob([t]))}var i,a=new WeakMap,o=0,s=function(){function i(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=e.name,r=void 0===t?null:t,n=e.port,o=void 0===n?null:n,s=e.postMessageTransfers,u=void 0===s||s,c=e.verbosity,l=void 0===c?(0,w.getVerbosityLevel)():c;if(p(this,i),o&&a.has(o))throw new Error("Cannot use more than one PDFWorker per port");return this.name=r,this.destroyed=!1,this.postMessageTransfers=u!==!1,this.verbosity=l,this._readyCapability=(0,w.createPromiseCapability)(),this._port=null,this._webWorker=null,this._messageHandler=null,o?(a.set(o,this),void this._initializeFromPort(o)):void this._initialize()}return m(i,[{key:"_initializeFromPort",value:function(e){this._port=e,this._messageHandler=new T.MessageHandler("main","worker",e),this._messageHandler.on("ready",function(){}),this._readyCapability.resolve()}},{key:"_initialize",value:function(){var r=this;if("undefined"!=typeof Worker&&!j&&!t()){var i=e();try{(0,w.isSameOrigin)(window.location.href,i)||(i=n(new w.URL(i,window.location).href));var a=new Worker(i),o=new T.MessageHandler("main","worker",a),s=function(){a.removeEventListener("error",u),o.destroy(),a.terminate(),r.destroyed?r._readyCapability.reject(new Error("Worker was destroyed")):r._setupFakeWorker()},u=function(){r._webWorker||s()};a.addEventListener("error",u),o.on("test",function(e){return a.removeEventListener("error",u),r.destroyed?void s():void(e&&e.supportTypedArray?(r._messageHandler=o,r._port=a,r._webWorker=a,e.supportTransfers||(r.postMessageTransfers=!1),r._readyCapability.resolve(),o.send("configure",{verbosity:r.verbosity})):(r._setupFakeWorker(),o.destroy(),a.terminate()))}),o.on("ready",function(e){if(a.removeEventListener("error",u),r.destroyed)return void s();try{c()}catch(e){r._setupFakeWorker()}});var c=function(){var e=new Uint8Array([r.postMessageTransfers?255:0]);try{o.send("test",e,[e.buffer])}catch(t){(0,w.info)("Cannot use postMessage transfers"),e[0]=0,o.send("test",e)}};return void c()}catch(e){(0,w.info)("The worker has been disabled.")}}this._setupFakeWorker()}},{key:"_setupFakeWorker",value:function(){var e=this;j||((0,w.warn)("Setting up fake worker."),j=!0),r().then(function(t){if(e.destroyed)return void e._readyCapability.reject(new Error("Worker was destroyed"));var r=new H;e._port=r;var n="fake"+o++,i=new T.MessageHandler(n+"_worker",n,r);t.setup(i,r);var a=new T.MessageHandler(n,n+"_worker",r);e._messageHandler=a,e._readyCapability.resolve()}).catch(function(t){e._readyCapability.reject(new Error('Setting up fake worker failed: "'.concat(t.message,'".')))})}},{key:"destroy",value:function(){this.destroyed=!0,this._webWorker&&(this._webWorker.terminate(),this._webWorker=null),a.delete(this._port),this._port=null,this._messageHandler&&(this._messageHandler.destroy(),this._messageHandler=null)}},{key:"promise",get:function(){return this._readyCapability.promise}},{key:"port",get:function(){return this._port}},{key:"messageHandler",get:function(){return this._messageHandler}}],[{key:"fromPort",value:function(e){if(!e||!e.port)throw new Error("PDFWorker.fromPort - invalid method signature.");return a.has(e.port)?a.get(e.port):new i(e)}},{key:"getWorkerSrc",value:function(){return e()}}]),i}();return s}();t.PDFWorker=X;var Y=function(){function e(t,r,n,i){p(this,e),this.messageHandler=t,this.loadingTask=r,this.commonObjs=new V,this.fontLoader=new x.FontLoader({docId:r.docId,onUnsupportedFeature:this._onUnsupportedFeature.bind(this)}),this._params=i,this.CMapReaderFactory=new i.CMapReaderFactory({baseUrl:i.cMapUrl,isCompressed:i.cMapPacked}),this.destroyed=!1,this.destroyCapability=null,this._passwordCapability=null,this._networkStream=n,this._fullReader=null,this._lastProgress=null,this.pageCache=[],this.pagePromises=[],this.downloadInfoCapability=(0,w.createPromiseCapability)(),this.setupMessageHandler()}return m(e,[{key:"destroy",value:function(){var e=this;if(this.destroyCapability)return this.destroyCapability.promise;this.destroyed=!0,this.destroyCapability=(0,w.createPromiseCapability)(),this._passwordCapability&&this._passwordCapability.reject(new Error("Worker was destroyed during onPassword callback"));var t=[];this.pageCache.forEach(function(e){e&&t.push(e._destroy())}),this.pageCache=[],this.pagePromises=[];var r=this.messageHandler.sendWithPromise("Terminate",null);return t.push(r),Promise.all(t).then(function(){e.fontLoader.clear(),e._networkStream&&e._networkStream.cancelAllRequests(),e.messageHandler&&(e.messageHandler.destroy(),e.messageHandler=null),e.destroyCapability.resolve()},this.destroyCapability.reject),this.destroyCapability.promise}},{key:"setupMessageHandler",value:function(){var e=this.messageHandler,t=this.loadingTask;e.on("GetReader",function(e,t){var r=this;(0,w.assert)(this._networkStream),this._fullReader=this._networkStream.getFullReader(),this._fullReader.onProgress=function(e){r._lastProgress={loaded:e.loaded,total:e.total}},t.onPull=function(){r._fullReader.read().then(function(e){var r=e.value,n=e.done;return n?void t.close():((0,w.assert)((0,w.isArrayBuffer)(r)),void t.enqueue(new Uint8Array(r),1,[r]))}).catch(function(e){t.error(e)})},t.onCancel=function(e){r._fullReader.cancel(e)}},this),e.on("ReaderHeadersReady",function(e){var r=this,n=(0,w.createPromiseCapability)(),i=this._fullReader;return i.headersReady.then(function(){i.isStreamingSupported&&i.isRangeSupported||(r._lastProgress&&t.onProgress&&t.onProgress(r._lastProgress),i.onProgress=function(e){t.onProgress&&t.onProgress({loaded:e.loaded,total:e.total})}),n.resolve({isStreamingSupported:i.isStreamingSupported,isRangeSupported:i.isRangeSupported,contentLength:i.contentLength})},n.reject),n.promise},this),e.on("GetRangeReader",function(e,t){(0,w.assert)(this._networkStream);var r=this._networkStream.getRangeReader(e.begin,e.end);t.onPull=function(){r.read().then(function(e){var r=e.value,n=e.done;return n?void t.close():((0,w.assert)((0,w.isArrayBuffer)(r)),void t.enqueue(new Uint8Array(r),1,[r]))}).catch(function(e){t.error(e)})},t.onCancel=function(e){r.cancel(e)}},this),e.on("GetDoc",function(e){var r=e.pdfInfo;this.numPages=r.numPages,this.pdfDocument=new z(r,this,t),t._capability.resolve(this.pdfDocument)},this),e.on("PasswordRequest",function(e){var r=this;if(this._passwordCapability=(0,w.createPromiseCapability)(),t.onPassword){var n=function(e){r._passwordCapability.resolve({password:e})};try{t.onPassword(n,e.code)}catch(e){this._passwordCapability.reject(e)}}else this._passwordCapability.reject(new w.PasswordException(e.message,e.code));return this._passwordCapability.promise},this),e.on("PasswordException",function(e){t._capability.reject(new w.PasswordException(e.message,e.code))},this),e.on("InvalidPDF",function(e){t._capability.reject(new w.InvalidPDFException(e.message))},this),e.on("MissingPDF",function(e){t._capability.reject(new w.MissingPDFException(e.message))},this),e.on("UnexpectedResponse",function(e){t._capability.reject(new w.UnexpectedResponseException(e.message,e.status))},this),e.on("UnknownError",function(e){t._capability.reject(new w.UnknownErrorException(e.message,e.details))},this),e.on("DataLoaded",function(e){t.onProgress&&t.onProgress({loaded:e.length,total:e.length}),this.downloadInfoCapability.resolve(e)},this),e.on("StartRenderPage",function(e){if(!this.destroyed){var t=this.pageCache[e.pageIndex];t._stats.timeEnd("Page Request"),t._startRenderPage(e.transparency,e.intent)}},this),e.on("RenderPageChunk",function(e){if(!this.destroyed){var t=this.pageCache[e.pageIndex];t._renderPageChunk(e.operatorList,e.intent)}},this),e.on("commonobj",function(t){var r=this;if(!this.destroyed){var n=o(t,3),i=n[0],a=n[1],s=n[2];if(!this.commonObjs.has(i))switch(a){case"Font":var u=this._params;if("error"in s){var c=s.error;(0,w.warn)("Error during font loading: ".concat(c)),this.commonObjs.resolve(i,c);break}var l=null;u.pdfBug&&R.default.FontInspector&&R.default.FontInspector.enabled&&(l={registerFont:function(e,t){R.default.FontInspector.fontAdded(e,t)}});var h=new x.FontFaceObject(s,{isEvalSupported:u.isEvalSupported,disableFontFace:u.disableFontFace,ignoreErrors:u.ignoreErrors,onUnsupportedFeature:this._onUnsupportedFeature.bind(this),fontRegistry:l});this.fontLoader.bind(h).then(function(){r.commonObjs.resolve(i,h)},function(t){e.sendWithPromise("FontFallback",{id:i}).finally(function(){r.commonObjs.resolve(i,h)})});break;case"FontPath":this.commonObjs.resolve(i,s);break;default:throw new Error("Got unknown common object type ".concat(a))}}},this),e.on("obj",function(e){if(!this.destroyed){var t=o(e,4),r=t[0],n=t[1],i=t[2],a=t[3],s=this.pageCache[n];if(!s.objs.has(r))switch(i){case"JpegStream":return new Promise(function(e,t){var r=new Image;r.onload=function(){e(r)},r.onerror=function(){t(new Error("Error during JPEG image loading"))},r.src=a}).then(function(e){s.objs.resolve(r,e)});case"Image":s.objs.resolve(r,a);var u=8e6;a&&"data"in a&&a.data.length>u&&(s.cleanupAfterRender=!0);break;default:throw new Error("Got unknown object type ".concat(i))}}},this),e.on("DocProgress",function(e){this.destroyed||t.onProgress&&t.onProgress({loaded:e.loaded,total:e.total})},this),e.on("PageError",function(e){if(!this.destroyed){var t=this.pageCache[e.pageNum-1],r=t.intentStates[e.intent];if(!r.displayReadyCapability)throw new Error(e.error);if(r.displayReadyCapability.reject(e.error),r.operatorList){r.operatorList.lastChunk=!0;for(var n=0;n<r.renderTasks.length;n++)r.renderTasks[n].operatorListChanged()}}},this),e.on("UnsupportedFeature",this._onUnsupportedFeature,this),e.on("JpegDecode",function(e){if(this.destroyed)return Promise.reject(new Error("Worker was destroyed"));if("undefined"==typeof document)return Promise.reject(new Error('"document" is not defined.'));var t=o(e,2),r=t[0],n=t[1];return 3!==n&&1!==n?Promise.reject(new Error("Only 3 components or 1 component can be returned")):new Promise(function(e,t){var i=new Image;i.onload=function(){var t=i.width,r=i.height,a=t*r,o=4*a,s=new Uint8ClampedArray(a*n),u=document.createElement("canvas");u.width=t,u.height=r;var c=u.getContext("2d");c.drawImage(i,0,0);var l=c.getImageData(0,0,t,r).data;if(3===n)for(var h=0,d=0;h<o;h+=4,d+=3)s[d]=l[h],s[d+1]=l[h+1],s[d+2]=l[h+2];else if(1===n)for(var f=0,p=0;f<o;f+=4,p++)s[p]=l[f];e({data:s,width:t,height:r})},i.onerror=function(){t(new Error("JpegDecode failed to load image"))},i.src=r})},this),e.on("FetchBuiltInCMap",function(e){return this.destroyed?Promise.reject(new Error("Worker was destroyed")):this.CMapReaderFactory.fetch({name:e.name})},this)}},{key:"_onUnsupportedFeature",value:function(e){var t=e.featureId;this.destroyed||this.loadingTask.onUnsupportedFeature&&this.loadingTask.onUnsupportedFeature(t)}},{key:"getData",value:function(){return this.messageHandler.sendWithPromise("GetData",null)}},{key:"getPage",value:function(e){var t=this;if(!Number.isInteger(e)||e<=0||e>this.numPages)return Promise.reject(new Error("Invalid page request"));var r=e-1;if(r in this.pagePromises)return this.pagePromises[r];var n=this.messageHandler.sendWithPromise("GetPage",{pageIndex:r}).then(function(e){if(t.destroyed)throw new Error("Transport destroyed");var n=new G(r,e,t,t._params.pdfBug);return t.pageCache[r]=n,n});return this.pagePromises[r]=n,n}},{key:"getPageIndex",value:function(e){return this.messageHandler.sendWithPromise("GetPageIndex",{ref:e}).catch(function(e){return Promise.reject(new Error(e))})}},{key:"getAnnotations",value:function(e,t){return this.messageHandler.sendWithPromise("GetAnnotations",{pageIndex:e,intent:t})}},{key:"getDestinations",value:function(){return this.messageHandler.sendWithPromise("GetDestinations",null)}},{key:"getDestination",value:function(e){return"string"!=typeof e?Promise.reject(new Error("Invalid destination request.")):this.messageHandler.sendWithPromise("GetDestination",{id:e})}},{key:"getPageLabels",value:function(){return this.messageHandler.sendWithPromise("GetPageLabels",null)}},{key:"getPageMode",value:function(){return this.messageHandler.sendWithPromise("GetPageMode",null)}},{key:"getOpenActionDestination",value:function(){return this.messageHandler.sendWithPromise("getOpenActionDestination",null)}},{key:"getAttachments",value:function(){return this.messageHandler.sendWithPromise("GetAttachments",null)}},{key:"getJavaScript",value:function(){return this.messageHandler.sendWithPromise("GetJavaScript",null)}},{key:"getOutline",value:function(){return this.messageHandler.sendWithPromise("GetOutline",null)}},{key:"getPermissions",value:function(){return this.messageHandler.sendWithPromise("GetPermissions",null)}},{key:"getMetadata",value:function(){var e=this;return this.messageHandler.sendWithPromise("GetMetadata",null).then(function(t){return{info:t[0],metadata:t[1]?new O.Metadata(t[1]):null,contentDispositionFilename:e._fullReader?e._fullReader.filename:null}})}},{key:"getStats",value:function(){return this.messageHandler.sendWithPromise("GetStats",null)}},{key:"startCleanup",value:function(){var e=this;this.messageHandler.sendWithPromise("Cleanup",null).then(function(){for(var t=0,r=e.pageCache.length;t<r;t++){var n=e.pageCache[t];n&&n.cleanup()}e.commonObjs.clear(),e.fontLoader.clear()})}},{key:"loadingParams",get:function(){var e=this._params;return(0,w.shadow)(this,"loadingParams",{disableAutoFetch:e.disableAutoFetch,disableCreateObjectURL:e.disableCreateObjectURL,disableFontFace:e.disableFontFace,nativeImageDecoderSupport:e.nativeImageDecoderSupport})}}]),e}(),V=function(){function e(){p(this,e),this._objs=Object.create(null)}return m(e,[{key:"_ensureObj",value:function(e){return this._objs[e]?this._objs[e]:this._objs[e]={capability:(0,w.createPromiseCapability)(),data:null,resolved:!1}}},{key:"get",value:function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;if(t)return this._ensureObj(e).capability.promise.then(t),null;var r=this._objs[e];if(!r||!r.resolved)throw new Error("Requesting object that isn't resolved yet ".concat(e,"."));return r.data}},{key:"has",value:function(e){var t=this._objs[e];return!!t&&t.resolved}},{key:"resolve",value:function(e,t){var r=this._ensureObj(e);r.resolved=!0,r.data=t,r.capability.resolve(t)}},{key:"clear",value:function(){this._objs=Object.create(null)}}]),e}(),Q=function(){function e(t){p(this,e),this._internalRenderTask=t,this.onContinue=null}return m(e,[{key:"cancel",value:function(){this._internalRenderTask.cancel()}},{key:"then",value:function(e,t){return(0,w.deprecated)("RenderTask.then method, use the `promise` getter instead."),this.promise.then.apply(this.promise,arguments)}},{key:"promise",get:function(){return this._internalRenderTask.capability.promise}}]),e}(),K=function(){var e=new WeakSet,t=function(){function t(e){var r=e.callback,n=e.params,i=e.objs,a=e.commonObjs,o=e.operatorList,s=e.pageNumber,u=e.canvasFactory,c=e.webGLContext,l=e.useRequestAnimationFrame,h=void 0!==l&&l,d=e.pdfBug,f=void 0!==d&&d;p(this,t),this.callback=r,this.params=n,this.objs=i,this.commonObjs=a,this.operatorListIdx=null,this.operatorList=o,this.pageNumber=s,this.canvasFactory=u,this.webGLContext=c,this._pdfBug=f,this.running=!1,this.graphicsReadyCallback=null,this.graphicsReady=!1,this._useRequestAnimationFrame=h===!0&&"undefined"!=typeof window,this.cancelled=!1,this.capability=(0,w.createPromiseCapability)(),this.task=new Q(this),this._continueBound=this._continue.bind(this),this._scheduleNextBound=this._scheduleNext.bind(this),this._nextBound=this._next.bind(this),this._canvas=n.canvasContext.canvas}return m(t,[{key:"initializeGraphics",value:function(){var t=arguments.length>0&&void 0!==arguments[0]&&arguments[0];if(!this.cancelled){if(this._canvas){if(e.has(this._canvas))throw new Error("Cannot use the same canvas during multiple render() operations. Use different canvas or ensure previous operations were cancelled or completed.");e.add(this._canvas)}this._pdfBug&&R.default.StepperManager&&R.default.StepperManager.enabled&&(this.stepper=R.default.StepperManager.create(this.pageNumber-1),this.stepper.init(this.operatorList),this.stepper.nextBreakPoint=this.stepper.getNextBreakPoint());var r=this.params,n=r.canvasContext,i=r.viewport,a=r.transform,o=r.imageLayer,s=r.background;this.gfx=new C.CanvasGraphics(n,this.commonObjs,this.objs,this.canvasFactory,this.webGLContext,o),this.gfx.beginDrawing({transform:a,viewport:i,transparency:t,background:s}),this.operatorListIdx=0,this.graphicsReady=!0,this.graphicsReadyCallback&&this.graphicsReadyCallback()}}},{key:"cancel",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null;this.running=!1,this.cancelled=!0,this.gfx&&this.gfx.endDrawing(),this._canvas&&e.delete(this._canvas),this.callback(t||new k.RenderingCancelledException("Rendering cancelled, page ".concat(this.pageNumber),"canvas"))}},{key:"operatorListChanged",value:function(){return this.graphicsReady?(this.stepper&&this.stepper.updateOperatorList(this.operatorList),void(this.running||this._continue())):void(this.graphicsReadyCallback||(this.graphicsReadyCallback=this._continueBound))}},{key:"_continue",value:function(){this.running=!0,this.cancelled||(this.task.onContinue?this.task.onContinue(this._scheduleNextBound):this._scheduleNext())}},{key:"_scheduleNext",value:function(){var e=this;this._useRequestAnimationFrame?window.requestAnimationFrame(function(){e._nextBound().catch(e.cancel.bind(e))}):Promise.resolve().then(this._nextBound).catch(this.cancel.bind(this))}},{key:"_next",value:function(){function t(){return r.apply(this,arguments)}var r=a(S.default.mark(function t(){return S.default.wrap(function(t){for(;;)switch(t.prev=t.next){case 0:if(!this.cancelled){t.next=2;break}return t.abrupt("return");case 2:this.operatorListIdx=this.gfx.executeOperatorList(this.operatorList,this.operatorListIdx,this._continueBound,this.stepper),this.operatorListIdx===this.operatorList.argsArray.length&&(this.running=!1,this.operatorList.lastChunk&&(this.gfx.endDrawing(),this._canvas&&e.delete(this._canvas),this.callback()));case 4:case"end":return t.stop()}},t,this)}));return t}()}]),t}();return t}(),J="2.1.266";t.version=J;var Z="81f5835c";t.build=Z},function(e,t,r){"use strict";e.exports=r(148)},function(e,t,r){"use strict";function n(e){return(n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}var i=function(){return this||"object"===("undefined"==typeof self?"undefined":n(self))&&self}()||Function("return this")(),a=i.regeneratorRuntime&&Object.getOwnPropertyNames(i).indexOf("regeneratorRuntime")>=0,o=a&&i.regeneratorRuntime;if(i.regeneratorRuntime=void 0,e.exports=r(149),a)i.regeneratorRuntime=o;else try{delete i.regeneratorRuntime}catch(e){i.regeneratorRuntime=void 0}},function(e,t,r){"use strict";(function(e){function t(e){return(t="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}!function(r){function n(e,t,r,n){var i=t&&t.prototype instanceof a?t:a,o=Object.create(i.prototype),s=new p(n||[]);return o._invoke=l(e,r,s),o}function i(e,t,r){try{return{type:"normal",arg:e.call(t,r)}}catch(e){return{type:"throw",arg:e}}}function a(){}function o(){}function s(){}function u(e){["next","throw","return"].forEach(function(t){e[t]=function(e){return this._invoke(t,e)}})}function c(e){function r(n,a,o,s){var u=i(e[n],e,a);if("throw"!==u.type){var c=u.arg,l=c.value;return l&&"object"===t(l)&&b.call(l,"__await")?Promise.resolve(l.__await).then(function(e){r("next",e,o,s)},function(e){r("throw",e,o,s)}):Promise.resolve(l).then(function(e){c.value=e,o(c)},function(e){return r("throw",e,o,s)})}s(u.arg)}function n(e,t){function n(){return new Promise(function(n,i){r(e,t,n,i)})}return a=a?a.then(n,n):n()}var a;this._invoke=n}function l(e,t,r){var n=P;return function(a,o){if(n===R)throw new Error("Generator is already running");if(n===E){if("throw"===a)throw o;return m()}for(r.method=a,r.arg=o;;){var s=r.delegate;if(s){var u=h(s,r);if(u){if(u===T)continue;return u}}if("next"===r.method)r.sent=r._sent=r.arg;else if("throw"===r.method){if(n===P)throw n=E,r.arg;r.dispatchException(r.arg)}else"return"===r.method&&r.abrupt("return",r.arg);n=R;var c=i(e,t,r);if("normal"===c.type){if(n=r.done?E:C,c.arg===T)continue;return{value:c.arg,done:r.done}}"throw"===c.type&&(n=E,r.method="throw",r.arg=c.arg)}}}function h(e,t){var r=e.iterator[t.method];if(r===g){if(t.delegate=null,"throw"===t.method){if(e.iterator.return&&(t.method="return",t.arg=g,h(e,t),"throw"===t.method))return T;t.method="throw",t.arg=new TypeError("The iterator does not provide a 'throw' method")}return T}var n=i(r,e.iterator,t.arg);if("throw"===n.type)return t.method="throw",t.arg=n.arg,t.delegate=null,T;var a=n.arg;return a?a.done?(t[e.resultName]=a.value,t.next=e.nextLoc,"return"!==t.method&&(t.method="next",t.arg=g),t.delegate=null,T):a:(t.method="throw",t.arg=new TypeError("iterator result is not an object"),t.delegate=null,T)}function d(e){var t={tryLoc:e[0]};1 in e&&(t.catchLoc=e[1]),2 in e&&(t.finallyLoc=e[2],t.afterLoc=e[3]),this.tryEntries.push(t)}function f(e){var t=e.completion||{};t.type="normal",delete t.arg,e.completion=t}function p(e){this.tryEntries=[{tryLoc:"root"}],e.forEach(d,this),this.reset(!0)}function v(e){if(e){var t=e[A];if(t)return t.call(e);if("function"==typeof e.next)return e;if(!isNaN(e.length)){var r=-1,n=function t(){for(;++r<e.length;)if(b.call(e,r))return t.value=e[r],t.done=!1,t;return t.value=g,t.done=!0,t};return n.next=n}}return{next:m}}function m(){return{value:g,done:!0}}var g,y=Object.prototype,b=y.hasOwnProperty,_="function"==typeof Symbol?Symbol:{},A=_.iterator||"@@iterator",S=_.asyncIterator||"@@asyncIterator",w=_.toStringTag||"@@toStringTag",k="object"===t(e),x=r.regeneratorRuntime;if(x)return void(k&&(e.exports=x));x=r.regeneratorRuntime=k?e.exports:{},x.wrap=n;var P="suspendedStart",C="suspendedYield",R="executing",E="completed",T={},O={};O[A]=function(){return this};var F=Object.getPrototypeOf,I=F&&F(F(v([])));I&&I!==y&&b.call(I,A)&&(O=I);var L=s.prototype=a.prototype=Object.create(O);o.prototype=L.constructor=s,s.constructor=o,s[w]=o.displayName="GeneratorFunction",x.isGeneratorFunction=function(e){var t="function"==typeof e&&e.constructor;return!!t&&(t===o||"GeneratorFunction"===(t.displayName||t.name))},x.mark=function(e){return Object.setPrototypeOf?Object.setPrototypeOf(e,s):(e.__proto__=s,w in e||(e[w]="GeneratorFunction")),e.prototype=Object.create(L),e},x.awrap=function(e){return{__await:e}},u(c.prototype),c.prototype[S]=function(){return this},x.AsyncIterator=c,x.async=function(e,t,r,i){
-var a=new c(n(e,t,r,i));return x.isGeneratorFunction(t)?a:a.next().then(function(e){return e.done?e.value:a.next()})},u(L),L[w]="Generator",L[A]=function(){return this},L.toString=function(){return"[object Generator]"},x.keys=function(e){var t=[];for(var r in e)t.push(r);return t.reverse(),function r(){for(;t.length;){var n=t.pop();if(n in e)return r.value=n,r.done=!1,r}return r.done=!0,r}},x.values=v,p.prototype={constructor:p,reset:function(e){if(this.prev=0,this.next=0,this.sent=this._sent=g,this.done=!1,this.delegate=null,this.method="next",this.arg=g,this.tryEntries.forEach(f),!e)for(var t in this)"t"===t.charAt(0)&&b.call(this,t)&&!isNaN(+t.slice(1))&&(this[t]=g)},stop:function(){this.done=!0;var e=this.tryEntries[0],t=e.completion;if("throw"===t.type)throw t.arg;return this.rval},dispatchException:function(e){function t(t,n){return a.type="throw",a.arg=e,r.next=t,n&&(r.method="next",r.arg=g),!!n}if(this.done)throw e;for(var r=this,n=this.tryEntries.length-1;n>=0;--n){var i=this.tryEntries[n],a=i.completion;if("root"===i.tryLoc)return t("end");if(i.tryLoc<=this.prev){var o=b.call(i,"catchLoc"),s=b.call(i,"finallyLoc");if(o&&s){if(this.prev<i.catchLoc)return t(i.catchLoc,!0);if(this.prev<i.finallyLoc)return t(i.finallyLoc)}else if(o){if(this.prev<i.catchLoc)return t(i.catchLoc,!0)}else{if(!s)throw new Error("try statement without catch or finally");if(this.prev<i.finallyLoc)return t(i.finallyLoc)}}}},abrupt:function(e,t){for(var r=this.tryEntries.length-1;r>=0;--r){var n=this.tryEntries[r];if(n.tryLoc<=this.prev&&b.call(n,"finallyLoc")&&this.prev<n.finallyLoc){var i=n;break}}i&&("break"===e||"continue"===e)&&i.tryLoc<=t&&t<=i.finallyLoc&&(i=null);var a=i?i.completion:{};return a.type=e,a.arg=t,i?(this.method="next",this.next=i.finallyLoc,T):this.complete(a)},complete:function(e,t){if("throw"===e.type)throw e.arg;return"break"===e.type||"continue"===e.type?this.next=e.arg:"return"===e.type?(this.rval=this.arg=e.arg,this.method="return",this.next="end"):"normal"===e.type&&t&&(this.next=t),T},finish:function(e){for(var t=this.tryEntries.length-1;t>=0;--t){var r=this.tryEntries[t];if(r.finallyLoc===e)return this.complete(r.completion,r.afterLoc),f(r),T}},catch:function(e){for(var t=this.tryEntries.length-1;t>=0;--t){var r=this.tryEntries[t];if(r.tryLoc===e){var n=r.completion;if("throw"===n.type){var i=n.arg;f(r)}return i}}throw new Error("illegal catch attempt")},delegateYield:function(e,t,r){return this.delegate={iterator:v(e),resultName:t,nextLoc:r},"next"===this.method&&(this.arg=g),T}}}(function(){return this||"object"===("undefined"==typeof self?"undefined":t(self))&&self}()||Function("return this")())}).call(this,r(150)(e))},function(e,t,r){"use strict";e.exports=function(e){return e.webpackPolyfill||(e.deprecate=function(){},e.paths=[],e.children||(e.children=[]),Object.defineProperty(e,"loaded",{enumerable:!0,get:function(){return e.l}}),Object.defineProperty(e,"id",{enumerable:!0,get:function(){return e.i}}),e.webpackPolyfill=1),e}},function(e,t,r){"use strict";function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function a(e,t,r){return t&&i(e.prototype,t),r&&i(e,r),e}function o(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},r=t.url,n=t.target,i=t.rel;if(e.href=e.title=r?(0,c.removeNullCharacters)(r):"",r){var a=Object.values(g),o=a.includes(n)?n:g.NONE;e.target=y[o],e.rel="string"==typeof i?i:l}}function s(e){var t=e.indexOf("#"),r=e.indexOf("?"),n=Math.min(t>0?t:e.length,r>0?r:e.length);return e.substring(e.lastIndexOf("/",n)+1,n)}function u(e){return new Promise(function(t,r){var n=document.createElement("script");n.src=e,n.onload=t,n.onerror=function(){r(new Error("Cannot load script at: ".concat(n.src)))},(document.head||document.documentElement).appendChild(n)})}Object.defineProperty(t,"__esModule",{value:!0}),t.addLinkAttributes=o,t.getFilenameFromUrl=s,t.loadScript=u,t.DummyStatTimer=t.StatTimer=t.DOMSVGFactory=t.DOMCMapReaderFactory=t.DOMCanvasFactory=t.DEFAULT_LINK_REL=t.LinkTarget=t.RenderingCancelledException=t.PageViewport=void 0;var c=r(1),l="noopener noreferrer nofollow";t.DEFAULT_LINK_REL=l;var h="http://www.w3.org/2000/svg",d=function(){function e(){n(this,e)}return a(e,[{key:"create",value:function(e,t){if(e<=0||t<=0)throw new Error("invalid canvas size");var r=document.createElement("canvas"),n=r.getContext("2d");return r.width=e,r.height=t,{canvas:r,context:n}}},{key:"reset",value:function(e,t,r){if(!e.canvas)throw new Error("canvas is not specified");if(t<=0||r<=0)throw new Error("invalid canvas size");e.canvas.width=t,e.canvas.height=r}},{key:"destroy",value:function(e){if(!e.canvas)throw new Error("canvas is not specified");e.canvas.width=0,e.canvas.height=0,e.canvas=null,e.context=null}}]),e}();t.DOMCanvasFactory=d;var f=function(){function e(t){var r=t.baseUrl,i=void 0===r?null:r,a=t.isCompressed,o=void 0!==a&&a;n(this,e),this.baseUrl=i,this.isCompressed=o}return a(e,[{key:"fetch",value:function(e){var t=this,r=e.name;return this.baseUrl?r?new Promise(function(e,n){var i=t.baseUrl+r+(t.isCompressed?".bcmap":""),a=new XMLHttpRequest;a.open("GET",i,!0),t.isCompressed&&(a.responseType="arraybuffer"),a.onreadystatechange=function(){if(a.readyState===XMLHttpRequest.DONE){if(200===a.status||0===a.status){var r;if(t.isCompressed&&a.response?r=new Uint8Array(a.response):!t.isCompressed&&a.responseText&&(r=(0,c.stringToBytes)(a.responseText)),r)return void e({cMapData:r,compressionType:t.isCompressed?c.CMapCompressionType.BINARY:c.CMapCompressionType.NONE})}n(new Error("Unable to load "+(t.isCompressed?"binary ":"")+"CMap at: "+i))}},a.send(null)}):Promise.reject(new Error("CMap name must be specified.")):Promise.reject(new Error('The CMap "baseUrl" parameter must be specified, ensure that the "cMapUrl" and "cMapPacked" API parameters are provided.'))}}]),e}();t.DOMCMapReaderFactory=f;var p=function(){function e(){n(this,e)}return a(e,[{key:"create",value:function(e,t){(0,c.assert)(e>0&&t>0,"Invalid SVG dimensions");var r=document.createElementNS(h,"svg:svg");return r.setAttribute("version","1.1"),r.setAttribute("width",e+"px"),r.setAttribute("height",t+"px"),r.setAttribute("preserveAspectRatio","none"),r.setAttribute("viewBox","0 0 "+e+" "+t),r}},{key:"createElement",value:function(e){return(0,c.assert)("string"==typeof e,"Invalid SVG element type"),document.createElementNS(h,e)}}]),e}();t.DOMSVGFactory=p;var v=function(){function e(t){var r=t.viewBox,i=t.scale,a=t.rotation,o=t.offsetX,s=void 0===o?0:o,u=t.offsetY,c=void 0===u?0:u,l=t.dontFlip,h=void 0!==l&&l;n(this,e),this.viewBox=r,this.scale=i,this.rotation=a,this.offsetX=s,this.offsetY=c;var d,f,p,v,m=(r[2]+r[0])/2,g=(r[3]+r[1])/2;switch(a%=360,a=a<0?a+360:a){case 180:d=-1,f=0,p=0,v=1;break;case 90:d=0,f=1,p=1,v=0;break;case 270:d=0,f=-1,p=-1,v=0;break;default:d=1,f=0,p=0,v=-1}h&&(p=-p,v=-v);var y,b,_,A;0===d?(y=Math.abs(g-r[1])*i+s,b=Math.abs(m-r[0])*i+c,_=Math.abs(r[3]-r[1])*i,A=Math.abs(r[2]-r[0])*i):(y=Math.abs(m-r[0])*i+s,b=Math.abs(g-r[1])*i+c,_=Math.abs(r[2]-r[0])*i,A=Math.abs(r[3]-r[1])*i),this.transform=[d*i,f*i,p*i,v*i,y-d*i*m-p*i*g,b-f*i*m-v*i*g],this.width=_,this.height=A}return a(e,[{key:"clone",value:function(){var t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},r=t.scale,n=void 0===r?this.scale:r,i=t.rotation,a=void 0===i?this.rotation:i,o=t.dontFlip,s=void 0!==o&&o;return new e({viewBox:this.viewBox.slice(),scale:n,rotation:a,offsetX:this.offsetX,offsetY:this.offsetY,dontFlip:s})}},{key:"convertToViewportPoint",value:function(e,t){return c.Util.applyTransform([e,t],this.transform)}},{key:"convertToViewportRectangle",value:function(e){var t=c.Util.applyTransform([e[0],e[1]],this.transform),r=c.Util.applyTransform([e[2],e[3]],this.transform);return[t[0],t[1],r[0],r[1]]}},{key:"convertToPdfPoint",value:function(e,t){return c.Util.applyInverseTransform([e,t],this.transform)}}]),e}();t.PageViewport=v;var m=function e(){function e(e,t){this.message=e,this.type=t}return e.prototype=new Error,e.prototype.name="RenderingCancelledException",e.constructor=e,e}();t.RenderingCancelledException=m;var g={NONE:0,SELF:1,BLANK:2,PARENT:3,TOP:4};t.LinkTarget=g;var y=["","_self","_blank","_parent","_top"],b=function(){function e(){var t=!(arguments.length>0&&void 0!==arguments[0])||arguments[0];n(this,e),this.enabled=!!t,this.started=Object.create(null),this.times=[]}return a(e,[{key:"time",value:function(e){this.enabled&&(e in this.started&&(0,c.warn)("Timer is already running for "+e),this.started[e]=Date.now())}},{key:"timeEnd",value:function(e){this.enabled&&(e in this.started||(0,c.warn)("Timer has not been started for "+e),this.times.push({name:e,start:this.started[e],end:Date.now()}),delete this.started[e])}},{key:"toString",value:function(){for(var e=this.times,t="",r=0,n=0,i=e.length;n<i;++n){var a=e[n].name;a.length>r&&(r=a.length)}for(var o=0,s=e.length;o<s;++o){var u=e[o],c=u.end-u.start;t+="".concat(u.name.padEnd(r)," ").concat(c,"ms\n")}return t}}]),e}();t.StatTimer=b;var _=function(){function e(){n(this,e),(0,c.unreachable)("Cannot initialize DummyStatTimer.")}return a(e,null,[{key:"time",value:function(e){}},{key:"timeEnd",value:function(e){}},{key:"toString",value:function(){return""}}]),e}();t.DummyStatTimer=_},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function i(e){return(i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function a(e,t){return!t||"object"!==i(t)&&"function"!=typeof t?o(e):t}function o(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function s(e){return(s=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function u(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&c(e,t)}function c(e,t){return(c=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function l(e,t,r,n,i,a,o){try{var s=e[a](o),u=s.value}catch(e){return void r(e)}s.done?t(u):Promise.resolve(u).then(n,i)}function h(e){return function(){var t=this,r=arguments;return new Promise(function(n,i){function a(e){l(s,n,i,a,o,"next",e)}function o(e){l(s,n,i,a,o,"throw",e)}var s=e.apply(t,r);a(void 0)})}}function d(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function f(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function p(e,t,r){return t&&f(e.prototype,t),r&&f(e,r),e}Object.defineProperty(t,"__esModule",{value:!0}),t.FontLoader=t.FontFaceObject=void 0;var v,m=n(r(147)),g=r(1),y=function(){function e(t){var r=t.docId,n=t.onUnsupportedFeature;d(this,e),this.constructor===e&&(0,g.unreachable)("Cannot initialize BaseFontLoader."),this.docId=r,this._onUnsupportedFeature=n,this.nativeFontFaces=[],this.styleElement=null}return p(e,[{key:"addNativeFontFace",value:function(e){this.nativeFontFaces.push(e),document.fonts.add(e)}},{key:"insertRule",value:function(e){var t=this.styleElement;t||(t=this.styleElement=document.createElement("style"),t.id="PDFJS_FONT_STYLE_TAG_".concat(this.docId),document.documentElement.getElementsByTagName("head")[0].appendChild(t));var r=t.sheet;r.insertRule(e,r.cssRules.length)}},{key:"clear",value:function(){this.nativeFontFaces.forEach(function(e){document.fonts.delete(e)}),this.nativeFontFaces.length=0,this.styleElement&&(this.styleElement.remove(),this.styleElement=null)}},{key:"bind",value:function(){function e(e){return t.apply(this,arguments)}var t=h(m.default.mark(function e(t){var r,n,i=this;return m.default.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(!t.attached&&!t.missingFile){e.next=2;break}return e.abrupt("return");case 2:if(t.attached=!0,!this.isFontLoadingAPISupported){e.next=19;break}if(r=t.createNativeFontFace(),!r){e.next=18;break}return this.addNativeFontFace(r),e.prev=7,e.next=10,r.loaded;case 10:e.next=18;break;case 12:throw e.prev=12,e.t0=e.catch(7),this._onUnsupportedFeature({featureId:g.UNSUPPORTED_FEATURES.font}),(0,g.warn)("Failed to load font '".concat(r.family,"': '").concat(e.t0,"'.")),t.disableFontFace=!0,e.t0;case 18:return e.abrupt("return");case 19:if(n=t.createFontFaceRule(),!n){e.next=25;break}if(this.insertRule(n),!this.isSyncFontLoadingSupported){e.next=24;break}return e.abrupt("return");case 24:return e.abrupt("return",new Promise(function(e){var r=i._queueLoadingCallback(e);i._prepareFontLoadEvent([n],[t],r)}));case 25:case"end":return e.stop()}},e,this,[[7,12]])}));return e}()},{key:"_queueLoadingCallback",value:function(e){(0,g.unreachable)("Abstract method `_queueLoadingCallback`.")}},{key:"_prepareFontLoadEvent",value:function(e,t,r){(0,g.unreachable)("Abstract method `_prepareFontLoadEvent`.")}},{key:"isFontLoadingAPISupported",get:function(){(0,g.unreachable)("Abstract method `isFontLoadingAPISupported`.")}},{key:"isSyncFontLoadingSupported",get:function(){(0,g.unreachable)("Abstract method `isSyncFontLoadingSupported`.")}},{key:"_loadTestFont",get:function(){(0,g.unreachable)("Abstract method `_loadTestFont`.")}}]),e}();t.FontLoader=v,t.FontLoader=v=function(e){function t(e){var r;return d(this,t),r=a(this,s(t).call(this,e)),r.loadingContext={requests:[],nextRequestId:0},r.loadTestFontId=0,r}return u(t,e),p(t,[{key:"_queueLoadingCallback",value:function(e){function t(){for((0,g.assert)(!n.done,"completeRequest() cannot be called twice."),n.done=!0;r.requests.length>0&&r.requests[0].done;){var e=r.requests.shift();setTimeout(e.callback,0)}}var r=this.loadingContext,n={id:"pdfjs-font-loading-".concat(r.nextRequestId++),done:!1,complete:t,callback:e};return r.requests.push(n),n}},{key:"_prepareFontLoadEvent",value:function(e,t,r){function n(e,t){return e.charCodeAt(t)<<24|e.charCodeAt(t+1)<<16|e.charCodeAt(t+2)<<8|255&e.charCodeAt(t+3)}function i(e,t,r,n){var i=e.substring(0,t),a=e.substring(t+r);return i+n+a}function a(e,t){if(l++,l>30)return(0,g.warn)("Load test font never loaded."),void t();c.font="30px "+e,c.fillText(".",0,20);var r=c.getImageData(0,0,1,1);return r.data[3]>0?void t():void setTimeout(a.bind(null,e,t))}var o,s,u=document.createElement("canvas");u.width=1,u.height=1;var c=u.getContext("2d"),l=0,h="lt".concat(Date.now()).concat(this.loadTestFontId++),d=this._loadTestFont,f=976;d=i(d,f,h.length,h);var p=16,v=1482184792,m=n(d,p);for(o=0,s=h.length-3;o<s;o+=4)m=m-v+n(h,o)|0;o<h.length&&(m=m-v+n(h+"XXX",o)|0),d=i(d,p,4,(0,g.string32)(m));var y="url(data:font/opentype;base64,".concat(btoa(d),");"),b='@font-face {font-family:"'.concat(h,'";src:').concat(y,"}");this.insertRule(b);var _=[];for(o=0,s=t.length;o<s;o++)_.push(t[o].loadedName);_.push(h);var A=document.createElement("div");for(A.setAttribute("style","visibility: hidden;width: 10px; height: 10px;position: absolute; top: 0px; left: 0px;"),o=0,s=_.length;o<s;++o){var S=document.createElement("span");S.textContent="Hi",S.style.fontFamily=_[o],A.appendChild(S)}document.body.appendChild(A),a(h,function(){document.body.removeChild(A),r.complete()})}},{key:"isFontLoadingAPISupported",get:function(){var e="undefined"!=typeof document&&!!document.fonts;if(e&&"undefined"!=typeof navigator){var t=/Mozilla\/5.0.*?rv:(\d+).*? Gecko/.exec(navigator.userAgent);t&&t[1]<63&&(e=!1)}return(0,g.shadow)(this,"isFontLoadingAPISupported",e)}},{key:"isSyncFontLoadingSupported",get:function(){var e=!1;if("undefined"==typeof navigator)e=!0;else{var t=/Mozilla\/5.0.*?rv:(\d+).*? Gecko/.exec(navigator.userAgent);t&&t[1]>=14&&(e=!0)}return(0,g.shadow)(this,"isSyncFontLoadingSupported",e)}},{key:"_loadTestFont",get:function(){var e=function(){return atob("T1RUTwALAIAAAwAwQ0ZGIDHtZg4AAAOYAAAAgUZGVE1lkzZwAAAEHAAAABxHREVGABQAFQAABDgAAAAeT1MvMlYNYwkAAAEgAAAAYGNtYXABDQLUAAACNAAAAUJoZWFk/xVFDQAAALwAAAA2aGhlYQdkA+oAAAD0AAAAJGhtdHgD6AAAAAAEWAAAAAZtYXhwAAJQAAAAARgAAAAGbmFtZVjmdH4AAAGAAAAAsXBvc3T/hgAzAAADeAAAACAAAQAAAAEAALZRFsRfDzz1AAsD6AAAAADOBOTLAAAAAM4KHDwAAAAAA+gDIQAAAAgAAgAAAAAAAAABAAADIQAAAFoD6AAAAAAD6AABAAAAAAAAAAAAAAAAAAAAAQAAUAAAAgAAAAQD6AH0AAUAAAKKArwAAACMAooCvAAAAeAAMQECAAACAAYJAAAAAAAAAAAAAQAAAAAAAAAAAAAAAFBmRWQAwAAuAC4DIP84AFoDIQAAAAAAAQAAAAAAAAAAACAAIAABAAAADgCuAAEAAAAAAAAAAQAAAAEAAAAAAAEAAQAAAAEAAAAAAAIAAQAAAAEAAAAAAAMAAQAAAAEAAAAAAAQAAQAAAAEAAAAAAAUAAQAAAAEAAAAAAAYAAQAAAAMAAQQJAAAAAgABAAMAAQQJAAEAAgABAAMAAQQJAAIAAgABAAMAAQQJAAMAAgABAAMAAQQJAAQAAgABAAMAAQQJAAUAAgABAAMAAQQJAAYAAgABWABYAAAAAAAAAwAAAAMAAAAcAAEAAAAAADwAAwABAAAAHAAEACAAAAAEAAQAAQAAAC7//wAAAC7////TAAEAAAAAAAABBgAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAAAAAAD/gwAyAAAAAQAAAAAAAAAAAAAAAAAAAAABAAQEAAEBAQJYAAEBASH4DwD4GwHEAvgcA/gXBIwMAYuL+nz5tQXkD5j3CBLnEQACAQEBIVhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYAAABAQAADwACAQEEE/t3Dov6fAH6fAT+fPp8+nwHDosMCvm1Cvm1DAz6fBQAAAAAAAABAAAAAMmJbzEAAAAAzgTjFQAAAADOBOQpAAEAAAAAAAAADAAUAAQAAAABAAAAAgABAAAAAAAAAAAD6AAAAAAAAA==")};return(0,g.shadow)(this,"_loadTestFont",e())}}]),t}(y);var b={get value(){return(0,g.shadow)(this,"value",(0,g.isEvalSupported)())}},_=function(){function e(t,r){var n=r.isEvalSupported,i=void 0===n||n,a=r.disableFontFace,o=void 0!==a&&a,s=r.ignoreErrors,u=void 0!==s&&s,c=r.onUnsupportedFeature,l=void 0===c?null:c,h=r.fontRegistry,f=void 0===h?null:h;d(this,e),this.compiledGlyphs=Object.create(null);for(var p in t)this[p]=t[p];this.isEvalSupported=i!==!1,this.disableFontFace=o===!0,this.ignoreErrors=u===!0,this._onUnsupportedFeature=l,this.fontRegistry=f}return p(e,[{key:"createNativeFontFace",value:function(){if(!this.data||this.disableFontFace)return null;var e=new FontFace(this.loadedName,this.data,{});return this.fontRegistry&&this.fontRegistry.registerFont(this),e}},{key:"createFontFaceRule",value:function(){if(!this.data||this.disableFontFace)return null;var e=(0,g.bytesToString)(new Uint8Array(this.data)),t="url(data:".concat(this.mimetype,";base64,").concat(btoa(e),");"),r='@font-face {font-family:"'.concat(this.loadedName,'";src:').concat(t,"}");return this.fontRegistry&&this.fontRegistry.registerFont(this,t),r}},{key:"getPathGenerator",value:function(e,t){if(void 0!==this.compiledGlyphs[t])return this.compiledGlyphs[t];var r,n;try{r=e.get(this.loadedName+"_path_"+t)}catch(e){if(!this.ignoreErrors)throw e;return this._onUnsupportedFeature&&this._onUnsupportedFeature({featureId:g.UNSUPPORTED_FEATURES.font}),(0,g.warn)('getPathGenerator - ignoring character: "'.concat(e,'".')),this.compiledGlyphs[t]=function(e,t){}}if(this.isEvalSupported&&b.value){for(var i,a="",o=0,s=r.length;o<s;o++)n=r[o],i=void 0!==n.args?n.args.join(","):"",a+="c."+n.cmd+"("+i+");\n";return this.compiledGlyphs[t]=new Function("c","size",a)}return this.compiledGlyphs[t]=function(e,t){for(var i=0,a=r.length;i<a;i++)n=r[i],"scale"===n.cmd&&(n.args=[t,-t]),e[n.cmd].apply(e,n.args)}}}]),e}();t.FontFaceObject=_},function(e,t,r){"use strict";var n=Object.create(null),i=r(4),a="undefined"!=typeof navigator&&navigator.userAgent||"",o=/Trident/.test(a),s=/CriOS/.test(a);!function(){(o||s)&&(n.disableCreateObjectURL=!0)}(),function(){i()&&(n.disableFontFace=!0,n.nativeImageDecoderSupport="none")}(),t.apiCompatibilityParams=Object.freeze(n)},function(e,t,r){"use strict";function n(e){e.mozCurrentTransform||(e._originalSave=e.save,e._originalRestore=e.restore,e._originalRotate=e.rotate,e._originalScale=e.scale,e._originalTranslate=e.translate,e._originalTransform=e.transform,e._originalSetTransform=e.setTransform,e._transformMatrix=e._transformMatrix||[1,0,0,1,0,0],e._transformStack=[],Object.defineProperty(e,"mozCurrentTransform",{get:function(){return this._transformMatrix}}),Object.defineProperty(e,"mozCurrentTransformInverse",{get:function(){var e=this._transformMatrix,t=e[0],r=e[1],n=e[2],i=e[3],a=e[4],o=e[5],s=t*i-r*n,u=r*n-t*i;return[i/s,r/u,n/u,t/s,(i*a-n*o)/u,(r*a-t*o)/s]}}),e.save=function(){var e=this._transformMatrix;this._transformStack.push(e),this._transformMatrix=e.slice(0,6),this._originalSave()},e.restore=function(){var e=this._transformStack.pop();e&&(this._transformMatrix=e,this._originalRestore())},e.translate=function(e,t){var r=this._transformMatrix;r[4]=r[0]*e+r[2]*t+r[4],r[5]=r[1]*e+r[3]*t+r[5],this._originalTranslate(e,t)},e.scale=function(e,t){var r=this._transformMatrix;r[0]=r[0]*e,r[1]=r[1]*e,r[2]=r[2]*t,r[3]=r[3]*t,this._originalScale(e,t)},e.transform=function(t,r,n,i,a,o){var s=this._transformMatrix;this._transformMatrix=[s[0]*t+s[2]*r,s[1]*t+s[3]*r,s[0]*n+s[2]*i,s[1]*n+s[3]*i,s[0]*a+s[2]*o+s[4],s[1]*a+s[3]*o+s[5]],e._originalTransform(t,r,n,i,a,o)},e.setTransform=function(t,r,n,i,a,o){this._transformMatrix=[t,r,n,i,a,o],e._originalSetTransform(t,r,n,i,a,o)},e.rotate=function(e){var t=Math.cos(e),r=Math.sin(e),n=this._transformMatrix;this._transformMatrix=[n[0]*t+n[2]*r,n[1]*t+n[3]*r,n[0]*-r+n[2]*t,n[1]*-r+n[3]*t,n[4],n[5]],this._originalRotate(e)})}function i(e){var t,r,n,i,a=1e3,o=e.width,s=e.height,u=o+1,c=new Uint8Array(u*(s+1)),l=new Uint8Array([0,2,4,0,1,0,5,4,8,10,0,8,0,2,1,0]),h=o+7&-8,d=e.data,f=new Uint8Array(h*s),p=0;for(t=0,i=d.length;t<i;t++)for(var v=128,m=d[t];v>0;)f[p++]=m&v?0:255,v>>=1;var g=0;for(p=0,0!==f[p]&&(c[0]=1,++g),r=1;r<o;r++)f[p]!==f[p+1]&&(c[r]=f[p]?2:1,++g),p++;for(0!==f[p]&&(c[r]=2,++g),t=1;t<s;t++){p=t*h,n=t*u,f[p-h]!==f[p]&&(c[n]=f[p]?1:8,++g);var y=(f[p]?4:0)+(f[p-h]?8:0);for(r=1;r<o;r++)y=(y>>2)+(f[p+1]?4:0)+(f[p-h+1]?8:0),l[y]&&(c[n+r]=l[y],++g),p++;if(f[p-h]!==f[p]&&(c[n+r]=f[p]?2:4,++g),g>a)return null}for(p=h*(s-1),n=t*u,0!==f[p]&&(c[n]=8,++g),r=1;r<o;r++)f[p]!==f[p+1]&&(c[n+r]=f[p]?4:8,++g),p++;if(0!==f[p]&&(c[n+r]=4,++g),g>a)return null;var b=new Int32Array([0,u,-1,0,-u,0,0,0,1]),_=[];for(t=0;g&&t<=s;t++){for(var A=t*u,S=A+o;A<S&&!c[A];)A++;if(A!==S){var w,k=[A%u,t],x=c[A],P=A;do{var C=b[x];do A+=C;while(!c[A]);w=c[A],5!==w&&10!==w?(x=w,c[A]=0):(x=w&51*x>>4,c[A]&=x>>2|x<<2),k.push(A%u),k.push(A/u|0),--g}while(P!==A);_.push(k),--t}}var R=function(e){e.save(),e.scale(1/o,-1/s),e.translate(0,-s),e.beginPath();for(var t=0,r=_.length;t<r;t++){var n=_[t];e.moveTo(n[0],n[1]);for(var i=2,a=n.length;i<a;i+=2)e.lineTo(n[i],n[i+1])}e.fill(),e.beginPath(),e.restore()};return R}Object.defineProperty(t,"__esModule",{value:!0}),t.CanvasGraphics=void 0;var a=r(1),o=r(155),s=16,u=100,c=4096,l=.65,h=!0,d=1e3,f=16,p={get value(){return(0,a.shadow)(p,"value",(0,a.isLittleEndian)())}},v=function(){function e(e){this.canvasFactory=e,this.cache=Object.create(null)}return e.prototype={getCanvas:function(e,t,r,i){var a;return void 0!==this.cache[e]?(a=this.cache[e],this.canvasFactory.reset(a,t,r),a.context.setTransform(1,0,0,1,0,0)):(a=this.canvasFactory.create(t,r),this.cache[e]=a),i&&n(a.context),a},clear:function(){for(var e in this.cache){var t=this.cache[e];this.canvasFactory.destroy(t),delete this.cache[e]}}},e}(),m=function(){function e(){this.alphaIsShape=!1,this.fontSize=0,this.fontSizeScale=1,this.textMatrix=a.IDENTITY_MATRIX,this.textMatrixScale=1,this.fontMatrix=a.FONT_IDENTITY_MATRIX,this.leading=0,this.x=0,this.y=0,this.lineX=0,this.lineY=0,this.charSpacing=0,this.wordSpacing=0,this.textHScale=1,this.textRenderingMode=a.TextRenderingMode.FILL,this.textRise=0,this.fillColor="#000000",this.strokeColor="#000000",this.patternFill=!1,this.fillAlpha=1,this.strokeAlpha=1,this.lineWidth=1,this.activeSMask=null,this.resumeSMaskCtx=null}return e.prototype={clone:function(){return Object.create(this)},setCurrentPoint:function(e,t){this.x=e,this.y=t}},e}(),g=function(){function e(e,t,r,i,a,o){this.ctx=e,this.current=new m,this.stateStack=[],this.pendingClip=null,this.pendingEOFill=!1,this.res=null,this.xobjs=null,this.commonObjs=t,this.objs=r,this.canvasFactory=i,this.webGLContext=a,this.imageLayer=o,this.groupStack=[],this.processingType3=null,this.baseTransform=null,this.baseTransformStack=[],this.groupLevel=0,this.smaskStack=[],this.smaskCounter=0,this.tempSMask=null,this.cachedCanvases=new v(this.canvasFactory),e&&n(e),this._cachedGetSinglePixelWidth=null}function t(e,t){if("undefined"!=typeof ImageData&&t instanceof ImageData)return void e.putImageData(t,0,0);var r,n,i,o,s,u=t.height,c=t.width,l=u%f,h=(u-l)/f,d=0===l?h:h+1,v=e.createImageData(c,f),m=0,g=t.data,y=v.data;if(t.kind===a.ImageKind.GRAYSCALE_1BPP){var b=g.byteLength,_=new Uint32Array(y.buffer,0,y.byteLength>>2),A=_.length,S=c+7>>3,w=4294967295,k=p.value?4278190080:255;for(n=0;n<d;n++){for(o=n<h?f:l,r=0,i=0;i<o;i++){for(var x=b-m,P=0,C=x>S?c:8*x-7,R=C&-8,E=0,T=0;P<R;P+=8)T=g[m++],_[r++]=128&T?w:k,_[r++]=64&T?w:k,_[r++]=32&T?w:k,_[r++]=16&T?w:k,_[r++]=8&T?w:k,_[r++]=4&T?w:k,_[r++]=2&T?w:k,_[r++]=1&T?w:k;for(;P<C;P++)0===E&&(T=g[m++],E=128),_[r++]=T&E?w:k,E>>=1}for(;r<A;)_[r++]=0;e.putImageData(v,0,n*f)}}else if(t.kind===a.ImageKind.RGBA_32BPP){for(i=0,s=c*f*4,n=0;n<h;n++)y.set(g.subarray(m,m+s)),m+=s,e.putImageData(v,0,i),i+=f;n<d&&(s=c*l*4,y.set(g.subarray(m,m+s)),e.putImageData(v,0,i))}else{if(t.kind!==a.ImageKind.RGB_24BPP)throw new Error("bad image kind: ".concat(t.kind));for(o=f,s=c*o,n=0;n<d;n++){for(n>=h&&(o=l,s=c*o),r=0,i=s;i--;)y[r++]=g[m++],y[r++]=g[m++],y[r++]=g[m++],y[r++]=255;e.putImageData(v,0,n*f)}}}function r(e,t){for(var r=t.height,n=t.width,i=r%f,a=(r-i)/f,o=0===i?a:a+1,s=e.createImageData(n,f),u=0,c=t.data,l=s.data,h=0;h<o;h++){for(var d=h<a?f:i,p=3,v=0;v<d;v++)for(var m=0,g=0;g<n;g++){if(!m){var y=c[u++];m=128}l[p]=y&m?0:255,p+=4,m>>=1}e.putImageData(s,0,h*f)}}function g(e,t){for(var r=["strokeStyle","fillStyle","fillRule","globalAlpha","lineWidth","lineCap","lineJoin","miterLimit","globalCompositeOperation","font"],n=0,i=r.length;n<i;n++){var a=r[n];void 0!==e[a]&&(t[a]=e[a])}void 0!==e.setLineDash&&(t.setLineDash(e.getLineDash()),t.lineDashOffset=e.lineDashOffset)}function y(e){e.strokeStyle="#000000",e.fillStyle="#000000",e.fillRule="nonzero",e.globalAlpha=1,e.lineWidth=1,e.lineCap="butt",e.lineJoin="miter",e.miterLimit=10,e.globalCompositeOperation="source-over",e.font="10px sans-serif",void 0!==e.setLineDash&&(e.setLineDash([]),e.lineDashOffset=0)}function b(e,t,r,n){for(var i=e.length,a=3;a<i;a+=4){var o=e[a];if(0===o)e[a-3]=t,e[a-2]=r,e[a-1]=n;else if(o<255){var s=255-o;e[a-3]=e[a-3]*o+t*s>>8,e[a-2]=e[a-2]*o+r*s>>8,e[a-1]=e[a-1]*o+n*s>>8}}}function _(e,t,r){for(var n=e.length,i=1/255,a=3;a<n;a+=4){var o=r?r[e[a]]:e[a];t[a]=t[a]*o*i|0}}function A(e,t,r){for(var n=e.length,i=3;i<n;i+=4){var a=77*e[i-3]+152*e[i-2]+28*e[i-1];t[i]=r?t[i]*r[a>>8]>>8:t[i]*a>>16}}function S(e,t,r,n,i,a,o){var s,u=!!a,c=u?a[0]:0,l=u?a[1]:0,h=u?a[2]:0;s="Luminosity"===i?A:_;for(var d=1048576,f=Math.min(n,Math.ceil(d/r)),p=0;p<n;p+=f){var v=Math.min(f,n-p),m=e.getImageData(0,p,r,v),g=t.getImageData(0,p,r,v);u&&b(m.data,c,l,h),s(m.data,g.data,o),e.putImageData(g,0,p)}}function w(e,t,r,n){var i=t.canvas,a=t.context;e.setTransform(t.scaleX,0,0,t.scaleY,t.offsetX,t.offsetY);var o=t.backdrop||null;if(!t.transferMap&&n.isEnabled){var s=n.composeSMask({layer:r.canvas,mask:i,properties:{subtype:t.subtype,backdrop:o}});return e.setTransform(1,0,0,1,0,0),void e.drawImage(s,t.offsetX,t.offsetY)}S(a,r,i.width,i.height,t.subtype,o,t.transferMap),e.drawImage(i,0,0)}var k=15,x=10,P=["butt","round","square"],C=["miter","round","bevel"],R={},E={};e.prototype={beginDrawing:function(e){var t=e.transform,r=e.viewport,n=e.transparency,i=void 0!==n&&n,a=e.background,o=void 0===a?null:a,s=this.ctx.canvas.width,u=this.ctx.canvas.height;if(this.ctx.save(),this.ctx.fillStyle=o||"rgb(255, 255, 255)",this.ctx.fillRect(0,0,s,u),this.ctx.restore(),i){var c=this.cachedCanvases.getCanvas("transparent",s,u,!0);this.compositeCtx=this.ctx,this.transparentCanvas=c.canvas,this.ctx=c.context,this.ctx.save(),this.ctx.transform.apply(this.ctx,this.compositeCtx.mozCurrentTransform)}this.ctx.save(),y(this.ctx),t&&this.ctx.transform.apply(this.ctx,t),this.ctx.transform.apply(this.ctx,r.transform),this.baseTransform=this.ctx.mozCurrentTransform.slice(),this.imageLayer&&this.imageLayer.beginLayout()},executeOperatorList:function(e,t,r,n){var i=e.argsArray,o=e.fnArray,s=t||0,u=i.length;if(u===s)return s;for(var c,l=u-s>x&&"function"==typeof r,h=l?Date.now()+k:0,d=0,f=this.commonObjs,p=this.objs;;){if(void 0!==n&&s===n.nextBreakPoint)return n.breakIt(s,r),s;if(c=o[s],c!==a.OPS.dependency)this[c].apply(this,i[s]);else for(var v=i[s],m=0,g=v.length;m<g;m++){var y=v[m],b="g"===y[0]&&"_"===y[1],_=b?f:p;if(!_.has(y))return _.get(y,r),s}if(s++,s===u)return s;if(l&&++d>x){if(Date.now()>h)return r(),s;d=0}}},endDrawing:function(){null!==this.current.activeSMask&&this.endSMaskGroup(),this.ctx.restore(),this.transparentCanvas&&(this.ctx=this.compositeCtx,this.ctx.save(),this.ctx.setTransform(1,0,0,1,0,0),this.ctx.drawImage(this.transparentCanvas,0,0),this.ctx.restore(),this.transparentCanvas=null),this.cachedCanvases.clear(),this.webGLContext.clear(),this.imageLayer&&this.imageLayer.endLayout()},setLineWidth:function(e){this.current.lineWidth=e,this.ctx.lineWidth=e},setLineCap:function(e){this.ctx.lineCap=P[e]},setLineJoin:function(e){this.ctx.lineJoin=C[e]},setMiterLimit:function(e){this.ctx.miterLimit=e},setDash:function(e,t){var r=this.ctx;void 0!==r.setLineDash&&(r.setLineDash(e),r.lineDashOffset=t)},setRenderingIntent:function(e){},setFlatness:function(e){},setGState:function(e){for(var t=0,r=e.length;t<r;t++){var n=e[t],i=n[0],a=n[1];switch(i){case"LW":this.setLineWidth(a);break;case"LC":this.setLineCap(a);break;case"LJ":this.setLineJoin(a);break;case"ML":this.setMiterLimit(a);break;case"D":this.setDash(a[0],a[1]);break;case"RI":this.setRenderingIntent(a);break;case"FL":this.setFlatness(a);break;case"Font":this.setFont(a[0],a[1]);break;case"CA":this.current.strokeAlpha=n[1];break;case"ca":this.current.fillAlpha=n[1],this.ctx.globalAlpha=n[1];break;case"BM":this.ctx.globalCompositeOperation=a;break;case"SMask":this.current.activeSMask&&(this.stateStack.length>0&&this.stateStack[this.stateStack.length-1].activeSMask===this.current.activeSMask?this.suspendSMaskGroup():this.endSMaskGroup()),this.current.activeSMask=a?this.tempSMask:null,this.current.activeSMask&&this.beginSMaskGroup(),this.tempSMask=null}}},beginSMaskGroup:function(){var e=this.current.activeSMask,t=e.canvas.width,r=e.canvas.height,n="smaskGroupAt"+this.groupLevel,i=this.cachedCanvases.getCanvas(n,t,r,!0),a=this.ctx,o=a.mozCurrentTransform;this.ctx.save();var s=i.context;s.scale(1/e.scaleX,1/e.scaleY),s.translate(-e.offsetX,-e.offsetY),s.transform.apply(s,o),e.startTransformInverse=s.mozCurrentTransformInverse,g(a,s),this.ctx=s,this.setGState([["BM","source-over"],["ca",1],["CA",1]]),this.groupStack.push(a),this.groupLevel++},suspendSMaskGroup:function(){var e=this.ctx;this.groupLevel--,this.ctx=this.groupStack.pop(),w(this.ctx,this.current.activeSMask,e,this.webGLContext),this.ctx.restore(),this.ctx.save(),g(e,this.ctx),this.current.resumeSMaskCtx=e;var t=a.Util.transform(this.current.activeSMask.startTransformInverse,e.mozCurrentTransform);this.ctx.transform.apply(this.ctx,t),e.save(),e.setTransform(1,0,0,1,0,0),e.clearRect(0,0,e.canvas.width,e.canvas.height),e.restore()},resumeSMaskGroup:function(){var e=this.current.resumeSMaskCtx,t=this.ctx;this.ctx=e,this.groupStack.push(t),this.groupLevel++},endSMaskGroup:function(){var e=this.ctx;this.groupLevel--,this.ctx=this.groupStack.pop(),w(this.ctx,this.current.activeSMask,e,this.webGLContext),this.ctx.restore(),g(e,this.ctx);var t=a.Util.transform(this.current.activeSMask.startTransformInverse,e.mozCurrentTransform);
-this.ctx.transform.apply(this.ctx,t)},save:function(){this.ctx.save();var e=this.current;this.stateStack.push(e),this.current=e.clone(),this.current.resumeSMaskCtx=null},restore:function(){this.current.resumeSMaskCtx&&this.resumeSMaskGroup(),null===this.current.activeSMask||0!==this.stateStack.length&&this.stateStack[this.stateStack.length-1].activeSMask===this.current.activeSMask||this.endSMaskGroup(),0!==this.stateStack.length&&(this.current=this.stateStack.pop(),this.ctx.restore(),this.pendingClip=null,this._cachedGetSinglePixelWidth=null)},transform:function(e,t,r,n,i,a){this.ctx.transform(e,t,r,n,i,a),this._cachedGetSinglePixelWidth=null},constructPath:function(e,t){for(var r=this.ctx,n=this.current,i=n.x,o=n.y,s=0,u=0,c=e.length;s<c;s++)switch(0|e[s]){case a.OPS.rectangle:i=t[u++],o=t[u++];var l=t[u++],h=t[u++];0===l&&(l=this.getSinglePixelWidth()),0===h&&(h=this.getSinglePixelWidth());var d=i+l,f=o+h;this.ctx.moveTo(i,o),this.ctx.lineTo(d,o),this.ctx.lineTo(d,f),this.ctx.lineTo(i,f),this.ctx.lineTo(i,o),this.ctx.closePath();break;case a.OPS.moveTo:i=t[u++],o=t[u++],r.moveTo(i,o);break;case a.OPS.lineTo:i=t[u++],o=t[u++],r.lineTo(i,o);break;case a.OPS.curveTo:i=t[u+4],o=t[u+5],r.bezierCurveTo(t[u],t[u+1],t[u+2],t[u+3],i,o),u+=6;break;case a.OPS.curveTo2:r.bezierCurveTo(i,o,t[u],t[u+1],t[u+2],t[u+3]),i=t[u+2],o=t[u+3],u+=4;break;case a.OPS.curveTo3:i=t[u+2],o=t[u+3],r.bezierCurveTo(t[u],t[u+1],i,o,i,o),u+=4;break;case a.OPS.closePath:r.closePath()}n.setCurrentPoint(i,o)},closePath:function(){this.ctx.closePath()},stroke:function(e){e="undefined"==typeof e||e;var t=this.ctx,r=this.current.strokeColor;t.lineWidth=Math.max(this.getSinglePixelWidth()*l,this.current.lineWidth),t.globalAlpha=this.current.strokeAlpha,r&&r.hasOwnProperty("type")&&"Pattern"===r.type?(t.save(),t.strokeStyle=r.getPattern(t,this),t.stroke(),t.restore()):t.stroke(),e&&this.consumePath(),t.globalAlpha=this.current.fillAlpha},closeStroke:function(){this.closePath(),this.stroke()},fill:function(e){e="undefined"==typeof e||e;var t=this.ctx,r=this.current.fillColor,n=this.current.patternFill,i=!1;n&&(t.save(),this.baseTransform&&t.setTransform.apply(t,this.baseTransform),t.fillStyle=r.getPattern(t,this),i=!0),this.pendingEOFill?(t.fill("evenodd"),this.pendingEOFill=!1):t.fill(),i&&t.restore(),e&&this.consumePath()},eoFill:function(){this.pendingEOFill=!0,this.fill()},fillStroke:function(){this.fill(!1),this.stroke(!1),this.consumePath()},eoFillStroke:function(){this.pendingEOFill=!0,this.fillStroke()},closeFillStroke:function(){this.closePath(),this.fillStroke()},closeEOFillStroke:function(){this.pendingEOFill=!0,this.closePath(),this.fillStroke()},endPath:function(){this.consumePath()},clip:function(){this.pendingClip=R},eoClip:function(){this.pendingClip=E},beginText:function(){this.current.textMatrix=a.IDENTITY_MATRIX,this.current.textMatrixScale=1,this.current.x=this.current.lineX=0,this.current.y=this.current.lineY=0},endText:function(){var e=this.pendingTextPaths,t=this.ctx;if(void 0===e)return void t.beginPath();t.save(),t.beginPath();for(var r=0;r<e.length;r++){var n=e[r];t.setTransform.apply(t,n.transform),t.translate(n.x,n.y),n.addToPath(t,n.fontSize)}t.restore(),t.clip(),t.beginPath(),delete this.pendingTextPaths},setCharSpacing:function(e){this.current.charSpacing=e},setWordSpacing:function(e){this.current.wordSpacing=e},setHScale:function(e){this.current.textHScale=e/100},setLeading:function(e){this.current.leading=-e},setFont:function(e,t){var r=this.commonObjs.get(e),n=this.current;if(!r)throw new Error("Can't find font for ".concat(e));if(n.fontMatrix=r.fontMatrix?r.fontMatrix:a.FONT_IDENTITY_MATRIX,0!==n.fontMatrix[0]&&0!==n.fontMatrix[3]||(0,a.warn)("Invalid font matrix for font "+e),t<0?(t=-t,n.fontDirection=-1):n.fontDirection=1,this.current.font=r,this.current.fontSize=t,!r.isType3Font){var i=r.loadedName||"sans-serif",o=r.black?"900":r.bold?"bold":"normal",c=r.italic?"italic":"normal",l='"'.concat(i,'", ').concat(r.fallbackName),h=t<s?s:t>u?u:t;this.current.fontSizeScale=t/h,this.ctx.font="".concat(c," ").concat(o," ").concat(h,"px ").concat(l)}},setTextRenderingMode:function(e){this.current.textRenderingMode=e},setTextRise:function(e){this.current.textRise=e},moveText:function(e,t){this.current.x=this.current.lineX+=e,this.current.y=this.current.lineY+=t},setLeadingMoveText:function(e,t){this.setLeading(-t),this.moveText(e,t)},setTextMatrix:function(e,t,r,n,i,a){this.current.textMatrix=[e,t,r,n,i,a],this.current.textMatrixScale=Math.sqrt(e*e+t*t),this.current.x=this.current.lineX=0,this.current.y=this.current.lineY=0},nextLine:function(){this.moveText(0,this.current.leading)},paintChar:function(e,t,r,n){var i,o=this.ctx,s=this.current,u=s.font,c=s.textRenderingMode,l=s.fontSize/s.fontSizeScale,h=c&a.TextRenderingMode.FILL_STROKE_MASK,d=!!(c&a.TextRenderingMode.ADD_TO_PATH_FLAG),f=s.patternFill&&u.data;if((u.disableFontFace||d||f)&&(i=u.getPathGenerator(this.commonObjs,e)),u.disableFontFace||f?(o.save(),o.translate(t,r),o.beginPath(),i(o,l),n&&o.setTransform.apply(o,n),h!==a.TextRenderingMode.FILL&&h!==a.TextRenderingMode.FILL_STROKE||o.fill(),h!==a.TextRenderingMode.STROKE&&h!==a.TextRenderingMode.FILL_STROKE||o.stroke(),o.restore()):(h!==a.TextRenderingMode.FILL&&h!==a.TextRenderingMode.FILL_STROKE||o.fillText(e,t,r),h!==a.TextRenderingMode.STROKE&&h!==a.TextRenderingMode.FILL_STROKE||o.strokeText(e,t,r)),d){var p=this.pendingTextPaths||(this.pendingTextPaths=[]);p.push({transform:o.mozCurrentTransform,x:t,y:r,fontSize:l,addToPath:i})}},get isFontSubpixelAAEnabled(){var e=this.canvasFactory.create(10,10).context;e.scale(1.5,1),e.fillText("I",0,10);for(var t=e.getImageData(0,0,10,10).data,r=!1,n=3;n<t.length;n+=4)if(t[n]>0&&t[n]<255){r=!0;break}return(0,a.shadow)(this,"isFontSubpixelAAEnabled",r)},showText:function(e){var t=this.current,r=t.font;if(r.isType3Font)return this.showType3Text(e);var n=t.fontSize;if(0!==n){var i=this.ctx,o=t.fontSizeScale,s=t.charSpacing,u=t.wordSpacing,c=t.fontDirection,h=t.textHScale*c,d=e.length,f=r.vertical,p=f?1:-1,v=r.defaultVMetrics,m=n*t.fontMatrix[0],g=t.textRenderingMode===a.TextRenderingMode.FILL&&!r.disableFontFace&&!t.patternFill;i.save();var y;if(t.patternFill){i.save();var b=t.fillColor.getPattern(i,this);y=i.mozCurrentTransform,i.restore(),i.fillStyle=b}i.transform.apply(i,t.textMatrix),i.translate(t.x,t.y+t.textRise),c>0?i.scale(h,-1):i.scale(h,1);var _=t.lineWidth,A=t.textMatrixScale;if(0===A||0===_){var S=t.textRenderingMode&a.TextRenderingMode.FILL_STROKE_MASK;S!==a.TextRenderingMode.STROKE&&S!==a.TextRenderingMode.FILL_STROKE||(this._cachedGetSinglePixelWidth=null,_=this.getSinglePixelWidth()*l)}else _/=A;1!==o&&(i.scale(o,o),_/=o),i.lineWidth=_;var w,k=0;for(w=0;w<d;++w){var x=e[w];if((0,a.isNum)(x))k+=p*x*n/1e3;else{var P,C,R,E,T=!1,O=(x.isSpace?u:0)+s,F=x.fontChar,I=x.accent,L=x.width;if(f){var j,M,D;j=x.vmetric||v,M=x.vmetric?j[1]:.5*L,M=-M*m,D=j[2]*m,L=j?-j[0]:L,P=M/o,C=(k+D)/o}else P=k/o,C=0;if(r.remeasure&&L>0){var N=1e3*i.measureText(F).width/n*o;if(L<N&&this.isFontSubpixelAAEnabled){var q=L/N;T=!0,i.save(),i.scale(q,1),P/=q}else L!==N&&(P+=(L-N)/2e3*n/o)}(x.isInFont||r.missingFile)&&(g&&!I?i.fillText(F,P,C):(this.paintChar(F,P,C,y),I&&(R=P+I.offset.x/o,E=C-I.offset.y/o,this.paintChar(I.fontChar,R,E,y))));var W=L*m+O*c;k+=W,T&&i.restore()}}f?t.y-=k*h:t.x+=k*h,i.restore()}},showType3Text:function(e){var t,r,n,i,o=this.ctx,s=this.current,u=s.font,c=s.fontSize,l=s.fontDirection,h=u.vertical?1:-1,d=s.charSpacing,f=s.wordSpacing,p=s.textHScale*l,v=s.fontMatrix||a.FONT_IDENTITY_MATRIX,m=e.length,g=s.textRenderingMode===a.TextRenderingMode.INVISIBLE;if(!g&&0!==c){for(this._cachedGetSinglePixelWidth=null,o.save(),o.transform.apply(o,s.textMatrix),o.translate(s.x,s.y),o.scale(p,l),t=0;t<m;++t)if(r=e[t],(0,a.isNum)(r))i=h*r*c/1e3,this.ctx.translate(i,0),s.x+=i*p;else{var y=(r.isSpace?f:0)+d,b=u.charProcOperatorList[r.operatorListId];if(b){this.processingType3=r,this.save(),o.scale(c,c),o.transform.apply(o,v),this.executeOperatorList(b),this.restore();var _=a.Util.applyTransform([r.width,0],v);n=_[0]*c+y,o.translate(n,0),s.x+=n*p}else(0,a.warn)('Type3 character "'.concat(r.operatorListId,'" is not available.'))}o.restore(),this.processingType3=null}},setCharWidth:function(e,t){},setCharWidthAndBounds:function(e,t,r,n,i,a){this.ctx.rect(r,n,i-r,a-n),this.clip(),this.endPath()},getColorN_Pattern:function(t){var r,n=this;if("TilingPattern"===t[0]){var i=t[1],a=this.baseTransform||this.ctx.mozCurrentTransform.slice(),s={createCanvasGraphics:function(t){return new e(t,n.commonObjs,n.objs,n.canvasFactory,n.webGLContext)}};r=new o.TilingPattern(t,i,this.ctx,s,a)}else r=(0,o.getShadingPatternFromIR)(t);return r},setStrokeColorN:function(){this.current.strokeColor=this.getColorN_Pattern(arguments)},setFillColorN:function(){this.current.fillColor=this.getColorN_Pattern(arguments),this.current.patternFill=!0},setStrokeRGBColor:function(e,t,r){var n=a.Util.makeCssRgb(e,t,r);this.ctx.strokeStyle=n,this.current.strokeColor=n},setFillRGBColor:function(e,t,r){var n=a.Util.makeCssRgb(e,t,r);this.ctx.fillStyle=n,this.current.fillColor=n,this.current.patternFill=!1},shadingFill:function(e){var t=this.ctx;this.save();var r=(0,o.getShadingPatternFromIR)(e);t.fillStyle=r.getPattern(t,this,!0);var n=t.mozCurrentTransformInverse;if(n){var i=t.canvas,s=i.width,u=i.height,c=a.Util.applyTransform([0,0],n),l=a.Util.applyTransform([0,u],n),h=a.Util.applyTransform([s,0],n),d=a.Util.applyTransform([s,u],n),f=Math.min(c[0],l[0],h[0],d[0]),p=Math.min(c[1],l[1],h[1],d[1]),v=Math.max(c[0],l[0],h[0],d[0]),m=Math.max(c[1],l[1],h[1],d[1]);this.ctx.fillRect(f,p,v-f,m-p)}else this.ctx.fillRect(-1e10,-1e10,2e10,2e10);this.restore()},beginInlineImage:function(){(0,a.unreachable)("Should not call beginInlineImage")},beginImageData:function(){(0,a.unreachable)("Should not call beginImageData")},paintFormXObjectBegin:function(e,t){if(this.save(),this.baseTransformStack.push(this.baseTransform),Array.isArray(e)&&6===e.length&&this.transform.apply(this,e),this.baseTransform=this.ctx.mozCurrentTransform,t){var r=t[2]-t[0],n=t[3]-t[1];this.ctx.rect(t[0],t[1],r,n),this.clip(),this.endPath()}},paintFormXObjectEnd:function(){this.restore(),this.baseTransform=this.baseTransformStack.pop()},beginGroup:function(e){this.save();var t=this.ctx;e.isolated||(0,a.info)("TODO: Support non-isolated groups."),e.knockout&&(0,a.warn)("Knockout groups not supported.");var r=t.mozCurrentTransform;if(e.matrix&&t.transform.apply(t,e.matrix),!e.bbox)throw new Error("Bounding box is required.");var n=a.Util.getAxialAlignedBoundingBox(e.bbox,t.mozCurrentTransform),i=[0,0,t.canvas.width,t.canvas.height];n=a.Util.intersect(n,i)||[0,0,0,0];var o=Math.floor(n[0]),s=Math.floor(n[1]),u=Math.max(Math.ceil(n[2])-o,1),l=Math.max(Math.ceil(n[3])-s,1),h=1,d=1;u>c&&(h=u/c,u=c),l>c&&(d=l/c,l=c);var f="groupAt"+this.groupLevel;e.smask&&(f+="_smask_"+this.smaskCounter++%2);var p=this.cachedCanvases.getCanvas(f,u,l,!0),v=p.context;v.scale(1/h,1/d),v.translate(-o,-s),v.transform.apply(v,r),e.smask?this.smaskStack.push({canvas:p.canvas,context:v,offsetX:o,offsetY:s,scaleX:h,scaleY:d,subtype:e.smask.subtype,backdrop:e.smask.backdrop,transferMap:e.smask.transferMap||null,startTransformInverse:null}):(t.setTransform(1,0,0,1,0,0),t.translate(o,s),t.scale(h,d)),g(t,v),this.ctx=v,this.setGState([["BM","source-over"],["ca",1],["CA",1]]),this.groupStack.push(t),this.groupLevel++,this.current.activeSMask=null},endGroup:function(e){this.groupLevel--;var t=this.ctx;this.ctx=this.groupStack.pop(),void 0!==this.ctx.imageSmoothingEnabled?this.ctx.imageSmoothingEnabled=!1:this.ctx.mozImageSmoothingEnabled=!1,e.smask?this.tempSMask=this.smaskStack.pop():this.ctx.drawImage(t.canvas,0,0),this.restore()},beginAnnotations:function(){this.save(),this.baseTransform&&this.ctx.setTransform.apply(this.ctx,this.baseTransform)},endAnnotations:function(){this.restore()},beginAnnotation:function(e,t,r){if(this.save(),y(this.ctx),this.current=new m,Array.isArray(e)&&4===e.length){var n=e[2]-e[0],i=e[3]-e[1];this.ctx.rect(e[0],e[1],n,i),this.clip(),this.endPath()}this.transform.apply(this,t),this.transform.apply(this,r)},endAnnotation:function(){this.restore()},paintJpegXObject:function(e,t,r){var n=this.objs.get(e);if(!n)return void(0,a.warn)("Dependent image isn't ready yet");this.save();var i=this.ctx;if(i.scale(1/t,-1/r),i.drawImage(n,0,0,n.width,n.height,0,-r,t,r),this.imageLayer){var o=i.mozCurrentTransformInverse,s=this.getCanvasPosition(0,0);this.imageLayer.appendImage({objId:e,left:s[0],top:s[1],width:t/o[0],height:r/o[3]})}this.restore()},paintImageMaskXObject:function(e){var t=this.ctx,n=e.width,a=e.height,o=this.current.fillColor,s=this.current.patternFill,u=this.processingType3;if(h&&u&&void 0===u.compiled&&(n<=d&&a<=d?u.compiled=i({data:e.data,width:n,height:a}):u.compiled=null),u&&u.compiled)return void u.compiled(t);var c=this.cachedCanvases.getCanvas("maskCanvas",n,a),l=c.context;l.save(),r(l,e),l.globalCompositeOperation="source-in",l.fillStyle=s?o.getPattern(l,this):o,l.fillRect(0,0,n,a),l.restore(),this.paintInlineImageXObject(c.canvas)},paintImageMaskXObjectRepeat:function(e,t,n,i){var a=e.width,o=e.height,s=this.current.fillColor,u=this.current.patternFill,c=this.cachedCanvases.getCanvas("maskCanvas",a,o),l=c.context;l.save(),r(l,e),l.globalCompositeOperation="source-in",l.fillStyle=u?s.getPattern(l,this):s,l.fillRect(0,0,a,o),l.restore();for(var h=this.ctx,d=0,f=i.length;d<f;d+=2)h.save(),h.transform(t,0,0,n,i[d],i[d+1]),h.scale(1,-1),h.drawImage(c.canvas,0,0,a,o,0,-1,1,1),h.restore()},paintImageMaskXObjectGroup:function(e){for(var t=this.ctx,n=this.current.fillColor,i=this.current.patternFill,a=0,o=e.length;a<o;a++){var s=e[a],u=s.width,c=s.height,l=this.cachedCanvases.getCanvas("maskCanvas",u,c),h=l.context;h.save(),r(h,s),h.globalCompositeOperation="source-in",h.fillStyle=i?n.getPattern(h,this):n,h.fillRect(0,0,u,c),h.restore(),t.save(),t.transform.apply(t,s.transform),t.scale(1,-1),t.drawImage(l.canvas,0,0,u,c,0,-1,1,1),t.restore()}},paintImageXObject:function(e){var t=this.objs.get(e);return t?void this.paintInlineImageXObject(t):void(0,a.warn)("Dependent image isn't ready yet")},paintImageXObjectRepeat:function(e,t,r,n){var i=this.objs.get(e);if(!i)return void(0,a.warn)("Dependent image isn't ready yet");for(var o=i.width,s=i.height,u=[],c=0,l=n.length;c<l;c+=2)u.push({transform:[t,0,0,r,n[c],n[c+1]],x:0,y:0,w:o,h:s});this.paintInlineImageXObjectGroup(i,u)},paintInlineImageXObject:function(e){var r=e.width,n=e.height,i=this.ctx;this.save(),i.scale(1/r,-1/n);var a,o,s=i.mozCurrentTransformInverse,u=s[0],c=s[1],l=Math.max(Math.sqrt(u*u+c*c),1),h=s[2],d=s[3],f=Math.max(Math.sqrt(h*h+d*d),1);if("function"==typeof HTMLElement&&e instanceof HTMLElement||!e.data)a=e;else{o=this.cachedCanvases.getCanvas("inlineImage",r,n);var p=o.context;t(p,e),a=o.canvas}for(var v=r,m=n,g="prescale1";l>2&&v>1||f>2&&m>1;){var y=v,b=m;l>2&&v>1&&(y=Math.ceil(v/2),l/=v/y),f>2&&m>1&&(b=Math.ceil(m/2),f/=m/b),o=this.cachedCanvases.getCanvas(g,y,b),p=o.context,p.clearRect(0,0,y,b),p.drawImage(a,0,0,v,m,0,0,y,b),a=o.canvas,v=y,m=b,g="prescale1"===g?"prescale2":"prescale1"}if(i.drawImage(a,0,0,v,m,0,-n,r,n),this.imageLayer){var _=this.getCanvasPosition(0,-n);this.imageLayer.appendImage({imgData:e,left:_[0],top:_[1],width:r/s[0],height:n/s[3]})}this.restore()},paintInlineImageXObjectGroup:function(e,r){var n=this.ctx,i=e.width,a=e.height,o=this.cachedCanvases.getCanvas("inlineImage",i,a),s=o.context;t(s,e);for(var u=0,c=r.length;u<c;u++){var l=r[u];if(n.save(),n.transform.apply(n,l.transform),n.scale(1,-1),n.drawImage(o.canvas,l.x,l.y,l.w,l.h,0,-1,1,1),this.imageLayer){var h=this.getCanvasPosition(l.x,l.y);this.imageLayer.appendImage({imgData:e,left:h[0],top:h[1],width:i,height:a})}n.restore()}},paintSolidColorImageMask:function(){this.ctx.fillRect(0,0,1,1)},paintXObject:function(){(0,a.warn)("Unsupported 'paintXObject' command.")},markPoint:function(e){},markPointProps:function(e,t){},beginMarkedContent:function(e){},beginMarkedContentProps:function(e,t){},endMarkedContent:function(){},beginCompat:function(){},endCompat:function(){},consumePath:function(){var e=this.ctx;this.pendingClip&&(this.pendingClip===E?e.clip("evenodd"):e.clip(),this.pendingClip=null),e.beginPath()},getSinglePixelWidth:function(e){if(null===this._cachedGetSinglePixelWidth){var t=this.ctx.mozCurrentTransformInverse;this._cachedGetSinglePixelWidth=Math.sqrt(Math.max(t[0]*t[0]+t[1]*t[1],t[2]*t[2]+t[3]*t[3]))}return this._cachedGetSinglePixelWidth},getCanvasPosition:function(e,t){var r=this.ctx.mozCurrentTransform;return[r[0]*e+r[2]*t+r[4],r[1]*e+r[3]*t+r[5]]}};for(var T in a.OPS)e.prototype[a.OPS[T]]=e.prototype[T];return e}();t.CanvasGraphics=g},function(e,t,r){"use strict";function n(e){var t=a[e[0]];if(!t)throw new Error("Unknown IR type: ".concat(e[0]));return t.fromIR(e)}Object.defineProperty(t,"__esModule",{value:!0}),t.getShadingPatternFromIR=n,t.TilingPattern=void 0;var i=r(1),a={};a.RadialAxial={fromIR:function(e){var t=e[1],r=e[2],n=e[3],i=e[4],a=e[5],o=e[6];return{type:"Pattern",getPattern:function(e){var s;"axial"===t?s=e.createLinearGradient(n[0],n[1],i[0],i[1]):"radial"===t&&(s=e.createRadialGradient(n[0],n[1],a,i[0],i[1],o));for(var u=0,c=r.length;u<c;++u){var l=r[u];s.addColorStop(l[0],l[1])}return s}}}};var o=function(){function e(e,t,r,n,i,a,o,s){var u,c=t.coords,l=t.colors,h=e.data,d=4*e.width;c[r+1]>c[n+1]&&(u=r,r=n,n=u,u=a,a=o,o=u),c[n+1]>c[i+1]&&(u=n,n=i,i=u,u=o,o=s,s=u),c[r+1]>c[n+1]&&(u=r,r=n,n=u,u=a,a=o,o=u);var f=(c[r]+t.offsetX)*t.scaleX,p=(c[r+1]+t.offsetY)*t.scaleY,v=(c[n]+t.offsetX)*t.scaleX,m=(c[n+1]+t.offsetY)*t.scaleY,g=(c[i]+t.offsetX)*t.scaleX,y=(c[i+1]+t.offsetY)*t.scaleY;if(!(p>=y))for(var b,_,A,S,w,k,x,P,C,R=l[a],E=l[a+1],T=l[a+2],O=l[o],F=l[o+1],I=l[o+2],L=l[s],j=l[s+1],M=l[s+2],D=Math.round(p),N=Math.round(y),q=D;q<=N;q++){q<m?(C=q<p?0:p===m?1:(p-q)/(p-m),b=f-(f-v)*C,_=R-(R-O)*C,A=E-(E-F)*C,S=T-(T-I)*C):(C=q>y?1:m===y?0:(m-q)/(m-y),b=v-(v-g)*C,_=O-(O-L)*C,A=F-(F-j)*C,S=I-(I-M)*C),C=q<p?0:q>y?1:(p-q)/(p-y),w=f-(f-g)*C,k=R-(R-L)*C,x=E-(E-j)*C,P=T-(T-M)*C;for(var W=Math.round(Math.min(b,w)),U=Math.round(Math.max(b,w)),B=d*q+4*W,z=W;z<=U;z++)C=(b-z)/(b-w),C=C<0?0:C>1?1:C,h[B++]=_-(_-k)*C|0,h[B++]=A-(A-x)*C|0,h[B++]=S-(S-P)*C|0,h[B++]=255}}function t(t,r,n){var i,a,o=r.coords,s=r.colors;switch(r.type){case"lattice":var u=r.verticesPerRow,c=Math.floor(o.length/u)-1,l=u-1;for(i=0;i<c;i++)for(var h=i*u,d=0;d<l;d++,h++)e(t,n,o[h],o[h+1],o[h+u],s[h],s[h+1],s[h+u]),e(t,n,o[h+u+1],o[h+1],o[h+u],s[h+u+1],s[h+1],s[h+u]);break;case"triangles":for(i=0,a=o.length;i<a;i+=3)e(t,n,o[i],o[i+1],o[i+2],s[i],s[i+1],s[i+2]);break;default:throw new Error("illegal figure")}}function r(e,r,n,i,a,o,s,u){var c,l,h,d,f=1.1,p=3e3,v=2,m=Math.floor(e[0]),g=Math.floor(e[1]),y=Math.ceil(e[2])-m,b=Math.ceil(e[3])-g,_=Math.min(Math.ceil(Math.abs(y*r[0]*f)),p),A=Math.min(Math.ceil(Math.abs(b*r[1]*f)),p),S=y/_,w=b/A,k={coords:n,colors:i,offsetX:-m,offsetY:-g,scaleX:1/S,scaleY:1/w},x=_+2*v,P=A+2*v;if(u.isEnabled)c=u.drawFigures({width:_,height:A,backgroundColor:o,figures:a,context:k}),l=s.getCanvas("mesh",x,P,!1),l.context.drawImage(c,v,v),c=l.canvas;else{l=s.getCanvas("mesh",x,P,!1);var C=l.context,R=C.createImageData(_,A);if(o){var E=R.data;for(h=0,d=E.length;h<d;h+=4)E[h]=o[0],E[h+1]=o[1],E[h+2]=o[2],E[h+3]=255}for(h=0;h<a.length;h++)t(R,a[h],k);C.putImageData(R,v,v),c=l.canvas}return{canvas:c,offsetX:m-v*S,offsetY:g-v*w,scaleX:S,scaleY:w}}return r}();a.Mesh={fromIR:function(e){var t=e[2],r=e[3],n=e[4],a=e[5],s=e[6],u=e[8];return{type:"Pattern",getPattern:function(e,c,l){var h;if(l)h=i.Util.singularValueDecompose2dScale(e.mozCurrentTransform);else if(h=i.Util.singularValueDecompose2dScale(c.baseTransform),s){var d=i.Util.singularValueDecompose2dScale(s);h=[h[0]*d[0],h[1]*d[1]]}var f=o(a,h,t,r,n,l?null:u,c.cachedCanvases,c.webGLContext);return l||(e.setTransform.apply(e,c.baseTransform),s&&e.transform.apply(e,s)),e.translate(f.offsetX,f.offsetY),e.scale(f.scaleX,f.scaleY),e.createPattern(f.canvas,"no-repeat")}}}},a.Dummy={fromIR:function(){return{type:"Pattern",getPattern:function(){return"hotpink"}}}};var s=function(){function e(e,t,r,n,i){this.operatorList=e[2],this.matrix=e[3]||[1,0,0,1,0,0],this.bbox=e[4],this.xstep=e[5],this.ystep=e[6],this.paintType=e[7],this.tilingType=e[8],this.color=t,this.canvasGraphicsFactory=n,this.baseTransform=i,this.type="Pattern",this.ctx=r}var t={COLORED:1,UNCOLORED:2},r=3e3;return e.prototype={createPatternCanvas:function(e){var t=this.operatorList,n=this.bbox,a=this.xstep,o=this.ystep,s=this.paintType,u=this.tilingType,c=this.color,l=this.canvasGraphicsFactory;(0,i.info)("TilingType: "+u);var h=n[0],d=n[1],f=n[2],p=n[3],v=[h,d],m=[h+a,d+o],g=m[0]-v[0],y=m[1]-v[1],b=i.Util.singularValueDecompose2dScale(this.matrix),_=i.Util.singularValueDecompose2dScale(this.baseTransform),A=[b[0]*_[0],b[1]*_[1]];g=Math.min(Math.ceil(Math.abs(g*A[0])),r),y=Math.min(Math.ceil(Math.abs(y*A[1])),r);var S=e.cachedCanvases.getCanvas("pattern",g,y,!0),w=S.context,k=l.createCanvasGraphics(w);k.groupLevel=e.groupLevel,this.setFillAndStrokeStyleToContext(k,s,c),this.setScale(g,y,a,o),this.transformToScale(k);var x=[1,0,0,1,-v[0],-v[1]];return k.transform.apply(k,x),this.clipBbox(k,n,h,d,f,p),k.executeOperatorList(t),S.canvas},setScale:function(e,t,r,n){this.scale=[e/r,t/n]},transformToScale:function(e){var t=this.scale,r=[t[0],0,0,t[1],0,0];e.transform.apply(e,r)},scaleToContext:function(){var e=this.scale;this.ctx.scale(1/e[0],1/e[1])},clipBbox:function(e,t,r,n,i,a){if(Array.isArray(t)&&4===t.length){var o=i-r,s=a-n;e.ctx.rect(r,n,o,s),e.clip(),e.endPath()}},setFillAndStrokeStyleToContext:function(e,r,n){var a=e.ctx,o=e.current;switch(r){case t.COLORED:var s=this.ctx;a.fillStyle=s.fillStyle,a.strokeStyle=s.strokeStyle,o.fillColor=s.fillStyle,o.strokeColor=s.strokeStyle;break;case t.UNCOLORED:var u=i.Util.makeCssRgb(n[0],n[1],n[2]);a.fillStyle=u,a.strokeStyle=u,o.fillColor=u,o.strokeColor=u;break;default:throw new i.FormatError("Unsupported paint type: ".concat(r))}},getPattern:function(e,t){var r=this.createPatternCanvas(t);return e=this.ctx,e.setTransform.apply(e,this.baseTransform),e.transform.apply(e,this.matrix),this.scaleToContext(),e.createPattern(r,"repeat")}},e}();t.TilingPattern=s},function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0}),t.GlobalWorkerOptions=void 0;var n=Object.create(null);t.GlobalWorkerOptions=n,n.workerPort=void 0===n.workerPort?null:n.workerPort,n.workerSrc=void 0===n.workerSrc?"":n.workerSrc},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function i(e){return(i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function a(e,t,r,n,i,a,o){try{var s=e[a](o),u=s.value}catch(e){return void r(e)}s.done?t(u):Promise.resolve(u).then(n,i)}function o(e){return function(){var t=this,r=arguments;return new Promise(function(n,i){function o(e){a(u,n,i,o,s,"next",e)}function s(e){a(u,n,i,o,s,"throw",e)}var u=e.apply(t,r);o(void 0)})}}function s(e,t){return u.apply(this,arguments)}function u(){return u=o(p.default.mark(function e(t,r){var n,i=arguments;return p.default.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(n=i.length>2&&void 0!==i[2]?i[2]:null,t){e.next=3;break}return e.abrupt("return");case 3:return e.abrupt("return",t.apply(n,r));case 4:case"end":return e.stop()}},e,this)})),u.apply(this,arguments)}function c(e){if("object"!==i(e))return e;switch(e.name){case"AbortException":return new v.AbortException(e.message);case"MissingPDFException":return new v.MissingPDFException(e.message);case"UnexpectedResponseException":return new v.UnexpectedResponseException(e.message,e.status);default:return new v.UnknownErrorException(e.message,e.details)}}function l(e){return!(e instanceof Error)||e instanceof v.AbortException||e instanceof v.MissingPDFException||e instanceof v.UnexpectedResponseException||e instanceof v.UnknownErrorException?e:new v.UnknownErrorException(e.message,e.toString())}function h(e,t,r){t?e.resolve():e.reject(r)}function d(e){return Promise.resolve(e).catch(function(){})}function f(e,t,r){var n=this;this.sourceName=e,this.targetName=t,this.comObj=r,this.callbackId=1,this.streamId=1,this.postMessageTransfers=!0,this.streamSinks=Object.create(null),this.streamControllers=Object.create(null);var i=this.callbacksCapabilities=Object.create(null),a=this.actionHandler=Object.create(null);this._onComObjOnMessage=function(e){var t=e.data;if(t.targetName===n.sourceName)if(t.stream)n._processStreamMessage(t);else if(t.isReply){var o=t.callbackId;if(!(t.callbackId in i))throw new Error("Cannot resolve callback ".concat(o));var s=i[o];delete i[o],"error"in t?s.reject(c(t.error)):s.resolve(t.data)}else{if(!(t.action in a))throw new Error("Unknown action from worker: ".concat(t.action));var u=a[t.action];if(t.callbackId){var h=n.sourceName,d=t.sourceName;Promise.resolve().then(function(){return u[0].call(u[1],t.data)}).then(function(e){r.postMessage({sourceName:h,targetName:d,isReply:!0,callbackId:t.callbackId,data:e})},function(e){r.postMessage({sourceName:h,targetName:d,isReply:!0,callbackId:t.callbackId,error:l(e)})})}else t.streamId?n._createStreamSink(t):u[0].call(u[1],t.data)}},r.addEventListener("message",this._onComObjOnMessage)}Object.defineProperty(t,"__esModule",{value:!0}),t.MessageHandler=f;var p=n(r(147)),v=r(1);f.prototype={on:function(e,t,r){var n=this.actionHandler;if(n[e])throw new Error('There is already an actionName called "'.concat(e,'"'));n[e]=[t,r]},send:function(e,t,r){var n={sourceName:this.sourceName,targetName:this.targetName,action:e,data:t};this.postMessage(n,r)},sendWithPromise:function(e,t,r){var n=this.callbackId++,i={sourceName:this.sourceName,targetName:this.targetName,action:e,data:t,callbackId:n},a=(0,v.createPromiseCapability)();this.callbacksCapabilities[n]=a;try{this.postMessage(i,r)}catch(e){a.reject(e)}return a.promise},sendWithStream:function(e,t,r,n){var i=this,a=this.streamId++,o=this.sourceName,s=this.targetName;return new v.ReadableStream({start:function(r){var n=(0,v.createPromiseCapability)();return i.streamControllers[a]={controller:r,startCall:n,isClosed:!1},i.postMessage({sourceName:o,targetName:s,action:e,streamId:a,data:t,desiredSize:r.desiredSize}),n.promise},pull:function(e){var t=(0,v.createPromiseCapability)();return i.streamControllers[a].pullCall=t,i.postMessage({sourceName:o,targetName:s,stream:"pull",streamId:a,desiredSize:e.desiredSize}),t.promise},cancel:function(e){var t=(0,v.createPromiseCapability)();return i.streamControllers[a].cancelCall=t,i.streamControllers[a].isClosed=!0,i.postMessage({sourceName:o,targetName:s,stream:"cancel",reason:e,streamId:a}),t.promise}},r)},_createStreamSink:function(e){var t=this,r=this,n=this.actionHandler[e.action],i=e.streamId,a=e.desiredSize,o=this.sourceName,u=e.sourceName,c=(0,v.createPromiseCapability)(),l=function(e){var r=e.stream,n=e.chunk,a=e.transfers,s=e.success,c=e.reason;t.postMessage({sourceName:o,targetName:u,stream:r,streamId:i,chunk:n,success:s,reason:c},a)},h={enqueue:function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:1,r=arguments.length>2?arguments[2]:void 0;if(!this.isCancelled){var n=this.desiredSize;this.desiredSize-=t,n>0&&this.desiredSize<=0&&(this.sinkCapability=(0,v.createPromiseCapability)(),this.ready=this.sinkCapability.promise),l({stream:"enqueue",chunk:e,transfers:r})}},close:function(){this.isCancelled||(this.isCancelled=!0,l({stream:"close"}),delete r.streamSinks[i])},error:function(e){this.isCancelled||(this.isCancelled=!0,l({stream:"error",reason:e}))},sinkCapability:c,onPull:null,onCancel:null,isCancelled:!1,desiredSize:a,ready:null};h.sinkCapability.resolve(),h.ready=h.sinkCapability.promise,this.streamSinks[i]=h,s(n[0],[e.data,h],n[1]).then(function(){l({stream:"start_complete",success:!0})},function(e){l({stream:"start_complete",success:!1,reason:e})})},_processStreamMessage:function(e){var t=this,r=this.sourceName,n=e.sourceName,i=e.streamId,a=function(e){var a=e.stream,o=e.success,s=e.reason;t.comObj.postMessage({sourceName:r,targetName:n,stream:a,success:o,streamId:i,reason:s})},o=function(){Promise.all([t.streamControllers[e.streamId].startCall,t.streamControllers[e.streamId].pullCall,t.streamControllers[e.streamId].cancelCall].map(function(e){return e&&d(e.promise)})).then(function(){delete t.streamControllers[e.streamId]})};switch(e.stream){case"start_complete":h(this.streamControllers[e.streamId].startCall,e.success,c(e.reason));break;case"pull_complete":h(this.streamControllers[e.streamId].pullCall,e.success,c(e.reason));break;case"pull":if(!this.streamSinks[e.streamId]){a({stream:"pull_complete",success:!0});break}this.streamSinks[e.streamId].desiredSize<=0&&e.desiredSize>0&&this.streamSinks[e.streamId].sinkCapability.resolve(),this.streamSinks[e.streamId].desiredSize=e.desiredSize,s(this.streamSinks[e.streamId].onPull).then(function(){a({stream:"pull_complete",success:!0})},function(e){a({stream:"pull_complete",success:!1,reason:e})});break;case"enqueue":(0,v.assert)(this.streamControllers[e.streamId],"enqueue should have stream controller"),this.streamControllers[e.streamId].isClosed||this.streamControllers[e.streamId].controller.enqueue(e.chunk);break;case"close":if((0,v.assert)(this.streamControllers[e.streamId],"close should have stream controller"),this.streamControllers[e.streamId].isClosed)break;this.streamControllers[e.streamId].isClosed=!0,this.streamControllers[e.streamId].controller.close(),o();break;case"error":(0,v.assert)(this.streamControllers[e.streamId],"error should have stream controller"),this.streamControllers[e.streamId].controller.error(c(e.reason)),o();break;case"cancel_complete":h(this.streamControllers[e.streamId].cancelCall,e.success,c(e.reason)),o();break;case"cancel":if(!this.streamSinks[e.streamId])break;s(this.streamSinks[e.streamId].onCancel,[c(e.reason)]).then(function(){a({stream:"cancel_complete",success:!0})},function(e){a({stream:"cancel_complete",success:!1,reason:e})}),this.streamSinks[e.streamId].sinkCapability.reject(c(e.reason)),this.streamSinks[e.streamId].isCancelled=!0,delete this.streamSinks[e.streamId];break;default:throw new Error("Unexpected stream case")}},postMessage:function(e,t){t&&this.postMessageTransfers?this.comObj.postMessage(e,t):this.comObj.postMessage(e)},destroy:function(){this.comObj.removeEventListener("message",this._onComObjOnMessage)}}},function(e,t,r){"use strict";function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function a(e,t,r){return t&&i(e.prototype,t),r&&i(e,r),e}Object.defineProperty(t,"__esModule",{value:!0}),t.Metadata=void 0;var o=r(1),s=r(159),u=function(){function e(t){n(this,e),(0,o.assert)("string"==typeof t,"Metadata: input is not a string"),t=this._repair(t);var r=new s.SimpleXMLParser,i=r.parseFromString(t);this._metadata=Object.create(null),i&&this._parse(i)}return a(e,[{key:"_repair",value:function(e){return e.replace(/^([^<]+)/,"").replace(/>\\376\\377([^<]+)/g,function(e,t){for(var r=t.replace(/\\([0-3])([0-7])([0-7])/g,function(e,t,r,n){return String.fromCharCode(64*t+8*r+1*n)}).replace(/&(amp|apos|gt|lt|quot);/g,function(e,t){switch(t){case"amp":return"&";case"apos":return"'";case"gt":return">";case"lt":return"<";case"quot":return'"'}throw new Error("_repair: ".concat(t," isn't defined."))}),n="",i=0,a=r.length;i<a;i+=2){var o=256*r.charCodeAt(i)+r.charCodeAt(i+1);n+=o>=32&&o<127&&60!==o&&62!==o&&38!==o?String.fromCharCode(o):"&#x"+(65536+o).toString(16).substring(1)+";"}return">"+n})}},{key:"_parse",value:function(e){var t=e.documentElement;if("rdf:rdf"!==t.nodeName.toLowerCase())for(t=t.firstChild;t&&"rdf:rdf"!==t.nodeName.toLowerCase();)t=t.nextSibling;
-var r=t?t.nodeName.toLowerCase():null;if(t&&"rdf:rdf"===r&&t.hasChildNodes())for(var n=t.childNodes,i=0,a=n.length;i<a;i++){var o=n[i];if("rdf:description"===o.nodeName.toLowerCase())for(var s=0,u=o.childNodes.length;s<u;s++)if("#text"!==o.childNodes[s].nodeName.toLowerCase()){var c=o.childNodes[s],l=c.nodeName.toLowerCase();this._metadata[l]=c.textContent.trim()}}}},{key:"get",value:function(e){var t=this._metadata[e];return"undefined"!=typeof t?t:null}},{key:"getAll",value:function(){return this._metadata}},{key:"has",value:function(e){return"undefined"!=typeof this._metadata[e]}}]),e}();t.Metadata=u},function(e,t,r){"use strict";function n(e){return(n="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function i(e,t){return s(e)||o(e,t)||a()}function a(){throw new TypeError("Invalid attempt to destructure non-iterable instance")}function o(e,t){var r=[],n=!0,i=!1,a=void 0;try{for(var o,s=e[Symbol.iterator]();!(n=(o=s.next()).done)&&(r.push(o.value),!t||r.length!==t);n=!0);}catch(e){i=!0,a=e}finally{try{n||null==s.return||s.return()}finally{if(i)throw a}}return r}function s(e){if(Array.isArray(e))return e}function u(e,t){return!t||"object"!==n(t)&&"function"!=typeof t?c(e):t}function c(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function l(e,t,r){return(l="undefined"!=typeof Reflect&&Reflect.get?Reflect.get:function(e,t,r){var n=h(e,t);if(n){var i=Object.getOwnPropertyDescriptor(n,t);return i.get?i.get.call(r):i.value}})(e,t,r||e)}function h(e,t){for(;!Object.prototype.hasOwnProperty.call(e,t)&&(e=d(e),null!==e););return e}function d(e){return(d=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function f(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&p(e,t)}function p(e,t){return(p=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function v(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function m(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function g(e,t,r){return t&&m(e.prototype,t),r&&m(e,r),e}function y(e,t){var r=e[t];return" "===r||"\n"===r||"\r"===r||"\t"===r}function b(e){for(var t=0,r=e.length;t<r;t++)if(!y(e,t))return!1;return!0}Object.defineProperty(t,"__esModule",{value:!0}),t.SimpleXMLParser=void 0;var _={NoError:0,EndOfDocument:-1,UnterminatedCdat:-2,UnterminatedXmlDeclaration:-3,UnterminatedDoctypeDeclaration:-4,UnterminatedComment:-5,MalformedElement:-6,OutOfMemory:-7,UnterminatedAttributeValue:-8,UnterminatedElement:-9,ElementNeverBegun:-10},A=function(){function e(){v(this,e)}return g(e,[{key:"_resolveEntities",value:function(e){var t=this;return e.replace(/&([^;]+);/g,function(e,r){if("#x"===r.substring(0,2))return String.fromCharCode(parseInt(r.substring(2),16));if("#"===r.substring(0,1))return String.fromCharCode(parseInt(r.substring(1),10));switch(r){case"lt":return"<";case"gt":return">";case"amp":return"&";case"quot":return'"'}return t.onResolveEntity(r)})}},{key:"_parseContent",value:function(e,t){function r(){for(;i<e.length&&y(e,i);)++i}for(var n,i=t,a=[];i<e.length&&!y(e,i)&&">"!==e[i]&&"/"!==e[i];)++i;for(n=e.substring(t,i),r();i<e.length&&">"!==e[i]&&"/"!==e[i]&&"?"!==e[i];){r();for(var o="",s="";i<e.length&&!y(e,i)&&"="!==e[i];)o+=e[i],++i;if(r(),"="!==e[i])return null;++i,r();var u=e[i];if('"'!==u&&"'"!==u)return null;var c=e.indexOf(u,++i);if(c<0)return null;s=e.substring(i,c),a.push({name:o,value:this._resolveEntities(s)}),i=c+1,r()}return{name:n,attributes:a,parsed:i-t}}},{key:"_parseProcessingInstruction",value:function(e,t){function r(){for(;a<e.length&&y(e,a);)++a}for(var n,i,a=t;a<e.length&&!y(e,a)&&">"!==e[a]&&"/"!==e[a];)++a;n=e.substring(t,a),r();for(var o=a;a<e.length&&("?"!==e[a]||">"!==e[a+1]);)++a;return i=e.substring(o,a),{name:n,value:i,parsed:a-t}}},{key:"parseXml",value:function(e){for(var t=0;t<e.length;){var r=e[t],n=t;if("<"===r){++n;var i=e[n],a=void 0;switch(i){case"/":if(++n,a=e.indexOf(">",n),a<0)return void this.onError(_.UnterminatedElement);this.onEndElement(e.substring(n,a)),n=a+1;break;case"?":++n;var o=this._parseProcessingInstruction(e,n);if("?>"!==e.substring(n+o.parsed,n+o.parsed+2))return void this.onError(_.UnterminatedXmlDeclaration);this.onPi(o.name,o.value),n+=o.parsed+2;break;case"!":if("--"===e.substring(n+1,n+3)){if(a=e.indexOf("-->",n+3),a<0)return void this.onError(_.UnterminatedComment);this.onComment(e.substring(n+3,a)),n=a+3}else if("[CDATA["===e.substring(n+1,n+8)){if(a=e.indexOf("]]>",n+8),a<0)return void this.onError(_.UnterminatedCdat);this.onCdata(e.substring(n+8,a)),n=a+3}else{if("DOCTYPE"!==e.substring(n+1,n+8))return void this.onError(_.MalformedElement);var s=e.indexOf("[",n+8),u=!1;if(a=e.indexOf(">",n+8),a<0)return void this.onError(_.UnterminatedDoctypeDeclaration);if(s>0&&a>s){if(a=e.indexOf("]>",n+8),a<0)return void this.onError(_.UnterminatedDoctypeDeclaration);u=!0}var c=e.substring(n+8,a+(u?1:0));this.onDoctype(c),n=a+(u?2:1)}break;default:var l=this._parseContent(e,n);if(null===l)return void this.onError(_.MalformedElement);var h=!1;if("/>"===e.substring(n+l.parsed,n+l.parsed+2))h=!0;else if(">"!==e.substring(n+l.parsed,n+l.parsed+1))return void this.onError(_.UnterminatedElement);this.onBeginElement(l.name,l.attributes,h),n+=l.parsed+(h?2:1)}}else{for(;n<e.length&&"<"!==e[n];)n++;var d=e.substring(t,n);this.onText(this._resolveEntities(d))}t=n}}},{key:"onResolveEntity",value:function(e){return"&".concat(e,";")}},{key:"onPi",value:function(e,t){}},{key:"onComment",value:function(e){}},{key:"onCdata",value:function(e){}},{key:"onDoctype",value:function(e){}},{key:"onText",value:function(e){}},{key:"onBeginElement",value:function(e,t,r){}},{key:"onEndElement",value:function(e){}},{key:"onError",value:function(e){}}]),e}(),S=function(){function e(t,r){v(this,e),this.nodeName=t,this.nodeValue=r,Object.defineProperty(this,"parentNode",{value:null,writable:!0})}return g(e,[{key:"hasChildNodes",value:function(){return this.childNodes&&this.childNodes.length>0}},{key:"firstChild",get:function(){return this.childNodes&&this.childNodes[0]}},{key:"nextSibling",get:function(){var e=this.parentNode.childNodes;if(e){var t=e.indexOf(this);if(t!==-1)return e[t+1]}}},{key:"textContent",get:function(){return this.childNodes?this.childNodes.map(function(e){return e.textContent}).join(""):this.nodeValue||""}}]),e}(),w=function(e){function t(){var e;return v(this,t),e=u(this,d(t).call(this)),e._currentFragment=null,e._stack=null,e._errorCode=_.NoError,e}return f(t,e),g(t,[{key:"parseFromString",value:function(e){if(this._currentFragment=[],this._stack=[],this._errorCode=_.NoError,this.parseXml(e),this._errorCode===_.NoError){var t=i(this._currentFragment,1),r=t[0];if(r)return{documentElement:r}}}},{key:"onResolveEntity",value:function(e){switch(e){case"apos":return"'"}return l(d(t.prototype),"onResolveEntity",this).call(this,e)}},{key:"onText",value:function(e){if(!b(e)){var t=new S("#text",e);this._currentFragment.push(t)}}},{key:"onCdata",value:function(e){var t=new S("#text",e);this._currentFragment.push(t)}},{key:"onBeginElement",value:function(e,t,r){var n=new S(e);n.childNodes=[],this._currentFragment.push(n),r||(this._stack.push(this._currentFragment),this._currentFragment=n.childNodes)}},{key:"onEndElement",value:function(e){this._currentFragment=this._stack.pop()||[];var t=this._currentFragment[this._currentFragment.length-1];if(t)for(var r=0,n=t.childNodes.length;r<n;r++)t.childNodes[r].parentNode=t}},{key:"onError",value:function(e){this._errorCode=e}}]),t}(A);t.SimpleXMLParser=w},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function i(e,t,r,n,i,a,o){try{var s=e[a](o),u=s.value}catch(e){return void r(e)}s.done?t(u):Promise.resolve(u).then(n,i)}function a(e){return function(){var t=this,r=arguments;return new Promise(function(n,a){function o(e){i(u,n,a,o,s,"next",e)}function s(e){i(u,n,a,o,s,"throw",e)}var u=e.apply(t,r);o(void 0)})}}Object.defineProperty(t,"__esModule",{value:!0}),t.PDFDataTransportStream=void 0;var o=n(r(147)),s=r(1),u=function(){function e(e,t){var r=this;(0,s.assert)(t),this._queuedChunks=[];var n=e.initialData;if(n&&n.length>0){var i=new Uint8Array(n).buffer;this._queuedChunks.push(i)}this._pdfDataRangeTransport=t,this._isStreamingSupported=!e.disableStream,this._isRangeSupported=!e.disableRange,this._contentLength=e.length,this._fullRequestReader=null,this._rangeReaders=[],this._pdfDataRangeTransport.addRangeListener(function(e,t){r._onReceiveData({begin:e,chunk:t})}),this._pdfDataRangeTransport.addProgressListener(function(e){r._onProgress({loaded:e})}),this._pdfDataRangeTransport.addProgressiveReadListener(function(e){r._onReceiveData({chunk:e})}),this._pdfDataRangeTransport.transportReady()}function t(e,t){this._stream=e,this._done=!1,this._filename=null,this._queuedChunks=t||[],this._requests=[],this._headersReady=Promise.resolve(),e._fullRequestReader=this,this.onProgress=null}function r(e,t,r){this._stream=e,this._begin=t,this._end=r,this._queuedChunk=null,this._requests=[],this._done=!1,this.onProgress=null}return e.prototype={_onReceiveData:function(e){var t=new Uint8Array(e.chunk).buffer;if(void 0===e.begin)this._fullRequestReader?this._fullRequestReader._enqueue(t):this._queuedChunks.push(t);else{var r=this._rangeReaders.some(function(r){return r._begin===e.begin&&(r._enqueue(t),!0)});(0,s.assert)(r)}},_onProgress:function(e){if(this._rangeReaders.length>0){var t=this._rangeReaders[0];t.onProgress&&t.onProgress({loaded:e.loaded})}},_removeRangeReader:function(e){var t=this._rangeReaders.indexOf(e);t>=0&&this._rangeReaders.splice(t,1)},getFullReader:function(){(0,s.assert)(!this._fullRequestReader);var e=this._queuedChunks;return this._queuedChunks=null,new t(this,e)},getRangeReader:function(e,t){var n=new r(this,e,t);return this._pdfDataRangeTransport.requestDataRange(e,t),this._rangeReaders.push(n),n},cancelAllRequests:function(e){this._fullRequestReader&&this._fullRequestReader.cancel(e);var t=this._rangeReaders.slice(0);t.forEach(function(t){t.cancel(e)}),this._pdfDataRangeTransport.abort()}},t.prototype={_enqueue:function(e){if(!this._done){if(this._requests.length>0){var t=this._requests.shift();return void t.resolve({value:e,done:!1})}this._queuedChunks.push(e)}},get headersReady(){return this._headersReady},get filename(){return this._filename},get isRangeSupported(){return this._stream._isRangeSupported},get isStreamingSupported(){return this._stream._isStreamingSupported},get contentLength(){return this._stream._contentLength},read:function(){function e(){return t.apply(this,arguments)}var t=a(o.default.mark(function e(){var t,r;return o.default.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(!(this._queuedChunks.length>0)){e.next=3;break}return t=this._queuedChunks.shift(),e.abrupt("return",{value:t,done:!1});case 3:if(!this._done){e.next=5;break}return e.abrupt("return",{value:void 0,done:!0});case 5:return r=(0,s.createPromiseCapability)(),this._requests.push(r),e.abrupt("return",r.promise);case 8:case"end":return e.stop()}},e,this)}));return e}(),cancel:function(e){this._done=!0,this._requests.forEach(function(e){e.resolve({value:void 0,done:!0})}),this._requests=[]}},r.prototype={_enqueue:function(e){if(!this._done){if(0===this._requests.length)this._queuedChunk=e;else{var t=this._requests.shift();t.resolve({value:e,done:!1}),this._requests.forEach(function(e){e.resolve({value:void 0,done:!0})}),this._requests=[]}this._done=!0,this._stream._removeRangeReader(this)}},get isStreamingSupported(){return!1},read:function(){function e(){return t.apply(this,arguments)}var t=a(o.default.mark(function e(){var t,r;return o.default.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(!this._queuedChunk){e.next=4;break}return t=this._queuedChunk,this._queuedChunk=null,e.abrupt("return",{value:t,done:!1});case 4:if(!this._done){e.next=6;break}return e.abrupt("return",{value:void 0,done:!0});case 6:return r=(0,s.createPromiseCapability)(),this._requests.push(r),e.abrupt("return",r.promise);case 9:case"end":return e.stop()}},e,this)}));return e}(),cancel:function(e){this._done=!0,this._requests.forEach(function(e){e.resolve({value:void 0,done:!0})}),this._requests=[],this._stream._removeRangeReader(this)}},e}();t.PDFDataTransportStream=u},function(e,t,r){"use strict";function n(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function a(e,t,r){return t&&i(e.prototype,t),r&&i(e,r),e}Object.defineProperty(t,"__esModule",{value:!0}),t.WebGLContext=void 0;var o=r(1),s=function(){function e(t){var r=t.enable,i=void 0!==r&&r;n(this,e),this._enabled=i===!0}return a(e,[{key:"composeSMask",value:function(e){var t=e.layer,r=e.mask,n=e.properties;return u.composeSMask(t,r,n)}},{key:"drawFigures",value:function(e){var t=e.width,r=e.height,n=e.backgroundColor,i=e.figures,a=e.context;return u.drawFigures(t,r,n,i,a)}},{key:"clear",value:function(){u.cleanup()}},{key:"isEnabled",get:function(){var e=this._enabled;return e&&(e=u.tryInitGL()),(0,o.shadow)(this,"isEnabled",e)}}]),e}();t.WebGLContext=s;var u=function(){function e(e,t,r){var n=e.createShader(r);e.shaderSource(n,t),e.compileShader(n);var i=e.getShaderParameter(n,e.COMPILE_STATUS);if(!i){var a=e.getShaderInfoLog(n);throw new Error("Error during shader compilation: "+a)}return n}function t(t,r){return e(t,r,t.VERTEX_SHADER)}function r(t,r){return e(t,r,t.FRAGMENT_SHADER)}function n(e,t){for(var r=e.createProgram(),n=0,i=t.length;n<i;++n)e.attachShader(r,t[n]);e.linkProgram(r);var a=e.getProgramParameter(r,e.LINK_STATUS);if(!a){var o=e.getProgramInfoLog(r);throw new Error("Error during program linking: "+o)}return r}function i(e,t,r){e.activeTexture(r);var n=e.createTexture();return e.bindTexture(e.TEXTURE_2D,n),e.texParameteri(e.TEXTURE_2D,e.TEXTURE_WRAP_S,e.CLAMP_TO_EDGE),e.texParameteri(e.TEXTURE_2D,e.TEXTURE_WRAP_T,e.CLAMP_TO_EDGE),e.texParameteri(e.TEXTURE_2D,e.TEXTURE_MIN_FILTER,e.NEAREST),e.texParameteri(e.TEXTURE_2D,e.TEXTURE_MAG_FILTER,e.NEAREST),e.texImage2D(e.TEXTURE_2D,0,e.RGBA,e.RGBA,e.UNSIGNED_BYTE,t),n}function a(){l||(h=document.createElement("canvas"),l=h.getContext("webgl",{premultipliedalpha:!1}))}function o(){var e,i;a(),e=h,h=null,i=l,l=null;var o=t(i,d),s=r(i,f),u=n(i,[o,s]);i.useProgram(u);var c={};c.gl=i,c.canvas=e,c.resolutionLocation=i.getUniformLocation(u,"u_resolution"),c.positionLocation=i.getAttribLocation(u,"a_position"),c.backdropLocation=i.getUniformLocation(u,"u_backdrop"),c.subtypeLocation=i.getUniformLocation(u,"u_subtype");var v=i.getAttribLocation(u,"a_texCoord"),m=i.getUniformLocation(u,"u_image"),g=i.getUniformLocation(u,"u_mask"),y=i.createBuffer();i.bindBuffer(i.ARRAY_BUFFER,y),i.bufferData(i.ARRAY_BUFFER,new Float32Array([0,0,1,0,0,1,0,1,1,0,1,1]),i.STATIC_DRAW),i.enableVertexAttribArray(v),i.vertexAttribPointer(v,2,i.FLOAT,!1,0,0),i.uniform1i(m,0),i.uniform1i(g,1),p=c}function s(e,t,r){var n=e.width,a=e.height;p||o();var s=p,u=s.canvas,c=s.gl;u.width=n,u.height=a,c.viewport(0,0,c.drawingBufferWidth,c.drawingBufferHeight),c.uniform2f(s.resolutionLocation,n,a),r.backdrop?c.uniform4f(s.resolutionLocation,r.backdrop[0],r.backdrop[1],r.backdrop[2],1):c.uniform4f(s.resolutionLocation,0,0,0,0),c.uniform1i(s.subtypeLocation,"Luminosity"===r.subtype?1:0);var l=i(c,e,c.TEXTURE0),h=i(c,t,c.TEXTURE1),d=c.createBuffer();return c.bindBuffer(c.ARRAY_BUFFER,d),c.bufferData(c.ARRAY_BUFFER,new Float32Array([0,0,n,0,0,a,0,a,n,0,n,a]),c.STATIC_DRAW),c.enableVertexAttribArray(s.positionLocation),c.vertexAttribPointer(s.positionLocation,2,c.FLOAT,!1,0,0),c.clearColor(0,0,0,0),c.enable(c.BLEND),c.blendFunc(c.ONE,c.ONE_MINUS_SRC_ALPHA),c.clear(c.COLOR_BUFFER_BIT),c.drawArrays(c.TRIANGLES,0,6),c.flush(),c.deleteTexture(l),c.deleteTexture(h),c.deleteBuffer(d),u}function u(){var e,i;a(),e=h,h=null,i=l,l=null;var o=t(i,v),s=r(i,m),u=n(i,[o,s]);i.useProgram(u);var c={};c.gl=i,c.canvas=e,c.resolutionLocation=i.getUniformLocation(u,"u_resolution"),c.scaleLocation=i.getUniformLocation(u,"u_scale"),c.offsetLocation=i.getUniformLocation(u,"u_offset"),c.positionLocation=i.getAttribLocation(u,"a_position"),c.colorLocation=i.getAttribLocation(u,"a_color"),g=c}function c(e,t,r,n,i){g||u();var a=g,o=a.canvas,s=a.gl;o.width=e,o.height=t,s.viewport(0,0,s.drawingBufferWidth,s.drawingBufferHeight),s.uniform2f(a.resolutionLocation,e,t);var c,l,h,d=0;for(c=0,l=n.length;c<l;c++)switch(n[c].type){case"lattice":h=n[c].coords.length/n[c].verticesPerRow|0,d+=(h-1)*(n[c].verticesPerRow-1)*6;break;case"triangles":d+=n[c].coords.length}var f=new Float32Array(2*d),p=new Uint8Array(3*d),v=i.coords,m=i.colors,y=0,b=0;for(c=0,l=n.length;c<l;c++){var _=n[c],A=_.coords,S=_.colors;switch(_.type){case"lattice":var w=_.verticesPerRow;h=A.length/w|0;for(var k=1;k<h;k++)for(var x=k*w+1,P=1;P<w;P++,x++)f[y]=v[A[x-w-1]],f[y+1]=v[A[x-w-1]+1],f[y+2]=v[A[x-w]],f[y+3]=v[A[x-w]+1],f[y+4]=v[A[x-1]],f[y+5]=v[A[x-1]+1],p[b]=m[S[x-w-1]],p[b+1]=m[S[x-w-1]+1],p[b+2]=m[S[x-w-1]+2],p[b+3]=m[S[x-w]],p[b+4]=m[S[x-w]+1],p[b+5]=m[S[x-w]+2],p[b+6]=m[S[x-1]],p[b+7]=m[S[x-1]+1],p[b+8]=m[S[x-1]+2],f[y+6]=f[y+2],f[y+7]=f[y+3],f[y+8]=f[y+4],f[y+9]=f[y+5],f[y+10]=v[A[x]],f[y+11]=v[A[x]+1],p[b+9]=p[b+3],p[b+10]=p[b+4],p[b+11]=p[b+5],p[b+12]=p[b+6],p[b+13]=p[b+7],p[b+14]=p[b+8],p[b+15]=m[S[x]],p[b+16]=m[S[x]+1],p[b+17]=m[S[x]+2],y+=12,b+=18;break;case"triangles":for(var C=0,R=A.length;C<R;C++)f[y]=v[A[C]],f[y+1]=v[A[C]+1],p[b]=m[S[C]],p[b+1]=m[S[C]+1],p[b+2]=m[S[C]+2],y+=2,b+=3}}r?s.clearColor(r[0]/255,r[1]/255,r[2]/255,1):s.clearColor(0,0,0,0),s.clear(s.COLOR_BUFFER_BIT);var E=s.createBuffer();s.bindBuffer(s.ARRAY_BUFFER,E),s.bufferData(s.ARRAY_BUFFER,f,s.STATIC_DRAW),s.enableVertexAttribArray(a.positionLocation),s.vertexAttribPointer(a.positionLocation,2,s.FLOAT,!1,0,0);var T=s.createBuffer();return s.bindBuffer(s.ARRAY_BUFFER,T),s.bufferData(s.ARRAY_BUFFER,p,s.STATIC_DRAW),s.enableVertexAttribArray(a.colorLocation),s.vertexAttribPointer(a.colorLocation,3,s.UNSIGNED_BYTE,!1,0,0),s.uniform2f(a.scaleLocation,i.scaleX,i.scaleY),s.uniform2f(a.offsetLocation,i.offsetX,i.offsetY),s.drawArrays(s.TRIANGLES,0,d),s.flush(),s.deleteBuffer(E),s.deleteBuffer(T),o}var l,h,d="  attribute vec2 a_position;                                      attribute vec2 a_texCoord;                                                                                                      uniform vec2 u_resolution;                                                                                                      varying vec2 v_texCoord;                                                                                                        void main() {                                                     vec2 clipSpace = (a_position / u_resolution) * 2.0 - 1.0;       gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);                                                                              v_texCoord = a_texCoord;                                      }                                                             ",f="  precision mediump float;                                                                                                        uniform vec4 u_backdrop;                                        uniform int u_subtype;                                          uniform sampler2D u_image;                                      uniform sampler2D u_mask;                                                                                                       varying vec2 v_texCoord;                                                                                                        void main() {                                                     vec4 imageColor = texture2D(u_image, v_texCoord);               vec4 maskColor = texture2D(u_mask, v_texCoord);                 if (u_backdrop.a > 0.0) {                                         maskColor.rgb = maskColor.rgb * maskColor.a +                                   u_backdrop.rgb * (1.0 - maskColor.a);         }                                                               float lum;                                                      if (u_subtype == 0) {                                             lum = maskColor.a;                                            } else {                                                          lum = maskColor.r * 0.3 + maskColor.g * 0.59 +                        maskColor.b * 0.11;                                     }                                                               imageColor.a *= lum;                                            imageColor.rgb *= imageColor.a;                                 gl_FragColor = imageColor;                                    }                                                             ",p=null,v="  attribute vec2 a_position;                                      attribute vec3 a_color;                                                                                                         uniform vec2 u_resolution;                                      uniform vec2 u_scale;                                           uniform vec2 u_offset;                                                                                                          varying vec4 v_color;                                                                                                           void main() {                                                     vec2 position = (a_position + u_offset) * u_scale;              vec2 clipSpace = (position / u_resolution) * 2.0 - 1.0;         gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);                                                                              v_color = vec4(a_color / 255.0, 1.0);                         }                                                             ",m="  precision mediump float;                                                                                                        varying vec4 v_color;                                                                                                           void main() {                                                     gl_FragColor = v_color;                                       }                                                             ",g=null;return{tryInitGL:function(){try{return a(),!!l}catch(e){}return!1},composeSMask:s,drawFigures:c,cleanup:function(){p&&p.canvas&&(p.canvas.width=0,p.canvas.height=0),g&&g.canvas&&(g.canvas.width=0,g.canvas.height=0),p=null,g=null}}}()},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0}),t.renderTextLayer=void 0;var i=r(1),a=n(r(3)),o=function(){function e(e){return!h.test(e)}function t(t,r,n){var a=document.createElement("span"),o={style:null,angle:0,canvasWidth:0,isWhitespace:!1,originalTransform:null,paddingBottom:0,paddingLeft:0,paddingRight:0,paddingTop:0,scale:1};if(t._textDivs.push(a),e(r.str))return o.isWhitespace=!0,void t._textDivProperties.set(a,o);var s=i.Util.transform(t._viewport.transform,r.transform),u=Math.atan2(s[1],s[0]),c=n[r.fontName];c.vertical&&(u+=Math.PI/2);var l=Math.sqrt(s[2]*s[2]+s[3]*s[3]),h=l;c.ascent?h=c.ascent*h:c.descent&&(h=(1+c.descent)*h);var f,p;if(0===u?(f=s[4],p=s[5]-h):(f=s[4]+h*Math.sin(u),p=s[5]-h*Math.cos(u)),d[1]=f,d[3]=p,d[5]=l,d[7]=c.fontFamily,o.style=d.join(""),a.setAttribute("style",o.style),a.textContent=r.str,t._fontInspectorEnabled&&(a.dataset.fontName=r.fontName),0!==u&&(o.angle=u*(180/Math.PI)),r.str.length>1&&(c.vertical?o.canvasWidth=r.height*t._viewport.scale:o.canvasWidth=r.width*t._viewport.scale),t._textDivProperties.set(a,o),t._textContentStream&&t._layoutText(a),t._enhanceTextSelection){var v=1,m=0;0!==u&&(v=Math.cos(u),m=Math.sin(u));var g,y,b=(c.vertical?r.height:r.width)*t._viewport.scale,_=l;0!==u?(g=[v,m,-m,v,f,p],y=i.Util.getAxialAlignedBoundingBox([0,0,b,_],g)):y=[f,p,f+b,p+_],t._bounds.push({left:y[0],top:y[1],right:y[2],bottom:y[3],div:a,size:[b,_],m:g})}}function r(e){if(!e._canceled){var t=e._textDivs,r=e._capability,n=t.length;if(n>l)return e._renderingDone=!0,void r.resolve();if(!e._textContentStream)for(var i=0;i<n;i++)e._layoutText(t[i]);e._renderingDone=!0,r.resolve()}}function n(e){for(var t=e._bounds,r=e._viewport,n=o(r.width,r.height,t),a=0;a<n.length;a++){var s=t[a].div,u=e._textDivProperties.get(s);if(0!==u.angle){var c=n[a],l=t[a],h=l.m,d=h[0],f=h[1],p=[[0,0],[0,l.size[1]],[l.size[0],0],l.size],v=new Float64Array(64);p.forEach(function(e,t){var r=i.Util.applyTransform(e,h);v[t+0]=d&&(c.left-r[0])/d,v[t+4]=f&&(c.top-r[1])/f,v[t+8]=d&&(c.right-r[0])/d,v[t+12]=f&&(c.bottom-r[1])/f,v[t+16]=f&&(c.left-r[0])/-f,v[t+20]=d&&(c.top-r[1])/d,v[t+24]=f&&(c.right-r[0])/-f,v[t+28]=d&&(c.bottom-r[1])/d,v[t+32]=d&&(c.left-r[0])/-d,v[t+36]=f&&(c.top-r[1])/-f,v[t+40]=d&&(c.right-r[0])/-d,v[t+44]=f&&(c.bottom-r[1])/-f,v[t+48]=f&&(c.left-r[0])/f,v[t+52]=d&&(c.top-r[1])/-d,v[t+56]=f&&(c.right-r[0])/f,v[t+60]=d&&(c.bottom-r[1])/-d});var m=function(e,t,r){for(var n=0,i=0;i<r;i++){var a=e[t++];a>0&&(n=n?Math.min(a,n):a)}return n},g=1+Math.min(Math.abs(d),Math.abs(f));u.paddingLeft=m(v,32,16)/g,u.paddingTop=m(v,48,16)/g,u.paddingRight=m(v,0,16)/g,u.paddingBottom=m(v,16,16)/g,e._textDivProperties.set(s,u)}else u.paddingLeft=t[a].left-n[a].left,u.paddingTop=t[a].top-n[a].top,u.paddingRight=n[a].right-t[a].right,u.paddingBottom=n[a].bottom-t[a].bottom,e._textDivProperties.set(s,u)}}function o(e,t,r){var n=r.map(function(e,t){return{x1:e.left,y1:e.top,x2:e.right,y2:e.bottom,index:t,x1New:void 0,x2New:void 0}});s(e,n);var i=new Array(r.length);return n.forEach(function(e){var t=e.index;i[t]={left:e.x1New,top:0,right:e.x2New,bottom:0}}),r.map(function(t,r){var a=i[r],o=n[r];o.x1=t.top,o.y1=e-a.right,o.x2=t.bottom,o.y2=e-a.left,o.index=r,o.x1New=void 0,o.x2New=void 0}),s(t,n),n.forEach(function(e){var t=e.index;i[t].top=e.x1New,i[t].bottom=e.x2New}),i}function s(e,t){t.sort(function(e,t){return e.x1-t.x1||e.index-t.index});var r={x1:-(1/0),y1:-(1/0),x2:0,y2:1/0,index:-1,x1New:0,x2New:0},n=[{start:-(1/0),end:1/0,boundary:r}];t.forEach(function(e){for(var t=0;t<n.length&&n[t].end<=e.y1;)t++;for(var r=n.length-1;r>=0&&n[r].start>=e.y2;)r--;var i,a,o,s,u=-(1/0);for(o=t;o<=r;o++){i=n[o],a=i.boundary;var c;c=a.x2>e.x1?a.index>e.index?a.x1New:e.x1:void 0===a.x2New?(a.x2+e.x1)/2:a.x2New,c>u&&(u=c)}for(e.x1New=u,o=t;o<=r;o++)i=n[o],a=i.boundary,void 0===a.x2New?a.x2>e.x1?a.index>e.index&&(a.x2New=a.x2):a.x2New=u:a.x2New>u&&(a.x2New=Math.max(u,a.x2));var l=[],h=null;for(o=t;o<=r;o++){i=n[o],a=i.boundary;var d=a.x2>e.x2?a:e;h===d?l[l.length-1].end=i.end:(l.push({start:i.start,end:i.end,boundary:d}),h=d)}for(n[t].start<e.y1&&(l[0].start=e.y1,l.unshift({start:n[t].start,end:e.y1,boundary:n[t].boundary})),e.y2<n[r].end&&(l[l.length-1].end=e.y2,l.push({start:e.y2,end:n[r].end,boundary:n[r].boundary})),o=t;o<=r;o++)if(i=n[o],a=i.boundary,void 0===a.x2New){var f=!1;for(s=t-1;!f&&s>=0&&n[s].start>=a.y1;s--)f=n[s].boundary===a;for(s=r+1;!f&&s<n.length&&n[s].end<=a.y2;s++)f=n[s].boundary===a;for(s=0;!f&&s<l.length;s++)f=l[s].boundary===a;f||(a.x2New=u)}Array.prototype.splice.apply(n,[t,r-t+1].concat(l))}),n.forEach(function(t){var r=t.boundary;void 0===r.x2New&&(r.x2New=Math.max(e,r.x2))})}function u(e){var t=e.textContent,r=e.textContentStream,n=e.container,o=e.viewport,s=e.textDivs,u=e.textContentItemsStr,c=e.enhanceTextSelection;this._textContent=t,this._textContentStream=r,this._container=n,this._viewport=o,this._textDivs=s||[],this._textContentItemsStr=u||[],this._enhanceTextSelection=!!c,this._fontInspectorEnabled=!(!a.default.FontInspector||!a.default.FontInspector.enabled),this._reader=null,this._layoutTextLastFontSize=null,this._layoutTextLastFontFamily=null,this._layoutTextCtx=null,this._textDivProperties=new WeakMap,this._renderingDone=!1,this._canceled=!1,this._capability=(0,i.createPromiseCapability)(),this._renderTimer=null,this._bounds=[]}function c(e){var t=new u({textContent:e.textContent,textContentStream:e.textContentStream,container:e.container,viewport:e.viewport,textDivs:e.textDivs,textContentItemsStr:e.textContentItemsStr,enhanceTextSelection:e.enhanceTextSelection});return t._render(e.timeout),t}var l=1e5,h=/\S/,d=["left: ",0,"px; top: ",0,"px; font-size: ",0,"px; font-family: ","",";"];return u.prototype={get promise(){return this._capability.promise},cancel:function(){this._reader&&(this._reader.cancel(new i.AbortException("text layer task cancelled")),this._reader=null),this._canceled=!0,null!==this._renderTimer&&(clearTimeout(this._renderTimer),this._renderTimer=null),this._capability.reject("canceled")},_processItems:function(e,r){for(var n=0,i=e.length;n<i;n++)this._textContentItemsStr.push(e[n].str),t(this,e[n],r)},_layoutText:function(e){var t=this._container,r=this._textDivProperties.get(e);if(!r.isWhitespace){var n=e.style.fontSize,i=e.style.fontFamily;n===this._layoutTextLastFontSize&&i===this._layoutTextLastFontFamily||(this._layoutTextCtx.font=n+" "+i,this._layoutTextLastFontSize=n,this._layoutTextLastFontFamily=i);var a=this._layoutTextCtx.measureText(e.textContent).width,o="";0!==r.canvasWidth&&a>0&&(r.scale=r.canvasWidth/a,o="scaleX(".concat(r.scale,")")),0!==r.angle&&(o="rotate(".concat(r.angle,"deg) ").concat(o)),o.length>0&&(r.originalTransform=o,e.style.transform=o),this._textDivProperties.set(e,r),t.appendChild(e)}},_render:function(e){var t=this,n=(0,i.createPromiseCapability)(),a=Object.create(null),o=document.createElement("canvas");if(o.mozOpaque=!0,this._layoutTextCtx=o.getContext("2d",{alpha:!1}),this._textContent){var s=this._textContent.items,u=this._textContent.styles;this._processItems(s,u),n.resolve()}else{if(!this._textContentStream)throw new Error('Neither "textContent" nor "textContentStream" parameters specified.');var c=function e(){t._reader.read().then(function(r){var i=r.value,o=r.done;return o?void n.resolve():(Object.assign(a,i.styles),t._processItems(i.items,a),void e())},n.reject)};this._reader=this._textContentStream.getReader(),c()}n.promise.then(function(){a=null,e?t._renderTimer=setTimeout(function(){r(t),t._renderTimer=null},e):r(t)},this._capability.reject)},expandTextDivs:function(e){if(this._enhanceTextSelection&&this._renderingDone){null!==this._bounds&&(n(this),this._bounds=null);for(var t=0,r=this._textDivs.length;t<r;t++){var i=this._textDivs[t],a=this._textDivProperties.get(i);if(!a.isWhitespace)if(e){var o="",s="";1!==a.scale&&(o="scaleX("+a.scale+")"),0!==a.angle&&(o="rotate("+a.angle+"deg) "+o),0!==a.paddingLeft&&(s+=" padding-left: "+a.paddingLeft/a.scale+"px;",o+=" translateX("+-a.paddingLeft/a.scale+"px)"),0!==a.paddingTop&&(s+=" padding-top: "+a.paddingTop+"px;",o+=" translateY("+-a.paddingTop+"px)"),0!==a.paddingRight&&(s+=" padding-right: "+a.paddingRight/a.scale+"px;"),0!==a.paddingBottom&&(s+=" padding-bottom: "+a.paddingBottom+"px;"),""!==s&&i.setAttribute("style",a.style+s),""!==o&&(i.style.transform=o)}else i.style.padding=0,i.style.transform=a.originalTransform||""}}}},c}();t.renderTextLayer=o},function(e,t,r){"use strict";function n(e,t,r){return(n="undefined"!=typeof Reflect&&Reflect.get?Reflect.get:function(e,t,r){var n=i(e,t);if(n){var a=Object.getOwnPropertyDescriptor(n,t);return a.get?a.get.call(r):a.value}})(e,t,r||e)}function i(e,t){for(;!Object.prototype.hasOwnProperty.call(e,t)&&(e=u(e),null!==e););return e}function a(e){return(a="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){
-return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function o(e,t){return!t||"object"!==a(t)&&"function"!=typeof t?s(e):t}function s(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function u(e){return(u=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function c(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&l(e,t)}function l(e,t){return(l=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function h(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function d(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function f(e,t,r){return t&&d(e.prototype,t),r&&d(e,r),e}Object.defineProperty(t,"__esModule",{value:!0}),t.AnnotationLayer=void 0;var p=r(151),v=r(1),m=function(){function e(){h(this,e)}return f(e,null,[{key:"create",value:function(e){var t=e.data.annotationType;switch(t){case v.AnnotationType.LINK:return new y(e);case v.AnnotationType.TEXT:return new b(e);case v.AnnotationType.WIDGET:var r=e.data.fieldType;switch(r){case"Tx":return new A(e);case"Btn":return e.data.radioButton?new w(e):e.data.checkBox?new S(e):new k(e);case"Ch":return new x(e)}return new _(e);case v.AnnotationType.POPUP:return new P(e);case v.AnnotationType.LINE:return new R(e);case v.AnnotationType.SQUARE:return new E(e);case v.AnnotationType.CIRCLE:return new T(e);case v.AnnotationType.POLYLINE:return new O(e);case v.AnnotationType.INK:return new I(e);case v.AnnotationType.POLYGON:return new F(e);case v.AnnotationType.HIGHLIGHT:return new L(e);case v.AnnotationType.UNDERLINE:return new j(e);case v.AnnotationType.SQUIGGLY:return new M(e);case v.AnnotationType.STRIKEOUT:return new D(e);case v.AnnotationType.STAMP:return new N(e);case v.AnnotationType.FILEATTACHMENT:return new q(e);default:return new g(e)}}}]),e}(),g=function(){function e(t){var r=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=arguments.length>2&&void 0!==arguments[2]&&arguments[2];h(this,e),this.isRenderable=r,this.data=t.data,this.layer=t.layer,this.page=t.page,this.viewport=t.viewport,this.linkService=t.linkService,this.downloadManager=t.downloadManager,this.imageResourcesPath=t.imageResourcesPath,this.renderInteractiveForms=t.renderInteractiveForms,this.svgFactory=t.svgFactory,r&&(this.container=this._createContainer(n))}return f(e,[{key:"_createContainer",value:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0],t=this.data,r=this.page,n=this.viewport,i=document.createElement("section"),a=t.rect[2]-t.rect[0],o=t.rect[3]-t.rect[1];i.setAttribute("data-annotation-id",t.id);var s=v.Util.normalizeRect([t.rect[0],r.view[3]-t.rect[1]+r.view[1],t.rect[2],r.view[3]-t.rect[3]+r.view[1]]);if(i.style.transform="matrix("+n.transform.join(",")+")",i.style.transformOrigin=-s[0]+"px "+-s[1]+"px",!e&&t.borderStyle.width>0){i.style.borderWidth=t.borderStyle.width+"px",t.borderStyle.style!==v.AnnotationBorderStyleType.UNDERLINE&&(a-=2*t.borderStyle.width,o-=2*t.borderStyle.width);var u=t.borderStyle.horizontalCornerRadius,c=t.borderStyle.verticalCornerRadius;if(u>0||c>0){var l=u+"px / "+c+"px";i.style.borderRadius=l}switch(t.borderStyle.style){case v.AnnotationBorderStyleType.SOLID:i.style.borderStyle="solid";break;case v.AnnotationBorderStyleType.DASHED:i.style.borderStyle="dashed";break;case v.AnnotationBorderStyleType.BEVELED:(0,v.warn)("Unimplemented border style: beveled");break;case v.AnnotationBorderStyleType.INSET:(0,v.warn)("Unimplemented border style: inset");break;case v.AnnotationBorderStyleType.UNDERLINE:i.style.borderBottomStyle="solid"}t.color?i.style.borderColor=v.Util.makeCssRgb(0|t.color[0],0|t.color[1],0|t.color[2]):i.style.borderWidth=0}return i.style.left=s[0]+"px",i.style.top=s[1]+"px",i.style.width=a+"px",i.style.height=o+"px",i}},{key:"_createPopup",value:function(e,t,r){t||(t=document.createElement("div"),t.style.height=e.style.height,t.style.width=e.style.width,e.appendChild(t));var n=new C({container:e,trigger:t,color:r.color,title:r.title,contents:r.contents,hideWrapper:!0}),i=n.render();i.style.left=e.style.width,e.appendChild(i)}},{key:"render",value:function(){(0,v.unreachable)("Abstract method `AnnotationElement.render` called")}}]),e}(),y=function(e){function t(e){h(this,t);var r=!!(e.data.url||e.data.dest||e.data.action);return o(this,u(t).call(this,e,r))}return c(t,e),f(t,[{key:"render",value:function(){this.container.className="linkAnnotation";var e=this.data,t=this.linkService,r=document.createElement("a");return(0,p.addLinkAttributes)(r,{url:e.url,target:e.newWindow?p.LinkTarget.BLANK:t.externalLinkTarget,rel:t.externalLinkRel}),e.url||(e.action?this._bindNamedAction(r,e.action):this._bindLink(r,e.dest)),this.container.appendChild(r),this.container}},{key:"_bindLink",value:function(e,t){var r=this;e.href=this.linkService.getDestinationHash(t),e.onclick=function(){return t&&r.linkService.navigateTo(t),!1},t&&(e.className="internalLink")}},{key:"_bindNamedAction",value:function(e,t){var r=this;e.href=this.linkService.getAnchorUrl(""),e.onclick=function(){return r.linkService.executeNamedAction(t),!1},e.className="internalLink"}}]),t}(g),b=function(e){function t(e){h(this,t);var r=!!(e.data.hasPopup||e.data.title||e.data.contents);return o(this,u(t).call(this,e,r))}return c(t,e),f(t,[{key:"render",value:function(){this.container.className="textAnnotation";var e=document.createElement("img");return e.style.height=this.container.style.height,e.style.width=this.container.style.width,e.src=this.imageResourcesPath+"annotation-"+this.data.name.toLowerCase()+".svg",e.alt="[{{type}} Annotation]",e.dataset.l10nId="text_annotation_type",e.dataset.l10nArgs=JSON.stringify({type:this.data.name}),this.data.hasPopup||this._createPopup(this.container,e,this.data),this.container.appendChild(e),this.container}}]),t}(g),_=function(e){function t(){return h(this,t),o(this,u(t).apply(this,arguments))}return c(t,e),f(t,[{key:"render",value:function(){return this.container}}]),t}(g),A=function(e){function t(e){h(this,t);var r=e.renderInteractiveForms||!e.data.hasAppearance&&!!e.data.fieldValue;return o(this,u(t).call(this,e,r))}return c(t,e),f(t,[{key:"render",value:function(){var e=["left","center","right"];this.container.className="textWidgetAnnotation";var t=null;if(this.renderInteractiveForms){if(this.data.multiLine?(t=document.createElement("textarea"),t.textContent=this.data.fieldValue):(t=document.createElement("input"),t.type="text",t.setAttribute("value",this.data.fieldValue)),t.disabled=this.data.readOnly,null!==this.data.maxLen&&(t.maxLength=this.data.maxLen),this.data.comb){var r=this.data.rect[2]-this.data.rect[0],n=r/this.data.maxLen;t.classList.add("comb"),t.style.letterSpacing="calc("+n+"px - 1ch)"}}else{t=document.createElement("div"),t.textContent=this.data.fieldValue,t.style.verticalAlign="middle",t.style.display="table-cell";var i=null;this.data.fontRefName&&this.page.commonObjs.has(this.data.fontRefName)&&(i=this.page.commonObjs.get(this.data.fontRefName)),this._setTextStyle(t,i)}return null!==this.data.textAlignment&&(t.style.textAlign=e[this.data.textAlignment]),this.container.appendChild(t),this.container}},{key:"_setTextStyle",value:function(e,t){var r=e.style;if(r.fontSize=this.data.fontSize+"px",r.direction=this.data.fontDirection<0?"rtl":"ltr",t){r.fontWeight=t.black?t.bold?"900":"bold":t.bold?"bold":"normal",r.fontStyle=t.italic?"italic":"normal";var n=t.loadedName?'"'+t.loadedName+'", ':"",i=t.fallbackName||"Helvetica, sans-serif";r.fontFamily=n+i}}}]),t}(_),S=function(e){function t(e){return h(this,t),o(this,u(t).call(this,e,e.renderInteractiveForms))}return c(t,e),f(t,[{key:"render",value:function(){this.container.className="buttonWidgetAnnotation checkBox";var e=document.createElement("input");return e.disabled=this.data.readOnly,e.type="checkbox",this.data.fieldValue&&"Off"!==this.data.fieldValue&&e.setAttribute("checked",!0),this.container.appendChild(e),this.container}}]),t}(_),w=function(e){function t(e){return h(this,t),o(this,u(t).call(this,e,e.renderInteractiveForms))}return c(t,e),f(t,[{key:"render",value:function(){this.container.className="buttonWidgetAnnotation radioButton";var e=document.createElement("input");return e.disabled=this.data.readOnly,e.type="radio",e.name=this.data.fieldName,this.data.fieldValue===this.data.buttonValue&&e.setAttribute("checked",!0),this.container.appendChild(e),this.container}}]),t}(_),k=function(e){function t(){return h(this,t),o(this,u(t).apply(this,arguments))}return c(t,e),f(t,[{key:"render",value:function(){var e=n(u(t.prototype),"render",this).call(this);return e.className="buttonWidgetAnnotation pushButton",e}}]),t}(y),x=function(e){function t(e){return h(this,t),o(this,u(t).call(this,e,e.renderInteractiveForms))}return c(t,e),f(t,[{key:"render",value:function(){this.container.className="choiceWidgetAnnotation";var e=document.createElement("select");e.disabled=this.data.readOnly,this.data.combo||(e.size=this.data.options.length,this.data.multiSelect&&(e.multiple=!0));for(var t=0,r=this.data.options.length;t<r;t++){var n=this.data.options[t],i=document.createElement("option");i.textContent=n.displayValue,i.value=n.exportValue,this.data.fieldValue.includes(n.displayValue)&&i.setAttribute("selected",!0),e.appendChild(i)}return this.container.appendChild(e),this.container}}]),t}(_),P=function(e){function t(e){h(this,t);var r=!(!e.data.title&&!e.data.contents);return o(this,u(t).call(this,e,r))}return c(t,e),f(t,[{key:"render",value:function(){var e=["Line","Square","Circle","PolyLine","Polygon","Ink"];if(this.container.className="popupAnnotation",e.includes(this.data.parentType))return this.container;var t='[data-annotation-id="'+this.data.parentId+'"]',r=this.layer.querySelector(t);if(!r)return this.container;var n=new C({container:this.container,trigger:r,color:this.data.color,title:this.data.title,contents:this.data.contents}),i=parseFloat(r.style.left),a=parseFloat(r.style.width);return this.container.style.transformOrigin=-(i+a)+"px -"+r.style.top,this.container.style.left=i+a+"px",this.container.appendChild(n.render()),this.container}}]),t}(g),C=function(){function e(t){h(this,e),this.container=t.container,this.trigger=t.trigger,this.color=t.color,this.title=t.title,this.contents=t.contents,this.hideWrapper=t.hideWrapper||!1,this.pinned=!1}return f(e,[{key:"render",value:function(){var e=.7,t=document.createElement("div");t.className="popupWrapper",this.hideElement=this.hideWrapper?t:this.container,this.hideElement.setAttribute("hidden",!0);var r=document.createElement("div");r.className="popup";var n=this.color;if(n){var i=e*(255-n[0])+n[0],a=e*(255-n[1])+n[1],o=e*(255-n[2])+n[2];r.style.backgroundColor=v.Util.makeCssRgb(0|i,0|a,0|o)}var s=this._formatContents(this.contents),u=document.createElement("h1");return u.textContent=this.title,this.trigger.addEventListener("click",this._toggle.bind(this)),this.trigger.addEventListener("mouseover",this._show.bind(this,!1)),this.trigger.addEventListener("mouseout",this._hide.bind(this,!1)),r.addEventListener("click",this._hide.bind(this,!0)),r.appendChild(u),r.appendChild(s),t.appendChild(r),t}},{key:"_formatContents",value:function(e){for(var t=document.createElement("p"),r=e.split(/(?:\r\n?|\n)/),n=0,i=r.length;n<i;++n){var a=r[n];t.appendChild(document.createTextNode(a)),n<i-1&&t.appendChild(document.createElement("br"))}return t}},{key:"_toggle",value:function(){this.pinned?this._hide(!0):this._show(!0)}},{key:"_show",value:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];e&&(this.pinned=!0),this.hideElement.hasAttribute("hidden")&&(this.hideElement.removeAttribute("hidden"),this.container.style.zIndex+=1)}},{key:"_hide",value:function(){var e=!(arguments.length>0&&void 0!==arguments[0])||arguments[0];e&&(this.pinned=!1),this.hideElement.hasAttribute("hidden")||this.pinned||(this.hideElement.setAttribute("hidden",!0),this.container.style.zIndex-=1)}}]),e}(),R=function(e){function t(e){h(this,t);var r=!!(e.data.hasPopup||e.data.title||e.data.contents);return o(this,u(t).call(this,e,r,!0))}return c(t,e),f(t,[{key:"render",value:function(){this.container.className="lineAnnotation";var e=this.data,t=e.rect[2]-e.rect[0],r=e.rect[3]-e.rect[1],n=this.svgFactory.create(t,r),i=this.svgFactory.createElement("svg:line");return i.setAttribute("x1",e.rect[2]-e.lineCoordinates[0]),i.setAttribute("y1",e.rect[3]-e.lineCoordinates[1]),i.setAttribute("x2",e.rect[2]-e.lineCoordinates[2]),i.setAttribute("y2",e.rect[3]-e.lineCoordinates[3]),i.setAttribute("stroke-width",e.borderStyle.width),i.setAttribute("stroke","transparent"),n.appendChild(i),this.container.append(n),this._createPopup(this.container,i,e),this.container}}]),t}(g),E=function(e){function t(e){h(this,t);var r=!!(e.data.hasPopup||e.data.title||e.data.contents);return o(this,u(t).call(this,e,r,!0))}return c(t,e),f(t,[{key:"render",value:function(){this.container.className="squareAnnotation";var e=this.data,t=e.rect[2]-e.rect[0],r=e.rect[3]-e.rect[1],n=this.svgFactory.create(t,r),i=e.borderStyle.width,a=this.svgFactory.createElement("svg:rect");return a.setAttribute("x",i/2),a.setAttribute("y",i/2),a.setAttribute("width",t-i),a.setAttribute("height",r-i),a.setAttribute("stroke-width",i),a.setAttribute("stroke","transparent"),a.setAttribute("fill","none"),n.appendChild(a),this.container.append(n),this._createPopup(this.container,a,e),this.container}}]),t}(g),T=function(e){function t(e){h(this,t);var r=!!(e.data.hasPopup||e.data.title||e.data.contents);return o(this,u(t).call(this,e,r,!0))}return c(t,e),f(t,[{key:"render",value:function(){this.container.className="circleAnnotation";var e=this.data,t=e.rect[2]-e.rect[0],r=e.rect[3]-e.rect[1],n=this.svgFactory.create(t,r),i=e.borderStyle.width,a=this.svgFactory.createElement("svg:ellipse");return a.setAttribute("cx",t/2),a.setAttribute("cy",r/2),a.setAttribute("rx",t/2-i/2),a.setAttribute("ry",r/2-i/2),a.setAttribute("stroke-width",i),a.setAttribute("stroke","transparent"),a.setAttribute("fill","none"),n.appendChild(a),this.container.append(n),this._createPopup(this.container,a,e),this.container}}]),t}(g),O=function(e){function t(e){var r;h(this,t);var n=!!(e.data.hasPopup||e.data.title||e.data.contents);return r=o(this,u(t).call(this,e,n,!0)),r.containerClassName="polylineAnnotation",r.svgElementName="svg:polyline",r}return c(t,e),f(t,[{key:"render",value:function(){this.container.className=this.containerClassName;for(var e=this.data,t=e.rect[2]-e.rect[0],r=e.rect[3]-e.rect[1],n=this.svgFactory.create(t,r),i=e.vertices,a=[],o=0,s=i.length;o<s;o++){var u=i[o].x-e.rect[0],c=e.rect[3]-i[o].y;a.push(u+","+c)}a=a.join(" ");var l=e.borderStyle.width,h=this.svgFactory.createElement(this.svgElementName);return h.setAttribute("points",a),h.setAttribute("stroke-width",l),h.setAttribute("stroke","transparent"),h.setAttribute("fill","none"),n.appendChild(h),this.container.append(n),this._createPopup(this.container,h,e),this.container}}]),t}(g),F=function(e){function t(e){var r;return h(this,t),r=o(this,u(t).call(this,e)),r.containerClassName="polygonAnnotation",r.svgElementName="svg:polygon",r}return c(t,e),t}(O),I=function(e){function t(e){var r;h(this,t);var n=!!(e.data.hasPopup||e.data.title||e.data.contents);return r=o(this,u(t).call(this,e,n,!0)),r.containerClassName="inkAnnotation",r.svgElementName="svg:polyline",r}return c(t,e),f(t,[{key:"render",value:function(){this.container.className=this.containerClassName;for(var e=this.data,t=e.rect[2]-e.rect[0],r=e.rect[3]-e.rect[1],n=this.svgFactory.create(t,r),i=e.inkLists,a=0,o=i.length;a<o;a++){for(var s=i[a],u=[],c=0,l=s.length;c<l;c++){var h=s[c].x-e.rect[0],d=e.rect[3]-s[c].y;u.push(h+","+d)}u=u.join(" ");var f=e.borderStyle.width,p=this.svgFactory.createElement(this.svgElementName);p.setAttribute("points",u),p.setAttribute("stroke-width",f),p.setAttribute("stroke","transparent"),p.setAttribute("fill","none"),this._createPopup(this.container,p,e),n.appendChild(p)}return this.container.append(n),this.container}}]),t}(g),L=function(e){function t(e){h(this,t);var r=!!(e.data.hasPopup||e.data.title||e.data.contents);return o(this,u(t).call(this,e,r,!0))}return c(t,e),f(t,[{key:"render",value:function(){return this.container.className="highlightAnnotation",this.data.hasPopup||this._createPopup(this.container,null,this.data),this.container}}]),t}(g),j=function(e){function t(e){h(this,t);var r=!!(e.data.hasPopup||e.data.title||e.data.contents);return o(this,u(t).call(this,e,r,!0))}return c(t,e),f(t,[{key:"render",value:function(){return this.container.className="underlineAnnotation",this.data.hasPopup||this._createPopup(this.container,null,this.data),this.container}}]),t}(g),M=function(e){function t(e){h(this,t);var r=!!(e.data.hasPopup||e.data.title||e.data.contents);return o(this,u(t).call(this,e,r,!0))}return c(t,e),f(t,[{key:"render",value:function(){return this.container.className="squigglyAnnotation",this.data.hasPopup||this._createPopup(this.container,null,this.data),this.container}}]),t}(g),D=function(e){function t(e){h(this,t);var r=!!(e.data.hasPopup||e.data.title||e.data.contents);return o(this,u(t).call(this,e,r,!0))}return c(t,e),f(t,[{key:"render",value:function(){return this.container.className="strikeoutAnnotation",this.data.hasPopup||this._createPopup(this.container,null,this.data),this.container}}]),t}(g),N=function(e){function t(e){h(this,t);var r=!!(e.data.hasPopup||e.data.title||e.data.contents);return o(this,u(t).call(this,e,r,!0))}return c(t,e),f(t,[{key:"render",value:function(){return this.container.className="stampAnnotation",this.data.hasPopup||this._createPopup(this.container,null,this.data),this.container}}]),t}(g),q=function(e){function t(e){var r;h(this,t),r=o(this,u(t).call(this,e,!0));var n=r.data.file,i=n.filename,a=n.content;return r.filename=(0,p.getFilenameFromUrl)(i),r.content=a,r.linkService.eventBus&&r.linkService.eventBus.dispatch("fileattachmentannotation",{source:s(s(r)),id:(0,v.stringToPDFString)(i),filename:i,content:a}),r}return c(t,e),f(t,[{key:"render",value:function(){this.container.className="fileAttachmentAnnotation";var e=document.createElement("div");return e.style.height=this.container.style.height,e.style.width=this.container.style.width,e.addEventListener("dblclick",this._download.bind(this)),this.data.hasPopup||!this.data.title&&!this.data.contents||this._createPopup(this.container,e,this.data),this.container.appendChild(e),this.container}},{key:"_download",value:function(){return this.downloadManager?void this.downloadManager.downloadData(this.content,this.filename,""):void(0,v.warn)("Download cannot be started due to unavailable download manager")}}]),t}(g),W=function(){function e(){h(this,e)}return f(e,null,[{key:"render",value:function(e){for(var t=0,r=e.annotations.length;t<r;t++){var n=e.annotations[t];if(n){var i=m.create({data:n,layer:e.div,page:e.page,viewport:e.viewport,linkService:e.linkService,downloadManager:e.downloadManager,imageResourcesPath:e.imageResourcesPath||"",renderInteractiveForms:e.renderInteractiveForms||!1,svgFactory:new p.DOMSVGFactory});i.isRenderable&&e.div.appendChild(i.render())}}}},{key:"update",value:function(e){for(var t=0,r=e.annotations.length;t<r;t++){var n=e.annotations[t],i=e.div.querySelector('[data-annotation-id="'+n.id+'"]');i&&(i.style.transform="matrix("+e.viewport.transform.join(",")+")")}e.div.removeAttribute("hidden")}}]),e}();t.AnnotationLayer=W},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}Object.defineProperty(t,"__esModule",{value:!0}),t.SVGGraphics=void 0;var i=r(1),a=r(151),o=n(r(4)),s=function(){throw new Error("Not implemented: SVGGraphics")};t.SVGGraphics=s;var u={fontStyle:"normal",fontWeight:"normal",fillColor:"#000000"},c=function(){function e(e,t,r){for(var n=-1,i=t;i<r;i++){var a=255&(n^e[i]),o=l[a];n=n>>>8^o}return n^-1}function t(t,r,n,i){var a=i,o=r.length;n[a]=o>>24&255,n[a+1]=o>>16&255,n[a+2]=o>>8&255,n[a+3]=255&o,a+=4,n[a]=255&t.charCodeAt(0),n[a+1]=255&t.charCodeAt(1),n[a+2]=255&t.charCodeAt(2),n[a+3]=255&t.charCodeAt(3),a+=4,n.set(r,a),a+=r.length;var s=e(n,i+4,a);n[a]=s>>24&255,n[a+1]=s>>16&255,n[a+2]=s>>8&255,n[a+3]=255&s}function r(e,t,r){for(var n=1,i=0,a=t;a<r;++a)n=(n+(255&e[a]))%65521,i=(i+n)%65521;return i<<16|n}function n(e){if(!(0,o.default)())return a(e);try{var t;t=parseInt(process.versions.node)>=8?e:new Buffer(e);var r=require("zlib").deflateSync(t,{level:9});return r instanceof Uint8Array?r:new Uint8Array(r)}catch(e){(0,i.warn)("Not compressing PNG because zlib.deflateSync is unavailable: "+e)}return a(e)}function a(e){var t=e.length,n=65535,i=Math.ceil(t/n),a=new Uint8Array(2+t+5*i+4),o=0;a[o++]=120,a[o++]=156;for(var s=0;t>n;)a[o++]=0,a[o++]=255,a[o++]=255,a[o++]=0,a[o++]=0,a.set(e.subarray(s,s+n),o),o+=n,s+=n,t-=n;a[o++]=1,a[o++]=255&t,a[o++]=t>>8&255,a[o++]=65535&~t&255,a[o++]=(65535&~t)>>8&255,a.set(e.subarray(s),o),o+=e.length-s;var u=r(e,0,e.length);return a[o++]=u>>24&255,a[o++]=u>>16&255,a[o++]=u>>8&255,a[o++]=255&u,a}function s(e,r,a,o){var s,l,h,d=e.width,f=e.height,p=e.data;switch(r){case i.ImageKind.GRAYSCALE_1BPP:l=0,s=1,h=d+7>>3;break;case i.ImageKind.RGB_24BPP:l=2,s=8,h=3*d;break;case i.ImageKind.RGBA_32BPP:l=6,s=8,h=4*d;break;default:throw new Error("invalid format")}var v,m,g=new Uint8Array((1+h)*f),y=0,b=0;for(v=0;v<f;++v)g[y++]=0,g.set(p.subarray(b,b+h),y),b+=h,y+=h;if(r===i.ImageKind.GRAYSCALE_1BPP&&o)for(y=0,v=0;v<f;v++)for(y++,m=0;m<h;m++)g[y++]^=255;var _=new Uint8Array([d>>24&255,d>>16&255,d>>8&255,255&d,f>>24&255,f>>16&255,f>>8&255,255&f,s,l,0,0,0]),A=n(g),S=u.length+3*c+_.length+A.length,w=new Uint8Array(S),k=0;return w.set(u,k),k+=u.length,t("IHDR",_,w,k),k+=c+_.length,t("IDATA",A,w,k),k+=c+A.length,t("IEND",new Uint8Array(0),w,k),(0,i.createObjectURL)(w,"image/png",a)}for(var u=new Uint8Array([137,80,78,71,13,10,26,10]),c=12,l=new Int32Array(256),h=0;h<256;h++){for(var d=h,f=0;f<8;f++)d=1&d?3988292384^d>>1&2147483647:d>>1&2147483647;l[h]=d}return function(e,t,r){var n=void 0===e.kind?i.ImageKind.GRAYSCALE_1BPP:e.kind;return s(e,n,t,r)}}(),l=function(){function e(){this.fontSizeScale=1,this.fontWeight=u.fontWeight,this.fontSize=0,this.textMatrix=i.IDENTITY_MATRIX,this.fontMatrix=i.FONT_IDENTITY_MATRIX,this.leading=0,this.textRenderingMode=i.TextRenderingMode.FILL,this.x=0,this.y=0,this.lineX=0,this.lineY=0,this.charSpacing=0,this.wordSpacing=0,this.textHScale=1,this.textRise=0,this.fillColor=u.fillColor,this.strokeColor="#000000",this.fillAlpha=1,this.strokeAlpha=1,this.lineWidth=1,this.lineJoin="",this.lineCap="",this.miterLimit=0,this.dashArray=[],this.dashPhase=0,this.dependencies=[],this.activeClipUrl=null,this.clipGroup=null,this.maskId=""}return e.prototype={clone:function(){return Object.create(this)},setCurrentPoint:function(e,t){this.x=e,this.y=t}},e}();t.SVGGraphics=s=function(){function e(e){for(var t=[],r=[],n=e.length,i=0;i<n;i++)"save"!==e[i].fn?"restore"===e[i].fn?t=r.pop():t.push(e[i]):(t.push({fnId:92,fn:"group",items:[]}),r.push(t),t=t[t.length-1].items);return t}function t(e){if(Number.isInteger(e))return e.toString();var t=e.toFixed(10),r=t.length-1;if("0"!==t[r])return t;do r--;while("0"===t[r]);return t.substring(0,"."===t[r]?r:r+1)}function r(e){if(0===e[4]&&0===e[5]){if(0===e[1]&&0===e[2])return 1===e[0]&&1===e[3]?"":"scale("+t(e[0])+" "+t(e[3])+")";if(e[0]===e[3]&&e[1]===-e[2]){var r=180*Math.acos(e[0])/Math.PI;return"rotate("+t(r)+")"}}else if(1===e[0]&&0===e[1]&&0===e[2]&&1===e[3])return"translate("+t(e[4])+" "+t(e[5])+")";return"matrix("+t(e[0])+" "+t(e[1])+" "+t(e[2])+" "+t(e[3])+" "+t(e[4])+" "+t(e[5])+")"}function n(e,t,r){this.svgFactory=new a.DOMSVGFactory,this.current=new l,this.transformMatrix=i.IDENTITY_MATRIX,this.transformStack=[],this.extraStack=[],this.commonObjs=e,this.objs=t,this.pendingClip=null,this.pendingEOFill=!1,this.embedFonts=!1,this.embeddedFonts=Object.create(null),this.cssStyle=null,this.forceDataSchema=!!r}var o="http://www.w3.org/XML/1998/namespace",s="http://www.w3.org/1999/xlink",h=["butt","round","square"],d=["miter","round","bevel"],f=0,p=0;return n.prototype={save:function(){this.transformStack.push(this.transformMatrix);var e=this.current;this.extraStack.push(e),this.current=e.clone()},restore:function(){this.transformMatrix=this.transformStack.pop(),this.current=this.extraStack.pop(),this.pendingClip=null,this.tgrp=null},group:function(e){this.save(),this.executeOpTree(e),this.restore()},loadDependencies:function(e){for(var t=this,r=e.fnArray,n=r.length,a=e.argsArray,o=0;o<n;o++)if(i.OPS.dependency===r[o])for(var s=a[o],u=0,c=s.length;u<c;u++){var l,h=s[u],d="g_"===h.substring(0,2);l=d?new Promise(function(e){t.commonObjs.get(h,e)}):new Promise(function(e){t.objs.get(h,e)}),this.current.dependencies.push(l)}return Promise.all(this.current.dependencies)},transform:function(e,t,r,n,a,o){var s=[e,t,r,n,a,o];this.transformMatrix=i.Util.transform(this.transformMatrix,s),this.tgrp=null},getSVG:function(e,t){var r=this;this.viewport=t;var n=this._initialize(t);return this.loadDependencies(e).then(function(){r.transformMatrix=i.IDENTITY_MATRIX;var t=r.convertOpList(e);return r.executeOpTree(t),n})},convertOpList:function(t){var r=t.argsArray,n=t.fnArray,a=n.length,o=[],s=[];for(var u in i.OPS)o[i.OPS[u]]=u;for(var c=0;c<a;c++){var l=n[c];s.push({fnId:l,fn:o[l],args:r[c]})}return e(s)},executeOpTree:function(e){for(var t=e.length,r=0;r<t;r++){var n=e[r].fn,a=e[r].fnId,o=e[r].args;switch(0|a){case i.OPS.beginText:this.beginText();break;case i.OPS.dependency:break;case i.OPS.setLeading:this.setLeading(o);break;case i.OPS.setLeadingMoveText:this.setLeadingMoveText(o[0],o[1]);break;case i.OPS.setFont:this.setFont(o);break;case i.OPS.showText:this.showText(o[0]);break;case i.OPS.showSpacedText:this.showText(o[0]);break;case i.OPS.endText:this.endText();break;case i.OPS.moveText:this.moveText(o[0],o[1]);break;case i.OPS.setCharSpacing:this.setCharSpacing(o[0]);break;case i.OPS.setWordSpacing:this.setWordSpacing(o[0]);break;case i.OPS.setHScale:this.setHScale(o[0]);break;case i.OPS.setTextMatrix:this.setTextMatrix(o[0],o[1],o[2],o[3],o[4],o[5]);break;case i.OPS.setTextRise:this.setTextRise(o[0]);break;case i.OPS.setTextRenderingMode:this.setTextRenderingMode(o[0]);break;case i.OPS.setLineWidth:this.setLineWidth(o[0]);break;case i.OPS.setLineJoin:this.setLineJoin(o[0]);break;case i.OPS.setLineCap:this.setLineCap(o[0]);break;case i.OPS.setMiterLimit:this.setMiterLimit(o[0]);break;case i.OPS.setFillRGBColor:this.setFillRGBColor(o[0],o[1],o[2]);break;case i.OPS.setStrokeRGBColor:this.setStrokeRGBColor(o[0],o[1],o[2]);break;case i.OPS.setDash:this.setDash(o[0],o[1]);break;case i.OPS.setGState:this.setGState(o[0]);break;case i.OPS.fill:this.fill();break;case i.OPS.eoFill:this.eoFill();break;case i.OPS.stroke:this.stroke();break;case i.OPS.fillStroke:this.fillStroke();break;case i.OPS.eoFillStroke:this.eoFillStroke();break;case i.OPS.clip:this.clip("nonzero");break;case i.OPS.eoClip:this.clip("evenodd");break;case i.OPS.paintSolidColorImageMask:this.paintSolidColorImageMask();break;case i.OPS.paintJpegXObject:this.paintJpegXObject(o[0],o[1],o[2]);break;case i.OPS.paintImageXObject:this.paintImageXObject(o[0]);break;case i.OPS.paintInlineImageXObject:this.paintInlineImageXObject(o[0]);break;case i.OPS.paintImageMaskXObject:this.paintImageMaskXObject(o[0]);break;case i.OPS.paintFormXObjectBegin:this.paintFormXObjectBegin(o[0],o[1]);break;case i.OPS.paintFormXObjectEnd:this.paintFormXObjectEnd();break;case i.OPS.closePath:this.closePath();break;case i.OPS.closeStroke:this.closeStroke();break;case i.OPS.closeFillStroke:this.closeFillStroke();break;case i.OPS.closeEOFillStroke:this.closeEOFillStroke();break;case i.OPS.nextLine:this.nextLine();break;case i.OPS.transform:this.transform(o[0],o[1],o[2],o[3],o[4],o[5]);break;case i.OPS.constructPath:this.constructPath(o[0],o[1]);break;case i.OPS.endPath:this.endPath();break;case 92:this.group(e[r].items);break;default:(0,i.warn)("Unimplemented operator "+n)}}},setWordSpacing:function(e){this.current.wordSpacing=e},setCharSpacing:function(e){this.current.charSpacing=e},nextLine:function(){this.moveText(0,this.current.leading)},setTextMatrix:function(e,r,n,i,a,o){var s=this.current;this.current.textMatrix=this.current.lineMatrix=[e,r,n,i,a,o],this.current.x=this.current.lineX=0,this.current.y=this.current.lineY=0,s.xcoords=[],s.tspan=this.svgFactory.createElement("svg:tspan"),s.tspan.setAttributeNS(null,"font-family",s.fontFamily),s.tspan.setAttributeNS(null,"font-size",t(s.fontSize)+"px"),s.tspan.setAttributeNS(null,"y",t(-s.y)),s.txtElement=this.svgFactory.createElement("svg:text"),s.txtElement.appendChild(s.tspan)},beginText:function(){this.current.x=this.current.lineX=0,this.current.y=this.current.lineY=0,this.current.textMatrix=i.IDENTITY_MATRIX,this.current.lineMatrix=i.IDENTITY_MATRIX,this.current.tspan=this.svgFactory.createElement("svg:tspan"),this.current.txtElement=this.svgFactory.createElement("svg:text"),this.current.txtgrp=this.svgFactory.createElement("svg:g"),this.current.xcoords=[]},moveText:function(e,r){var n=this.current;this.current.x=this.current.lineX+=e,this.current.y=this.current.lineY+=r,n.xcoords=[],n.tspan=this.svgFactory.createElement("svg:tspan"),n.tspan.setAttributeNS(null,"font-family",n.fontFamily),n.tspan.setAttributeNS(null,"font-size",t(n.fontSize)+"px"),n.tspan.setAttributeNS(null,"y",t(-n.y))},showText:function(e){var n=this.current,a=n.font,s=n.fontSize;if(0!==s){var c,l=n.charSpacing,h=n.wordSpacing,d=n.fontDirection,f=n.textHScale*d,p=e.length,v=a.vertical,m=s*n.fontMatrix[0],g=0;for(c=0;c<p;++c){var y=e[c];if(null!==y)if((0,i.isNum)(y))g+=-y*s*.001;else{var b=y.width,_=y.fontChar,A=(y.isSpace?h:0)+l,S=b*m+A*d;y.isInFont||a.missingFile?(n.xcoords.push(n.x+g*f),n.tspan.textContent+=_,g+=S):g+=S}else g+=d*h}v?n.y-=g*f:n.x+=g*f,n.tspan.setAttributeNS(null,"x",n.xcoords.map(t).join(" ")),n.tspan.setAttributeNS(null,"y",t(-n.y)),n.tspan.setAttributeNS(null,"font-family",n.fontFamily),n.tspan.setAttributeNS(null,"font-size",t(n.fontSize)+"px"),n.fontStyle!==u.fontStyle&&n.tspan.setAttributeNS(null,"font-style",n.fontStyle),n.fontWeight!==u.fontWeight&&n.tspan.setAttributeNS(null,"font-weight",n.fontWeight);var w=n.textRenderingMode&i.TextRenderingMode.FILL_STROKE_MASK;w===i.TextRenderingMode.FILL||w===i.TextRenderingMode.FILL_STROKE?(n.fillColor!==u.fillColor&&n.tspan.setAttributeNS(null,"fill",n.fillColor),n.fillAlpha<1&&n.tspan.setAttributeNS(null,"fill-opacity",n.fillAlpha)):n.textRenderingMode===i.TextRenderingMode.ADD_TO_PATH?n.tspan.setAttributeNS(null,"fill","transparent"):n.tspan.setAttributeNS(null,"fill","none"),w!==i.TextRenderingMode.STROKE&&w!==i.TextRenderingMode.FILL_STROKE||this._setStrokeAttributes(n.tspan);var k=n.textMatrix;0!==n.textRise&&(k=k.slice(),k[5]+=n.textRise),n.txtElement.setAttributeNS(null,"transform",r(k)+" scale(1, -1)"),n.txtElement.setAttributeNS(o,"xml:space","preserve"),n.txtElement.appendChild(n.tspan),n.txtgrp.appendChild(n.txtElement),this._ensureTransformGroup().appendChild(n.txtElement)}},setLeadingMoveText:function(e,t){this.setLeading(-t),this.moveText(e,t)},addFontStyle:function(e){this.cssStyle||(this.cssStyle=this.svgFactory.createElement("svg:style"),this.cssStyle.setAttributeNS(null,"type","text/css"),this.defs.appendChild(this.cssStyle));var t=(0,i.createObjectURL)(e.data,e.mimetype,this.forceDataSchema);this.cssStyle.textContent+='@font-face { font-family: "'+e.loadedName+'"; src: url('+t+"); }\n"},setFont:function(e){var r=this.current,n=this.commonObjs.get(e[0]),a=e[1];this.current.font=n,this.embedFonts&&n.data&&!this.embeddedFonts[n.loadedName]&&(this.addFontStyle(n),
-this.embeddedFonts[n.loadedName]=n),r.fontMatrix=n.fontMatrix?n.fontMatrix:i.FONT_IDENTITY_MATRIX;var o=n.black?n.bold?"bolder":"bold":n.bold?"bold":"normal",s=n.italic?"italic":"normal";a<0?(a=-a,r.fontDirection=-1):r.fontDirection=1,r.fontSize=a,r.fontFamily=n.loadedName,r.fontWeight=o,r.fontStyle=s,r.tspan=this.svgFactory.createElement("svg:tspan"),r.tspan.setAttributeNS(null,"y",t(-r.y)),r.xcoords=[]},endText:function(){var e=this.current;e.textRenderingMode&i.TextRenderingMode.ADD_TO_PATH_FLAG&&e.txtElement&&e.txtElement.hasChildNodes()&&(e.element=e.txtElement,this.clip("nonzero"),this.endPath())},setLineWidth:function(e){e>0&&(this.current.lineWidth=e)},setLineCap:function(e){this.current.lineCap=h[e]},setLineJoin:function(e){this.current.lineJoin=d[e]},setMiterLimit:function(e){this.current.miterLimit=e},setStrokeAlpha:function(e){this.current.strokeAlpha=e},setStrokeRGBColor:function(e,t,r){var n=i.Util.makeCssRgb(e,t,r);this.current.strokeColor=n},setFillAlpha:function(e){this.current.fillAlpha=e},setFillRGBColor:function(e,t,r){var n=i.Util.makeCssRgb(e,t,r);this.current.fillColor=n,this.current.tspan=this.svgFactory.createElement("svg:tspan"),this.current.xcoords=[]},setDash:function(e,t){this.current.dashArray=e,this.current.dashPhase=t},constructPath:function(e,r){var n=this.current,a=n.x,o=n.y;n.path=this.svgFactory.createElement("svg:path");for(var s=[],u=e.length,c=0,l=0;c<u;c++)switch(0|e[c]){case i.OPS.rectangle:a=r[l++],o=r[l++];var h=r[l++],d=r[l++],f=a+h,p=o+d;s.push("M",t(a),t(o),"L",t(f),t(o),"L",t(f),t(p),"L",t(a),t(p),"Z");break;case i.OPS.moveTo:a=r[l++],o=r[l++],s.push("M",t(a),t(o));break;case i.OPS.lineTo:a=r[l++],o=r[l++],s.push("L",t(a),t(o));break;case i.OPS.curveTo:a=r[l+4],o=r[l+5],s.push("C",t(r[l]),t(r[l+1]),t(r[l+2]),t(r[l+3]),t(a),t(o)),l+=6;break;case i.OPS.curveTo2:a=r[l+2],o=r[l+3],s.push("C",t(a),t(o),t(r[l]),t(r[l+1]),t(r[l+2]),t(r[l+3])),l+=4;break;case i.OPS.curveTo3:a=r[l+2],o=r[l+3],s.push("C",t(r[l]),t(r[l+1]),t(a),t(o),t(a),t(o)),l+=4;break;case i.OPS.closePath:s.push("Z")}n.path.setAttributeNS(null,"d",s.join(" ")),n.path.setAttributeNS(null,"fill","none"),this._ensureTransformGroup().appendChild(n.path),n.element=n.path,n.setCurrentPoint(a,o)},endPath:function(){if(this.pendingClip){var e=this.current,t="clippath"+f;f++;var n=this.svgFactory.createElement("svg:clipPath");n.setAttributeNS(null,"id",t),n.setAttributeNS(null,"transform",r(this.transformMatrix));var i=e.element.cloneNode(!0);"evenodd"===this.pendingClip?i.setAttributeNS(null,"clip-rule","evenodd"):i.setAttributeNS(null,"clip-rule","nonzero"),this.pendingClip=null,n.appendChild(i),this.defs.appendChild(n),e.activeClipUrl&&(e.clipGroup=null,this.extraStack.forEach(function(e){e.clipGroup=null}),n.setAttributeNS(null,"clip-path",e.activeClipUrl)),e.activeClipUrl="url(#"+t+")",this.tgrp=null}},clip:function(e){this.pendingClip=e},closePath:function(){var e=this.current;if(e.path){var t=e.path.getAttributeNS(null,"d");t+="Z",e.path.setAttributeNS(null,"d",t)}},setLeading:function(e){this.current.leading=-e},setTextRise:function(e){this.current.textRise=e},setTextRenderingMode:function(e){this.current.textRenderingMode=e},setHScale:function(e){this.current.textHScale=e/100},setGState:function(e){for(var t=0,r=e.length;t<r;t++){var n=e[t],a=n[0],o=n[1];switch(a){case"LW":this.setLineWidth(o);break;case"LC":this.setLineCap(o);break;case"LJ":this.setLineJoin(o);break;case"ML":this.setMiterLimit(o);break;case"D":this.setDash(o[0],o[1]);break;case"Font":this.setFont(o);break;case"CA":this.setStrokeAlpha(o);break;case"ca":this.setFillAlpha(o);break;default:(0,i.warn)("Unimplemented graphic state "+a)}}},fill:function(){var e=this.current;e.element&&(e.element.setAttributeNS(null,"fill",e.fillColor),e.element.setAttributeNS(null,"fill-opacity",e.fillAlpha),this.endPath())},stroke:function(){var e=this.current;e.element&&(this._setStrokeAttributes(e.element),e.element.setAttributeNS(null,"fill","none"),this.endPath())},_setStrokeAttributes:function(e){var r=this.current;e.setAttributeNS(null,"stroke",r.strokeColor),e.setAttributeNS(null,"stroke-opacity",r.strokeAlpha),e.setAttributeNS(null,"stroke-miterlimit",t(r.miterLimit)),e.setAttributeNS(null,"stroke-linecap",r.lineCap),e.setAttributeNS(null,"stroke-linejoin",r.lineJoin),e.setAttributeNS(null,"stroke-width",t(r.lineWidth)+"px"),e.setAttributeNS(null,"stroke-dasharray",r.dashArray.map(t).join(" ")),e.setAttributeNS(null,"stroke-dashoffset",t(r.dashPhase)+"px")},eoFill:function(){this.current.element&&this.current.element.setAttributeNS(null,"fill-rule","evenodd"),this.fill()},fillStroke:function(){this.stroke(),this.fill()},eoFillStroke:function(){this.current.element&&this.current.element.setAttributeNS(null,"fill-rule","evenodd"),this.fillStroke()},closeStroke:function(){this.closePath(),this.stroke()},closeFillStroke:function(){this.closePath(),this.fillStroke()},closeEOFillStroke:function(){this.closePath(),this.eoFillStroke()},paintSolidColorImageMask:function(){var e=this.current,t=this.svgFactory.createElement("svg:rect");t.setAttributeNS(null,"x","0"),t.setAttributeNS(null,"y","0"),t.setAttributeNS(null,"width","1px"),t.setAttributeNS(null,"height","1px"),t.setAttributeNS(null,"fill",e.fillColor),this._ensureTransformGroup().appendChild(t)},paintJpegXObject:function(e,r,n){var i=this.objs.get(e),a=this.svgFactory.createElement("svg:image");a.setAttributeNS(s,"xlink:href",i.src),a.setAttributeNS(null,"width",t(r)),a.setAttributeNS(null,"height",t(n)),a.setAttributeNS(null,"x","0"),a.setAttributeNS(null,"y",t(-n)),a.setAttributeNS(null,"transform","scale("+t(1/r)+" "+t(-1/n)+")"),this._ensureTransformGroup().appendChild(a)},paintImageXObject:function(e){var t=this.objs.get(e);return t?void this.paintInlineImageXObject(t):void(0,i.warn)("Dependent image isn't ready yet")},paintInlineImageXObject:function(e,r){var n=e.width,i=e.height,a=c(e,this.forceDataSchema,!!r),o=this.svgFactory.createElement("svg:rect");o.setAttributeNS(null,"x","0"),o.setAttributeNS(null,"y","0"),o.setAttributeNS(null,"width",t(n)),o.setAttributeNS(null,"height",t(i)),this.current.element=o,this.clip("nonzero");var u=this.svgFactory.createElement("svg:image");u.setAttributeNS(s,"xlink:href",a),u.setAttributeNS(null,"x","0"),u.setAttributeNS(null,"y",t(-i)),u.setAttributeNS(null,"width",t(n)+"px"),u.setAttributeNS(null,"height",t(i)+"px"),u.setAttributeNS(null,"transform","scale("+t(1/n)+" "+t(-1/i)+")"),r?r.appendChild(u):this._ensureTransformGroup().appendChild(u)},paintImageMaskXObject:function(e){var r=this.current,n=e.width,i=e.height,a=r.fillColor;r.maskId="mask"+p++;var o=this.svgFactory.createElement("svg:mask");o.setAttributeNS(null,"id",r.maskId);var s=this.svgFactory.createElement("svg:rect");s.setAttributeNS(null,"x","0"),s.setAttributeNS(null,"y","0"),s.setAttributeNS(null,"width",t(n)),s.setAttributeNS(null,"height",t(i)),s.setAttributeNS(null,"fill",a),s.setAttributeNS(null,"mask","url(#"+r.maskId+")"),this.defs.appendChild(o),this._ensureTransformGroup().appendChild(s),this.paintInlineImageXObject(e,o)},paintFormXObjectBegin:function(e,r){if(Array.isArray(e)&&6===e.length&&this.transform(e[0],e[1],e[2],e[3],e[4],e[5]),r){var n=r[2]-r[0],i=r[3]-r[1],a=this.svgFactory.createElement("svg:rect");a.setAttributeNS(null,"x",r[0]),a.setAttributeNS(null,"y",r[1]),a.setAttributeNS(null,"width",t(n)),a.setAttributeNS(null,"height",t(i)),this.current.element=a,this.clip("nonzero"),this.endPath()}},paintFormXObjectEnd:function(){},_initialize:function(e){var t=this.svgFactory.create(e.width,e.height),n=this.svgFactory.createElement("svg:defs");t.appendChild(n),this.defs=n;var i=this.svgFactory.createElement("svg:g");return i.setAttributeNS(null,"transform",r(e.transform)),t.appendChild(i),this.svg=i,t},_ensureClipGroup:function(){if(!this.current.clipGroup){var e=this.svgFactory.createElement("svg:g");e.setAttributeNS(null,"clip-path",this.current.activeClipUrl),this.svg.appendChild(e),this.current.clipGroup=e}return this.current.clipGroup},_ensureTransformGroup:function(){return this.tgrp||(this.tgrp=this.svgFactory.createElement("svg:g"),this.tgrp.setAttributeNS(null,"transform",r(this.transformMatrix)),this.current.activeClipUrl?this._ensureClipGroup().appendChild(this.tgrp):this.svg.appendChild(this.tgrp)),this.tgrp}},n}()},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function i(e){return(i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function a(e,t){return!t||"object"!==i(t)&&"function"!=typeof t?o(e):t}function o(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function s(e){return(s=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function u(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&c(e,t)}function c(e,t){return(c=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function l(e,t,r,n,i,a,o){try{var s=e[a](o),u=s.value}catch(e){return void r(e)}s.done?t(u):Promise.resolve(u).then(n,i)}function h(e){return function(){var t=this,r=arguments;return new Promise(function(n,i){function a(e){l(s,n,i,a,o,"next",e)}function o(e){l(s,n,i,a,o,"throw",e)}var s=e.apply(t,r);a(void 0)})}}function d(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function f(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function p(e,t,r){return t&&f(e.prototype,t),r&&f(e,r),e}function v(e){var t=S.parse(e);return"file:"===t.protocol||t.host?t:/^[a-z]:[\/\\]/i.test(e)?S.parse("file:///".concat(e)):(t.host||(t.protocol="file:"),t)}function m(e,t){return{protocol:e.protocol,auth:e.auth,host:e.hostname,port:e.port,path:e.path,method:"GET",headers:t}}Object.defineProperty(t,"__esModule",{value:!0}),t.PDFNodeStream=void 0;var g=n(r(147)),y=r(1),b=r(166),_=require("http"),A=require("https"),S=require("url"),w=/^file:\/\/\/[a-zA-Z]:\//,k=function(){function e(t){d(this,e),this.source=t,this.url=v(t.url),this.isHttp="http:"===this.url.protocol||"https:"===this.url.protocol,this.isFsUrl="file:"===this.url.protocol,this.httpHeaders=this.isHttp&&t.httpHeaders||{},this._fullRequest=null,this._rangeRequestReaders=[]}return p(e,[{key:"getFullReader",value:function(){return(0,y.assert)(!this._fullRequest),this._fullRequest=this.isFsUrl?new E(this):new C(this),this._fullRequest}},{key:"getRangeReader",value:function(e,t){var r=this.isFsUrl?new T(this,e,t):new R(this,e,t);return this._rangeRequestReaders.push(r),r}},{key:"cancelAllRequests",value:function(e){this._fullRequest&&this._fullRequest.cancel(e);var t=this._rangeRequestReaders.slice(0);t.forEach(function(t){t.cancel(e)})}}]),e}();t.PDFNodeStream=k;var x=function(){function e(t){d(this,e),this._url=t.url,this._done=!1,this._storedError=null,this.onProgress=null;var r=t.source;this._contentLength=r.length,this._loaded=0,this._filename=null,this._disableRange=r.disableRange||!1,this._rangeChunkSize=r.rangeChunkSize,this._rangeChunkSize||this._disableRange||(this._disableRange=!0),this._isStreamingSupported=!r.disableStream,this._isRangeSupported=!r.disableRange,this._readableStream=null,this._readCapability=(0,y.createPromiseCapability)(),this._headersCapability=(0,y.createPromiseCapability)()}return p(e,[{key:"read",value:function(){function e(){return t.apply(this,arguments)}var t=h(g.default.mark(function e(){var t,r;return g.default.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,this._readCapability.promise;case 2:if(!this._done){e.next=4;break}return e.abrupt("return",{value:void 0,done:!0});case 4:if(!this._storedError){e.next=6;break}throw this._storedError;case 6:if(t=this._readableStream.read(),null!==t){e.next=10;break}return this._readCapability=(0,y.createPromiseCapability)(),e.abrupt("return",this.read());case 10:return this._loaded+=t.length,this.onProgress&&this.onProgress({loaded:this._loaded,total:this._contentLength}),r=new Uint8Array(t).buffer,e.abrupt("return",{value:r,done:!1});case 14:case"end":return e.stop()}},e,this)}));return e}()},{key:"cancel",value:function(e){return this._readableStream?void this._readableStream.destroy(e):void this._error(e)}},{key:"_error",value:function(e){this._storedError=e,this._readCapability.resolve()}},{key:"_setReadableStream",value:function(e){var t=this;this._readableStream=e,e.on("readable",function(){t._readCapability.resolve()}),e.on("end",function(){e.destroy(),t._done=!0,t._readCapability.resolve()}),e.on("error",function(e){t._error(e)}),!this._isStreamingSupported&&this._isRangeSupported&&this._error(new y.AbortException("streaming is disabled")),this._storedError&&this._readableStream.destroy(this._storedError)}},{key:"headersReady",get:function(){return this._headersCapability.promise}},{key:"filename",get:function(){return this._filename}},{key:"contentLength",get:function(){return this._contentLength}},{key:"isRangeSupported",get:function(){return this._isRangeSupported}},{key:"isStreamingSupported",get:function(){return this._isStreamingSupported}}]),e}(),P=function(){function e(t){d(this,e),this._url=t.url,this._done=!1,this._storedError=null,this.onProgress=null,this._loaded=0,this._readableStream=null,this._readCapability=(0,y.createPromiseCapability)();var r=t.source;this._isStreamingSupported=!r.disableStream}return p(e,[{key:"read",value:function(){function e(){return t.apply(this,arguments)}var t=h(g.default.mark(function e(){var t,r;return g.default.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,this._readCapability.promise;case 2:if(!this._done){e.next=4;break}return e.abrupt("return",{value:void 0,done:!0});case 4:if(!this._storedError){e.next=6;break}throw this._storedError;case 6:if(t=this._readableStream.read(),null!==t){e.next=10;break}return this._readCapability=(0,y.createPromiseCapability)(),e.abrupt("return",this.read());case 10:return this._loaded+=t.length,this.onProgress&&this.onProgress({loaded:this._loaded}),r=new Uint8Array(t).buffer,e.abrupt("return",{value:r,done:!1});case 14:case"end":return e.stop()}},e,this)}));return e}()},{key:"cancel",value:function(e){return this._readableStream?void this._readableStream.destroy(e):void this._error(e)}},{key:"_error",value:function(e){this._storedError=e,this._readCapability.resolve()}},{key:"_setReadableStream",value:function(e){var t=this;this._readableStream=e,e.on("readable",function(){t._readCapability.resolve()}),e.on("end",function(){e.destroy(),t._done=!0,t._readCapability.resolve()}),e.on("error",function(e){t._error(e)}),this._storedError&&this._readableStream.destroy(this._storedError)}},{key:"isStreamingSupported",get:function(){return this._isStreamingSupported}}]),e}(),C=function(e){function t(e){var r;d(this,t),r=a(this,s(t).call(this,e));var n=function(t){if(404===t.statusCode){var n=new y.MissingPDFException('Missing PDF "'.concat(r._url,'".'));return r._storedError=n,void r._headersCapability.reject(n)}r._headersCapability.resolve(),r._setReadableStream(t);var i=function(e){return r._readableStream.headers[e.toLowerCase()]},a=(0,b.validateRangeRequestCapabilities)({getResponseHeader:i,isHttp:e.isHttp,rangeChunkSize:r._rangeChunkSize,disableRange:r._disableRange}),o=a.allowRangeRequests,s=a.suggestedLength;r._isRangeSupported=o,r._contentLength=s||r._contentLength,r._filename=(0,b.extractFilenameFromHeader)(i)};return r._request=null,"http:"===r._url.protocol?r._request=_.request(m(r._url,e.httpHeaders),n):r._request=A.request(m(r._url,e.httpHeaders),n),r._request.on("error",function(e){r._storedError=e,r._headersCapability.reject(e)}),r._request.end(),r}return u(t,e),t}(x),R=function(e){function t(e,r,n){var i;d(this,t),i=a(this,s(t).call(this,e)),i._httpHeaders={};for(var o in e.httpHeaders){var u=e.httpHeaders[o];"undefined"!=typeof u&&(i._httpHeaders[o]=u)}i._httpHeaders.Range="bytes=".concat(r,"-").concat(n-1);var c=function(e){if(404===e.statusCode){var t=new y.MissingPDFException('Missing PDF "'.concat(i._url,'".'));return void(i._storedError=t)}i._setReadableStream(e)};return i._request=null,"http:"===i._url.protocol?i._request=_.request(m(i._url,i._httpHeaders),c):i._request=A.request(m(i._url,i._httpHeaders),c),i._request.on("error",function(e){i._storedError=e}),i._request.end(),i}return u(t,e),t}(P),E=function(e){function t(e){var r;d(this,t),r=a(this,s(t).call(this,e));var n=decodeURIComponent(r._url.path);return w.test(r._url.href)&&(n=n.replace(/^\//,"")),r}return u(t,e),t}(x),T=function(e){function t(e,r,n){var i;d(this,t),i=a(this,s(t).call(this,e));var o=decodeURIComponent(i._url.path);return w.test(i._url.href)&&(o=o.replace(/^\//,"")),i._setReadableStream(fs.createReadStream(o,{start:r,end:n-1})),i}return u(t,e),t}(P)},function(e,t,r){"use strict";function n(e){var t=e.getResponseHeader,r=e.isHttp,n=e.rangeChunkSize,i=e.disableRange;(0,s.assert)(n>0,"Range chunk size must be larger than zero");var a={allowRangeRequests:!1,suggestedLength:void 0},o=parseInt(t("Content-Length"),10);if(!Number.isInteger(o))return a;if(a.suggestedLength=o,o<=2*n)return a;if(i||!r)return a;if("bytes"!==t("Accept-Ranges"))return a;var u=t("Content-Encoding")||"identity";return"identity"!==u?a:(a.allowRangeRequests=!0,a)}function i(e){var t=e("Content-Disposition");if(t){var r=(0,u.getFilenameFromContentDispositionHeader)(t);if(/\.pdf$/i.test(r))return r}return null}function a(e,t){return 404===e||0===e&&/^file:/.test(t)?new s.MissingPDFException('Missing PDF "'+t+'".'):new s.UnexpectedResponseException("Unexpected server response ("+e+') while retrieving PDF "'+t+'".',e)}function o(e){return 200===e||206===e}Object.defineProperty(t,"__esModule",{value:!0}),t.createResponseStatusError=a,t.extractFilenameFromHeader=i,t.validateRangeRequestCapabilities=n,t.validateResponseStatus=o;var s=r(1),u=r(167)},function(e,t,r){"use strict";function n(e,t){return o(e)||a(e,t)||i()}function i(){throw new TypeError("Invalid attempt to destructure non-iterable instance")}function a(e,t){var r=[],n=!0,i=!1,a=void 0;try{for(var o,s=e[Symbol.iterator]();!(n=(o=s.next()).done)&&(r.push(o.value),!t||r.length!==t);n=!0);}catch(e){i=!0,a=e}finally{try{n||null==s.return||s.return()}finally{if(i)throw a}}return r}function o(e){if(Array.isArray(e))return e}function s(e){function t(e,t){return new RegExp("(?:^|;)\\s*"+e+'\\s*=\\s*([^";\\s][^;\\s]*|"(?:[^"\\\\]|\\\\"?)+"?)',t)}function r(e,t){if(e){if(!/^[\x00-\xFF]+$/.test(t))return t;try{var r=new TextDecoder(e,{fatal:!0}),n=Array.from(t,function(e){return 255&e.charCodeAt(0)});t=r.decode(new Uint8Array(n)),c=!1}catch(r){if(/^utf-?8$/i.test(e))try{t=decodeURIComponent(escape(t)),c=!1}catch(e){}}}return t}function i(e){return c&&/[\x80-\xff]/.test(e)&&(e=r("utf-8",e),c&&(e=r("iso-8859-1",e))),e}function a(e){for(var r,i=[],a=t("filename\\*((?!0\\d)\\d+)(\\*?)","ig");null!==(r=a.exec(e));){var u=r,c=n(u,4),l=c[1],h=c[2],d=c[3];if(l=parseInt(l,10),l in i){if(0===l)break}else i[l]=[h,d]}for(var f=[],l=0;l<i.length&&l in i;++l){var p=n(i[l],2),h=p[0],d=p[1];d=o(d),h&&(d=unescape(d),0===l&&(d=s(d))),f.push(d)}return f.join("")}function o(e){if(e.startsWith('"')){for(var t=e.slice(1).split('\\"'),r=0;r<t.length;++r){var n=t[r].indexOf('"');n!==-1&&(t[r]=t[r].slice(0,n),t.length=r+1),t[r]=t[r].replace(/\\(.)/g,"$1")}e=t.join('"')}return e}function s(e){var t=e.indexOf("'");if(t===-1)return e;var n=e.slice(0,t),i=e.slice(t+1),a=i.replace(/^[^']*'/,"");return r(n,a)}function u(e){return!e.startsWith("=?")||/[\x00-\x19\x80-\xff]/.test(e)?e:e.replace(/=\?([\w-]*)\?([QqBb])\?((?:[^?]|\?(?!=))*)\?=/g,function(e,t,n,i){if("q"===n||"Q"===n)return i=i.replace(/_/g," "),i=i.replace(/=([0-9a-fA-F]{2})/g,function(e,t){return String.fromCharCode(parseInt(t,16))}),r(t,i);try{i=atob(i)}catch(e){}return r(t,i)})}var c=!0,l=t("filename\\*","i").exec(e);if(l){l=l[1];var h=o(l);return h=unescape(h),h=s(h),h=u(h),i(h)}if(l=a(e)){var d=u(l);return i(d)}if(l=t("filename","i").exec(e)){l=l[1];var f=o(l);return f=u(f),i(f)}return""}Object.defineProperty(t,"__esModule",{value:!0}),t.getFilenameFromContentDispositionHeader=s},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function i(e,t,r,n,i,a,o){try{var s=e[a](o),u=s.value}catch(e){return void r(e)}s.done?t(u):Promise.resolve(u).then(n,i)}function a(e){return function(){var t=this,r=arguments;return new Promise(function(n,a){function o(e){i(u,n,a,o,s,"next",e)}function s(e){i(u,n,a,o,s,"throw",e)}var u=e.apply(t,r);o(void 0)})}}function o(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function s(e,t){for(var r=0;r<t.length;r++){var n=t[r];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function u(e,t,r){return t&&s(e.prototype,t),r&&s(e,r),e}function c(e,t,r){return{method:"GET",headers:e,signal:r&&r.signal,mode:"cors",credentials:t?"include":"same-origin",redirect:"follow"}}Object.defineProperty(t,"__esModule",{value:!0}),t.PDFFetchStream=void 0;var l=n(r(147)),h=r(1),d=r(166),f=function(){function e(t){o(this,e),this.source=t,this.isHttp=/^https?:/i.test(t.url),this.httpHeaders=this.isHttp&&t.httpHeaders||{},this._fullRequestReader=null,this._rangeRequestReaders=[]}return u(e,[{key:"getFullReader",value:function(){return(0,h.assert)(!this._fullRequestReader),this._fullRequestReader=new p(this),this._fullRequestReader}},{key:"getRangeReader",value:function(e,t){var r=new v(this,e,t);return this._rangeRequestReaders.push(r),r}},{key:"cancelAllRequests",value:function(e){this._fullRequestReader&&this._fullRequestReader.cancel(e);var t=this._rangeRequestReaders.slice(0);t.forEach(function(t){t.cancel(e)})}}]),e}();t.PDFFetchStream=f;var p=function(){function e(t){var r=this;o(this,e),this._stream=t,this._reader=null,this._loaded=0,this._filename=null;var n=t.source;this._withCredentials=n.withCredentials,this._contentLength=n.length,this._headersCapability=(0,h.createPromiseCapability)(),this._disableRange=n.disableRange||!1,this._rangeChunkSize=n.rangeChunkSize,this._rangeChunkSize||this._disableRange||(this._disableRange=!0),"undefined"!=typeof AbortController&&(this._abortController=new AbortController),this._isStreamingSupported=!n.disableStream,this._isRangeSupported=!n.disableRange,this._headers=new Headers;for(var i in this._stream.httpHeaders){var a=this._stream.httpHeaders[i];"undefined"!=typeof a&&this._headers.append(i,a)}var s=n.url;fetch(s,c(this._headers,this._withCredentials,this._abortController)).then(function(e){if(!(0,d.validateResponseStatus)(e.status))throw(0,d.createResponseStatusError)(e.status,s);r._reader=e.body.getReader(),r._headersCapability.resolve();var t=function(t){return e.headers.get(t)},n=(0,d.validateRangeRequestCapabilities)({getResponseHeader:t,isHttp:r._stream.isHttp,rangeChunkSize:r._rangeChunkSize,disableRange:r._disableRange}),i=n.allowRangeRequests,a=n.suggestedLength;r._isRangeSupported=i,r._contentLength=a||r._contentLength,r._filename=(0,d.extractFilenameFromHeader)(t),!r._isStreamingSupported&&r._isRangeSupported&&r.cancel(new h.AbortException("streaming is disabled"))}).catch(this._headersCapability.reject),this.onProgress=null}return u(e,[{key:"read",value:function(){function e(){return t.apply(this,arguments)}var t=a(l.default.mark(function e(){var t,r,n,i;return l.default.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,this._headersCapability.promise;case 2:return e.next=4,this._reader.read();case 4:if(t=e.sent,r=t.value,n=t.done,!n){e.next=9;break}return e.abrupt("return",{value:r,done:n});case 9:return this._loaded+=r.byteLength,this.onProgress&&this.onProgress({loaded:this._loaded,total:this._contentLength}),i=new Uint8Array(r).buffer,e.abrupt("return",{value:i,done:!1});case 13:case"end":return e.stop()}},e,this)}));return e}()},{key:"cancel",value:function(e){this._reader&&this._reader.cancel(e),this._abortController&&this._abortController.abort()}},{key:"headersReady",get:function(){return this._headersCapability.promise}},{key:"filename",get:function(){return this._filename}},{key:"contentLength",get:function(){return this._contentLength}},{key:"isRangeSupported",get:function(){return this._isRangeSupported}},{key:"isStreamingSupported",get:function(){return this._isStreamingSupported}}]),e}(),v=function(){function e(t,r,n){var i=this;o(this,e),this._stream=t,this._reader=null,this._loaded=0;var a=t.source;this._withCredentials=a.withCredentials,this._readCapability=(0,h.createPromiseCapability)(),this._isStreamingSupported=!a.disableStream,"undefined"!=typeof AbortController&&(this._abortController=new AbortController),this._headers=new Headers;for(var s in this._stream.httpHeaders){var u=this._stream.httpHeaders[s];"undefined"!=typeof u&&this._headers.append(s,u)}var l=r+"-"+(n-1);this._headers.append("Range","bytes="+l);var f=a.url;fetch(f,c(this._headers,this._withCredentials,this._abortController)).then(function(e){if(!(0,d.validateResponseStatus)(e.status))throw(0,d.createResponseStatusError)(e.status,f);i._readCapability.resolve(),i._reader=e.body.getReader()}),this.onProgress=null}return u(e,[{key:"read",value:function(){function e(){return t.apply(this,arguments)}var t=a(l.default.mark(function e(){var t,r,n,i;return l.default.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:return e.next=2,this._readCapability.promise;case 2:return e.next=4,this._reader.read();case 4:if(t=e.sent,r=t.value,n=t.done,!n){e.next=9;break}return e.abrupt("return",{value:r,done:n});case 9:return this._loaded+=r.byteLength,this.onProgress&&this.onProgress({loaded:this._loaded}),i=new Uint8Array(r).buffer,e.abrupt("return",{value:i,done:!1});case 13:case"end":return e.stop()}},e,this)}));return e}()},{key:"cancel",value:function(e){this._reader&&this._reader.cancel(e),this._abortController&&this._abortController.abort()}},{key:"isStreamingSupported",get:function(){return this._isStreamingSupported}}]),e}()},function(e,t,r){"use strict";function n(e){return e&&e.__esModule?e:{default:e}}function i(e,t,r,n,i,a,o){try{var s=e[a](o),u=s.value}catch(e){return void r(e)}s.done?t(u):Promise.resolve(u).then(n,i)}function a(e){return function(){var t=this,r=arguments;return new Promise(function(n,a){function o(e){i(u,n,a,o,s,"next",e)}function s(e){i(u,n,a,o,s,"throw",e)}var u=e.apply(t,r);o(void 0)})}}function o(e,t){this.url=e,t=t||{},this.isHttp=/^https?:/i.test(e),this.httpHeaders=this.isHttp&&t.httpHeaders||{},this.withCredentials=t.withCredentials||!1,this.getXhr=t.getXhr||function(){return new XMLHttpRequest},this.currXhrId=0,this.pendingRequests=Object.create(null),this.loadedRequests=Object.create(null)}function s(e){var t=e.response;if("string"!=typeof t)return t;var r=(0,d.stringToBytes)(t);return r.buffer}function u(e){this._source=e,this._manager=new o(e.url,{httpHeaders:e.httpHeaders,withCredentials:e.withCredentials}),this._rangeChunkSize=e.rangeChunkSize,this._fullRequestReader=null,this._rangeRequestReaders=[]}function c(e,t){this._manager=e;var r={onHeadersReceived:this._onHeadersReceived.bind(this),onProgressiveData:t.disableStream?null:this._onProgressiveData.bind(this),onDone:this._onDone.bind(this),onError:this._onError.bind(this),onProgress:this._onProgress.bind(this)};this._url=t.url,this._fullRequestId=e.requestFull(r),this._headersReceivedCapability=(0,d.createPromiseCapability)(),this._disableRange=t.disableRange||!1,this._contentLength=t.length,this._rangeChunkSize=t.rangeChunkSize,this._rangeChunkSize||this._disableRange||(this._disableRange=!0),this._isStreamingSupported=!1,this._isRangeSupported=!1,this._cachedChunks=[],this._requests=[],this._done=!1,this._storedError=void 0,this._filename=null,this.onProgress=null}function l(e,t,r){this._manager=e;var n={onDone:this._onDone.bind(this),onProgress:this._onProgress.bind(this)};this._requestId=e.requestRange(t,r,n),this._requests=[],this._queuedChunk=null,this._done=!1,this.onProgress=null,this.onClosed=null}Object.defineProperty(t,"__esModule",{value:!0}),t.PDFNetworkStream=u,t.NetworkManager=o;var h=n(r(147)),d=r(1),f=r(166),p=n(r(3)),v=200,m=206,g=function(){try{var e=new XMLHttpRequest;return e.open("GET",p.default.location.href),e.responseType="moz-chunked-arraybuffer","moz-chunked-arraybuffer"===e.responseType}catch(e){return!1}}();o.prototype={requestRange:function(e,t,r){var n={begin:e,end:t};for(var i in r)n[i]=r[i];return this.request(n)},requestFull:function(e){return this.request(e)},request:function(e){var t=this.getXhr(),r=this.currXhrId++,n=this.pendingRequests[r]={xhr:t};t.open("GET",this.url),t.withCredentials=this.withCredentials;for(var i in this.httpHeaders){var a=this.httpHeaders[i];"undefined"!=typeof a&&t.setRequestHeader(i,a)}if(this.isHttp&&"begin"in e&&"end"in e){var o=e.begin+"-"+(e.end-1);t.setRequestHeader("Range","bytes="+o),n.expectedStatus=206}else n.expectedStatus=200;var s=g&&!!e.onProgressiveData;return s?(t.responseType="moz-chunked-arraybuffer",n.onProgressiveData=e.onProgressiveData,n.mozChunked=!0):t.responseType="arraybuffer",e.onError&&(t.onerror=function(r){e.onError(t.status)}),t.onreadystatechange=this.onStateChange.bind(this,r),t.onprogress=this.onProgress.bind(this,r),n.onHeadersReceived=e.onHeadersReceived,n.onDone=e.onDone,n.onError=e.onError,n.onProgress=e.onProgress,t.send(null),r},onProgress:function(e,t){var r=this.pendingRequests[e];if(r){if(r.mozChunked){var n=s(r.xhr);r.onProgressiveData(n)}var i=r.onProgress;i&&i(t)}},onStateChange:function(e,t){var r=this.pendingRequests[e];if(r){var n=r.xhr;if(n.readyState>=2&&r.onHeadersReceived&&(r.onHeadersReceived(),delete r.onHeadersReceived),4===n.readyState&&e in this.pendingRequests){if(delete this.pendingRequests[e],0===n.status&&this.isHttp)return void(r.onError&&r.onError(n.status));var i=n.status||v,a=i===v&&r.expectedStatus===m;if(!a&&i!==r.expectedStatus)return void(r.onError&&r.onError(n.status));this.loadedRequests[e]=!0;var o=s(n);if(i===m){var u=n.getResponseHeader("Content-Range"),c=/bytes (\d+)-(\d+)\/(\d+)/.exec(u),l=parseInt(c[1],10);r.onDone({begin:l,chunk:o})}else r.onProgressiveData?r.onDone(null):o?r.onDone({begin:0,chunk:o}):r.onError&&r.onError(n.status)}}},hasPendingRequests:function(){for(var e in this.pendingRequests)return!0;return!1},getRequestXhr:function(e){return this.pendingRequests[e].xhr},isStreamingRequest:function(e){return!!this.pendingRequests[e].onProgressiveData},isPendingRequest:function(e){return e in this.pendingRequests},isLoadedRequest:function(e){return e in this.loadedRequests},abortAllRequests:function(){for(var e in this.pendingRequests)this.abortRequest(0|e)},abortRequest:function(e){var t=this.pendingRequests[e].xhr;delete this.pendingRequests[e],t.abort()}},u.prototype={_onRangeRequestReaderClosed:function(e){var t=this._rangeRequestReaders.indexOf(e);t>=0&&this._rangeRequestReaders.splice(t,1)},getFullReader:function(){return(0,d.assert)(!this._fullRequestReader),this._fullRequestReader=new c(this._manager,this._source),this._fullRequestReader},getRangeReader:function(e,t){var r=new l(this._manager,e,t);return r.onClosed=this._onRangeRequestReaderClosed.bind(this),this._rangeRequestReaders.push(r),r},cancelAllRequests:function(e){this._fullRequestReader&&this._fullRequestReader.cancel(e);var t=this._rangeRequestReaders.slice(0);t.forEach(function(t){t.cancel(e)})}},c.prototype={_onHeadersReceived:function(){var e=this._fullRequestId,t=this._manager.getRequestXhr(e),r=function(e){return t.getResponseHeader(e)},n=(0,f.validateRangeRequestCapabilities)({getResponseHeader:r,isHttp:this._manager.isHttp,rangeChunkSize:this._rangeChunkSize,disableRange:this._disableRange
-}),i=n.allowRangeRequests,a=n.suggestedLength;i&&(this._isRangeSupported=!0),this._contentLength=a||this._contentLength,this._filename=(0,f.extractFilenameFromHeader)(r);var o=this._manager;o.isStreamingRequest(e)?this._isStreamingSupported=!0:this._isRangeSupported&&o.abortRequest(e),this._headersReceivedCapability.resolve()},_onProgressiveData:function(e){if(this._requests.length>0){var t=this._requests.shift();t.resolve({value:e,done:!1})}else this._cachedChunks.push(e)},_onDone:function(e){e&&this._onProgressiveData(e.chunk),this._done=!0,this._cachedChunks.length>0||(this._requests.forEach(function(e){e.resolve({value:void 0,done:!0})}),this._requests=[])},_onError:function(e){var t=this._url,r=(0,f.createResponseStatusError)(e,t);this._storedError=r,this._headersReceivedCapability.reject(r),this._requests.forEach(function(e){e.reject(r)}),this._requests=[],this._cachedChunks=[]},_onProgress:function(e){this.onProgress&&this.onProgress({loaded:e.loaded,total:e.lengthComputable?e.total:this._contentLength})},get filename(){return this._filename},get isRangeSupported(){return this._isRangeSupported},get isStreamingSupported(){return this._isStreamingSupported},get contentLength(){return this._contentLength},get headersReady(){return this._headersReceivedCapability.promise},read:function(){function e(){return t.apply(this,arguments)}var t=a(h.default.mark(function e(){var t,r;return h.default.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(!this._storedError){e.next=2;break}throw this._storedError;case 2:if(!(this._cachedChunks.length>0)){e.next=5;break}return t=this._cachedChunks.shift(),e.abrupt("return",{value:t,done:!1});case 5:if(!this._done){e.next=7;break}return e.abrupt("return",{value:void 0,done:!0});case 7:return r=(0,d.createPromiseCapability)(),this._requests.push(r),e.abrupt("return",r.promise);case 10:case"end":return e.stop()}},e,this)}));return e}(),cancel:function(e){this._done=!0,this._headersReceivedCapability.reject(e),this._requests.forEach(function(e){e.resolve({value:void 0,done:!0})}),this._requests=[],this._manager.isPendingRequest(this._fullRequestId)&&this._manager.abortRequest(this._fullRequestId),this._fullRequestReader=null}},l.prototype={_close:function(){this.onClosed&&this.onClosed(this)},_onDone:function(e){var t=e.chunk;if(this._requests.length>0){var r=this._requests.shift();r.resolve({value:t,done:!1})}else this._queuedChunk=t;this._done=!0,this._requests.forEach(function(e){e.resolve({value:void 0,done:!0})}),this._requests=[],this._close()},_onProgress:function(e){!this.isStreamingSupported&&this.onProgress&&this.onProgress({loaded:e.loaded})},get isStreamingSupported(){return!1},read:function(){function e(){return t.apply(this,arguments)}var t=a(h.default.mark(function e(){var t,r;return h.default.wrap(function(e){for(;;)switch(e.prev=e.next){case 0:if(null===this._queuedChunk){e.next=4;break}return t=this._queuedChunk,this._queuedChunk=null,e.abrupt("return",{value:t,done:!1});case 4:if(!this._done){e.next=6;break}return e.abrupt("return",{value:void 0,done:!0});case 6:return r=(0,d.createPromiseCapability)(),this._requests.push(r),e.abrupt("return",r.promise);case 9:case"end":return e.stop()}},e,this)}));return e}(),cancel:function(e){this._done=!0,this._requests.forEach(function(e){e.resolve({value:void 0,done:!0})}),this._requests=[],this._manager.isPendingRequest(this._requestId)&&this._manager.abortRequest(this._requestId),this._close()}}}])});
+/* Copyright 2017 Mozilla Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define("./pdf.js", [], factory);
+	else if(typeof exports === 'object')
+		exports["./pdf.js"] = factory();
+	else
+		root["./pdf.js"] = root.pdfjsLib = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __w_pdfjs_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __w_pdfjs_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__w_pdfjs_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__w_pdfjs_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__w_pdfjs_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__w_pdfjs_require__.d = function(exports, name, getter) {
+/******/ 		if(!__w_pdfjs_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__w_pdfjs_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__w_pdfjs_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__w_pdfjs_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__w_pdfjs_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __w_pdfjs_require__(__w_pdfjs_require__.s = 13);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+
+var compatibility = __w_pdfjs_require__(14);
+var globalScope = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : undefined;
+var FONT_IDENTITY_MATRIX = [0.001, 0, 0, 0.001, 0, 0];
+var TextRenderingMode = {
+  FILL: 0,
+  STROKE: 1,
+  FILL_STROKE: 2,
+  INVISIBLE: 3,
+  FILL_ADD_TO_PATH: 4,
+  STROKE_ADD_TO_PATH: 5,
+  FILL_STROKE_ADD_TO_PATH: 6,
+  ADD_TO_PATH: 7,
+  FILL_STROKE_MASK: 3,
+  ADD_TO_PATH_FLAG: 4
+};
+var ImageKind = {
+  GRAYSCALE_1BPP: 1,
+  RGB_24BPP: 2,
+  RGBA_32BPP: 3
+};
+var AnnotationType = {
+  TEXT: 1,
+  LINK: 2,
+  FREETEXT: 3,
+  LINE: 4,
+  SQUARE: 5,
+  CIRCLE: 6,
+  POLYGON: 7,
+  POLYLINE: 8,
+  HIGHLIGHT: 9,
+  UNDERLINE: 10,
+  SQUIGGLY: 11,
+  STRIKEOUT: 12,
+  STAMP: 13,
+  CARET: 14,
+  INK: 15,
+  POPUP: 16,
+  FILEATTACHMENT: 17,
+  SOUND: 18,
+  MOVIE: 19,
+  WIDGET: 20,
+  SCREEN: 21,
+  PRINTERMARK: 22,
+  TRAPNET: 23,
+  WATERMARK: 24,
+  THREED: 25,
+  REDACT: 26
+};
+var AnnotationFlag = {
+  INVISIBLE: 0x01,
+  HIDDEN: 0x02,
+  PRINT: 0x04,
+  NOZOOM: 0x08,
+  NOROTATE: 0x10,
+  NOVIEW: 0x20,
+  READONLY: 0x40,
+  LOCKED: 0x80,
+  TOGGLENOVIEW: 0x100,
+  LOCKEDCONTENTS: 0x200
+};
+var AnnotationFieldFlag = {
+  READONLY: 0x0000001,
+  REQUIRED: 0x0000002,
+  NOEXPORT: 0x0000004,
+  MULTILINE: 0x0001000,
+  PASSWORD: 0x0002000,
+  NOTOGGLETOOFF: 0x0004000,
+  RADIO: 0x0008000,
+  PUSHBUTTON: 0x0010000,
+  COMBO: 0x0020000,
+  EDIT: 0x0040000,
+  SORT: 0x0080000,
+  FILESELECT: 0x0100000,
+  MULTISELECT: 0x0200000,
+  DONOTSPELLCHECK: 0x0400000,
+  DONOTSCROLL: 0x0800000,
+  COMB: 0x1000000,
+  RICHTEXT: 0x2000000,
+  RADIOSINUNISON: 0x2000000,
+  COMMITONSELCHANGE: 0x4000000
+};
+var AnnotationBorderStyleType = {
+  SOLID: 1,
+  DASHED: 2,
+  BEVELED: 3,
+  INSET: 4,
+  UNDERLINE: 5
+};
+var StreamType = {
+  UNKNOWN: 0,
+  FLATE: 1,
+  LZW: 2,
+  DCT: 3,
+  JPX: 4,
+  JBIG: 5,
+  A85: 6,
+  AHX: 7,
+  CCF: 8,
+  RL: 9
+};
+var FontType = {
+  UNKNOWN: 0,
+  TYPE1: 1,
+  TYPE1C: 2,
+  CIDFONTTYPE0: 3,
+  CIDFONTTYPE0C: 4,
+  TRUETYPE: 5,
+  CIDFONTTYPE2: 6,
+  TYPE3: 7,
+  OPENTYPE: 8,
+  TYPE0: 9,
+  MMTYPE1: 10
+};
+var VERBOSITY_LEVELS = {
+  errors: 0,
+  warnings: 1,
+  infos: 5
+};
+var CMapCompressionType = {
+  NONE: 0,
+  BINARY: 1,
+  STREAM: 2
+};
+var OPS = {
+  dependency: 1,
+  setLineWidth: 2,
+  setLineCap: 3,
+  setLineJoin: 4,
+  setMiterLimit: 5,
+  setDash: 6,
+  setRenderingIntent: 7,
+  setFlatness: 8,
+  setGState: 9,
+  save: 10,
+  restore: 11,
+  transform: 12,
+  moveTo: 13,
+  lineTo: 14,
+  curveTo: 15,
+  curveTo2: 16,
+  curveTo3: 17,
+  closePath: 18,
+  rectangle: 19,
+  stroke: 20,
+  closeStroke: 21,
+  fill: 22,
+  eoFill: 23,
+  fillStroke: 24,
+  eoFillStroke: 25,
+  closeFillStroke: 26,
+  closeEOFillStroke: 27,
+  endPath: 28,
+  clip: 29,
+  eoClip: 30,
+  beginText: 31,
+  endText: 32,
+  setCharSpacing: 33,
+  setWordSpacing: 34,
+  setHScale: 35,
+  setLeading: 36,
+  setFont: 37,
+  setTextRenderingMode: 38,
+  setTextRise: 39,
+  moveText: 40,
+  setLeadingMoveText: 41,
+  setTextMatrix: 42,
+  nextLine: 43,
+  showText: 44,
+  showSpacedText: 45,
+  nextLineShowText: 46,
+  nextLineSetSpacingShowText: 47,
+  setCharWidth: 48,
+  setCharWidthAndBounds: 49,
+  setStrokeColorSpace: 50,
+  setFillColorSpace: 51,
+  setStrokeColor: 52,
+  setStrokeColorN: 53,
+  setFillColor: 54,
+  setFillColorN: 55,
+  setStrokeGray: 56,
+  setFillGray: 57,
+  setStrokeRGBColor: 58,
+  setFillRGBColor: 59,
+  setStrokeCMYKColor: 60,
+  setFillCMYKColor: 61,
+  shadingFill: 62,
+  beginInlineImage: 63,
+  beginImageData: 64,
+  endInlineImage: 65,
+  paintXObject: 66,
+  markPoint: 67,
+  markPointProps: 68,
+  beginMarkedContent: 69,
+  beginMarkedContentProps: 70,
+  endMarkedContent: 71,
+  beginCompat: 72,
+  endCompat: 73,
+  paintFormXObjectBegin: 74,
+  paintFormXObjectEnd: 75,
+  beginGroup: 76,
+  endGroup: 77,
+  beginAnnotations: 78,
+  endAnnotations: 79,
+  beginAnnotation: 80,
+  endAnnotation: 81,
+  paintJpegXObject: 82,
+  paintImageMaskXObject: 83,
+  paintImageMaskXObjectGroup: 84,
+  paintImageXObject: 85,
+  paintInlineImageXObject: 86,
+  paintInlineImageXObjectGroup: 87,
+  paintImageXObjectRepeat: 88,
+  paintImageMaskXObjectRepeat: 89,
+  paintSolidColorImageMask: 90,
+  constructPath: 91
+};
+var verbosity = VERBOSITY_LEVELS.warnings;
+function setVerbosityLevel(level) {
+  verbosity = level;
+}
+function getVerbosityLevel() {
+  return verbosity;
+}
+function info(msg) {
+  if (verbosity >= VERBOSITY_LEVELS.infos) {
+    console.log('Info: ' + msg);
+  }
+}
+function warn(msg) {
+  if (verbosity >= VERBOSITY_LEVELS.warnings) {
+    // console.log('Warning: ' + msg);
+  }
+}
+function deprecated(details) {
+  console.log('Deprecated API usage: ' + details);
+}
+function error(msg) {
+  if (verbosity >= VERBOSITY_LEVELS.errors) {
+    console.log('Error: ' + msg);
+    console.log(backtrace());
+  }
+  throw new Error(msg);
+}
+function backtrace() {
+  try {
+    throw new Error();
+  } catch (e) {
+    return e.stack ? e.stack.split('\n').slice(2).join('\n') : '';
+  }
+}
+function assert(cond, msg) {
+  if (!cond) {
+    error(msg);
+  }
+}
+var UNSUPPORTED_FEATURES = {
+  unknown: 'unknown',
+  forms: 'forms',
+  javaScript: 'javaScript',
+  smask: 'smask',
+  shadingPattern: 'shadingPattern',
+  font: 'font'
+};
+function isSameOrigin(baseUrl, otherUrl) {
+  try {
+    var base = new URL(baseUrl);
+    if (!base.origin || base.origin === 'null') {
+      return false;
+    }
+  } catch (e) {
+    return false;
+  }
+  var other = new URL(otherUrl, base);
+  return base.origin === other.origin;
+}
+function isValidProtocol(url) {
+  if (!url) {
+    return false;
+  }
+  switch (url.protocol) {
+    case 'http:':
+    case 'https:':
+    case 'ftp:':
+    case 'mailto:':
+    case 'tel:':
+      return true;
+    default:
+      return false;
+  }
+}
+function createValidAbsoluteUrl(url, baseUrl) {
+  if (!url) {
+    return null;
+  }
+  try {
+    var absoluteUrl = baseUrl ? new URL(url, baseUrl) : new URL(url);
+    if (isValidProtocol(absoluteUrl)) {
+      return absoluteUrl;
+    }
+  } catch (ex) {}
+  return null;
+}
+function shadow(obj, prop, value) {
+  Object.defineProperty(obj, prop, {
+    value: value,
+    enumerable: true,
+    configurable: true,
+    writable: false
+  });
+  return value;
+}
+function getLookupTableFactory(initializer) {
+  var lookup;
+  return function () {
+    if (initializer) {
+      lookup = Object.create(null);
+      initializer(lookup);
+      initializer = null;
+    }
+    return lookup;
+  };
+}
+var PasswordResponses = {
+  NEED_PASSWORD: 1,
+  INCORRECT_PASSWORD: 2
+};
+var PasswordException = function PasswordExceptionClosure() {
+  function PasswordException(msg, code) {
+    this.name = 'PasswordException';
+    this.message = msg;
+    this.code = code;
+  }
+  PasswordException.prototype = new Error();
+  PasswordException.constructor = PasswordException;
+  return PasswordException;
+}();
+var UnknownErrorException = function UnknownErrorExceptionClosure() {
+  function UnknownErrorException(msg, details) {
+    this.name = 'UnknownErrorException';
+    this.message = msg;
+    this.details = details;
+  }
+  UnknownErrorException.prototype = new Error();
+  UnknownErrorException.constructor = UnknownErrorException;
+  return UnknownErrorException;
+}();
+var InvalidPDFException = function InvalidPDFExceptionClosure() {
+  function InvalidPDFException(msg) {
+    this.name = 'InvalidPDFException';
+    this.message = msg;
+  }
+  InvalidPDFException.prototype = new Error();
+  InvalidPDFException.constructor = InvalidPDFException;
+  return InvalidPDFException;
+}();
+var MissingPDFException = function MissingPDFExceptionClosure() {
+  function MissingPDFException(msg) {
+    this.name = 'MissingPDFException';
+    this.message = msg;
+  }
+  MissingPDFException.prototype = new Error();
+  MissingPDFException.constructor = MissingPDFException;
+  return MissingPDFException;
+}();
+var UnexpectedResponseException = function UnexpectedResponseExceptionClosure() {
+  function UnexpectedResponseException(msg, status) {
+    this.name = 'UnexpectedResponseException';
+    this.message = msg;
+    this.status = status;
+  }
+  UnexpectedResponseException.prototype = new Error();
+  UnexpectedResponseException.constructor = UnexpectedResponseException;
+  return UnexpectedResponseException;
+}();
+var NotImplementedException = function NotImplementedExceptionClosure() {
+  function NotImplementedException(msg) {
+    this.message = msg;
+  }
+  NotImplementedException.prototype = new Error();
+  NotImplementedException.prototype.name = 'NotImplementedException';
+  NotImplementedException.constructor = NotImplementedException;
+  return NotImplementedException;
+}();
+var MissingDataException = function MissingDataExceptionClosure() {
+  function MissingDataException(begin, end) {
+    this.begin = begin;
+    this.end = end;
+    this.message = 'Missing data [' + begin + ', ' + end + ')';
+  }
+  MissingDataException.prototype = new Error();
+  MissingDataException.prototype.name = 'MissingDataException';
+  MissingDataException.constructor = MissingDataException;
+  return MissingDataException;
+}();
+var XRefParseException = function XRefParseExceptionClosure() {
+  function XRefParseException(msg) {
+    this.message = msg;
+  }
+  XRefParseException.prototype = new Error();
+  XRefParseException.prototype.name = 'XRefParseException';
+  XRefParseException.constructor = XRefParseException;
+  return XRefParseException;
+}();
+var NullCharactersRegExp = /\x00/g;
+function removeNullCharacters(str) {
+  if (typeof str !== 'string') {
+    warn('The argument for removeNullCharacters must be a string.');
+    return str;
+  }
+  return str.replace(NullCharactersRegExp, '');
+}
+function bytesToString(bytes) {
+  assert(bytes !== null && typeof bytes === 'object' && bytes.length !== undefined, 'Invalid argument for bytesToString');
+  var length = bytes.length;
+  var MAX_ARGUMENT_COUNT = 8192;
+  if (length < MAX_ARGUMENT_COUNT) {
+    return String.fromCharCode.apply(null, bytes);
+  }
+  var strBuf = [];
+  for (var i = 0; i < length; i += MAX_ARGUMENT_COUNT) {
+    var chunkEnd = Math.min(i + MAX_ARGUMENT_COUNT, length);
+    var chunk = bytes.subarray(i, chunkEnd);
+    strBuf.push(String.fromCharCode.apply(null, chunk));
+  }
+  return strBuf.join('');
+}
+function stringToBytes(str) {
+  assert(typeof str === 'string', 'Invalid argument for stringToBytes');
+  var length = str.length;
+  var bytes = new Uint8Array(length);
+  for (var i = 0; i < length; ++i) {
+    bytes[i] = str.charCodeAt(i) & 0xFF;
+  }
+  return bytes;
+}
+function arrayByteLength(arr) {
+  if (arr.length !== undefined) {
+    return arr.length;
+  }
+  assert(arr.byteLength !== undefined);
+  return arr.byteLength;
+}
+function arraysToBytes(arr) {
+  if (arr.length === 1 && arr[0] instanceof Uint8Array) {
+    return arr[0];
+  }
+  var resultLength = 0;
+  var i,
+      ii = arr.length;
+  var item, itemLength;
+  for (i = 0; i < ii; i++) {
+    item = arr[i];
+    itemLength = arrayByteLength(item);
+    resultLength += itemLength;
+  }
+  var pos = 0;
+  var data = new Uint8Array(resultLength);
+  for (i = 0; i < ii; i++) {
+    item = arr[i];
+    if (!(item instanceof Uint8Array)) {
+      if (typeof item === 'string') {
+        item = stringToBytes(item);
+      } else {
+        item = new Uint8Array(item);
+      }
+    }
+    itemLength = item.byteLength;
+    data.set(item, pos);
+    pos += itemLength;
+  }
+  return data;
+}
+function string32(value) {
+  return String.fromCharCode(value >> 24 & 0xff, value >> 16 & 0xff, value >> 8 & 0xff, value & 0xff);
+}
+function log2(x) {
+  var n = 1,
+      i = 0;
+  while (x > n) {
+    n <<= 1;
+    i++;
+  }
+  return i;
+}
+function readInt8(data, start) {
+  return data[start] << 24 >> 24;
+}
+function readUint16(data, offset) {
+  return data[offset] << 8 | data[offset + 1];
+}
+function readUint32(data, offset) {
+  return (data[offset] << 24 | data[offset + 1] << 16 | data[offset + 2] << 8 | data[offset + 3]) >>> 0;
+}
+function isLittleEndian() {
+  var buffer8 = new Uint8Array(2);
+  buffer8[0] = 1;
+  var buffer16 = new Uint16Array(buffer8.buffer);
+  return buffer16[0] === 1;
+}
+function isEvalSupported() {
+  try {
+    new Function('');
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+var Uint32ArrayView = function Uint32ArrayViewClosure() {
+  function Uint32ArrayView(buffer, length) {
+    this.buffer = buffer;
+    this.byteLength = buffer.length;
+    this.length = length === undefined ? this.byteLength >> 2 : length;
+    ensureUint32ArrayViewProps(this.length);
+  }
+  Uint32ArrayView.prototype = Object.create(null);
+  var uint32ArrayViewSetters = 0;
+  function createUint32ArrayProp(index) {
+    return {
+      get: function () {
+        var buffer = this.buffer,
+            offset = index << 2;
+        return (buffer[offset] | buffer[offset + 1] << 8 | buffer[offset + 2] << 16 | buffer[offset + 3] << 24) >>> 0;
+      },
+      set: function (value) {
+        var buffer = this.buffer,
+            offset = index << 2;
+        buffer[offset] = value & 255;
+        buffer[offset + 1] = value >> 8 & 255;
+        buffer[offset + 2] = value >> 16 & 255;
+        buffer[offset + 3] = value >>> 24 & 255;
+      }
+    };
+  }
+  function ensureUint32ArrayViewProps(length) {
+    while (uint32ArrayViewSetters < length) {
+      Object.defineProperty(Uint32ArrayView.prototype, uint32ArrayViewSetters, createUint32ArrayProp(uint32ArrayViewSetters));
+      uint32ArrayViewSetters++;
+    }
+  }
+  return Uint32ArrayView;
+}();
+exports.Uint32ArrayView = Uint32ArrayView;
+var IDENTITY_MATRIX = [1, 0, 0, 1, 0, 0];
+var Util = function UtilClosure() {
+  function Util() {}
+  var rgbBuf = ['rgb(', 0, ',', 0, ',', 0, ')'];
+  Util.makeCssRgb = function Util_makeCssRgb(r, g, b) {
+    rgbBuf[1] = r;
+    rgbBuf[3] = g;
+    rgbBuf[5] = b;
+    return rgbBuf.join('');
+  };
+  Util.transform = function Util_transform(m1, m2) {
+    return [m1[0] * m2[0] + m1[2] * m2[1], m1[1] * m2[0] + m1[3] * m2[1], m1[0] * m2[2] + m1[2] * m2[3], m1[1] * m2[2] + m1[3] * m2[3], m1[0] * m2[4] + m1[2] * m2[5] + m1[4], m1[1] * m2[4] + m1[3] * m2[5] + m1[5]];
+  };
+  Util.applyTransform = function Util_applyTransform(p, m) {
+    var xt = p[0] * m[0] + p[1] * m[2] + m[4];
+    var yt = p[0] * m[1] + p[1] * m[3] + m[5];
+    return [xt, yt];
+  };
+  Util.applyInverseTransform = function Util_applyInverseTransform(p, m) {
+    var d = m[0] * m[3] - m[1] * m[2];
+    var xt = (p[0] * m[3] - p[1] * m[2] + m[2] * m[5] - m[4] * m[3]) / d;
+    var yt = (-p[0] * m[1] + p[1] * m[0] + m[4] * m[1] - m[5] * m[0]) / d;
+    return [xt, yt];
+  };
+  Util.getAxialAlignedBoundingBox = function Util_getAxialAlignedBoundingBox(r, m) {
+    var p1 = Util.applyTransform(r, m);
+    var p2 = Util.applyTransform(r.slice(2, 4), m);
+    var p3 = Util.applyTransform([r[0], r[3]], m);
+    var p4 = Util.applyTransform([r[2], r[1]], m);
+    return [Math.min(p1[0], p2[0], p3[0], p4[0]), Math.min(p1[1], p2[1], p3[1], p4[1]), Math.max(p1[0], p2[0], p3[0], p4[0]), Math.max(p1[1], p2[1], p3[1], p4[1])];
+  };
+  Util.inverseTransform = function Util_inverseTransform(m) {
+    var d = m[0] * m[3] - m[1] * m[2];
+    return [m[3] / d, -m[1] / d, -m[2] / d, m[0] / d, (m[2] * m[5] - m[4] * m[3]) / d, (m[4] * m[1] - m[5] * m[0]) / d];
+  };
+  Util.apply3dTransform = function Util_apply3dTransform(m, v) {
+    return [m[0] * v[0] + m[1] * v[1] + m[2] * v[2], m[3] * v[0] + m[4] * v[1] + m[5] * v[2], m[6] * v[0] + m[7] * v[1] + m[8] * v[2]];
+  };
+  Util.singularValueDecompose2dScale = function Util_singularValueDecompose2dScale(m) {
+    var transpose = [m[0], m[2], m[1], m[3]];
+    var a = m[0] * transpose[0] + m[1] * transpose[2];
+    var b = m[0] * transpose[1] + m[1] * transpose[3];
+    var c = m[2] * transpose[0] + m[3] * transpose[2];
+    var d = m[2] * transpose[1] + m[3] * transpose[3];
+    var first = (a + d) / 2;
+    var second = Math.sqrt((a + d) * (a + d) - 4 * (a * d - c * b)) / 2;
+    var sx = first + second || 1;
+    var sy = first - second || 1;
+    return [Math.sqrt(sx), Math.sqrt(sy)];
+  };
+  Util.normalizeRect = function Util_normalizeRect(rect) {
+    var r = rect.slice(0);
+    if (rect[0] > rect[2]) {
+      r[0] = rect[2];
+      r[2] = rect[0];
+    }
+    if (rect[1] > rect[3]) {
+      r[1] = rect[3];
+      r[3] = rect[1];
+    }
+    return r;
+  };
+  Util.intersect = function Util_intersect(rect1, rect2) {
+    function compare(a, b) {
+      return a - b;
+    }
+    var orderedX = [rect1[0], rect1[2], rect2[0], rect2[2]].sort(compare),
+        orderedY = [rect1[1], rect1[3], rect2[1], rect2[3]].sort(compare),
+        result = [];
+    rect1 = Util.normalizeRect(rect1);
+    rect2 = Util.normalizeRect(rect2);
+    if (orderedX[0] === rect1[0] && orderedX[1] === rect2[0] || orderedX[0] === rect2[0] && orderedX[1] === rect1[0]) {
+      result[0] = orderedX[1];
+      result[2] = orderedX[2];
+    } else {
+      return false;
+    }
+    if (orderedY[0] === rect1[1] && orderedY[1] === rect2[1] || orderedY[0] === rect2[1] && orderedY[1] === rect1[1]) {
+      result[1] = orderedY[1];
+      result[3] = orderedY[2];
+    } else {
+      return false;
+    }
+    return result;
+  };
+  Util.sign = function Util_sign(num) {
+    return num < 0 ? -1 : 1;
+  };
+  var ROMAN_NUMBER_MAP = ['', 'C', 'CC', 'CCC', 'CD', 'D', 'DC', 'DCC', 'DCCC', 'CM', '', 'X', 'XX', 'XXX', 'XL', 'L', 'LX', 'LXX', 'LXXX', 'XC', '', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX'];
+  Util.toRoman = function Util_toRoman(number, lowerCase) {
+    assert(isInt(number) && number > 0, 'The number should be a positive integer.');
+    var pos,
+        romanBuf = [];
+    while (number >= 1000) {
+      number -= 1000;
+      romanBuf.push('M');
+    }
+    pos = number / 100 | 0;
+    number %= 100;
+    romanBuf.push(ROMAN_NUMBER_MAP[pos]);
+    pos = number / 10 | 0;
+    number %= 10;
+    romanBuf.push(ROMAN_NUMBER_MAP[10 + pos]);
+    romanBuf.push(ROMAN_NUMBER_MAP[20 + number]);
+    var romanStr = romanBuf.join('');
+    return lowerCase ? romanStr.toLowerCase() : romanStr;
+  };
+  Util.appendToArray = function Util_appendToArray(arr1, arr2) {
+    Array.prototype.push.apply(arr1, arr2);
+  };
+  Util.prependToArray = function Util_prependToArray(arr1, arr2) {
+    Array.prototype.unshift.apply(arr1, arr2);
+  };
+  Util.extendObj = function extendObj(obj1, obj2) {
+    for (var key in obj2) {
+      obj1[key] = obj2[key];
+    }
+  };
+  Util.getInheritableProperty = function Util_getInheritableProperty(dict, name, getArray) {
+    while (dict && !dict.has(name)) {
+      dict = dict.get('Parent');
+    }
+    if (!dict) {
+      return null;
+    }
+    return getArray ? dict.getArray(name) : dict.get(name);
+  };
+  Util.inherit = function Util_inherit(sub, base, prototype) {
+    sub.prototype = Object.create(base.prototype);
+    sub.prototype.constructor = sub;
+    for (var prop in prototype) {
+      sub.prototype[prop] = prototype[prop];
+    }
+  };
+  Util.loadScript = function Util_loadScript(src, callback) {
+    var script = document.createElement('script');
+    var loaded = false;
+    script.setAttribute('src', src);
+    if (callback) {
+      script.onload = function () {
+        if (!loaded) {
+          callback();
+        }
+        loaded = true;
+      };
+    }
+    document.getElementsByTagName('head')[0].appendChild(script);
+  };
+  return Util;
+}();
+var PageViewport = function PageViewportClosure() {
+  function PageViewport(viewBox, scale, rotation, offsetX, offsetY, dontFlip) {
+    this.viewBox = viewBox;
+    this.scale = scale;
+    this.rotation = rotation;
+    this.offsetX = offsetX;
+    this.offsetY = offsetY;
+    var centerX = (viewBox[2] + viewBox[0]) / 2;
+    var centerY = (viewBox[3] + viewBox[1]) / 2;
+    var rotateA, rotateB, rotateC, rotateD;
+    rotation = rotation % 360;
+    rotation = rotation < 0 ? rotation + 360 : rotation;
+    switch (rotation) {
+      case 180:
+        rotateA = -1;
+        rotateB = 0;
+        rotateC = 0;
+        rotateD = 1;
+        break;
+      case 90:
+        rotateA = 0;
+        rotateB = 1;
+        rotateC = 1;
+        rotateD = 0;
+        break;
+      case 270:
+        rotateA = 0;
+        rotateB = -1;
+        rotateC = -1;
+        rotateD = 0;
+        break;
+      default:
+        rotateA = 1;
+        rotateB = 0;
+        rotateC = 0;
+        rotateD = -1;
+        break;
+    }
+    if (dontFlip) {
+      rotateC = -rotateC;
+      rotateD = -rotateD;
+    }
+    var offsetCanvasX, offsetCanvasY;
+    var width, height;
+    if (rotateA === 0) {
+      offsetCanvasX = Math.abs(centerY - viewBox[1]) * scale + offsetX;
+      offsetCanvasY = Math.abs(centerX - viewBox[0]) * scale + offsetY;
+      width = Math.abs(viewBox[3] - viewBox[1]) * scale;
+      height = Math.abs(viewBox[2] - viewBox[0]) * scale;
+    } else {
+      offsetCanvasX = Math.abs(centerX - viewBox[0]) * scale + offsetX;
+      offsetCanvasY = Math.abs(centerY - viewBox[1]) * scale + offsetY;
+      width = Math.abs(viewBox[2] - viewBox[0]) * scale;
+      height = Math.abs(viewBox[3] - viewBox[1]) * scale;
+    }
+    this.transform = [rotateA * scale, rotateB * scale, rotateC * scale, rotateD * scale, offsetCanvasX - rotateA * scale * centerX - rotateC * scale * centerY, offsetCanvasY - rotateB * scale * centerX - rotateD * scale * centerY];
+    this.width = width;
+    this.height = height;
+    this.fontScale = scale;
+  }
+  PageViewport.prototype = {
+    clone: function PageViewPort_clone(args) {
+      args = args || {};
+      var scale = 'scale' in args ? args.scale : this.scale;
+      var rotation = 'rotation' in args ? args.rotation : this.rotation;
+      return new PageViewport(this.viewBox.slice(), scale, rotation, this.offsetX, this.offsetY, args.dontFlip);
+    },
+    convertToViewportPoint: function PageViewport_convertToViewportPoint(x, y) {
+      return Util.applyTransform([x, y], this.transform);
+    },
+    convertToViewportRectangle: function PageViewport_convertToViewportRectangle(rect) {
+      var tl = Util.applyTransform([rect[0], rect[1]], this.transform);
+      var br = Util.applyTransform([rect[2], rect[3]], this.transform);
+      return [tl[0], tl[1], br[0], br[1]];
+    },
+    convertToPdfPoint: function PageViewport_convertToPdfPoint(x, y) {
+      return Util.applyInverseTransform([x, y], this.transform);
+    }
+  };
+  return PageViewport;
+}();
+var PDFStringTranslateTable = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x2D8, 0x2C7, 0x2C6, 0x2D9, 0x2DD, 0x2DB, 0x2DA, 0x2DC, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x2022, 0x2020, 0x2021, 0x2026, 0x2014, 0x2013, 0x192, 0x2044, 0x2039, 0x203A, 0x2212, 0x2030, 0x201E, 0x201C, 0x201D, 0x2018, 0x2019, 0x201A, 0x2122, 0xFB01, 0xFB02, 0x141, 0x152, 0x160, 0x178, 0x17D, 0x131, 0x142, 0x153, 0x161, 0x17E, 0, 0x20AC];
+function stringToPDFString(str) {
+  var i,
+      n = str.length,
+      strBuf = [];
+  if (str[0] === '\xFE' && str[1] === '\xFF') {
+    for (i = 2; i < n; i += 2) {
+      strBuf.push(String.fromCharCode(str.charCodeAt(i) << 8 | str.charCodeAt(i + 1)));
+    }
+  } else {
+    for (i = 0; i < n; ++i) {
+      var code = PDFStringTranslateTable[str.charCodeAt(i)];
+      strBuf.push(code ? String.fromCharCode(code) : str.charAt(i));
+    }
+  }
+  return strBuf.join('');
+}
+function stringToUTF8String(str) {
+  return decodeURIComponent(escape(str));
+}
+function utf8StringToString(str) {
+  return unescape(encodeURIComponent(str));
+}
+function isEmptyObj(obj) {
+  for (var key in obj) {
+    return false;
+  }
+  return true;
+}
+function isBool(v) {
+  return typeof v === 'boolean';
+}
+function isInt(v) {
+  return typeof v === 'number' && (v | 0) === v;
+}
+function isNum(v) {
+  return typeof v === 'number';
+}
+function isString(v) {
+  return typeof v === 'string';
+}
+function isArray(v) {
+  return v instanceof Array;
+}
+function isArrayBuffer(v) {
+  return typeof v === 'object' && v !== null && v.byteLength !== undefined;
+}
+function isSpace(ch) {
+  return ch === 0x20 || ch === 0x09 || ch === 0x0D || ch === 0x0A;
+}
+function isNodeJS() {
+  if (typeof __pdfjsdev_webpack__ === 'undefined') {
+    return typeof process === 'object' && process + '' === '[object process]';
+  }
+  return false;
+}
+function createPromiseCapability() {
+  var capability = {};
+  capability.promise = new Promise(function (resolve, reject) {
+    capability.resolve = resolve;
+    capability.reject = reject;
+  });
+  return capability;
+}
+var StatTimer = function StatTimerClosure() {
+  function rpad(str, pad, length) {
+    while (str.length < length) {
+      str += pad;
+    }
+    return str;
+  }
+  function StatTimer() {
+    this.started = Object.create(null);
+    this.times = [];
+    this.enabled = true;
+  }
+  StatTimer.prototype = {
+    time: function StatTimer_time(name) {
+      if (!this.enabled) {
+        return;
+      }
+      if (name in this.started) {
+        warn('Timer is already running for ' + name);
+      }
+      this.started[name] = Date.now();
+    },
+    timeEnd: function StatTimer_timeEnd(name) {
+      if (!this.enabled) {
+        return;
+      }
+      if (!(name in this.started)) {
+        warn('Timer has not been started for ' + name);
+      }
+      this.times.push({
+        'name': name,
+        'start': this.started[name],
+        'end': Date.now()
+      });
+      delete this.started[name];
+    },
+    toString: function StatTimer_toString() {
+      var i, ii;
+      var times = this.times;
+      var out = '';
+      var longest = 0;
+      for (i = 0, ii = times.length; i < ii; ++i) {
+        var name = times[i]['name'];
+        if (name.length > longest) {
+          longest = name.length;
+        }
+      }
+      for (i = 0, ii = times.length; i < ii; ++i) {
+        var span = times[i];
+        var duration = span.end - span.start;
+        out += rpad(span['name'], ' ', longest) + ' ' + duration + 'ms\n';
+      }
+      return out;
+    }
+  };
+  return StatTimer;
+}();
+var createBlob = function createBlob(data, contentType) {
+  if (typeof Blob !== 'undefined') {
+    return new Blob([data], { type: contentType });
+  }
+  warn('The "Blob" constructor is not supported.');
+};
+var createObjectURL = function createObjectURLClosure() {
+  var digits = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+  return function createObjectURL(data, contentType, forceDataSchema) {
+    if (!forceDataSchema && typeof URL !== 'undefined' && URL.createObjectURL) {
+      var blob = createBlob(data, contentType);
+      return URL.createObjectURL(blob);
+    }
+    var buffer = 'data:' + contentType + ';base64,';
+    for (var i = 0, ii = data.length; i < ii; i += 3) {
+      var b1 = data[i] & 0xFF;
+      var b2 = data[i + 1] & 0xFF;
+      var b3 = data[i + 2] & 0xFF;
+      var d1 = b1 >> 2,
+          d2 = (b1 & 3) << 4 | b2 >> 4;
+      var d3 = i + 1 < ii ? (b2 & 0xF) << 2 | b3 >> 6 : 64;
+      var d4 = i + 2 < ii ? b3 & 0x3F : 64;
+      buffer += digits[d1] + digits[d2] + digits[d3] + digits[d4];
+    }
+    return buffer;
+  };
+}();
+function MessageHandler(sourceName, targetName, comObj) {
+  this.sourceName = sourceName;
+  this.targetName = targetName;
+  this.comObj = comObj;
+  this.callbackIndex = 1;
+  this.postMessageTransfers = true;
+  var callbacksCapabilities = this.callbacksCapabilities = Object.create(null);
+  var ah = this.actionHandler = Object.create(null);
+  this._onComObjOnMessage = function messageHandlerComObjOnMessage(event) {
+    var data = event.data;
+    if (data.targetName !== this.sourceName) {
+      return;
+    }
+    if (data.isReply) {
+      var callbackId = data.callbackId;
+      if (data.callbackId in callbacksCapabilities) {
+        var callback = callbacksCapabilities[callbackId];
+        delete callbacksCapabilities[callbackId];
+        if ('error' in data) {
+          callback.reject(data.error);
+        } else {
+          callback.resolve(data.data);
+        }
+      } else {
+        error('Cannot resolve callback ' + callbackId);
+      }
+    } else if (data.action in ah) {
+      var action = ah[data.action];
+      if (data.callbackId) {
+        var sourceName = this.sourceName;
+        var targetName = data.sourceName;
+        Promise.resolve().then(function () {
+          return action[0].call(action[1], data.data);
+        }).then(function (result) {
+          comObj.postMessage({
+            sourceName: sourceName,
+            targetName: targetName,
+            isReply: true,
+            callbackId: data.callbackId,
+            data: result
+          });
+        }, function (reason) {
+          if (reason instanceof Error) {
+            reason = reason + '';
+          }
+          comObj.postMessage({
+            sourceName: sourceName,
+            targetName: targetName,
+            isReply: true,
+            callbackId: data.callbackId,
+            error: reason
+          });
+        });
+      } else {
+        action[0].call(action[1], data.data);
+      }
+    } else {
+      error('Unknown action from worker: ' + data.action);
+    }
+  }.bind(this);
+  comObj.addEventListener('message', this._onComObjOnMessage);
+}
+MessageHandler.prototype = {
+  on: function messageHandlerOn(actionName, handler, scope) {
+    var ah = this.actionHandler;
+    if (ah[actionName]) {
+      error('There is already an actionName called "' + actionName + '"');
+    }
+    ah[actionName] = [handler, scope];
+  },
+  send: function messageHandlerSend(actionName, data, transfers) {
+    var message = {
+      sourceName: this.sourceName,
+      targetName: this.targetName,
+      action: actionName,
+      data: data
+    };
+    this.postMessage(message, transfers);
+  },
+  sendWithPromise: function messageHandlerSendWithPromise(actionName, data, transfers) {
+    var callbackId = this.callbackIndex++;
+    var message = {
+      sourceName: this.sourceName,
+      targetName: this.targetName,
+      action: actionName,
+      data: data,
+      callbackId: callbackId
+    };
+    var capability = createPromiseCapability();
+    this.callbacksCapabilities[callbackId] = capability;
+    try {
+      this.postMessage(message, transfers);
+    } catch (e) {
+      capability.reject(e);
+    }
+    return capability.promise;
+  },
+  postMessage: function (message, transfers) {
+    if (transfers && this.postMessageTransfers) {
+      this.comObj.postMessage(message, transfers);
+    } else {
+      this.comObj.postMessage(message);
+    }
+  },
+  destroy: function () {
+    this.comObj.removeEventListener('message', this._onComObjOnMessage);
+  }
+};
+function loadJpegStream(id, imageUrl, objs) {
+  var img = new Image();
+  img.onload = function loadJpegStream_onloadClosure() {
+    objs.resolve(id, img);
+  };
+  img.onerror = function loadJpegStream_onerrorClosure() {
+    objs.resolve(id, null);
+    warn('Error during JPEG image loading');
+  };
+  img.src = imageUrl;
+}
+exports.FONT_IDENTITY_MATRIX = FONT_IDENTITY_MATRIX;
+exports.IDENTITY_MATRIX = IDENTITY_MATRIX;
+exports.OPS = OPS;
+exports.VERBOSITY_LEVELS = VERBOSITY_LEVELS;
+exports.UNSUPPORTED_FEATURES = UNSUPPORTED_FEATURES;
+exports.AnnotationBorderStyleType = AnnotationBorderStyleType;
+exports.AnnotationFieldFlag = AnnotationFieldFlag;
+exports.AnnotationFlag = AnnotationFlag;
+exports.AnnotationType = AnnotationType;
+exports.FontType = FontType;
+exports.ImageKind = ImageKind;
+exports.CMapCompressionType = CMapCompressionType;
+exports.InvalidPDFException = InvalidPDFException;
+exports.MessageHandler = MessageHandler;
+exports.MissingDataException = MissingDataException;
+exports.MissingPDFException = MissingPDFException;
+exports.NotImplementedException = NotImplementedException;
+exports.PageViewport = PageViewport;
+exports.PasswordException = PasswordException;
+exports.PasswordResponses = PasswordResponses;
+exports.StatTimer = StatTimer;
+exports.StreamType = StreamType;
+exports.TextRenderingMode = TextRenderingMode;
+exports.UnexpectedResponseException = UnexpectedResponseException;
+exports.UnknownErrorException = UnknownErrorException;
+exports.Util = Util;
+exports.XRefParseException = XRefParseException;
+exports.arrayByteLength = arrayByteLength;
+exports.arraysToBytes = arraysToBytes;
+exports.assert = assert;
+exports.bytesToString = bytesToString;
+exports.createBlob = createBlob;
+exports.createPromiseCapability = createPromiseCapability;
+exports.createObjectURL = createObjectURL;
+exports.deprecated = deprecated;
+exports.error = error;
+exports.getLookupTableFactory = getLookupTableFactory;
+exports.getVerbosityLevel = getVerbosityLevel;
+exports.globalScope = globalScope;
+exports.info = info;
+exports.isArray = isArray;
+exports.isArrayBuffer = isArrayBuffer;
+exports.isBool = isBool;
+exports.isEmptyObj = isEmptyObj;
+exports.isInt = isInt;
+exports.isNum = isNum;
+exports.isString = isString;
+exports.isSpace = isSpace;
+exports.isNodeJS = isNodeJS;
+exports.isSameOrigin = isSameOrigin;
+exports.createValidAbsoluteUrl = createValidAbsoluteUrl;
+exports.isLittleEndian = isLittleEndian;
+exports.isEvalSupported = isEvalSupported;
+exports.loadJpegStream = loadJpegStream;
+exports.log2 = log2;
+exports.readInt8 = readInt8;
+exports.readUint16 = readUint16;
+exports.readUint32 = readUint32;
+exports.removeNullCharacters = removeNullCharacters;
+exports.setVerbosityLevel = setVerbosityLevel;
+exports.shadow = shadow;
+exports.string32 = string32;
+exports.stringToBytes = stringToBytes;
+exports.stringToPDFString = stringToPDFString;
+exports.stringToUTF8String = stringToUTF8String;
+exports.utf8StringToString = utf8StringToString;
+exports.warn = warn;
+/* WEBPACK VAR INJECTION */}.call(exports, __w_pdfjs_require__(6)))
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var sharedUtil = __w_pdfjs_require__(0);
+var assert = sharedUtil.assert;
+var removeNullCharacters = sharedUtil.removeNullCharacters;
+var warn = sharedUtil.warn;
+var deprecated = sharedUtil.deprecated;
+var createValidAbsoluteUrl = sharedUtil.createValidAbsoluteUrl;
+var stringToBytes = sharedUtil.stringToBytes;
+var CMapCompressionType = sharedUtil.CMapCompressionType;
+var DEFAULT_LINK_REL = 'noopener noreferrer nofollow';
+function DOMCanvasFactory() {}
+DOMCanvasFactory.prototype = {
+  create: function DOMCanvasFactory_create(width, height) {
+    assert(width > 0 && height > 0, 'invalid canvas size');
+    var canvas = document.createElement('canvas');
+    var context = canvas.getContext('2d');
+    canvas.width = width;
+    canvas.height = height;
+    return {
+      canvas: canvas,
+      context: context
+    };
+  },
+  reset: function DOMCanvasFactory_reset(canvasAndContextPair, width, height) {
+    assert(canvasAndContextPair.canvas, 'canvas is not specified');
+    assert(width > 0 && height > 0, 'invalid canvas size');
+    canvasAndContextPair.canvas.width = width;
+    canvasAndContextPair.canvas.height = height;
+  },
+  destroy: function DOMCanvasFactory_destroy(canvasAndContextPair) {
+    assert(canvasAndContextPair.canvas, 'canvas is not specified');
+    canvasAndContextPair.canvas.width = 0;
+    canvasAndContextPair.canvas.height = 0;
+    canvasAndContextPair.canvas = null;
+    canvasAndContextPair.context = null;
+  }
+};
+var DOMCMapReaderFactory = function DOMCMapReaderFactoryClosure() {
+  function DOMCMapReaderFactory(params) {
+    this.baseUrl = params.baseUrl || null;
+    this.isCompressed = params.isCompressed || false;
+  }
+  DOMCMapReaderFactory.prototype = {
+    fetch: function (params) {
+      var name = params.name;
+      if (!name) {
+        return Promise.reject(new Error('CMap name must be specified.'));
+      }
+      return new Promise(function (resolve, reject) {
+        var url = this.baseUrl + name + (this.isCompressed ? '.bcmap' : '');
+        var request = new XMLHttpRequest();
+        request.open('GET', url, true);
+        if (this.isCompressed) {
+          request.responseType = 'arraybuffer';
+        }
+        request.onreadystatechange = function () {
+          if (request.readyState !== XMLHttpRequest.DONE) {
+            return;
+          }
+          if (request.status === 200 || request.status === 0) {
+            var data;
+            if (this.isCompressed && request.response) {
+              data = new Uint8Array(request.response);
+            } else if (!this.isCompressed && request.responseText) {
+              data = stringToBytes(request.responseText);
+            }
+            if (data) {
+              resolve({
+                cMapData: data,
+                compressionType: this.isCompressed ? CMapCompressionType.BINARY : CMapCompressionType.NONE
+              });
+              return;
+            }
+          }
+          reject(new Error('Unable to load ' + (this.isCompressed ? 'binary ' : '') + 'CMap at: ' + url));
+        }.bind(this);
+        request.send(null);
+      }.bind(this));
+    }
+  };
+  return DOMCMapReaderFactory;
+}();
+var CustomStyle = function CustomStyleClosure() {
+  var prefixes = ['ms', 'Moz', 'Webkit', 'O'];
+  var _cache = Object.create(null);
+  function CustomStyle() {}
+  CustomStyle.getProp = function get(propName, element) {
+    if (arguments.length === 1 && typeof _cache[propName] === 'string') {
+      return _cache[propName];
+    }
+    element = element || document.documentElement;
+    var style = element.style,
+        prefixed,
+        uPropName;
+    if (typeof style[propName] === 'string') {
+      return _cache[propName] = propName;
+    }
+    uPropName = propName.charAt(0).toUpperCase() + propName.slice(1);
+    for (var i = 0, l = prefixes.length; i < l; i++) {
+      prefixed = prefixes[i] + uPropName;
+      if (typeof style[prefixed] === 'string') {
+        return _cache[propName] = prefixed;
+      }
+    }
+    return _cache[propName] = 'undefined';
+  };
+  CustomStyle.setProp = function set(propName, element, str) {
+    var prop = this.getProp(propName);
+    if (prop !== 'undefined') {
+      element.style[prop] = str;
+    }
+  };
+  return CustomStyle;
+}();
+var RenderingCancelledException = function RenderingCancelledException() {
+  function RenderingCancelledException(msg, type) {
+    this.message = msg;
+    this.type = type;
+  }
+  RenderingCancelledException.prototype = new Error();
+  RenderingCancelledException.prototype.name = 'RenderingCancelledException';
+  RenderingCancelledException.constructor = RenderingCancelledException;
+  return RenderingCancelledException;
+}();
+var hasCanvasTypedArrays;
+hasCanvasTypedArrays = function hasCanvasTypedArrays() {
+  var canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 1;
+  var ctx = canvas.getContext('2d');
+  var imageData = ctx.createImageData(1, 1);
+  return typeof imageData.data.buffer !== 'undefined';
+};
+var LinkTarget = {
+  NONE: 0,
+  SELF: 1,
+  BLANK: 2,
+  PARENT: 3,
+  TOP: 4
+};
+var LinkTargetStringMap = ['', '_self', '_blank', '_parent', '_top'];
+function addLinkAttributes(link, params) {
+  var url = params && params.url;
+  link.href = link.title = url ? removeNullCharacters(url) : '';
+  if (url) {
+    var target = params.target;
+    if (typeof target === 'undefined') {
+      target = getDefaultSetting('externalLinkTarget');
+    }
+    link.target = LinkTargetStringMap[target];
+    var rel = params.rel;
+    if (typeof rel === 'undefined') {
+      rel = getDefaultSetting('externalLinkRel');
+    }
+    link.rel = rel;
+  }
+}
+function getFilenameFromUrl(url) {
+  var anchor = url.indexOf('#');
+  var query = url.indexOf('?');
+  var end = Math.min(anchor > 0 ? anchor : url.length, query > 0 ? query : url.length);
+  return url.substring(url.lastIndexOf('/', end) + 1, end);
+}
+function getDefaultSetting(id) {
+  var globalSettings = sharedUtil.globalScope.PDFJS;
+  switch (id) {
+    case 'pdfBug':
+      return globalSettings ? globalSettings.pdfBug : false;
+    case 'disableAutoFetch':
+      return globalSettings ? globalSettings.disableAutoFetch : false;
+    case 'disableStream':
+      return globalSettings ? globalSettings.disableStream : false;
+    case 'disableRange':
+      return globalSettings ? globalSettings.disableRange : false;
+    case 'disableFontFace':
+      return globalSettings ? globalSettings.disableFontFace : false;
+    case 'disableCreateObjectURL':
+      return globalSettings ? globalSettings.disableCreateObjectURL : false;
+    case 'disableWebGL':
+      return globalSettings ? globalSettings.disableWebGL : true;
+    case 'cMapUrl':
+      return globalSettings ? globalSettings.cMapUrl : null;
+    case 'cMapPacked':
+      return globalSettings ? globalSettings.cMapPacked : false;
+    case 'postMessageTransfers':
+      return globalSettings ? globalSettings.postMessageTransfers : true;
+    case 'workerPort':
+      return globalSettings ? globalSettings.workerPort : null;
+    case 'workerSrc':
+      return globalSettings ? globalSettings.workerSrc : null;
+    case 'disableWorker':
+      return globalSettings ? globalSettings.disableWorker : false;
+    case 'maxImageSize':
+      return globalSettings ? globalSettings.maxImageSize : -1;
+    case 'imageResourcesPath':
+      return globalSettings ? globalSettings.imageResourcesPath : '';
+    case 'isEvalSupported':
+      return globalSettings ? globalSettings.isEvalSupported : true;
+    case 'externalLinkTarget':
+      if (!globalSettings) {
+        return LinkTarget.NONE;
+      }
+      switch (globalSettings.externalLinkTarget) {
+        case LinkTarget.NONE:
+        case LinkTarget.SELF:
+        case LinkTarget.BLANK:
+        case LinkTarget.PARENT:
+        case LinkTarget.TOP:
+          return globalSettings.externalLinkTarget;
+      }
+      warn('PDFJS.externalLinkTarget is invalid: ' + globalSettings.externalLinkTarget);
+      globalSettings.externalLinkTarget = LinkTarget.NONE;
+      return LinkTarget.NONE;
+    case 'externalLinkRel':
+      return globalSettings ? globalSettings.externalLinkRel : DEFAULT_LINK_REL;
+    case 'enableStats':
+      return !!(globalSettings && globalSettings.enableStats);
+    case 'pdfjsNext':
+      return !!(globalSettings && globalSettings.pdfjsNext);
+    default:
+      throw new Error('Unknown default setting: ' + id);
+  }
+}
+function isExternalLinkTargetSet() {
+  var externalLinkTarget = getDefaultSetting('externalLinkTarget');
+  switch (externalLinkTarget) {
+    case LinkTarget.NONE:
+      return false;
+    case LinkTarget.SELF:
+    case LinkTarget.BLANK:
+    case LinkTarget.PARENT:
+    case LinkTarget.TOP:
+      return true;
+  }
+}
+function isValidUrl(url, allowRelative) {
+  deprecated('isValidUrl(), please use createValidAbsoluteUrl() instead.');
+  var baseUrl = allowRelative ? 'http://example.com' : null;
+  return createValidAbsoluteUrl(url, baseUrl) !== null;
+}
+exports.CustomStyle = CustomStyle;
+exports.addLinkAttributes = addLinkAttributes;
+exports.isExternalLinkTargetSet = isExternalLinkTargetSet;
+exports.isValidUrl = isValidUrl;
+exports.getFilenameFromUrl = getFilenameFromUrl;
+exports.LinkTarget = LinkTarget;
+exports.RenderingCancelledException = RenderingCancelledException;
+exports.hasCanvasTypedArrays = hasCanvasTypedArrays;
+exports.getDefaultSetting = getDefaultSetting;
+exports.DEFAULT_LINK_REL = DEFAULT_LINK_REL;
+exports.DOMCanvasFactory = DOMCanvasFactory;
+exports.DOMCMapReaderFactory = DOMCMapReaderFactory;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var sharedUtil = __w_pdfjs_require__(0);
+var displayDOMUtils = __w_pdfjs_require__(1);
+var AnnotationBorderStyleType = sharedUtil.AnnotationBorderStyleType;
+var AnnotationType = sharedUtil.AnnotationType;
+var stringToPDFString = sharedUtil.stringToPDFString;
+var Util = sharedUtil.Util;
+var addLinkAttributes = displayDOMUtils.addLinkAttributes;
+var LinkTarget = displayDOMUtils.LinkTarget;
+var getFilenameFromUrl = displayDOMUtils.getFilenameFromUrl;
+var warn = sharedUtil.warn;
+var CustomStyle = displayDOMUtils.CustomStyle;
+var getDefaultSetting = displayDOMUtils.getDefaultSetting;
+function AnnotationElementFactory() {}
+AnnotationElementFactory.prototype = {
+  create: function AnnotationElementFactory_create(parameters) {
+    var subtype = parameters.data.annotationType;
+    switch (subtype) {
+      case AnnotationType.LINK:
+        return new LinkAnnotationElement(parameters);
+      case AnnotationType.TEXT:
+        return new TextAnnotationElement(parameters);
+      case AnnotationType.WIDGET:
+        var fieldType = parameters.data.fieldType;
+        switch (fieldType) {
+          case 'Tx':
+            return new TextWidgetAnnotationElement(parameters);
+          case 'Btn':
+            if (parameters.data.radioButton) {
+              return new RadioButtonWidgetAnnotationElement(parameters);
+            } else if (parameters.data.checkBox) {
+              return new CheckboxWidgetAnnotationElement(parameters);
+            }
+            warn('Unimplemented button widget annotation: pushbutton');
+            break;
+          case 'Ch':
+            return new ChoiceWidgetAnnotationElement(parameters);
+        }
+        return new WidgetAnnotationElement(parameters);
+      case AnnotationType.POPUP:
+        return new PopupAnnotationElement(parameters);
+      case AnnotationType.LINE:
+        return new LineAnnotationElement(parameters);
+      case AnnotationType.HIGHLIGHT:
+        return new HighlightAnnotationElement(parameters);
+      case AnnotationType.UNDERLINE:
+        return new UnderlineAnnotationElement(parameters);
+      case AnnotationType.SQUIGGLY:
+        return new SquigglyAnnotationElement(parameters);
+      case AnnotationType.STRIKEOUT:
+        return new StrikeOutAnnotationElement(parameters);
+      case AnnotationType.FILEATTACHMENT:
+        return new FileAttachmentAnnotationElement(parameters);
+      default:
+        return new AnnotationElement(parameters);
+    }
+  }
+};
+var AnnotationElement = function AnnotationElementClosure() {
+  function AnnotationElement(parameters, isRenderable, ignoreBorder) {
+    this.isRenderable = isRenderable || false;
+    this.data = parameters.data;
+    this.layer = parameters.layer;
+    this.page = parameters.page;
+    this.viewport = parameters.viewport;
+    this.linkService = parameters.linkService;
+    this.downloadManager = parameters.downloadManager;
+    this.imageResourcesPath = parameters.imageResourcesPath;
+    this.renderInteractiveForms = parameters.renderInteractiveForms;
+    if (isRenderable) {
+      this.container = this._createContainer(ignoreBorder);
+    }
+  }
+  AnnotationElement.prototype = {
+    _createContainer: function AnnotationElement_createContainer(ignoreBorder) {
+      var data = this.data,
+          page = this.page,
+          viewport = this.viewport;
+      var container = document.createElement('section');
+      var width = data.rect[2] - data.rect[0];
+      var height = data.rect[3] - data.rect[1];
+      container.setAttribute('data-annotation-id', data.id);
+      var rect = Util.normalizeRect([data.rect[0], page.view[3] - data.rect[1] + page.view[1], data.rect[2], page.view[3] - data.rect[3] + page.view[1]]);
+      CustomStyle.setProp('transform', container, 'matrix(' + viewport.transform.join(',') + ')');
+      CustomStyle.setProp('transformOrigin', container, -rect[0] + 'px ' + -rect[1] + 'px');
+      if (!ignoreBorder && data.borderStyle.width > 0) {
+        container.style.borderWidth = data.borderStyle.width + 'px';
+        if (data.borderStyle.style !== AnnotationBorderStyleType.UNDERLINE) {
+          width = width - 2 * data.borderStyle.width;
+          height = height - 2 * data.borderStyle.width;
+        }
+        var horizontalRadius = data.borderStyle.horizontalCornerRadius;
+        var verticalRadius = data.borderStyle.verticalCornerRadius;
+        if (horizontalRadius > 0 || verticalRadius > 0) {
+          var radius = horizontalRadius + 'px / ' + verticalRadius + 'px';
+          CustomStyle.setProp('borderRadius', container, radius);
+        }
+        switch (data.borderStyle.style) {
+          case AnnotationBorderStyleType.SOLID:
+            container.style.borderStyle = 'solid';
+            break;
+          case AnnotationBorderStyleType.DASHED:
+            container.style.borderStyle = 'dashed';
+            break;
+          case AnnotationBorderStyleType.BEVELED:
+            warn('Unimplemented border style: beveled');
+            break;
+          case AnnotationBorderStyleType.INSET:
+            warn('Unimplemented border style: inset');
+            break;
+          case AnnotationBorderStyleType.UNDERLINE:
+            container.style.borderBottomStyle = 'solid';
+            break;
+          default:
+            break;
+        }
+        if (data.color) {
+          container.style.borderColor = Util.makeCssRgb(data.color[0] | 0, data.color[1] | 0, data.color[2] | 0);
+        } else {
+          container.style.borderWidth = 0;
+        }
+      }
+      container.style.left = rect[0] + 'px';
+      container.style.top = rect[1] + 'px';
+      container.style.width = width + 'px';
+      container.style.height = height + 'px';
+      return container;
+    },
+    _createPopup: function AnnotationElement_createPopup(container, trigger, data) {
+      if (!trigger) {
+        trigger = document.createElement('div');
+        trigger.style.height = container.style.height;
+        trigger.style.width = container.style.width;
+        container.appendChild(trigger);
+      }
+      var popupElement = new PopupElement({
+        container: container,
+        trigger: trigger,
+        color: data.color,
+        title: data.title,
+        contents: data.contents,
+        hideWrapper: true
+      });
+      var popup = popupElement.render();
+      popup.style.left = container.style.width;
+      container.appendChild(popup);
+    },
+    render: function AnnotationElement_render() {
+      throw new Error('Abstract method AnnotationElement.render called');
+    }
+  };
+  return AnnotationElement;
+}();
+var LinkAnnotationElement = function LinkAnnotationElementClosure() {
+  function LinkAnnotationElement(parameters) {
+    AnnotationElement.call(this, parameters, true);
+  }
+  Util.inherit(LinkAnnotationElement, AnnotationElement, {
+    render: function LinkAnnotationElement_render() {
+      this.container.className = 'linkAnnotation';
+      var link = document.createElement('a');
+      addLinkAttributes(link, {
+        url: this.data.url,
+        target: this.data.newWindow ? LinkTarget.BLANK : undefined
+      });
+      if (!this.data.url) {
+        if (this.data.action) {
+          this._bindNamedAction(link, this.data.action);
+        } else {
+          this._bindLink(link, this.data.dest);
+        }
+      }
+      this.container.appendChild(link);
+      return this.container;
+    },
+    _bindLink: function LinkAnnotationElement_bindLink(link, destination) {
+      var self = this;
+      link.href = this.linkService.getDestinationHash(destination);
+      link.onclick = function () {
+        if (destination) {
+          self.linkService.navigateTo(destination);
+        }
+        return false;
+      };
+      if (destination) {
+        link.className = 'internalLink';
+      }
+    },
+    _bindNamedAction: function LinkAnnotationElement_bindNamedAction(link, action) {
+      var self = this;
+      link.href = this.linkService.getAnchorUrl('');
+      link.onclick = function () {
+        self.linkService.executeNamedAction(action);
+        return false;
+      };
+      link.className = 'internalLink';
+    }
+  });
+  return LinkAnnotationElement;
+}();
+var TextAnnotationElement = function TextAnnotationElementClosure() {
+  function TextAnnotationElement(parameters) {
+    var isRenderable = !!(parameters.data.hasPopup || parameters.data.title || parameters.data.contents);
+    AnnotationElement.call(this, parameters, isRenderable);
+  }
+  Util.inherit(TextAnnotationElement, AnnotationElement, {
+    render: function TextAnnotationElement_render() {
+      this.container.className = 'textAnnotation';
+      var image = document.createElement('img');
+      image.style.height = this.container.style.height;
+      image.style.width = this.container.style.width;
+      image.src = this.imageResourcesPath + 'annotation-' + this.data.name.toLowerCase() + '.svg';
+      image.alt = '[{{type}} Annotation]';
+      image.dataset.l10nId = 'text_annotation_type';
+      image.dataset.l10nArgs = JSON.stringify({ type: this.data.name });
+      if (!this.data.hasPopup) {
+        this._createPopup(this.container, image, this.data);
+      }
+      this.container.appendChild(image);
+      return this.container;
+    }
+  });
+  return TextAnnotationElement;
+}();
+var WidgetAnnotationElement = function WidgetAnnotationElementClosure() {
+  function WidgetAnnotationElement(parameters, isRenderable) {
+    AnnotationElement.call(this, parameters, isRenderable);
+  }
+  Util.inherit(WidgetAnnotationElement, AnnotationElement, {
+    render: function WidgetAnnotationElement_render() {
+      return this.container;
+    }
+  });
+  return WidgetAnnotationElement;
+}();
+var TextWidgetAnnotationElement = function TextWidgetAnnotationElementClosure() {
+  var TEXT_ALIGNMENT = ['left', 'center', 'right'];
+  function TextWidgetAnnotationElement(parameters) {
+    var isRenderable = parameters.renderInteractiveForms || !parameters.data.hasAppearance && !!parameters.data.fieldValue;
+    WidgetAnnotationElement.call(this, parameters, isRenderable);
+  }
+  Util.inherit(TextWidgetAnnotationElement, WidgetAnnotationElement, {
+    render: function TextWidgetAnnotationElement_render() {
+      this.container.className = 'textWidgetAnnotation';
+      var element = null;
+      if (this.renderInteractiveForms) {
+        if (this.data.multiLine) {
+          element = document.createElement('textarea');
+          element.textContent = this.data.fieldValue;
+        } else {
+          element = document.createElement('input');
+          element.type = 'text';
+          element.setAttribute('value', this.data.fieldValue);
+        }
+        element.disabled = this.data.readOnly;
+        if (this.data.maxLen !== null) {
+          element.maxLength = this.data.maxLen;
+        }
+        if (this.data.comb) {
+          var fieldWidth = this.data.rect[2] - this.data.rect[0];
+          var combWidth = fieldWidth / this.data.maxLen;
+          element.classList.add('comb');
+          element.style.letterSpacing = 'calc(' + combWidth + 'px - 1ch)';
+        }
+      } else {
+        element = document.createElement('div');
+        element.textContent = this.data.fieldValue;
+        element.style.verticalAlign = 'middle';
+        element.style.display = 'table-cell';
+        var font = null;
+        if (this.data.fontRefName) {
+          font = this.page.commonObjs.getData(this.data.fontRefName);
+        }
+        this._setTextStyle(element, font);
+      }
+      if (this.data.textAlignment !== null) {
+        element.style.textAlign = TEXT_ALIGNMENT[this.data.textAlignment];
+      }
+      this.container.appendChild(element);
+      return this.container;
+    },
+    _setTextStyle: function TextWidgetAnnotationElement_setTextStyle(element, font) {
+      var style = element.style;
+      style.fontSize = this.data.fontSize + 'px';
+      style.direction = this.data.fontDirection < 0 ? 'rtl' : 'ltr';
+      if (!font) {
+        return;
+      }
+      style.fontWeight = font.black ? font.bold ? '900' : 'bold' : font.bold ? 'bold' : 'normal';
+      style.fontStyle = font.italic ? 'italic' : 'normal';
+      var fontFamily = font.loadedName ? '"' + font.loadedName + '", ' : '';
+      var fallbackName = font.fallbackName || 'Helvetica, sans-serif';
+      style.fontFamily = fontFamily + fallbackName;
+    }
+  });
+  return TextWidgetAnnotationElement;
+}();
+var CheckboxWidgetAnnotationElement = function CheckboxWidgetAnnotationElementClosure() {
+  function CheckboxWidgetAnnotationElement(parameters) {
+    WidgetAnnotationElement.call(this, parameters, parameters.renderInteractiveForms);
+  }
+  Util.inherit(CheckboxWidgetAnnotationElement, WidgetAnnotationElement, {
+    render: function CheckboxWidgetAnnotationElement_render() {
+      this.container.className = 'buttonWidgetAnnotation checkBox';
+      var element = document.createElement('input');
+      element.disabled = this.data.readOnly;
+      element.type = 'checkbox';
+      if (this.data.fieldValue && this.data.fieldValue !== 'Off') {
+        element.setAttribute('checked', true);
+      }
+      this.container.appendChild(element);
+      return this.container;
+    }
+  });
+  return CheckboxWidgetAnnotationElement;
+}();
+var RadioButtonWidgetAnnotationElement = function RadioButtonWidgetAnnotationElementClosure() {
+  function RadioButtonWidgetAnnotationElement(parameters) {
+    WidgetAnnotationElement.call(this, parameters, parameters.renderInteractiveForms);
+  }
+  Util.inherit(RadioButtonWidgetAnnotationElement, WidgetAnnotationElement, {
+    render: function RadioButtonWidgetAnnotationElement_render() {
+      this.container.className = 'buttonWidgetAnnotation radioButton';
+      var element = document.createElement('input');
+      element.disabled = this.data.readOnly;
+      element.type = 'radio';
+      element.name = this.data.fieldName;
+      if (this.data.fieldValue === this.data.buttonValue) {
+        element.setAttribute('checked', true);
+      }
+      this.container.appendChild(element);
+      return this.container;
+    }
+  });
+  return RadioButtonWidgetAnnotationElement;
+}();
+var ChoiceWidgetAnnotationElement = function ChoiceWidgetAnnotationElementClosure() {
+  function ChoiceWidgetAnnotationElement(parameters) {
+    WidgetAnnotationElement.call(this, parameters, parameters.renderInteractiveForms);
+  }
+  Util.inherit(ChoiceWidgetAnnotationElement, WidgetAnnotationElement, {
+    render: function ChoiceWidgetAnnotationElement_render() {
+      this.container.className = 'choiceWidgetAnnotation';
+      var selectElement = document.createElement('select');
+      selectElement.disabled = this.data.readOnly;
+      if (!this.data.combo) {
+        selectElement.size = this.data.options.length;
+        if (this.data.multiSelect) {
+          selectElement.multiple = true;
+        }
+      }
+      for (var i = 0, ii = this.data.options.length; i < ii; i++) {
+        var option = this.data.options[i];
+        var optionElement = document.createElement('option');
+        optionElement.textContent = option.displayValue;
+        optionElement.value = option.exportValue;
+        if (this.data.fieldValue.indexOf(option.displayValue) >= 0) {
+          optionElement.setAttribute('selected', true);
+        }
+        selectElement.appendChild(optionElement);
+      }
+      this.container.appendChild(selectElement);
+      return this.container;
+    }
+  });
+  return ChoiceWidgetAnnotationElement;
+}();
+var PopupAnnotationElement = function PopupAnnotationElementClosure() {
+  var IGNORE_TYPES = ['Line'];
+  function PopupAnnotationElement(parameters) {
+    var isRenderable = !!(parameters.data.title || parameters.data.contents);
+    AnnotationElement.call(this, parameters, isRenderable);
+  }
+  Util.inherit(PopupAnnotationElement, AnnotationElement, {
+    render: function PopupAnnotationElement_render() {
+      this.container.className = 'popupAnnotation';
+      if (IGNORE_TYPES.indexOf(this.data.parentType) >= 0) {
+        return this.container;
+      }
+      var selector = '[data-annotation-id="' + this.data.parentId + '"]';
+      var parentElement = this.layer.querySelector(selector);
+      if (!parentElement) {
+        return this.container;
+      }
+      var popup = new PopupElement({
+        container: this.container,
+        trigger: parentElement,
+        color: this.data.color,
+        title: this.data.title,
+        contents: this.data.contents
+      });
+      var parentLeft = parseFloat(parentElement.style.left);
+      var parentWidth = parseFloat(parentElement.style.width);
+      CustomStyle.setProp('transformOrigin', this.container, -(parentLeft + parentWidth) + 'px -' + parentElement.style.top);
+      this.container.style.left = parentLeft + parentWidth + 'px';
+      this.container.appendChild(popup.render());
+      return this.container;
+    }
+  });
+  return PopupAnnotationElement;
+}();
+var PopupElement = function PopupElementClosure() {
+  var BACKGROUND_ENLIGHT = 0.7;
+  function PopupElement(parameters) {
+    this.container = parameters.container;
+    this.trigger = parameters.trigger;
+    this.color = parameters.color;
+    this.title = parameters.title;
+    this.contents = parameters.contents;
+    this.hideWrapper = parameters.hideWrapper || false;
+    this.pinned = false;
+  }
+  PopupElement.prototype = {
+    render: function PopupElement_render() {
+      var wrapper = document.createElement('div');
+      wrapper.className = 'popupWrapper';
+      this.hideElement = this.hideWrapper ? wrapper : this.container;
+      this.hideElement.setAttribute('hidden', true);
+      var popup = document.createElement('div');
+      popup.className = 'popup';
+      var color = this.color;
+      if (color) {
+        var r = BACKGROUND_ENLIGHT * (255 - color[0]) + color[0];
+        var g = BACKGROUND_ENLIGHT * (255 - color[1]) + color[1];
+        var b = BACKGROUND_ENLIGHT * (255 - color[2]) + color[2];
+        popup.style.backgroundColor = Util.makeCssRgb(r | 0, g | 0, b | 0);
+      }
+      var contents = this._formatContents(this.contents);
+      var title = document.createElement('h1');
+      title.textContent = this.title;
+      this.trigger.addEventListener('click', this._toggle.bind(this));
+      this.trigger.addEventListener('mouseover', this._show.bind(this, false));
+      this.trigger.addEventListener('mouseout', this._hide.bind(this, false));
+      popup.addEventListener('click', this._hide.bind(this, true));
+      popup.appendChild(title);
+      popup.appendChild(contents);
+      wrapper.appendChild(popup);
+      return wrapper;
+    },
+    _formatContents: function PopupElement_formatContents(contents) {
+      var p = document.createElement('p');
+      var lines = contents.split(/(?:\r\n?|\n)/);
+      for (var i = 0, ii = lines.length; i < ii; ++i) {
+        var line = lines[i];
+        p.appendChild(document.createTextNode(line));
+        if (i < ii - 1) {
+          p.appendChild(document.createElement('br'));
+        }
+      }
+      return p;
+    },
+    _toggle: function PopupElement_toggle() {
+      if (this.pinned) {
+        this._hide(true);
+      } else {
+        this._show(true);
+      }
+    },
+    _show: function PopupElement_show(pin) {
+      if (pin) {
+        this.pinned = true;
+      }
+      if (this.hideElement.hasAttribute('hidden')) {
+        this.hideElement.removeAttribute('hidden');
+        this.container.style.zIndex += 1;
+      }
+    },
+    _hide: function PopupElement_hide(unpin) {
+      if (unpin) {
+        this.pinned = false;
+      }
+      if (!this.hideElement.hasAttribute('hidden') && !this.pinned) {
+        this.hideElement.setAttribute('hidden', true);
+        this.container.style.zIndex -= 1;
+      }
+    }
+  };
+  return PopupElement;
+}();
+var LineAnnotationElement = function LineAnnotationElementClosure() {
+  var SVG_NS = 'http://www.w3.org/2000/svg';
+  function LineAnnotationElement(parameters) {
+    var isRenderable = !!(parameters.data.hasPopup || parameters.data.title || parameters.data.contents);
+    AnnotationElement.call(this, parameters, isRenderable, true);
+  }
+  Util.inherit(LineAnnotationElement, AnnotationElement, {
+    render: function LineAnnotationElement_render() {
+      this.container.className = 'lineAnnotation';
+      var data = this.data;
+      var width = data.rect[2] - data.rect[0];
+      var height = data.rect[3] - data.rect[1];
+      var svg = document.createElementNS(SVG_NS, 'svg:svg');
+      svg.setAttributeNS(null, 'version', '1.1');
+      svg.setAttributeNS(null, 'width', width + 'px');
+      svg.setAttributeNS(null, 'height', height + 'px');
+      svg.setAttributeNS(null, 'preserveAspectRatio', 'none');
+      svg.setAttributeNS(null, 'viewBox', '0 0 ' + width + ' ' + height);
+      var line = document.createElementNS(SVG_NS, 'svg:line');
+      line.setAttributeNS(null, 'x1', data.rect[2] - data.lineCoordinates[0]);
+      line.setAttributeNS(null, 'y1', data.rect[3] - data.lineCoordinates[1]);
+      line.setAttributeNS(null, 'x2', data.rect[2] - data.lineCoordinates[2]);
+      line.setAttributeNS(null, 'y2', data.rect[3] - data.lineCoordinates[3]);
+      line.setAttributeNS(null, 'stroke-width', data.borderStyle.width);
+      line.setAttributeNS(null, 'stroke', 'transparent');
+      svg.appendChild(line);
+      this.container.append(svg);
+      this._createPopup(this.container, line, this.data);
+      return this.container;
+    }
+  });
+  return LineAnnotationElement;
+}();
+var HighlightAnnotationElement = function HighlightAnnotationElementClosure() {
+  function HighlightAnnotationElement(parameters) {
+    var isRenderable = !!(parameters.data.hasPopup || parameters.data.title || parameters.data.contents);
+    AnnotationElement.call(this, parameters, isRenderable, true);
+  }
+  Util.inherit(HighlightAnnotationElement, AnnotationElement, {
+    render: function HighlightAnnotationElement_render() {
+      this.container.className = 'highlightAnnotation';
+      if (!this.data.hasPopup) {
+        this._createPopup(this.container, null, this.data);
+      }
+      return this.container;
+    }
+  });
+  return HighlightAnnotationElement;
+}();
+var UnderlineAnnotationElement = function UnderlineAnnotationElementClosure() {
+  function UnderlineAnnotationElement(parameters) {
+    var isRenderable = !!(parameters.data.hasPopup || parameters.data.title || parameters.data.contents);
+    AnnotationElement.call(this, parameters, isRenderable, true);
+  }
+  Util.inherit(UnderlineAnnotationElement, AnnotationElement, {
+    render: function UnderlineAnnotationElement_render() {
+      this.container.className = 'underlineAnnotation';
+      if (!this.data.hasPopup) {
+        this._createPopup(this.container, null, this.data);
+      }
+      return this.container;
+    }
+  });
+  return UnderlineAnnotationElement;
+}();
+var SquigglyAnnotationElement = function SquigglyAnnotationElementClosure() {
+  function SquigglyAnnotationElement(parameters) {
+    var isRenderable = !!(parameters.data.hasPopup || parameters.data.title || parameters.data.contents);
+    AnnotationElement.call(this, parameters, isRenderable, true);
+  }
+  Util.inherit(SquigglyAnnotationElement, AnnotationElement, {
+    render: function SquigglyAnnotationElement_render() {
+      this.container.className = 'squigglyAnnotation';
+      if (!this.data.hasPopup) {
+        this._createPopup(this.container, null, this.data);
+      }
+      return this.container;
+    }
+  });
+  return SquigglyAnnotationElement;
+}();
+var StrikeOutAnnotationElement = function StrikeOutAnnotationElementClosure() {
+  function StrikeOutAnnotationElement(parameters) {
+    var isRenderable = !!(parameters.data.hasPopup || parameters.data.title || parameters.data.contents);
+    AnnotationElement.call(this, parameters, isRenderable, true);
+  }
+  Util.inherit(StrikeOutAnnotationElement, AnnotationElement, {
+    render: function StrikeOutAnnotationElement_render() {
+      this.container.className = 'strikeoutAnnotation';
+      if (!this.data.hasPopup) {
+        this._createPopup(this.container, null, this.data);
+      }
+      return this.container;
+    }
+  });
+  return StrikeOutAnnotationElement;
+}();
+var FileAttachmentAnnotationElement = function FileAttachmentAnnotationElementClosure() {
+  function FileAttachmentAnnotationElement(parameters) {
+    AnnotationElement.call(this, parameters, true);
+    var file = this.data.file;
+    this.filename = getFilenameFromUrl(file.filename);
+    this.content = file.content;
+    this.linkService.onFileAttachmentAnnotation({
+      id: stringToPDFString(file.filename),
+      filename: file.filename,
+      content: file.content
+    });
+  }
+  Util.inherit(FileAttachmentAnnotationElement, AnnotationElement, {
+    render: function FileAttachmentAnnotationElement_render() {
+      this.container.className = 'fileAttachmentAnnotation';
+      var trigger = document.createElement('div');
+      trigger.style.height = this.container.style.height;
+      trigger.style.width = this.container.style.width;
+      trigger.addEventListener('dblclick', this._download.bind(this));
+      if (!this.data.hasPopup && (this.data.title || this.data.contents)) {
+        this._createPopup(this.container, trigger, this.data);
+      }
+      this.container.appendChild(trigger);
+      return this.container;
+    },
+    _download: function FileAttachmentAnnotationElement_download() {
+      if (!this.downloadManager) {
+        warn('Download cannot be started due to unavailable download manager');
+        return;
+      }
+      this.downloadManager.downloadData(this.content, this.filename, '');
+    }
+  });
+  return FileAttachmentAnnotationElement;
+}();
+var AnnotationLayer = function AnnotationLayerClosure() {
+  return {
+    render: function AnnotationLayer_render(parameters) {
+      var annotationElementFactory = new AnnotationElementFactory();
+      for (var i = 0, ii = parameters.annotations.length; i < ii; i++) {
+        var data = parameters.annotations[i];
+        if (!data) {
+          continue;
+        }
+        var element = annotationElementFactory.create({
+          data: data,
+          layer: parameters.div,
+          page: parameters.page,
+          viewport: parameters.viewport,
+          linkService: parameters.linkService,
+          downloadManager: parameters.downloadManager,
+          imageResourcesPath: parameters.imageResourcesPath || getDefaultSetting('imageResourcesPath'),
+          renderInteractiveForms: parameters.renderInteractiveForms || false
+        });
+        if (element.isRenderable) {
+          parameters.div.appendChild(element.render());
+        }
+      }
+    },
+    update: function AnnotationLayer_update(parameters) {
+      for (var i = 0, ii = parameters.annotations.length; i < ii; i++) {
+        var data = parameters.annotations[i];
+        var element = parameters.div.querySelector('[data-annotation-id="' + data.id + '"]');
+        if (element) {
+          CustomStyle.setProp('transform', element, 'matrix(' + parameters.viewport.transform.join(',') + ')');
+        }
+      }
+      parameters.div.removeAttribute('hidden');
+    }
+  };
+}();
+exports.AnnotationLayer = AnnotationLayer;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var sharedUtil = __w_pdfjs_require__(0);
+var displayFontLoader = __w_pdfjs_require__(11);
+var displayCanvas = __w_pdfjs_require__(10);
+var displayMetadata = __w_pdfjs_require__(7);
+var displayDOMUtils = __w_pdfjs_require__(1);
+var amdRequire;
+var InvalidPDFException = sharedUtil.InvalidPDFException;
+var MessageHandler = sharedUtil.MessageHandler;
+var MissingPDFException = sharedUtil.MissingPDFException;
+var PageViewport = sharedUtil.PageViewport;
+var PasswordException = sharedUtil.PasswordException;
+var StatTimer = sharedUtil.StatTimer;
+var UnexpectedResponseException = sharedUtil.UnexpectedResponseException;
+var UnknownErrorException = sharedUtil.UnknownErrorException;
+var Util = sharedUtil.Util;
+var createPromiseCapability = sharedUtil.createPromiseCapability;
+var error = sharedUtil.error;
+var deprecated = sharedUtil.deprecated;
+var getVerbosityLevel = sharedUtil.getVerbosityLevel;
+var info = sharedUtil.info;
+var isInt = sharedUtil.isInt;
+var isArray = sharedUtil.isArray;
+var isArrayBuffer = sharedUtil.isArrayBuffer;
+var isSameOrigin = sharedUtil.isSameOrigin;
+var loadJpegStream = sharedUtil.loadJpegStream;
+var stringToBytes = sharedUtil.stringToBytes;
+var globalScope = sharedUtil.globalScope;
+var warn = sharedUtil.warn;
+var FontFaceObject = displayFontLoader.FontFaceObject;
+var FontLoader = displayFontLoader.FontLoader;
+var CanvasGraphics = displayCanvas.CanvasGraphics;
+var Metadata = displayMetadata.Metadata;
+var RenderingCancelledException = displayDOMUtils.RenderingCancelledException;
+var getDefaultSetting = displayDOMUtils.getDefaultSetting;
+var DOMCanvasFactory = displayDOMUtils.DOMCanvasFactory;
+var DOMCMapReaderFactory = displayDOMUtils.DOMCMapReaderFactory;
+var DEFAULT_RANGE_CHUNK_SIZE = 65536;
+var isWorkerDisabled = false;
+var workerSrc;
+var isPostMessageTransfersDisabled = false;
+var pdfjsFilePath = typeof document !== 'undefined' && document.currentScript ? document.currentScript.src : null;
+var fakeWorkerFilesLoader = null;
+var useRequireEnsure = false;
+if (typeof __pdfjsdev_webpack__ === 'undefined') {
+  if (typeof window === 'undefined') {
+    isWorkerDisabled = true;
+    if (typeof require.ensure === 'undefined') {
+      require.ensure = require('node-ensure');
+    }
+    useRequireEnsure = true;
+  } else if (typeof require !== 'undefined' && typeof require.ensure === 'function') {
+    useRequireEnsure = true;
+  }
+  if (typeof requirejs !== 'undefined' && requirejs.toUrl) {
+    workerSrc = requirejs.toUrl('pdfjs-dist/build/pdf.worker.js');
+  }
+  var dynamicLoaderSupported = typeof requirejs !== 'undefined' && requirejs.load;
+  fakeWorkerFilesLoader = useRequireEnsure ? function (callback) {
+    require.ensure([], function () {
+      var worker = require('./pdf.worker.js');
+      callback(worker.WorkerMessageHandler);
+    });
+  } : dynamicLoaderSupported ? function (callback) {
+    requirejs(['pdfjs-dist/build/pdf.worker'], function (worker) {
+      callback(worker.WorkerMessageHandler);
+    });
+  } : null;
+}
+function getDocument(src, pdfDataRangeTransport, passwordCallback, progressCallback) {
+  var task = new PDFDocumentLoadingTask();
+  if (arguments.length > 1) {
+    deprecated('getDocument is called with pdfDataRangeTransport, ' + 'passwordCallback or progressCallback argument');
+  }
+  if (pdfDataRangeTransport) {
+    if (!(pdfDataRangeTransport instanceof PDFDataRangeTransport)) {
+      pdfDataRangeTransport = Object.create(pdfDataRangeTransport);
+      pdfDataRangeTransport.length = src.length;
+      pdfDataRangeTransport.initialData = src.initialData;
+      if (!pdfDataRangeTransport.abort) {
+        pdfDataRangeTransport.abort = function () {};
+      }
+    }
+    src = Object.create(src);
+    src.range = pdfDataRangeTransport;
+  }
+  task.onPassword = passwordCallback || null;
+  task.onProgress = progressCallback || null;
+  var source;
+  if (typeof src === 'string') {
+    source = { url: src };
+  } else if (isArrayBuffer(src)) {
+    source = { data: src };
+  } else if (src instanceof PDFDataRangeTransport) {
+    source = { range: src };
+  } else {
+    if (typeof src !== 'object') {
+      error('Invalid parameter in getDocument, need either Uint8Array, ' + 'string or a parameter object');
+    }
+    if (!src.url && !src.data && !src.range) {
+      error('Invalid parameter object: need either .data, .range or .url');
+    }
+    source = src;
+  }
+  var params = {};
+  var rangeTransport = null;
+  var worker = null;
+  for (var key in source) {
+    if (key === 'url' && typeof window !== 'undefined') {
+      params[key] = new URL(source[key], window.location).href;
+      continue;
+    } else if (key === 'range') {
+      rangeTransport = source[key];
+      continue;
+    } else if (key === 'worker') {
+      worker = source[key];
+      continue;
+    } else if (key === 'data' && !(source[key] instanceof Uint8Array)) {
+      var pdfBytes = source[key];
+      if (typeof pdfBytes === 'string') {
+        params[key] = stringToBytes(pdfBytes);
+      } else if (typeof pdfBytes === 'object' && pdfBytes !== null && !isNaN(pdfBytes.length)) {
+        params[key] = new Uint8Array(pdfBytes);
+      } else if (isArrayBuffer(pdfBytes)) {
+        params[key] = new Uint8Array(pdfBytes);
+      } else {
+        error('Invalid PDF binary data: either typed array, string or ' + 'array-like object is expected in the data property.');
+      }
+      continue;
+    }
+    params[key] = source[key];
+  }
+  params.rangeChunkSize = params.rangeChunkSize || DEFAULT_RANGE_CHUNK_SIZE;
+  params.disableNativeImageDecoder = params.disableNativeImageDecoder === true;
+  var CMapReaderFactory = params.CMapReaderFactory || DOMCMapReaderFactory;
+  if (!worker) {
+    var workerPort = getDefaultSetting('workerPort');
+    worker = workerPort ? new PDFWorker(null, workerPort) : new PDFWorker();
+    task._worker = worker;
+  }
+  var docId = task.docId;
+  worker.promise.then(function () {
+    if (task.destroyed) {
+      throw new Error('Loading aborted');
+    }
+    return _fetchDocument(worker, params, rangeTransport, docId).then(function (workerId) {
+      if (task.destroyed) {
+        throw new Error('Loading aborted');
+      }
+      var messageHandler = new MessageHandler(docId, workerId, worker.port);
+      var transport = new WorkerTransport(messageHandler, task, rangeTransport, CMapReaderFactory);
+      task._transport = transport;
+      messageHandler.send('Ready', null);
+    });
+  }).catch(task._capability.reject);
+  return task;
+}
+function _fetchDocument(worker, source, pdfDataRangeTransport, docId) {
+  if (worker.destroyed) {
+    return Promise.reject(new Error('Worker was destroyed'));
+  }
+  source.disableAutoFetch = getDefaultSetting('disableAutoFetch');
+  source.disableStream = getDefaultSetting('disableStream');
+  source.chunkedViewerLoading = !!pdfDataRangeTransport;
+  if (pdfDataRangeTransport) {
+    source.length = pdfDataRangeTransport.length;
+    source.initialData = pdfDataRangeTransport.initialData;
+  }
+  return worker.messageHandler.sendWithPromise('GetDocRequest', {
+    docId: docId,
+    source: source,
+    disableRange: getDefaultSetting('disableRange'),
+    maxImageSize: getDefaultSetting('maxImageSize'),
+    disableFontFace: getDefaultSetting('disableFontFace'),
+    disableCreateObjectURL: getDefaultSetting('disableCreateObjectURL'),
+    postMessageTransfers: getDefaultSetting('postMessageTransfers') && !isPostMessageTransfersDisabled,
+    docBaseUrl: source.docBaseUrl,
+    disableNativeImageDecoder: source.disableNativeImageDecoder
+  }).then(function (workerId) {
+    if (worker.destroyed) {
+      throw new Error('Worker was destroyed');
+    }
+    return workerId;
+  });
+}
+var PDFDocumentLoadingTask = function PDFDocumentLoadingTaskClosure() {
+  var nextDocumentId = 0;
+  function PDFDocumentLoadingTask() {
+    this._capability = createPromiseCapability();
+    this._transport = null;
+    this._worker = null;
+    this.docId = 'd' + nextDocumentId++;
+    this.destroyed = false;
+    this.onPassword = null;
+    this.onProgress = null;
+    this.onUnsupportedFeature = null;
+  }
+  PDFDocumentLoadingTask.prototype = {
+    get promise() {
+      return this._capability.promise;
+    },
+    destroy: function () {
+      this.destroyed = true;
+      var transportDestroyed = !this._transport ? Promise.resolve() : this._transport.destroy();
+      return transportDestroyed.then(function () {
+        this._transport = null;
+        if (this._worker) {
+          this._worker.destroy();
+          this._worker = null;
+        }
+      }.bind(this));
+    },
+    then: function PDFDocumentLoadingTask_then(onFulfilled, onRejected) {
+      return this.promise.then.apply(this.promise, arguments);
+    }
+  };
+  return PDFDocumentLoadingTask;
+}();
+var PDFDataRangeTransport = function pdfDataRangeTransportClosure() {
+  function PDFDataRangeTransport(length, initialData) {
+    this.length = length;
+    this.initialData = initialData;
+    this._rangeListeners = [];
+    this._progressListeners = [];
+    this._progressiveReadListeners = [];
+    this._readyCapability = createPromiseCapability();
+  }
+  PDFDataRangeTransport.prototype = {
+    addRangeListener: function PDFDataRangeTransport_addRangeListener(listener) {
+      this._rangeListeners.push(listener);
+    },
+    addProgressListener: function PDFDataRangeTransport_addProgressListener(listener) {
+      this._progressListeners.push(listener);
+    },
+    addProgressiveReadListener: function PDFDataRangeTransport_addProgressiveReadListener(listener) {
+      this._progressiveReadListeners.push(listener);
+    },
+    onDataRange: function PDFDataRangeTransport_onDataRange(begin, chunk) {
+      var listeners = this._rangeListeners;
+      for (var i = 0, n = listeners.length; i < n; ++i) {
+        listeners[i](begin, chunk);
+      }
+    },
+    onDataProgress: function PDFDataRangeTransport_onDataProgress(loaded) {
+      this._readyCapability.promise.then(function () {
+        var listeners = this._progressListeners;
+        for (var i = 0, n = listeners.length; i < n; ++i) {
+          listeners[i](loaded);
+        }
+      }.bind(this));
+    },
+    onDataProgressiveRead: function PDFDataRangeTransport_onDataProgress(chunk) {
+      this._readyCapability.promise.then(function () {
+        var listeners = this._progressiveReadListeners;
+        for (var i = 0, n = listeners.length; i < n; ++i) {
+          listeners[i](chunk);
+        }
+      }.bind(this));
+    },
+    transportReady: function PDFDataRangeTransport_transportReady() {
+      this._readyCapability.resolve();
+    },
+    requestDataRange: function PDFDataRangeTransport_requestDataRange(begin, end) {
+      throw new Error('Abstract method PDFDataRangeTransport.requestDataRange');
+    },
+    abort: function PDFDataRangeTransport_abort() {}
+  };
+  return PDFDataRangeTransport;
+}();
+var PDFDocumentProxy = function PDFDocumentProxyClosure() {
+  function PDFDocumentProxy(pdfInfo, transport, loadingTask) {
+    this.pdfInfo = pdfInfo;
+    this.transport = transport;
+    this.loadingTask = loadingTask;
+  }
+  PDFDocumentProxy.prototype = {
+    get numPages() {
+      return this.pdfInfo.numPages;
+    },
+    get fingerprint() {
+      return this.pdfInfo.fingerprint;
+    },
+    getPage: function PDFDocumentProxy_getPage(pageNumber) {
+      return this.transport.getPage(pageNumber);
+    },
+    getPageIndex: function PDFDocumentProxy_getPageIndex(ref) {
+      return this.transport.getPageIndex(ref);
+    },
+    getDestinations: function PDFDocumentProxy_getDestinations() {
+      return this.transport.getDestinations();
+    },
+    getDestination: function PDFDocumentProxy_getDestination(id) {
+      return this.transport.getDestination(id);
+    },
+    getPageLabels: function PDFDocumentProxy_getPageLabels() {
+      return this.transport.getPageLabels();
+    },
+    getAttachments: function PDFDocumentProxy_getAttachments() {
+      return this.transport.getAttachments();
+    },
+    getJavaScript: function PDFDocumentProxy_getJavaScript() {
+      return this.transport.getJavaScript();
+    },
+    getOutline: function PDFDocumentProxy_getOutline() {
+      return this.transport.getOutline();
+    },
+    getMetadata: function PDFDocumentProxy_getMetadata() {
+      return this.transport.getMetadata();
+    },
+    getData: function PDFDocumentProxy_getData() {
+      return this.transport.getData();
+    },
+    getDownloadInfo: function PDFDocumentProxy_getDownloadInfo() {
+      return this.transport.downloadInfoCapability.promise;
+    },
+    getStats: function PDFDocumentProxy_getStats() {
+      return this.transport.getStats();
+    },
+    cleanup: function PDFDocumentProxy_cleanup() {
+      this.transport.startCleanup();
+    },
+    destroy: function PDFDocumentProxy_destroy() {
+      return this.loadingTask.destroy();
+    }
+  };
+  return PDFDocumentProxy;
+}();
+var PDFPageProxy = function PDFPageProxyClosure() {
+  function PDFPageProxy(pageIndex, pageInfo, transport) {
+    this.pageIndex = pageIndex;
+    this.pageInfo = pageInfo;
+    this.transport = transport;
+    this.stats = new StatTimer();
+    this.stats.enabled = getDefaultSetting('enableStats');
+    this.commonObjs = transport.commonObjs;
+    this.objs = new PDFObjects();
+    this.cleanupAfterRender = false;
+    this.pendingCleanup = false;
+    this.intentStates = Object.create(null);
+    this.destroyed = false;
+  }
+  PDFPageProxy.prototype = {
+    get pageNumber() {
+      return this.pageIndex + 1;
+    },
+    get rotate() {
+      return this.pageInfo.rotate;
+    },
+    get ref() {
+      return this.pageInfo.ref;
+    },
+    get userUnit() {
+      return this.pageInfo.userUnit;
+    },
+    get view() {
+      return this.pageInfo.view;
+    },
+    getViewport: function PDFPageProxy_getViewport(scale, rotate) {
+      if (arguments.length < 2) {
+        rotate = this.rotate;
+      }
+      return new PageViewport(this.view, scale, rotate, 0, 0);
+    },
+    getAnnotations: function PDFPageProxy_getAnnotations(params) {
+      var intent = params && params.intent || null;
+      if (!this.annotationsPromise || this.annotationsIntent !== intent) {
+        this.annotationsPromise = this.transport.getAnnotations(this.pageIndex, intent);
+        this.annotationsIntent = intent;
+      }
+      return this.annotationsPromise;
+    },
+    render: function PDFPageProxy_render(params) {
+      var stats = this.stats;
+      stats.time('Overall');
+      this.pendingCleanup = false;
+      var renderingIntent = params.intent === 'print' ? 'print' : 'display';
+      var renderInteractiveForms = params.renderInteractiveForms === true ? true : false;
+      var canvasFactory = params.canvasFactory || new DOMCanvasFactory();
+      if (!this.intentStates[renderingIntent]) {
+        this.intentStates[renderingIntent] = Object.create(null);
+      }
+      var intentState = this.intentStates[renderingIntent];
+      if (!intentState.displayReadyCapability) {
+        intentState.receivingOperatorList = true;
+        intentState.displayReadyCapability = createPromiseCapability();
+        intentState.operatorList = {
+          fnArray: [],
+          argsArray: [],
+          lastChunk: false
+        };
+        this.stats.time('Page Request');
+        this.transport.messageHandler.send('RenderPageRequest', {
+          pageIndex: this.pageNumber - 1,
+          intent: renderingIntent,
+          renderInteractiveForms: renderInteractiveForms
+        });
+      }
+      var internalRenderTask = new InternalRenderTask(complete, params, this.objs, this.commonObjs, intentState.operatorList, this.pageNumber, canvasFactory);
+      internalRenderTask.useRequestAnimationFrame = renderingIntent !== 'print';
+      if (!intentState.renderTasks) {
+        intentState.renderTasks = [];
+      }
+      intentState.renderTasks.push(internalRenderTask);
+      var renderTask = internalRenderTask.task;
+      if (params.continueCallback) {
+        deprecated('render is used with continueCallback parameter');
+        renderTask.onContinue = params.continueCallback;
+      }
+      var self = this;
+      intentState.displayReadyCapability.promise.then(function pageDisplayReadyPromise(transparency) {
+        if (self.pendingCleanup) {
+          complete();
+          return;
+        }
+        stats.time('Rendering');
+        internalRenderTask.initializeGraphics(transparency);
+        internalRenderTask.operatorListChanged();
+      }, function pageDisplayReadPromiseError(reason) {
+        complete(reason);
+      });
+      function complete(error) {
+        var i = intentState.renderTasks.indexOf(internalRenderTask);
+        if (i >= 0) {
+          intentState.renderTasks.splice(i, 1);
+        }
+        if (self.cleanupAfterRender) {
+          self.pendingCleanup = true;
+        }
+        self._tryCleanup();
+        if (error) {
+          internalRenderTask.capability.reject(error);
+        } else {
+          internalRenderTask.capability.resolve();
+        }
+        stats.timeEnd('Rendering');
+        stats.timeEnd('Overall');
+      }
+      return renderTask;
+    },
+    getOperatorList: function PDFPageProxy_getOperatorList() {
+      function operatorListChanged() {
+        if (intentState.operatorList.lastChunk) {
+          intentState.opListReadCapability.resolve(intentState.operatorList);
+          var i = intentState.renderTasks.indexOf(opListTask);
+          if (i >= 0) {
+            intentState.renderTasks.splice(i, 1);
+          }
+        }
+      }
+      var renderingIntent = 'oplist';
+      if (!this.intentStates[renderingIntent]) {
+        this.intentStates[renderingIntent] = Object.create(null);
+      }
+      var intentState = this.intentStates[renderingIntent];
+      var opListTask;
+      if (!intentState.opListReadCapability) {
+        opListTask = {};
+        opListTask.operatorListChanged = operatorListChanged;
+        intentState.receivingOperatorList = true;
+        intentState.opListReadCapability = createPromiseCapability();
+        intentState.renderTasks = [];
+        intentState.renderTasks.push(opListTask);
+        intentState.operatorList = {
+          fnArray: [],
+          argsArray: [],
+          lastChunk: false
+        };
+        this.transport.messageHandler.send('RenderPageRequest', {
+          pageIndex: this.pageIndex,
+          intent: renderingIntent
+        });
+      }
+      return intentState.opListReadCapability.promise;
+    },
+    getTextContent: function PDFPageProxy_getTextContent(params) {
+      return this.transport.messageHandler.sendWithPromise('GetTextContent', {
+        pageIndex: this.pageNumber - 1,
+        normalizeWhitespace: params && params.normalizeWhitespace === true ? true : false,
+        combineTextItems: params && params.disableCombineTextItems === true ? false : true
+      });
+    },
+    _destroy: function PDFPageProxy_destroy() {
+      this.destroyed = true;
+      this.transport.pageCache[this.pageIndex] = null;
+      var waitOn = [];
+      Object.keys(this.intentStates).forEach(function (intent) {
+        if (intent === 'oplist') {
+          return;
+        }
+        var intentState = this.intentStates[intent];
+        intentState.renderTasks.forEach(function (renderTask) {
+          var renderCompleted = renderTask.capability.promise.catch(function () {});
+          waitOn.push(renderCompleted);
+          renderTask.cancel();
+        });
+      }, this);
+      this.objs.clear();
+      this.annotationsPromise = null;
+      this.pendingCleanup = false;
+      return Promise.all(waitOn);
+    },
+    destroy: function () {
+      deprecated('page destroy method, use cleanup() instead');
+      this.cleanup();
+    },
+    cleanup: function PDFPageProxy_cleanup() {
+      this.pendingCleanup = true;
+      this._tryCleanup();
+    },
+    _tryCleanup: function PDFPageProxy_tryCleanup() {
+      if (!this.pendingCleanup || Object.keys(this.intentStates).some(function (intent) {
+        var intentState = this.intentStates[intent];
+        return intentState.renderTasks.length !== 0 || intentState.receivingOperatorList;
+      }, this)) {
+        return;
+      }
+      Object.keys(this.intentStates).forEach(function (intent) {
+        delete this.intentStates[intent];
+      }, this);
+      this.objs.clear();
+      this.annotationsPromise = null;
+      this.pendingCleanup = false;
+    },
+    _startRenderPage: function PDFPageProxy_startRenderPage(transparency, intent) {
+      var intentState = this.intentStates[intent];
+      if (intentState.displayReadyCapability) {
+        intentState.displayReadyCapability.resolve(transparency);
+      }
+    },
+    _renderPageChunk: function PDFPageProxy_renderPageChunk(operatorListChunk, intent) {
+      var intentState = this.intentStates[intent];
+      var i, ii;
+      for (i = 0, ii = operatorListChunk.length; i < ii; i++) {
+        intentState.operatorList.fnArray.push(operatorListChunk.fnArray[i]);
+        intentState.operatorList.argsArray.push(operatorListChunk.argsArray[i]);
+      }
+      intentState.operatorList.lastChunk = operatorListChunk.lastChunk;
+      for (i = 0; i < intentState.renderTasks.length; i++) {
+        intentState.renderTasks[i].operatorListChanged();
+      }
+      if (operatorListChunk.lastChunk) {
+        intentState.receivingOperatorList = false;
+        this._tryCleanup();
+      }
+    }
+  };
+  return PDFPageProxy;
+}();
+var PDFWorker = function PDFWorkerClosure() {
+  var nextFakeWorkerId = 0;
+  function getWorkerSrc() {
+    if (typeof workerSrc !== 'undefined') {
+      return workerSrc;
+    }
+    if (getDefaultSetting('workerSrc')) {
+      return getDefaultSetting('workerSrc');
+    }
+    if (pdfjsFilePath) {
+      return pdfjsFilePath.replace(/(\.(?:min\.)?js)$/i, '.worker$1');
+    }
+    error('No PDFJS.workerSrc specified');
+  }
+  var fakeWorkerFilesLoadedCapability;
+  function setupFakeWorkerGlobal() {
+    var WorkerMessageHandler;
+    if (fakeWorkerFilesLoadedCapability) {
+      return fakeWorkerFilesLoadedCapability.promise;
+    }
+    fakeWorkerFilesLoadedCapability = createPromiseCapability();
+    var loader = fakeWorkerFilesLoader || function (callback) {
+      Util.loadScript(getWorkerSrc(), function () {
+        callback(window.pdfjsDistBuildPdfWorker.WorkerMessageHandler);
+      });
+    };
+    loader(fakeWorkerFilesLoadedCapability.resolve);
+    return fakeWorkerFilesLoadedCapability.promise;
+  }
+  function FakeWorkerPort(defer) {
+    this._listeners = [];
+    this._defer = defer;
+    this._deferred = Promise.resolve(undefined);
+  }
+  FakeWorkerPort.prototype = {
+    postMessage: function (obj, transfers) {
+      function cloneValue(value) {
+        if (typeof value !== 'object' || value === null) {
+          return value;
+        }
+        if (cloned.has(value)) {
+          return cloned.get(value);
+        }
+        var result;
+        var buffer;
+        if ((buffer = value.buffer) && isArrayBuffer(buffer)) {
+          var transferable = transfers && transfers.indexOf(buffer) >= 0;
+          if (value === buffer) {
+            result = value;
+          } else if (transferable) {
+            result = new value.constructor(buffer, value.byteOffset, value.byteLength);
+          } else {
+            result = new value.constructor(value);
+          }
+          cloned.set(value, result);
+          return result;
+        }
+        result = isArray(value) ? [] : {};
+        cloned.set(value, result);
+        for (var i in value) {
+          var desc,
+              p = value;
+          while (!(desc = Object.getOwnPropertyDescriptor(p, i))) {
+            p = Object.getPrototypeOf(p);
+          }
+          if (typeof desc.value === 'undefined' || typeof desc.value === 'function') {
+            continue;
+          }
+          result[i] = cloneValue(desc.value);
+        }
+        return result;
+      }
+      if (!this._defer) {
+        this._listeners.forEach(function (listener) {
+          listener.call(this, { data: obj });
+        }, this);
+        return;
+      }
+      var cloned = new WeakMap();
+      var e = { data: cloneValue(obj) };
+      this._deferred.then(function () {
+        this._listeners.forEach(function (listener) {
+          listener.call(this, e);
+        }, this);
+      }.bind(this));
+    },
+    addEventListener: function (name, listener) {
+      this._listeners.push(listener);
+    },
+    removeEventListener: function (name, listener) {
+      var i = this._listeners.indexOf(listener);
+      this._listeners.splice(i, 1);
+    },
+    terminate: function () {
+      this._listeners = [];
+    }
+  };
+  function createCDNWrapper(url) {
+    var wrapper = 'importScripts(\'' + url + '\');';
+    return URL.createObjectURL(new Blob([wrapper]));
+  }
+  function PDFWorker(name, port) {
+    this.name = name;
+    this.destroyed = false;
+    this._readyCapability = createPromiseCapability();
+    this._port = null;
+    this._webWorker = null;
+    this._messageHandler = null;
+    if (port) {
+      this._initializeFromPort(port);
+      return;
+    }
+    this._initialize();
+  }
+  PDFWorker.prototype = {
+    get promise() {
+      return this._readyCapability.promise;
+    },
+    get port() {
+      return this._port;
+    },
+    get messageHandler() {
+      return this._messageHandler;
+    },
+    _initializeFromPort: function PDFWorker_initializeFromPort(port) {
+      this._port = port;
+      this._messageHandler = new MessageHandler('main', 'worker', port);
+      this._messageHandler.on('ready', function () {});
+      this._readyCapability.resolve();
+    },
+    _initialize: function PDFWorker_initialize() {
+      if (!isWorkerDisabled && !getDefaultSetting('disableWorker') && typeof Worker !== 'undefined') {
+        var workerSrc = getWorkerSrc();
+        try {
+          if (!isSameOrigin(window.location.href, workerSrc)) {
+            workerSrc = createCDNWrapper(new URL(workerSrc, window.location).href);
+          }
+          var worker = new Worker(workerSrc);
+          var messageHandler = new MessageHandler('main', 'worker', worker);
+          var terminateEarly = function () {
+            worker.removeEventListener('error', onWorkerError);
+            messageHandler.destroy();
+            worker.terminate();
+            if (this.destroyed) {
+              this._readyCapability.reject(new Error('Worker was destroyed'));
+            } else {
+              this._setupFakeWorker();
+            }
+          }.bind(this);
+          var onWorkerError = function (event) {
+            if (!this._webWorker) {
+              terminateEarly();
+            }
+          }.bind(this);
+          worker.addEventListener('error', onWorkerError);
+          messageHandler.on('test', function PDFWorker_test(data) {
+            worker.removeEventListener('error', onWorkerError);
+            if (this.destroyed) {
+              terminateEarly();
+              return;
+            }
+            var supportTypedArray = data && data.supportTypedArray;
+            if (supportTypedArray) {
+              this._messageHandler = messageHandler;
+              this._port = worker;
+              this._webWorker = worker;
+              if (!data.supportTransfers) {
+                isPostMessageTransfersDisabled = true;
+              }
+              this._readyCapability.resolve();
+              messageHandler.send('configure', { verbosity: getVerbosityLevel() });
+            } else {
+              this._setupFakeWorker();
+              messageHandler.destroy();
+              worker.terminate();
+            }
+          }.bind(this));
+          messageHandler.on('console_log', function (data) {
+            console.log.apply(console, data);
+          });
+          messageHandler.on('console_error', function (data) {
+            console.error.apply(console, data);
+          });
+          messageHandler.on('ready', function (data) {
+            worker.removeEventListener('error', onWorkerError);
+            if (this.destroyed) {
+              terminateEarly();
+              return;
+            }
+            try {
+              sendTest();
+            } catch (e) {
+              this._setupFakeWorker();
+            }
+          }.bind(this));
+          var sendTest = function () {
+            var postMessageTransfers = getDefaultSetting('postMessageTransfers') && !isPostMessageTransfersDisabled;
+            var testObj = new Uint8Array([postMessageTransfers ? 255 : 0]);
+            try {
+              messageHandler.send('test', testObj, [testObj.buffer]);
+            } catch (ex) {
+              info('Cannot use postMessage transfers');
+              testObj[0] = 0;
+              messageHandler.send('test', testObj);
+            }
+          };
+          sendTest();
+          return;
+        } catch (e) {
+          info('The worker has been disabled.');
+        }
+      }
+      this._setupFakeWorker();
+    },
+    _setupFakeWorker: function PDFWorker_setupFakeWorker() {
+      if (!isWorkerDisabled && !getDefaultSetting('disableWorker')) {
+        warn('Setting up fake worker.');
+        isWorkerDisabled = true;
+      }
+      setupFakeWorkerGlobal().then(function (WorkerMessageHandler) {
+        if (this.destroyed) {
+          this._readyCapability.reject(new Error('Worker was destroyed'));
+          return;
+        }
+        var isTypedArraysPresent = Uint8Array !== Float32Array;
+        var port = new FakeWorkerPort(isTypedArraysPresent);
+        this._port = port;
+        var id = 'fake' + nextFakeWorkerId++;
+        var workerHandler = new MessageHandler(id + '_worker', id, port);
+        WorkerMessageHandler.setup(workerHandler, port);
+        var messageHandler = new MessageHandler(id, id + '_worker', port);
+        this._messageHandler = messageHandler;
+        this._readyCapability.resolve();
+      }.bind(this));
+    },
+    destroy: function PDFWorker_destroy() {
+      this.destroyed = true;
+      if (this._webWorker) {
+        this._webWorker.terminate();
+        this._webWorker = null;
+      }
+      this._port = null;
+      if (this._messageHandler) {
+        this._messageHandler.destroy();
+        this._messageHandler = null;
+      }
+    }
+  };
+  return PDFWorker;
+}();
+var WorkerTransport = function WorkerTransportClosure() {
+  function WorkerTransport(messageHandler, loadingTask, pdfDataRangeTransport, CMapReaderFactory) {
+    this.messageHandler = messageHandler;
+    this.loadingTask = loadingTask;
+    this.pdfDataRangeTransport = pdfDataRangeTransport;
+    this.commonObjs = new PDFObjects();
+    this.fontLoader = new FontLoader(loadingTask.docId);
+    this.CMapReaderFactory = new CMapReaderFactory({
+      baseUrl: getDefaultSetting('cMapUrl'),
+      isCompressed: getDefaultSetting('cMapPacked')
+    });
+    this.destroyed = false;
+    this.destroyCapability = null;
+    this._passwordCapability = null;
+    this.pageCache = [];
+    this.pagePromises = [];
+    this.downloadInfoCapability = createPromiseCapability();
+    this.setupMessageHandler();
+  }
+  WorkerTransport.prototype = {
+    destroy: function WorkerTransport_destroy() {
+      if (this.destroyCapability) {
+        return this.destroyCapability.promise;
+      }
+      this.destroyed = true;
+      this.destroyCapability = createPromiseCapability();
+      if (this._passwordCapability) {
+        this._passwordCapability.reject(new Error('Worker was destroyed during onPassword callback'));
+      }
+      var waitOn = [];
+      this.pageCache.forEach(function (page) {
+        if (page) {
+          waitOn.push(page._destroy());
+        }
+      });
+      this.pageCache = [];
+      this.pagePromises = [];
+      var self = this;
+      var terminated = this.messageHandler.sendWithPromise('Terminate', null);
+      waitOn.push(terminated);
+      Promise.all(waitOn).then(function () {
+        self.fontLoader.clear();
+        if (self.pdfDataRangeTransport) {
+          self.pdfDataRangeTransport.abort();
+          self.pdfDataRangeTransport = null;
+        }
+        if (self.messageHandler) {
+          self.messageHandler.destroy();
+          self.messageHandler = null;
+        }
+        self.destroyCapability.resolve();
+      }, this.destroyCapability.reject);
+      return this.destroyCapability.promise;
+    },
+    setupMessageHandler: function WorkerTransport_setupMessageHandler() {
+      var messageHandler = this.messageHandler;
+      var loadingTask = this.loadingTask;
+      var pdfDataRangeTransport = this.pdfDataRangeTransport;
+      if (pdfDataRangeTransport) {
+        pdfDataRangeTransport.addRangeListener(function (begin, chunk) {
+          messageHandler.send('OnDataRange', {
+            begin: begin,
+            chunk: chunk
+          });
+        });
+        pdfDataRangeTransport.addProgressListener(function (loaded) {
+          messageHandler.send('OnDataProgress', { loaded: loaded });
+        });
+        pdfDataRangeTransport.addProgressiveReadListener(function (chunk) {
+          messageHandler.send('OnDataRange', { chunk: chunk });
+        });
+        messageHandler.on('RequestDataRange', function transportDataRange(data) {
+          pdfDataRangeTransport.requestDataRange(data.begin, data.end);
+        }, this);
+      }
+      messageHandler.on('GetDoc', function transportDoc(data) {
+        var pdfInfo = data.pdfInfo;
+        this.numPages = data.pdfInfo.numPages;
+        var loadingTask = this.loadingTask;
+        var pdfDocument = new PDFDocumentProxy(pdfInfo, this, loadingTask);
+        this.pdfDocument = pdfDocument;
+        loadingTask._capability.resolve(pdfDocument);
+      }, this);
+      messageHandler.on('PasswordRequest', function transportPasswordRequest(exception) {
+        this._passwordCapability = createPromiseCapability();
+        if (loadingTask.onPassword) {
+          var updatePassword = function (password) {
+            this._passwordCapability.resolve({ password: password });
+          }.bind(this);
+          loadingTask.onPassword(updatePassword, exception.code);
+        } else {
+          this._passwordCapability.reject(new PasswordException(exception.message, exception.code));
+        }
+        return this._passwordCapability.promise;
+      }, this);
+      messageHandler.on('PasswordException', function transportPasswordException(exception) {
+        loadingTask._capability.reject(new PasswordException(exception.message, exception.code));
+      }, this);
+      messageHandler.on('InvalidPDF', function transportInvalidPDF(exception) {
+        this.loadingTask._capability.reject(new InvalidPDFException(exception.message));
+      }, this);
+      messageHandler.on('MissingPDF', function transportMissingPDF(exception) {
+        this.loadingTask._capability.reject(new MissingPDFException(exception.message));
+      }, this);
+      messageHandler.on('UnexpectedResponse', function transportUnexpectedResponse(exception) {
+        this.loadingTask._capability.reject(new UnexpectedResponseException(exception.message, exception.status));
+      }, this);
+      messageHandler.on('UnknownError', function transportUnknownError(exception) {
+        this.loadingTask._capability.reject(new UnknownErrorException(exception.message, exception.details));
+      }, this);
+      messageHandler.on('DataLoaded', function transportPage(data) {
+        this.downloadInfoCapability.resolve(data);
+      }, this);
+      messageHandler.on('PDFManagerReady', function transportPage(data) {
+        if (this.pdfDataRangeTransport) {
+          this.pdfDataRangeTransport.transportReady();
+        }
+      }, this);
+      messageHandler.on('StartRenderPage', function transportRender(data) {
+        if (this.destroyed) {
+          return;
+        }
+        var page = this.pageCache[data.pageIndex];
+        page.stats.timeEnd('Page Request');
+        page._startRenderPage(data.transparency, data.intent);
+      }, this);
+      messageHandler.on('RenderPageChunk', function transportRender(data) {
+        if (this.destroyed) {
+          return;
+        }
+        var page = this.pageCache[data.pageIndex];
+        page._renderPageChunk(data.operatorList, data.intent);
+      }, this);
+      messageHandler.on('commonobj', function transportObj(data) {
+        if (this.destroyed) {
+          return;
+        }
+        var id = data[0];
+        var type = data[1];
+        if (this.commonObjs.hasData(id)) {
+          return;
+        }
+        switch (type) {
+          case 'Font':
+            var exportedData = data[2];
+            if ('error' in exportedData) {
+              var exportedError = exportedData.error;
+              warn('Error during font loading: ' + exportedError);
+              this.commonObjs.resolve(id, exportedError);
+              break;
+            }
+            var fontRegistry = null;
+            if (getDefaultSetting('pdfBug') && globalScope.FontInspector && globalScope['FontInspector'].enabled) {
+              fontRegistry = {
+                registerFont: function (font, url) {
+                  globalScope['FontInspector'].fontAdded(font, url);
+                }
+              };
+            }
+            var font = new FontFaceObject(exportedData, {
+              isEvalSuported: getDefaultSetting('isEvalSupported'),
+              disableFontFace: getDefaultSetting('disableFontFace'),
+              fontRegistry: fontRegistry
+            });
+            this.fontLoader.bind([font], function fontReady(fontObjs) {
+              this.commonObjs.resolve(id, font);
+            }.bind(this));
+            break;
+          case 'FontPath':
+            this.commonObjs.resolve(id, data[2]);
+            break;
+          default:
+            error('Got unknown common object type ' + type);
+        }
+      }, this);
+      messageHandler.on('obj', function transportObj(data) {
+        if (this.destroyed) {
+          return;
+        }
+        var id = data[0];
+        var pageIndex = data[1];
+        var type = data[2];
+        var pageProxy = this.pageCache[pageIndex];
+        var imageData;
+        if (pageProxy.objs.hasData(id)) {
+          return;
+        }
+        switch (type) {
+          case 'JpegStream':
+            imageData = data[3];
+            loadJpegStream(id, imageData, pageProxy.objs);
+            break;
+          case 'Image':
+            imageData = data[3];
+            pageProxy.objs.resolve(id, imageData);
+            var MAX_IMAGE_SIZE_TO_STORE = 8000000;
+            if (imageData && 'data' in imageData && imageData.data.length > MAX_IMAGE_SIZE_TO_STORE) {
+              pageProxy.cleanupAfterRender = true;
+            }
+            break;
+          default:
+            error('Got unknown object type ' + type);
+        }
+      }, this);
+      messageHandler.on('DocProgress', function transportDocProgress(data) {
+        if (this.destroyed) {
+          return;
+        }
+        var loadingTask = this.loadingTask;
+        if (loadingTask.onProgress) {
+          loadingTask.onProgress({
+            loaded: data.loaded,
+            total: data.total
+          });
+        }
+      }, this);
+      messageHandler.on('PageError', function transportError(data) {
+        if (this.destroyed) {
+          return;
+        }
+        var page = this.pageCache[data.pageNum - 1];
+        var intentState = page.intentStates[data.intent];
+        if (intentState.displayReadyCapability) {
+          intentState.displayReadyCapability.reject(data.error);
+        } else {
+          error(data.error);
+        }
+        if (intentState.operatorList) {
+          intentState.operatorList.lastChunk = true;
+          for (var i = 0; i < intentState.renderTasks.length; i++) {
+            intentState.renderTasks[i].operatorListChanged();
+          }
+        }
+      }, this);
+      messageHandler.on('UnsupportedFeature', function transportUnsupportedFeature(data) {
+        if (this.destroyed) {
+          return;
+        }
+        var featureId = data.featureId;
+        var loadingTask = this.loadingTask;
+        if (loadingTask.onUnsupportedFeature) {
+          loadingTask.onUnsupportedFeature(featureId);
+        }
+        _UnsupportedManager.notify(featureId);
+      }, this);
+      messageHandler.on('JpegDecode', function (data) {
+        if (this.destroyed) {
+          return Promise.reject(new Error('Worker was destroyed'));
+        }
+        if (typeof document === 'undefined') {
+          return Promise.reject(new Error('"document" is not defined.'));
+        }
+        var imageUrl = data[0];
+        var components = data[1];
+        if (components !== 3 && components !== 1) {
+          return Promise.reject(new Error('Only 3 components or 1 component can be returned'));
+        }
+        return new Promise(function (resolve, reject) {
+          var img = new Image();
+          img.onload = function () {
+            var width = img.width;
+            var height = img.height;
+            var size = width * height;
+            var rgbaLength = size * 4;
+            var buf = new Uint8Array(size * components);
+            var tmpCanvas = document.createElement('canvas');
+            tmpCanvas.width = width;
+            tmpCanvas.height = height;
+            var tmpCtx = tmpCanvas.getContext('2d');
+            tmpCtx.drawImage(img, 0, 0);
+            var data = tmpCtx.getImageData(0, 0, width, height).data;
+            var i, j;
+            if (components === 3) {
+              for (i = 0, j = 0; i < rgbaLength; i += 4, j += 3) {
+                buf[j] = data[i];
+                buf[j + 1] = data[i + 1];
+                buf[j + 2] = data[i + 2];
+              }
+            } else if (components === 1) {
+              for (i = 0, j = 0; i < rgbaLength; i += 4, j++) {
+                buf[j] = data[i];
+              }
+            }
+            resolve({
+              data: buf,
+              width: width,
+              height: height
+            });
+          };
+          img.onerror = function () {
+            reject(new Error('JpegDecode failed to load image'));
+          };
+          img.src = imageUrl;
+        });
+      }, this);
+      messageHandler.on('FetchBuiltInCMap', function (data) {
+        if (this.destroyed) {
+          return Promise.reject(new Error('Worker was destroyed'));
+        }
+        return this.CMapReaderFactory.fetch({ name: data.name });
+      }, this);
+    },
+    getData: function WorkerTransport_getData() {
+      return this.messageHandler.sendWithPromise('GetData', null);
+    },
+    getPage: function WorkerTransport_getPage(pageNumber, capability) {
+      if (!isInt(pageNumber) || pageNumber <= 0 || pageNumber > this.numPages) {
+        return Promise.reject(new Error('Invalid page request'));
+      }
+      var pageIndex = pageNumber - 1;
+      if (pageIndex in this.pagePromises) {
+        return this.pagePromises[pageIndex];
+      }
+      var promise = this.messageHandler.sendWithPromise('GetPage', { pageIndex: pageIndex }).then(function (pageInfo) {
+        if (this.destroyed) {
+          throw new Error('Transport destroyed');
+        }
+        var page = new PDFPageProxy(pageIndex, pageInfo, this);
+        this.pageCache[pageIndex] = page;
+        return page;
+      }.bind(this));
+      this.pagePromises[pageIndex] = promise;
+      return promise;
+    },
+    getPageIndex: function WorkerTransport_getPageIndexByRef(ref) {
+      return this.messageHandler.sendWithPromise('GetPageIndex', { ref: ref }).catch(function (reason) {
+        return Promise.reject(new Error(reason));
+      });
+    },
+    getAnnotations: function WorkerTransport_getAnnotations(pageIndex, intent) {
+      return this.messageHandler.sendWithPromise('GetAnnotations', {
+        pageIndex: pageIndex,
+        intent: intent
+      });
+    },
+    getDestinations: function WorkerTransport_getDestinations() {
+      return this.messageHandler.sendWithPromise('GetDestinations', null);
+    },
+    getDestination: function WorkerTransport_getDestination(id) {
+      return this.messageHandler.sendWithPromise('GetDestination', { id: id });
+    },
+    getPageLabels: function WorkerTransport_getPageLabels() {
+      return this.messageHandler.sendWithPromise('GetPageLabels', null);
+    },
+    getAttachments: function WorkerTransport_getAttachments() {
+      return this.messageHandler.sendWithPromise('GetAttachments', null);
+    },
+    getJavaScript: function WorkerTransport_getJavaScript() {
+      return this.messageHandler.sendWithPromise('GetJavaScript', null);
+    },
+    getOutline: function WorkerTransport_getOutline() {
+      return this.messageHandler.sendWithPromise('GetOutline', null);
+    },
+    getMetadata: function WorkerTransport_getMetadata() {
+      return this.messageHandler.sendWithPromise('GetMetadata', null).then(function transportMetadata(results) {
+        return {
+          info: results[0],
+          metadata: results[1] ? new Metadata(results[1]) : null
+        };
+      });
+    },
+    getStats: function WorkerTransport_getStats() {
+      return this.messageHandler.sendWithPromise('GetStats', null);
+    },
+    startCleanup: function WorkerTransport_startCleanup() {
+      this.messageHandler.sendWithPromise('Cleanup', null).then(function endCleanup() {
+        for (var i = 0, ii = this.pageCache.length; i < ii; i++) {
+          var page = this.pageCache[i];
+          if (page) {
+            page.cleanup();
+          }
+        }
+        this.commonObjs.clear();
+        this.fontLoader.clear();
+      }.bind(this));
+    }
+  };
+  return WorkerTransport;
+}();
+var PDFObjects = function PDFObjectsClosure() {
+  function PDFObjects() {
+    this.objs = Object.create(null);
+  }
+  PDFObjects.prototype = {
+    ensureObj: function PDFObjects_ensureObj(objId) {
+      if (this.objs[objId]) {
+        return this.objs[objId];
+      }
+      var obj = {
+        capability: createPromiseCapability(),
+        data: null,
+        resolved: false
+      };
+      this.objs[objId] = obj;
+      return obj;
+    },
+    get: function PDFObjects_get(objId, callback) {
+      if (callback) {
+        this.ensureObj(objId).capability.promise.then(callback);
+        return null;
+      }
+      var obj = this.objs[objId];
+      if (!obj || !obj.resolved) {
+        error('Requesting object that isn\'t resolved yet ' + objId);
+      }
+      return obj.data;
+    },
+    resolve: function PDFObjects_resolve(objId, data) {
+      var obj = this.ensureObj(objId);
+      obj.resolved = true;
+      obj.data = data;
+      obj.capability.resolve(data);
+    },
+    isResolved: function PDFObjects_isResolved(objId) {
+      var objs = this.objs;
+      if (!objs[objId]) {
+        return false;
+      }
+      return objs[objId].resolved;
+    },
+    hasData: function PDFObjects_hasData(objId) {
+      return this.isResolved(objId);
+    },
+    getData: function PDFObjects_getData(objId) {
+      var objs = this.objs;
+      if (!objs[objId] || !objs[objId].resolved) {
+        return null;
+      }
+      return objs[objId].data;
+    },
+    clear: function PDFObjects_clear() {
+      this.objs = Object.create(null);
+    }
+  };
+  return PDFObjects;
+}();
+var RenderTask = function RenderTaskClosure() {
+  function RenderTask(internalRenderTask) {
+    this._internalRenderTask = internalRenderTask;
+    this.onContinue = null;
+  }
+  RenderTask.prototype = {
+    get promise() {
+      return this._internalRenderTask.capability.promise;
+    },
+    cancel: function RenderTask_cancel() {
+      this._internalRenderTask.cancel();
+    },
+    then: function RenderTask_then(onFulfilled, onRejected) {
+      return this.promise.then.apply(this.promise, arguments);
+    }
+  };
+  return RenderTask;
+}();
+var InternalRenderTask = function InternalRenderTaskClosure() {
+  function InternalRenderTask(callback, params, objs, commonObjs, operatorList, pageNumber, canvasFactory) {
+    this.callback = callback;
+    this.params = params;
+    this.objs = objs;
+    this.commonObjs = commonObjs;
+    this.operatorListIdx = null;
+    this.operatorList = operatorList;
+    this.pageNumber = pageNumber;
+    this.canvasFactory = canvasFactory;
+    this.running = false;
+    this.graphicsReadyCallback = null;
+    this.graphicsReady = false;
+    this.useRequestAnimationFrame = false;
+    this.cancelled = false;
+    this.capability = createPromiseCapability();
+    this.task = new RenderTask(this);
+    this._continueBound = this._continue.bind(this);
+    this._scheduleNextBound = this._scheduleNext.bind(this);
+    this._nextBound = this._next.bind(this);
+  }
+  InternalRenderTask.prototype = {
+    initializeGraphics: function InternalRenderTask_initializeGraphics(transparency) {
+      if (this.cancelled) {
+        return;
+      }
+      if (getDefaultSetting('pdfBug') && globalScope.StepperManager && globalScope.StepperManager.enabled) {
+        this.stepper = globalScope.StepperManager.create(this.pageNumber - 1);
+        this.stepper.init(this.operatorList);
+        this.stepper.nextBreakPoint = this.stepper.getNextBreakPoint();
+      }
+      var params = this.params;
+      this.gfx = new CanvasGraphics(params.canvasContext, this.commonObjs, this.objs, this.canvasFactory, params.imageLayer);
+      this.gfx.beginDrawing(params.transform, params.viewport, transparency);
+      this.operatorListIdx = 0;
+      this.graphicsReady = true;
+      if (this.graphicsReadyCallback) {
+        this.graphicsReadyCallback();
+      }
+    },
+    cancel: function InternalRenderTask_cancel() {
+      this.running = false;
+      this.cancelled = true;
+      if (getDefaultSetting('pdfjsNext')) {
+        this.callback(new RenderingCancelledException('Rendering cancelled, page ' + this.pageNumber, 'canvas'));
+      } else {
+        this.callback('cancelled');
+      }
+    },
+    operatorListChanged: function InternalRenderTask_operatorListChanged() {
+      if (!this.graphicsReady) {
+        if (!this.graphicsReadyCallback) {
+          this.graphicsReadyCallback = this._continueBound;
+        }
+        return;
+      }
+      if (this.stepper) {
+        this.stepper.updateOperatorList(this.operatorList);
+      }
+      if (this.running) {
+        return;
+      }
+      this._continue();
+    },
+    _continue: function InternalRenderTask__continue() {
+      this.running = true;
+      if (this.cancelled) {
+        return;
+      }
+      if (this.task.onContinue) {
+        this.task.onContinue(this._scheduleNextBound);
+      } else {
+        this._scheduleNext();
+      }
+    },
+    _scheduleNext: function InternalRenderTask__scheduleNext() {
+      if (this.useRequestAnimationFrame && typeof window !== 'undefined') {
+        window.requestAnimationFrame(this._nextBound);
+      } else {
+        Promise.resolve(undefined).then(this._nextBound);
+      }
+    },
+    _next: function InternalRenderTask__next() {
+      if (this.cancelled) {
+        return;
+      }
+      this.operatorListIdx = this.gfx.executeOperatorList(this.operatorList, this.operatorListIdx, this._continueBound, this.stepper);
+      if (this.operatorListIdx === this.operatorList.argsArray.length) {
+        this.running = false;
+        if (this.operatorList.lastChunk) {
+          this.gfx.endDrawing();
+          this.callback();
+        }
+      }
+    }
+  };
+  return InternalRenderTask;
+}();
+var _UnsupportedManager = function UnsupportedManagerClosure() {
+  var listeners = [];
+  return {
+    listen: function (cb) {
+      deprecated('Global UnsupportedManager.listen is used: ' + ' use PDFDocumentLoadingTask.onUnsupportedFeature instead');
+      listeners.push(cb);
+    },
+    notify: function (featureId) {
+      for (var i = 0, ii = listeners.length; i < ii; i++) {
+        listeners[i](featureId);
+      }
+    }
+  };
+}();
+exports.version = '1.8.188';
+exports.build = 'ad1023ff';
+exports.getDocument = getDocument;
+exports.PDFDataRangeTransport = PDFDataRangeTransport;
+exports.PDFWorker = PDFWorker;
+exports.PDFDocumentProxy = PDFDocumentProxy;
+exports.PDFPageProxy = PDFPageProxy;
+exports._UnsupportedManager = _UnsupportedManager;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var sharedUtil = __w_pdfjs_require__(0);
+var FONT_IDENTITY_MATRIX = sharedUtil.FONT_IDENTITY_MATRIX;
+var IDENTITY_MATRIX = sharedUtil.IDENTITY_MATRIX;
+var ImageKind = sharedUtil.ImageKind;
+var OPS = sharedUtil.OPS;
+var Util = sharedUtil.Util;
+var isNum = sharedUtil.isNum;
+var isArray = sharedUtil.isArray;
+var warn = sharedUtil.warn;
+var createObjectURL = sharedUtil.createObjectURL;
+var SVG_DEFAULTS = {
+  fontStyle: 'normal',
+  fontWeight: 'normal',
+  fillColor: '#000000'
+};
+var convertImgDataToPng = function convertImgDataToPngClosure() {
+  var PNG_HEADER = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+  var CHUNK_WRAPPER_SIZE = 12;
+  var crcTable = new Int32Array(256);
+  for (var i = 0; i < 256; i++) {
+    var c = i;
+    for (var h = 0; h < 8; h++) {
+      if (c & 1) {
+        c = 0xedB88320 ^ c >> 1 & 0x7fffffff;
+      } else {
+        c = c >> 1 & 0x7fffffff;
+      }
+    }
+    crcTable[i] = c;
+  }
+  function crc32(data, start, end) {
+    var crc = -1;
+    for (var i = start; i < end; i++) {
+      var a = (crc ^ data[i]) & 0xff;
+      var b = crcTable[a];
+      crc = crc >>> 8 ^ b;
+    }
+    return crc ^ -1;
+  }
+  function writePngChunk(type, body, data, offset) {
+    var p = offset;
+    var len = body.length;
+    data[p] = len >> 24 & 0xff;
+    data[p + 1] = len >> 16 & 0xff;
+    data[p + 2] = len >> 8 & 0xff;
+    data[p + 3] = len & 0xff;
+    p += 4;
+    data[p] = type.charCodeAt(0) & 0xff;
+    data[p + 1] = type.charCodeAt(1) & 0xff;
+    data[p + 2] = type.charCodeAt(2) & 0xff;
+    data[p + 3] = type.charCodeAt(3) & 0xff;
+    p += 4;
+    data.set(body, p);
+    p += body.length;
+    var crc = crc32(data, offset + 4, p);
+    data[p] = crc >> 24 & 0xff;
+    data[p + 1] = crc >> 16 & 0xff;
+    data[p + 2] = crc >> 8 & 0xff;
+    data[p + 3] = crc & 0xff;
+  }
+  function adler32(data, start, end) {
+    var a = 1;
+    var b = 0;
+    for (var i = start; i < end; ++i) {
+      a = (a + (data[i] & 0xff)) % 65521;
+      b = (b + a) % 65521;
+    }
+    return b << 16 | a;
+  }
+  function encode(imgData, kind, forceDataSchema) {
+    var width = imgData.width;
+    var height = imgData.height;
+    var bitDepth, colorType, lineSize;
+    var bytes = imgData.data;
+    switch (kind) {
+      case ImageKind.GRAYSCALE_1BPP:
+        colorType = 0;
+        bitDepth = 1;
+        lineSize = width + 7 >> 3;
+        break;
+      case ImageKind.RGB_24BPP:
+        colorType = 2;
+        bitDepth = 8;
+        lineSize = width * 3;
+        break;
+      case ImageKind.RGBA_32BPP:
+        colorType = 6;
+        bitDepth = 8;
+        lineSize = width * 4;
+        break;
+      default:
+        throw new Error('invalid format');
+    }
+    var literals = new Uint8Array((1 + lineSize) * height);
+    var offsetLiterals = 0,
+        offsetBytes = 0;
+    var y, i;
+    for (y = 0; y < height; ++y) {
+      literals[offsetLiterals++] = 0;
+      literals.set(bytes.subarray(offsetBytes, offsetBytes + lineSize), offsetLiterals);
+      offsetBytes += lineSize;
+      offsetLiterals += lineSize;
+    }
+    if (kind === ImageKind.GRAYSCALE_1BPP) {
+      offsetLiterals = 0;
+      for (y = 0; y < height; y++) {
+        offsetLiterals++;
+        for (i = 0; i < lineSize; i++) {
+          literals[offsetLiterals++] ^= 0xFF;
+        }
+      }
+    }
+    var ihdr = new Uint8Array([width >> 24 & 0xff, width >> 16 & 0xff, width >> 8 & 0xff, width & 0xff, height >> 24 & 0xff, height >> 16 & 0xff, height >> 8 & 0xff, height & 0xff, bitDepth, colorType, 0x00, 0x00, 0x00]);
+    var len = literals.length;
+    var maxBlockLength = 0xFFFF;
+    var deflateBlocks = Math.ceil(len / maxBlockLength);
+    var idat = new Uint8Array(2 + len + deflateBlocks * 5 + 4);
+    var pi = 0;
+    idat[pi++] = 0x78;
+    idat[pi++] = 0x9c;
+    var pos = 0;
+    while (len > maxBlockLength) {
+      idat[pi++] = 0x00;
+      idat[pi++] = 0xff;
+      idat[pi++] = 0xff;
+      idat[pi++] = 0x00;
+      idat[pi++] = 0x00;
+      idat.set(literals.subarray(pos, pos + maxBlockLength), pi);
+      pi += maxBlockLength;
+      pos += maxBlockLength;
+      len -= maxBlockLength;
+    }
+    idat[pi++] = 0x01;
+    idat[pi++] = len & 0xff;
+    idat[pi++] = len >> 8 & 0xff;
+    idat[pi++] = ~len & 0xffff & 0xff;
+    idat[pi++] = (~len & 0xffff) >> 8 & 0xff;
+    idat.set(literals.subarray(pos), pi);
+    pi += literals.length - pos;
+    var adler = adler32(literals, 0, literals.length);
+    idat[pi++] = adler >> 24 & 0xff;
+    idat[pi++] = adler >> 16 & 0xff;
+    idat[pi++] = adler >> 8 & 0xff;
+    idat[pi++] = adler & 0xff;
+    var pngLength = PNG_HEADER.length + CHUNK_WRAPPER_SIZE * 3 + ihdr.length + idat.length;
+    var data = new Uint8Array(pngLength);
+    var offset = 0;
+    data.set(PNG_HEADER, offset);
+    offset += PNG_HEADER.length;
+    writePngChunk('IHDR', ihdr, data, offset);
+    offset += CHUNK_WRAPPER_SIZE + ihdr.length;
+    writePngChunk('IDATA', idat, data, offset);
+    offset += CHUNK_WRAPPER_SIZE + idat.length;
+    writePngChunk('IEND', new Uint8Array(0), data, offset);
+    return createObjectURL(data, 'image/png', forceDataSchema);
+  }
+  return function convertImgDataToPng(imgData, forceDataSchema) {
+    var kind = imgData.kind === undefined ? ImageKind.GRAYSCALE_1BPP : imgData.kind;
+    return encode(imgData, kind, forceDataSchema);
+  };
+}();
+var SVGExtraState = function SVGExtraStateClosure() {
+  function SVGExtraState() {
+    this.fontSizeScale = 1;
+    this.fontWeight = SVG_DEFAULTS.fontWeight;
+    this.fontSize = 0;
+    this.textMatrix = IDENTITY_MATRIX;
+    this.fontMatrix = FONT_IDENTITY_MATRIX;
+    this.leading = 0;
+    this.x = 0;
+    this.y = 0;
+    this.lineX = 0;
+    this.lineY = 0;
+    this.charSpacing = 0;
+    this.wordSpacing = 0;
+    this.textHScale = 1;
+    this.textRise = 0;
+    this.fillColor = SVG_DEFAULTS.fillColor;
+    this.strokeColor = '#000000';
+    this.fillAlpha = 1;
+    this.strokeAlpha = 1;
+    this.lineWidth = 1;
+    this.lineJoin = '';
+    this.lineCap = '';
+    this.miterLimit = 0;
+    this.dashArray = [];
+    this.dashPhase = 0;
+    this.dependencies = [];
+    this.activeClipUrl = null;
+    this.clipGroup = null;
+    this.maskId = '';
+  }
+  SVGExtraState.prototype = {
+    clone: function SVGExtraState_clone() {
+      return Object.create(this);
+    },
+    setCurrentPoint: function SVGExtraState_setCurrentPoint(x, y) {
+      this.x = x;
+      this.y = y;
+    }
+  };
+  return SVGExtraState;
+}();
+var SVGGraphics = function SVGGraphicsClosure() {
+  function opListToTree(opList) {
+    var opTree = [];
+    var tmp = [];
+    var opListLen = opList.length;
+    for (var x = 0; x < opListLen; x++) {
+      if (opList[x].fn === 'save') {
+        opTree.push({
+          'fnId': 92,
+          'fn': 'group',
+          'items': []
+        });
+        tmp.push(opTree);
+        opTree = opTree[opTree.length - 1].items;
+        continue;
+      }
+      if (opList[x].fn === 'restore') {
+        opTree = tmp.pop();
+      } else {
+        opTree.push(opList[x]);
+      }
+    }
+    return opTree;
+  }
+  function pf(value) {
+    if (value === (value | 0)) {
+      return value.toString();
+    }
+    var s = value.toFixed(10);
+    var i = s.length - 1;
+    if (s[i] !== '0') {
+      return s;
+    }
+    do {
+      i--;
+    } while (s[i] === '0');
+    return s.substr(0, s[i] === '.' ? i : i + 1);
+  }
+  function pm(m) {
+    if (m[4] === 0 && m[5] === 0) {
+      if (m[1] === 0 && m[2] === 0) {
+        if (m[0] === 1 && m[3] === 1) {
+          return '';
+        }
+        return 'scale(' + pf(m[0]) + ' ' + pf(m[3]) + ')';
+      }
+      if (m[0] === m[3] && m[1] === -m[2]) {
+        var a = Math.acos(m[0]) * 180 / Math.PI;
+        return 'rotate(' + pf(a) + ')';
+      }
+    } else {
+      if (m[0] === 1 && m[1] === 0 && m[2] === 0 && m[3] === 1) {
+        return 'translate(' + pf(m[4]) + ' ' + pf(m[5]) + ')';
+      }
+    }
+    return 'matrix(' + pf(m[0]) + ' ' + pf(m[1]) + ' ' + pf(m[2]) + ' ' + pf(m[3]) + ' ' + pf(m[4]) + ' ' + pf(m[5]) + ')';
+  }
+  function SVGGraphics(commonObjs, objs, forceDataSchema) {
+    this.current = new SVGExtraState();
+    this.transformMatrix = IDENTITY_MATRIX;
+    this.transformStack = [];
+    this.extraStack = [];
+    this.commonObjs = commonObjs;
+    this.objs = objs;
+    this.pendingEOFill = false;
+    this.embedFonts = false;
+    this.embeddedFonts = Object.create(null);
+    this.cssStyle = null;
+    this.forceDataSchema = !!forceDataSchema;
+  }
+  var NS = 'http://www.w3.org/2000/svg';
+  var XML_NS = 'http://www.w3.org/XML/1998/namespace';
+  var XLINK_NS = 'http://www.w3.org/1999/xlink';
+  var LINE_CAP_STYLES = ['butt', 'round', 'square'];
+  var LINE_JOIN_STYLES = ['miter', 'round', 'bevel'];
+  var clipCount = 0;
+  var maskCount = 0;
+  SVGGraphics.prototype = {
+    save: function SVGGraphics_save() {
+      this.transformStack.push(this.transformMatrix);
+      var old = this.current;
+      this.extraStack.push(old);
+      this.current = old.clone();
+    },
+    restore: function SVGGraphics_restore() {
+      this.transformMatrix = this.transformStack.pop();
+      this.current = this.extraStack.pop();
+      this.tgrp = null;
+    },
+    group: function SVGGraphics_group(items) {
+      this.save();
+      this.executeOpTree(items);
+      this.restore();
+    },
+    loadDependencies: function SVGGraphics_loadDependencies(operatorList) {
+      var fnArray = operatorList.fnArray;
+      var fnArrayLen = fnArray.length;
+      var argsArray = operatorList.argsArray;
+      var self = this;
+      for (var i = 0; i < fnArrayLen; i++) {
+        if (OPS.dependency === fnArray[i]) {
+          var deps = argsArray[i];
+          for (var n = 0, nn = deps.length; n < nn; n++) {
+            var obj = deps[n];
+            var common = obj.substring(0, 2) === 'g_';
+            var promise;
+            if (common) {
+              promise = new Promise(function (resolve) {
+                self.commonObjs.get(obj, resolve);
+              });
+            } else {
+              promise = new Promise(function (resolve) {
+                self.objs.get(obj, resolve);
+              });
+            }
+            this.current.dependencies.push(promise);
+          }
+        }
+      }
+      return Promise.all(this.current.dependencies);
+    },
+    transform: function SVGGraphics_transform(a, b, c, d, e, f) {
+      var transformMatrix = [a, b, c, d, e, f];
+      this.transformMatrix = Util.transform(this.transformMatrix, transformMatrix);
+      this.tgrp = null;
+    },
+    getSVG: function SVGGraphics_getSVG(operatorList, viewport) {
+      this.viewport = viewport;
+      var svgElement = this._initialize(viewport);
+      return this.loadDependencies(operatorList).then(function () {
+        this.transformMatrix = IDENTITY_MATRIX;
+        var opTree = this.convertOpList(operatorList);
+        this.executeOpTree(opTree);
+        return svgElement;
+      }.bind(this));
+    },
+    convertOpList: function SVGGraphics_convertOpList(operatorList) {
+      var argsArray = operatorList.argsArray;
+      var fnArray = operatorList.fnArray;
+      var fnArrayLen = fnArray.length;
+      var REVOPS = [];
+      var opList = [];
+      for (var op in OPS) {
+        REVOPS[OPS[op]] = op;
+      }
+      for (var x = 0; x < fnArrayLen; x++) {
+        var fnId = fnArray[x];
+        opList.push({
+          'fnId': fnId,
+          'fn': REVOPS[fnId],
+          'args': argsArray[x]
+        });
+      }
+      return opListToTree(opList);
+    },
+    executeOpTree: function SVGGraphics_executeOpTree(opTree) {
+      var opTreeLen = opTree.length;
+      for (var x = 0; x < opTreeLen; x++) {
+        var fn = opTree[x].fn;
+        var fnId = opTree[x].fnId;
+        var args = opTree[x].args;
+        switch (fnId | 0) {
+          case OPS.beginText:
+            this.beginText();
+            break;
+          case OPS.setLeading:
+            this.setLeading(args);
+            break;
+          case OPS.setLeadingMoveText:
+            this.setLeadingMoveText(args[0], args[1]);
+            break;
+          case OPS.setFont:
+            this.setFont(args);
+            break;
+          case OPS.showText:
+            this.showText(args[0]);
+            break;
+          case OPS.showSpacedText:
+            this.showText(args[0]);
+            break;
+          case OPS.endText:
+            this.endText();
+            break;
+          case OPS.moveText:
+            this.moveText(args[0], args[1]);
+            break;
+          case OPS.setCharSpacing:
+            this.setCharSpacing(args[0]);
+            break;
+          case OPS.setWordSpacing:
+            this.setWordSpacing(args[0]);
+            break;
+          case OPS.setHScale:
+            this.setHScale(args[0]);
+            break;
+          case OPS.setTextMatrix:
+            this.setTextMatrix(args[0], args[1], args[2], args[3], args[4], args[5]);
+            break;
+          case OPS.setLineWidth:
+            this.setLineWidth(args[0]);
+            break;
+          case OPS.setLineJoin:
+            this.setLineJoin(args[0]);
+            break;
+          case OPS.setLineCap:
+            this.setLineCap(args[0]);
+            break;
+          case OPS.setMiterLimit:
+            this.setMiterLimit(args[0]);
+            break;
+          case OPS.setFillRGBColor:
+            this.setFillRGBColor(args[0], args[1], args[2]);
+            break;
+          case OPS.setStrokeRGBColor:
+            this.setStrokeRGBColor(args[0], args[1], args[2]);
+            break;
+          case OPS.setDash:
+            this.setDash(args[0], args[1]);
+            break;
+          case OPS.setGState:
+            this.setGState(args[0]);
+            break;
+          case OPS.fill:
+            this.fill();
+            break;
+          case OPS.eoFill:
+            this.eoFill();
+            break;
+          case OPS.stroke:
+            this.stroke();
+            break;
+          case OPS.fillStroke:
+            this.fillStroke();
+            break;
+          case OPS.eoFillStroke:
+            this.eoFillStroke();
+            break;
+          case OPS.clip:
+            this.clip('nonzero');
+            break;
+          case OPS.eoClip:
+            this.clip('evenodd');
+            break;
+          case OPS.paintSolidColorImageMask:
+            this.paintSolidColorImageMask();
+            break;
+          case OPS.paintJpegXObject:
+            this.paintJpegXObject(args[0], args[1], args[2]);
+            break;
+          case OPS.paintImageXObject:
+            this.paintImageXObject(args[0]);
+            break;
+          case OPS.paintInlineImageXObject:
+            this.paintInlineImageXObject(args[0]);
+            break;
+          case OPS.paintImageMaskXObject:
+            this.paintImageMaskXObject(args[0]);
+            break;
+          case OPS.paintFormXObjectBegin:
+            this.paintFormXObjectBegin(args[0], args[1]);
+            break;
+          case OPS.paintFormXObjectEnd:
+            this.paintFormXObjectEnd();
+            break;
+          case OPS.closePath:
+            this.closePath();
+            break;
+          case OPS.closeStroke:
+            this.closeStroke();
+            break;
+          case OPS.closeFillStroke:
+            this.closeFillStroke();
+            break;
+          case OPS.nextLine:
+            this.nextLine();
+            break;
+          case OPS.transform:
+            this.transform(args[0], args[1], args[2], args[3], args[4], args[5]);
+            break;
+          case OPS.constructPath:
+            this.constructPath(args[0], args[1]);
+            break;
+          case OPS.endPath:
+            this.endPath();
+            break;
+          case 92:
+            this.group(opTree[x].items);
+            break;
+          default:
+            warn('Unimplemented operator ' + fn);
+            break;
+        }
+      }
+    },
+    setWordSpacing: function SVGGraphics_setWordSpacing(wordSpacing) {
+      this.current.wordSpacing = wordSpacing;
+    },
+    setCharSpacing: function SVGGraphics_setCharSpacing(charSpacing) {
+      this.current.charSpacing = charSpacing;
+    },
+    nextLine: function SVGGraphics_nextLine() {
+      this.moveText(0, this.current.leading);
+    },
+    setTextMatrix: function SVGGraphics_setTextMatrix(a, b, c, d, e, f) {
+      var current = this.current;
+      this.current.textMatrix = this.current.lineMatrix = [a, b, c, d, e, f];
+      this.current.x = this.current.lineX = 0;
+      this.current.y = this.current.lineY = 0;
+      current.xcoords = [];
+      current.tspan = document.createElementNS(NS, 'svg:tspan');
+      current.tspan.setAttributeNS(null, 'font-family', current.fontFamily);
+      current.tspan.setAttributeNS(null, 'font-size', pf(current.fontSize) + 'px');
+      current.tspan.setAttributeNS(null, 'y', pf(-current.y));
+      current.txtElement = document.createElementNS(NS, 'svg:text');
+      current.txtElement.appendChild(current.tspan);
+    },
+    beginText: function SVGGraphics_beginText() {
+      this.current.x = this.current.lineX = 0;
+      this.current.y = this.current.lineY = 0;
+      this.current.textMatrix = IDENTITY_MATRIX;
+      this.current.lineMatrix = IDENTITY_MATRIX;
+      this.current.tspan = document.createElementNS(NS, 'svg:tspan');
+      this.current.txtElement = document.createElementNS(NS, 'svg:text');
+      this.current.txtgrp = document.createElementNS(NS, 'svg:g');
+      this.current.xcoords = [];
+    },
+    moveText: function SVGGraphics_moveText(x, y) {
+      var current = this.current;
+      this.current.x = this.current.lineX += x;
+      this.current.y = this.current.lineY += y;
+      current.xcoords = [];
+      current.tspan = document.createElementNS(NS, 'svg:tspan');
+      current.tspan.setAttributeNS(null, 'font-family', current.fontFamily);
+      current.tspan.setAttributeNS(null, 'font-size', pf(current.fontSize) + 'px');
+      current.tspan.setAttributeNS(null, 'y', pf(-current.y));
+    },
+    showText: function SVGGraphics_showText(glyphs) {
+      var current = this.current;
+      var font = current.font;
+      var fontSize = current.fontSize;
+      if (fontSize === 0) {
+        return;
+      }
+      var charSpacing = current.charSpacing;
+      var wordSpacing = current.wordSpacing;
+      var fontDirection = current.fontDirection;
+      var textHScale = current.textHScale * fontDirection;
+      var glyphsLength = glyphs.length;
+      var vertical = font.vertical;
+      var widthAdvanceScale = fontSize * current.fontMatrix[0];
+      var x = 0,
+          i;
+      for (i = 0; i < glyphsLength; ++i) {
+        var glyph = glyphs[i];
+        if (glyph === null) {
+          x += fontDirection * wordSpacing;
+          continue;
+        } else if (isNum(glyph)) {
+          x += -glyph * fontSize * 0.001;
+          continue;
+        }
+        current.xcoords.push(current.x + x * textHScale);
+        var width = glyph.width;
+        var character = glyph.fontChar;
+        var charWidth = width * widthAdvanceScale + charSpacing * fontDirection;
+        x += charWidth;
+        current.tspan.textContent += character;
+      }
+      if (vertical) {
+        current.y -= x * textHScale;
+      } else {
+        current.x += x * textHScale;
+      }
+      current.tspan.setAttributeNS(null, 'x', current.xcoords.map(pf).join(' '));
+      current.tspan.setAttributeNS(null, 'y', pf(-current.y));
+      current.tspan.setAttributeNS(null, 'font-family', current.fontFamily);
+      current.tspan.setAttributeNS(null, 'font-size', pf(current.fontSize) + 'px');
+      if (current.fontStyle !== SVG_DEFAULTS.fontStyle) {
+        current.tspan.setAttributeNS(null, 'font-style', current.fontStyle);
+      }
+      if (current.fontWeight !== SVG_DEFAULTS.fontWeight) {
+        current.tspan.setAttributeNS(null, 'font-weight', current.fontWeight);
+      }
+      if (current.fillColor !== SVG_DEFAULTS.fillColor) {
+        current.tspan.setAttributeNS(null, 'fill', current.fillColor);
+      }
+      current.txtElement.setAttributeNS(null, 'transform', pm(current.textMatrix) + ' scale(1, -1)');
+      current.txtElement.setAttributeNS(XML_NS, 'xml:space', 'preserve');
+      current.txtElement.appendChild(current.tspan);
+      current.txtgrp.appendChild(current.txtElement);
+      this._ensureTransformGroup().appendChild(current.txtElement);
+    },
+    setLeadingMoveText: function SVGGraphics_setLeadingMoveText(x, y) {
+      this.setLeading(-y);
+      this.moveText(x, y);
+    },
+    addFontStyle: function SVGGraphics_addFontStyle(fontObj) {
+      if (!this.cssStyle) {
+        this.cssStyle = document.createElementNS(NS, 'svg:style');
+        this.cssStyle.setAttributeNS(null, 'type', 'text/css');
+        this.defs.appendChild(this.cssStyle);
+      }
+      var url = createObjectURL(fontObj.data, fontObj.mimetype, this.forceDataSchema);
+      this.cssStyle.textContent += '@font-face { font-family: "' + fontObj.loadedName + '";' + ' src: url(' + url + '); }\n';
+    },
+    setFont: function SVGGraphics_setFont(details) {
+      var current = this.current;
+      var fontObj = this.commonObjs.get(details[0]);
+      var size = details[1];
+      this.current.font = fontObj;
+      if (this.embedFonts && fontObj.data && !this.embeddedFonts[fontObj.loadedName]) {
+        this.addFontStyle(fontObj);
+        this.embeddedFonts[fontObj.loadedName] = fontObj;
+      }
+      current.fontMatrix = fontObj.fontMatrix ? fontObj.fontMatrix : FONT_IDENTITY_MATRIX;
+      var bold = fontObj.black ? fontObj.bold ? 'bolder' : 'bold' : fontObj.bold ? 'bold' : 'normal';
+      var italic = fontObj.italic ? 'italic' : 'normal';
+      if (size < 0) {
+        size = -size;
+        current.fontDirection = -1;
+      } else {
+        current.fontDirection = 1;
+      }
+      current.fontSize = size;
+      current.fontFamily = fontObj.loadedName;
+      current.fontWeight = bold;
+      current.fontStyle = italic;
+      current.tspan = document.createElementNS(NS, 'svg:tspan');
+      current.tspan.setAttributeNS(null, 'y', pf(-current.y));
+      current.xcoords = [];
+    },
+    endText: function SVGGraphics_endText() {},
+    setLineWidth: function SVGGraphics_setLineWidth(width) {
+      this.current.lineWidth = width;
+    },
+    setLineCap: function SVGGraphics_setLineCap(style) {
+      this.current.lineCap = LINE_CAP_STYLES[style];
+    },
+    setLineJoin: function SVGGraphics_setLineJoin(style) {
+      this.current.lineJoin = LINE_JOIN_STYLES[style];
+    },
+    setMiterLimit: function SVGGraphics_setMiterLimit(limit) {
+      this.current.miterLimit = limit;
+    },
+    setStrokeRGBColor: function SVGGraphics_setStrokeRGBColor(r, g, b) {
+      var color = Util.makeCssRgb(r, g, b);
+      this.current.strokeColor = color;
+    },
+    setFillRGBColor: function SVGGraphics_setFillRGBColor(r, g, b) {
+      var color = Util.makeCssRgb(r, g, b);
+      this.current.fillColor = color;
+      this.current.tspan = document.createElementNS(NS, 'svg:tspan');
+      this.current.xcoords = [];
+    },
+    setDash: function SVGGraphics_setDash(dashArray, dashPhase) {
+      this.current.dashArray = dashArray;
+      this.current.dashPhase = dashPhase;
+    },
+    constructPath: function SVGGraphics_constructPath(ops, args) {
+      var current = this.current;
+      var x = current.x,
+          y = current.y;
+      current.path = document.createElementNS(NS, 'svg:path');
+      var d = [];
+      var opLength = ops.length;
+      for (var i = 0, j = 0; i < opLength; i++) {
+        switch (ops[i] | 0) {
+          case OPS.rectangle:
+            x = args[j++];
+            y = args[j++];
+            var width = args[j++];
+            var height = args[j++];
+            var xw = x + width;
+            var yh = y + height;
+            d.push('M', pf(x), pf(y), 'L', pf(xw), pf(y), 'L', pf(xw), pf(yh), 'L', pf(x), pf(yh), 'Z');
+            break;
+          case OPS.moveTo:
+            x = args[j++];
+            y = args[j++];
+            d.push('M', pf(x), pf(y));
+            break;
+          case OPS.lineTo:
+            x = args[j++];
+            y = args[j++];
+            d.push('L', pf(x), pf(y));
+            break;
+          case OPS.curveTo:
+            x = args[j + 4];
+            y = args[j + 5];
+            d.push('C', pf(args[j]), pf(args[j + 1]), pf(args[j + 2]), pf(args[j + 3]), pf(x), pf(y));
+            j += 6;
+            break;
+          case OPS.curveTo2:
+            x = args[j + 2];
+            y = args[j + 3];
+            d.push('C', pf(x), pf(y), pf(args[j]), pf(args[j + 1]), pf(args[j + 2]), pf(args[j + 3]));
+            j += 4;
+            break;
+          case OPS.curveTo3:
+            x = args[j + 2];
+            y = args[j + 3];
+            d.push('C', pf(args[j]), pf(args[j + 1]), pf(x), pf(y), pf(x), pf(y));
+            j += 4;
+            break;
+          case OPS.closePath:
+            d.push('Z');
+            break;
+        }
+      }
+      current.path.setAttributeNS(null, 'd', d.join(' '));
+      current.path.setAttributeNS(null, 'stroke-miterlimit', pf(current.miterLimit));
+      current.path.setAttributeNS(null, 'stroke-linecap', current.lineCap);
+      current.path.setAttributeNS(null, 'stroke-linejoin', current.lineJoin);
+      current.path.setAttributeNS(null, 'stroke-width', pf(current.lineWidth) + 'px');
+      current.path.setAttributeNS(null, 'stroke-dasharray', current.dashArray.map(pf).join(' '));
+      current.path.setAttributeNS(null, 'stroke-dashoffset', pf(current.dashPhase) + 'px');
+      current.path.setAttributeNS(null, 'fill', 'none');
+      this._ensureTransformGroup().appendChild(current.path);
+      current.element = current.path;
+      current.setCurrentPoint(x, y);
+    },
+    endPath: function SVGGraphics_endPath() {},
+    clip: function SVGGraphics_clip(type) {
+      var current = this.current;
+      var clipId = 'clippath' + clipCount;
+      clipCount++;
+      var clipPath = document.createElementNS(NS, 'svg:clipPath');
+      clipPath.setAttributeNS(null, 'id', clipId);
+      clipPath.setAttributeNS(null, 'transform', pm(this.transformMatrix));
+      var clipElement = current.element.cloneNode();
+      if (type === 'evenodd') {
+        clipElement.setAttributeNS(null, 'clip-rule', 'evenodd');
+      } else {
+        clipElement.setAttributeNS(null, 'clip-rule', 'nonzero');
+      }
+      clipPath.appendChild(clipElement);
+      this.defs.appendChild(clipPath);
+      if (current.activeClipUrl) {
+        current.clipGroup = null;
+        this.extraStack.forEach(function (prev) {
+          prev.clipGroup = null;
+        });
+      }
+      current.activeClipUrl = 'url(#' + clipId + ')';
+      this.tgrp = null;
+    },
+    closePath: function SVGGraphics_closePath() {
+      var current = this.current;
+      var d = current.path.getAttributeNS(null, 'd');
+      d += 'Z';
+      current.path.setAttributeNS(null, 'd', d);
+    },
+    setLeading: function SVGGraphics_setLeading(leading) {
+      this.current.leading = -leading;
+    },
+    setTextRise: function SVGGraphics_setTextRise(textRise) {
+      this.current.textRise = textRise;
+    },
+    setHScale: function SVGGraphics_setHScale(scale) {
+      this.current.textHScale = scale / 100;
+    },
+    setGState: function SVGGraphics_setGState(states) {
+      for (var i = 0, ii = states.length; i < ii; i++) {
+        var state = states[i];
+        var key = state[0];
+        var value = state[1];
+        switch (key) {
+          case 'LW':
+            this.setLineWidth(value);
+            break;
+          case 'LC':
+            this.setLineCap(value);
+            break;
+          case 'LJ':
+            this.setLineJoin(value);
+            break;
+          case 'ML':
+            this.setMiterLimit(value);
+            break;
+          case 'D':
+            this.setDash(value[0], value[1]);
+            break;
+          case 'Font':
+            this.setFont(value);
+            break;
+          default:
+            warn('Unimplemented graphic state ' + key);
+            break;
+        }
+      }
+    },
+    fill: function SVGGraphics_fill() {
+      var current = this.current;
+      current.element.setAttributeNS(null, 'fill', current.fillColor);
+    },
+    stroke: function SVGGraphics_stroke() {
+      var current = this.current;
+      current.element.setAttributeNS(null, 'stroke', current.strokeColor);
+      current.element.setAttributeNS(null, 'fill', 'none');
+    },
+    eoFill: function SVGGraphics_eoFill() {
+      var current = this.current;
+      current.element.setAttributeNS(null, 'fill', current.fillColor);
+      current.element.setAttributeNS(null, 'fill-rule', 'evenodd');
+    },
+    fillStroke: function SVGGraphics_fillStroke() {
+      this.stroke();
+      this.fill();
+    },
+    eoFillStroke: function SVGGraphics_eoFillStroke() {
+      this.current.element.setAttributeNS(null, 'fill-rule', 'evenodd');
+      this.fillStroke();
+    },
+    closeStroke: function SVGGraphics_closeStroke() {
+      this.closePath();
+      this.stroke();
+    },
+    closeFillStroke: function SVGGraphics_closeFillStroke() {
+      this.closePath();
+      this.fillStroke();
+    },
+    paintSolidColorImageMask: function SVGGraphics_paintSolidColorImageMask() {
+      var current = this.current;
+      var rect = document.createElementNS(NS, 'svg:rect');
+      rect.setAttributeNS(null, 'x', '0');
+      rect.setAttributeNS(null, 'y', '0');
+      rect.setAttributeNS(null, 'width', '1px');
+      rect.setAttributeNS(null, 'height', '1px');
+      rect.setAttributeNS(null, 'fill', current.fillColor);
+      this._ensureTransformGroup().appendChild(rect);
+    },
+    paintJpegXObject: function SVGGraphics_paintJpegXObject(objId, w, h) {
+      var imgObj = this.objs.get(objId);
+      var imgEl = document.createElementNS(NS, 'svg:image');
+      imgEl.setAttributeNS(XLINK_NS, 'xlink:href', imgObj.src);
+      imgEl.setAttributeNS(null, 'width', imgObj.width + 'px');
+      imgEl.setAttributeNS(null, 'height', imgObj.height + 'px');
+      imgEl.setAttributeNS(null, 'x', '0');
+      imgEl.setAttributeNS(null, 'y', pf(-h));
+      imgEl.setAttributeNS(null, 'transform', 'scale(' + pf(1 / w) + ' ' + pf(-1 / h) + ')');
+      this._ensureTransformGroup().appendChild(imgEl);
+    },
+    paintImageXObject: function SVGGraphics_paintImageXObject(objId) {
+      var imgData = this.objs.get(objId);
+      if (!imgData) {
+        warn('Dependent image isn\'t ready yet');
+        return;
+      }
+      this.paintInlineImageXObject(imgData);
+    },
+    paintInlineImageXObject: function SVGGraphics_paintInlineImageXObject(imgData, mask) {
+      var width = imgData.width;
+      var height = imgData.height;
+      var imgSrc = convertImgDataToPng(imgData, this.forceDataSchema);
+      var cliprect = document.createElementNS(NS, 'svg:rect');
+      cliprect.setAttributeNS(null, 'x', '0');
+      cliprect.setAttributeNS(null, 'y', '0');
+      cliprect.setAttributeNS(null, 'width', pf(width));
+      cliprect.setAttributeNS(null, 'height', pf(height));
+      this.current.element = cliprect;
+      this.clip('nonzero');
+      var imgEl = document.createElementNS(NS, 'svg:image');
+      imgEl.setAttributeNS(XLINK_NS, 'xlink:href', imgSrc);
+      imgEl.setAttributeNS(null, 'x', '0');
+      imgEl.setAttributeNS(null, 'y', pf(-height));
+      imgEl.setAttributeNS(null, 'width', pf(width) + 'px');
+      imgEl.setAttributeNS(null, 'height', pf(height) + 'px');
+      imgEl.setAttributeNS(null, 'transform', 'scale(' + pf(1 / width) + ' ' + pf(-1 / height) + ')');
+      if (mask) {
+        mask.appendChild(imgEl);
+      } else {
+        this._ensureTransformGroup().appendChild(imgEl);
+      }
+    },
+    paintImageMaskXObject: function SVGGraphics_paintImageMaskXObject(imgData) {
+      var current = this.current;
+      var width = imgData.width;
+      var height = imgData.height;
+      var fillColor = current.fillColor;
+      current.maskId = 'mask' + maskCount++;
+      var mask = document.createElementNS(NS, 'svg:mask');
+      mask.setAttributeNS(null, 'id', current.maskId);
+      var rect = document.createElementNS(NS, 'svg:rect');
+      rect.setAttributeNS(null, 'x', '0');
+      rect.setAttributeNS(null, 'y', '0');
+      rect.setAttributeNS(null, 'width', pf(width));
+      rect.setAttributeNS(null, 'height', pf(height));
+      rect.setAttributeNS(null, 'fill', fillColor);
+      rect.setAttributeNS(null, 'mask', 'url(#' + current.maskId + ')');
+      this.defs.appendChild(mask);
+      this._ensureTransformGroup().appendChild(rect);
+      this.paintInlineImageXObject(imgData, mask);
+    },
+    paintFormXObjectBegin: function SVGGraphics_paintFormXObjectBegin(matrix, bbox) {
+      if (isArray(matrix) && matrix.length === 6) {
+        this.transform(matrix[0], matrix[1], matrix[2], matrix[3], matrix[4], matrix[5]);
+      }
+      if (isArray(bbox) && bbox.length === 4) {
+        var width = bbox[2] - bbox[0];
+        var height = bbox[3] - bbox[1];
+        var cliprect = document.createElementNS(NS, 'svg:rect');
+        cliprect.setAttributeNS(null, 'x', bbox[0]);
+        cliprect.setAttributeNS(null, 'y', bbox[1]);
+        cliprect.setAttributeNS(null, 'width', pf(width));
+        cliprect.setAttributeNS(null, 'height', pf(height));
+        this.current.element = cliprect;
+        this.clip('nonzero');
+        this.endPath();
+      }
+    },
+    paintFormXObjectEnd: function SVGGraphics_paintFormXObjectEnd() {},
+    _initialize: function SVGGraphics_initialize(viewport) {
+      var svg = document.createElementNS(NS, 'svg:svg');
+      svg.setAttributeNS(null, 'version', '1.1');
+      svg.setAttributeNS(null, 'width', viewport.width + 'px');
+      svg.setAttributeNS(null, 'height', viewport.height + 'px');
+      svg.setAttributeNS(null, 'preserveAspectRatio', 'none');
+      svg.setAttributeNS(null, 'viewBox', '0 0 ' + viewport.width + ' ' + viewport.height);
+      var definitions = document.createElementNS(NS, 'svg:defs');
+      svg.appendChild(definitions);
+      this.defs = definitions;
+      var rootGroup = document.createElementNS(NS, 'svg:g');
+      rootGroup.setAttributeNS(null, 'transform', pm(viewport.transform));
+      svg.appendChild(rootGroup);
+      this.svg = rootGroup;
+      return svg;
+    },
+    _ensureClipGroup: function SVGGraphics_ensureClipGroup() {
+      if (!this.current.clipGroup) {
+        var clipGroup = document.createElementNS(NS, 'svg:g');
+        clipGroup.setAttributeNS(null, 'clip-path', this.current.activeClipUrl);
+        this.svg.appendChild(clipGroup);
+        this.current.clipGroup = clipGroup;
+      }
+      return this.current.clipGroup;
+    },
+    _ensureTransformGroup: function SVGGraphics_ensureTransformGroup() {
+      if (!this.tgrp) {
+        this.tgrp = document.createElementNS(NS, 'svg:g');
+        this.tgrp.setAttributeNS(null, 'transform', pm(this.transformMatrix));
+        if (this.current.activeClipUrl) {
+          this._ensureClipGroup().appendChild(this.tgrp);
+        } else {
+          this.svg.appendChild(this.tgrp);
+        }
+      }
+      return this.tgrp;
+    }
+  };
+  return SVGGraphics;
+}();
+exports.SVGGraphics = SVGGraphics;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var sharedUtil = __w_pdfjs_require__(0);
+var displayDOMUtils = __w_pdfjs_require__(1);
+var Util = sharedUtil.Util;
+var createPromiseCapability = sharedUtil.createPromiseCapability;
+var CustomStyle = displayDOMUtils.CustomStyle;
+var getDefaultSetting = displayDOMUtils.getDefaultSetting;
+var renderTextLayer = function renderTextLayerClosure() {
+  var MAX_TEXT_DIVS_TO_RENDER = 100000;
+  var NonWhitespaceRegexp = /\S/;
+  function isAllWhitespace(str) {
+    return !NonWhitespaceRegexp.test(str);
+  }
+  var styleBuf = ['left: ', 0, 'px; top: ', 0, 'px; font-size: ', 0, 'px; font-family: ', '', ';'];
+  function appendText(task, geom, styles) {
+    var textDiv = document.createElement('div');
+    var textDivProperties = {
+      style: null,
+      angle: 0,
+      canvasWidth: 0,
+      isWhitespace: false,
+      originalTransform: null,
+      paddingBottom: 0,
+      paddingLeft: 0,
+      paddingRight: 0,
+      paddingTop: 0,
+      scale: 1
+    };
+    task._textDivs.push(textDiv);
+    if (isAllWhitespace(geom.str)) {
+      textDivProperties.isWhitespace = true;
+      task._textDivProperties.set(textDiv, textDivProperties);
+      return;
+    }
+    var tx = Util.transform(task._viewport.transform, geom.transform);
+    var angle = Math.atan2(tx[1], tx[0]);
+    var style = styles[geom.fontName];
+    if (style.vertical) {
+      angle += Math.PI / 2;
+    }
+    var fontHeight = Math.sqrt(tx[2] * tx[2] + tx[3] * tx[3]);
+    var fontAscent = fontHeight;
+    if (style.ascent) {
+      fontAscent = style.ascent * fontAscent;
+    } else if (style.descent) {
+      fontAscent = (1 + style.descent) * fontAscent;
+    }
+    var left;
+    var top;
+    if (angle === 0) {
+      left = tx[4];
+      top = tx[5] - fontAscent;
+    } else {
+      left = tx[4] + fontAscent * Math.sin(angle);
+      top = tx[5] - fontAscent * Math.cos(angle);
+    }
+    styleBuf[1] = left;
+    styleBuf[3] = top;
+    styleBuf[5] = fontHeight;
+    styleBuf[7] = style.fontFamily;
+    textDivProperties.style = styleBuf.join('');
+    textDiv.setAttribute('style', textDivProperties.style);
+    textDiv.textContent = geom.str;
+    if (getDefaultSetting('pdfBug')) {
+      textDiv.dataset.fontName = geom.fontName;
+    }
+    if (angle !== 0) {
+      textDivProperties.angle = angle * (180 / Math.PI);
+    }
+    if (geom.str.length > 1) {
+      if (style.vertical) {
+        textDivProperties.canvasWidth = geom.height * task._viewport.scale;
+      } else {
+        textDivProperties.canvasWidth = geom.width * task._viewport.scale;
+      }
+    }
+    task._textDivProperties.set(textDiv, textDivProperties);
+    if (task._enhanceTextSelection) {
+      var angleCos = 1,
+          angleSin = 0;
+      if (angle !== 0) {
+        angleCos = Math.cos(angle);
+        angleSin = Math.sin(angle);
+      }
+      var divWidth = (style.vertical ? geom.height : geom.width) * task._viewport.scale;
+      var divHeight = fontHeight;
+      var m, b;
+      if (angle !== 0) {
+        m = [angleCos, angleSin, -angleSin, angleCos, left, top];
+        b = Util.getAxialAlignedBoundingBox([0, 0, divWidth, divHeight], m);
+      } else {
+        b = [left, top, left + divWidth, top + divHeight];
+      }
+      task._bounds.push({
+        left: b[0],
+        top: b[1],
+        right: b[2],
+        bottom: b[3],
+        div: textDiv,
+        size: [divWidth, divHeight],
+        m: m
+      });
+    }
+  }
+  function render(task) {
+    if (task._canceled) {
+      return;
+    }
+    var textLayerFrag = task._container;
+    var textDivs = task._textDivs;
+    var capability = task._capability;
+    var textDivsLength = textDivs.length;
+    if (textDivsLength > MAX_TEXT_DIVS_TO_RENDER) {
+      task._renderingDone = true;
+      capability.resolve();
+      return;
+    }
+    var canvas = document.createElement('canvas');
+    canvas.mozOpaque = true;
+    var ctx = canvas.getContext('2d', { alpha: false });
+    var lastFontSize;
+    var lastFontFamily;
+    for (var i = 0; i < textDivsLength; i++) {
+      var textDiv = textDivs[i];
+      var textDivProperties = task._textDivProperties.get(textDiv);
+      if (textDivProperties.isWhitespace) {
+        continue;
+      }
+      var fontSize = textDiv.style.fontSize;
+      var fontFamily = textDiv.style.fontFamily;
+      if (fontSize !== lastFontSize || fontFamily !== lastFontFamily) {
+        ctx.font = fontSize + ' ' + fontFamily;
+        lastFontSize = fontSize;
+        lastFontFamily = fontFamily;
+      }
+      var width = ctx.measureText(textDiv.textContent).width;
+      textLayerFrag.appendChild(textDiv);
+      var transform = '';
+      if (textDivProperties.canvasWidth !== 0 && width > 0) {
+        textDivProperties.scale = textDivProperties.canvasWidth / width;
+        transform = 'scaleX(' + textDivProperties.scale + ')';
+      }
+      if (textDivProperties.angle !== 0) {
+        transform = 'rotate(' + textDivProperties.angle + 'deg) ' + transform;
+      }
+      if (transform !== '') {
+        textDivProperties.originalTransform = transform;
+        CustomStyle.setProp('transform', textDiv, transform);
+      }
+      task._textDivProperties.set(textDiv, textDivProperties);
+    }
+    task._renderingDone = true;
+    capability.resolve();
+  }
+  function expand(task) {
+    var bounds = task._bounds;
+    var viewport = task._viewport;
+    var expanded = expandBounds(viewport.width, viewport.height, bounds);
+    for (var i = 0; i < expanded.length; i++) {
+      var div = bounds[i].div;
+      var divProperties = task._textDivProperties.get(div);
+      if (divProperties.angle === 0) {
+        divProperties.paddingLeft = bounds[i].left - expanded[i].left;
+        divProperties.paddingTop = bounds[i].top - expanded[i].top;
+        divProperties.paddingRight = expanded[i].right - bounds[i].right;
+        divProperties.paddingBottom = expanded[i].bottom - bounds[i].bottom;
+        task._textDivProperties.set(div, divProperties);
+        continue;
+      }
+      var e = expanded[i],
+          b = bounds[i];
+      var m = b.m,
+          c = m[0],
+          s = m[1];
+      var points = [[0, 0], [0, b.size[1]], [b.size[0], 0], b.size];
+      var ts = new Float64Array(64);
+      points.forEach(function (p, i) {
+        var t = Util.applyTransform(p, m);
+        ts[i + 0] = c && (e.left - t[0]) / c;
+        ts[i + 4] = s && (e.top - t[1]) / s;
+        ts[i + 8] = c && (e.right - t[0]) / c;
+        ts[i + 12] = s && (e.bottom - t[1]) / s;
+        ts[i + 16] = s && (e.left - t[0]) / -s;
+        ts[i + 20] = c && (e.top - t[1]) / c;
+        ts[i + 24] = s && (e.right - t[0]) / -s;
+        ts[i + 28] = c && (e.bottom - t[1]) / c;
+        ts[i + 32] = c && (e.left - t[0]) / -c;
+        ts[i + 36] = s && (e.top - t[1]) / -s;
+        ts[i + 40] = c && (e.right - t[0]) / -c;
+        ts[i + 44] = s && (e.bottom - t[1]) / -s;
+        ts[i + 48] = s && (e.left - t[0]) / s;
+        ts[i + 52] = c && (e.top - t[1]) / -c;
+        ts[i + 56] = s && (e.right - t[0]) / s;
+        ts[i + 60] = c && (e.bottom - t[1]) / -c;
+      });
+      var findPositiveMin = function (ts, offset, count) {
+        var result = 0;
+        for (var i = 0; i < count; i++) {
+          var t = ts[offset++];
+          if (t > 0) {
+            result = result ? Math.min(t, result) : t;
+          }
+        }
+        return result;
+      };
+      var boxScale = 1 + Math.min(Math.abs(c), Math.abs(s));
+      divProperties.paddingLeft = findPositiveMin(ts, 32, 16) / boxScale;
+      divProperties.paddingTop = findPositiveMin(ts, 48, 16) / boxScale;
+      divProperties.paddingRight = findPositiveMin(ts, 0, 16) / boxScale;
+      divProperties.paddingBottom = findPositiveMin(ts, 16, 16) / boxScale;
+      task._textDivProperties.set(div, divProperties);
+    }
+  }
+  function expandBounds(width, height, boxes) {
+    var bounds = boxes.map(function (box, i) {
+      return {
+        x1: box.left,
+        y1: box.top,
+        x2: box.right,
+        y2: box.bottom,
+        index: i,
+        x1New: undefined,
+        x2New: undefined
+      };
+    });
+    expandBoundsLTR(width, bounds);
+    var expanded = new Array(boxes.length);
+    bounds.forEach(function (b) {
+      var i = b.index;
+      expanded[i] = {
+        left: b.x1New,
+        top: 0,
+        right: b.x2New,
+        bottom: 0
+      };
+    });
+    boxes.map(function (box, i) {
+      var e = expanded[i],
+          b = bounds[i];
+      b.x1 = box.top;
+      b.y1 = width - e.right;
+      b.x2 = box.bottom;
+      b.y2 = width - e.left;
+      b.index = i;
+      b.x1New = undefined;
+      b.x2New = undefined;
+    });
+    expandBoundsLTR(height, bounds);
+    bounds.forEach(function (b) {
+      var i = b.index;
+      expanded[i].top = b.x1New;
+      expanded[i].bottom = b.x2New;
+    });
+    return expanded;
+  }
+  function expandBoundsLTR(width, bounds) {
+    bounds.sort(function (a, b) {
+      return a.x1 - b.x1 || a.index - b.index;
+    });
+    var fakeBoundary = {
+      x1: -Infinity,
+      y1: -Infinity,
+      x2: 0,
+      y2: Infinity,
+      index: -1,
+      x1New: 0,
+      x2New: 0
+    };
+    var horizon = [{
+      start: -Infinity,
+      end: Infinity,
+      boundary: fakeBoundary
+    }];
+    bounds.forEach(function (boundary) {
+      var i = 0;
+      while (i < horizon.length && horizon[i].end <= boundary.y1) {
+        i++;
+      }
+      var j = horizon.length - 1;
+      while (j >= 0 && horizon[j].start >= boundary.y2) {
+        j--;
+      }
+      var horizonPart, affectedBoundary;
+      var q,
+          k,
+          maxXNew = -Infinity;
+      for (q = i; q <= j; q++) {
+        horizonPart = horizon[q];
+        affectedBoundary = horizonPart.boundary;
+        var xNew;
+        if (affectedBoundary.x2 > boundary.x1) {
+          xNew = affectedBoundary.index > boundary.index ? affectedBoundary.x1New : boundary.x1;
+        } else if (affectedBoundary.x2New === undefined) {
+          xNew = (affectedBoundary.x2 + boundary.x1) / 2;
+        } else {
+          xNew = affectedBoundary.x2New;
+        }
+        if (xNew > maxXNew) {
+          maxXNew = xNew;
+        }
+      }
+      boundary.x1New = maxXNew;
+      for (q = i; q <= j; q++) {
+        horizonPart = horizon[q];
+        affectedBoundary = horizonPart.boundary;
+        if (affectedBoundary.x2New === undefined) {
+          if (affectedBoundary.x2 > boundary.x1) {
+            if (affectedBoundary.index > boundary.index) {
+              affectedBoundary.x2New = affectedBoundary.x2;
+            }
+          } else {
+            affectedBoundary.x2New = maxXNew;
+          }
+        } else if (affectedBoundary.x2New > maxXNew) {
+          affectedBoundary.x2New = Math.max(maxXNew, affectedBoundary.x2);
+        }
+      }
+      var changedHorizon = [],
+          lastBoundary = null;
+      for (q = i; q <= j; q++) {
+        horizonPart = horizon[q];
+        affectedBoundary = horizonPart.boundary;
+        var useBoundary = affectedBoundary.x2 > boundary.x2 ? affectedBoundary : boundary;
+        if (lastBoundary === useBoundary) {
+          changedHorizon[changedHorizon.length - 1].end = horizonPart.end;
+        } else {
+          changedHorizon.push({
+            start: horizonPart.start,
+            end: horizonPart.end,
+            boundary: useBoundary
+          });
+          lastBoundary = useBoundary;
+        }
+      }
+      if (horizon[i].start < boundary.y1) {
+        changedHorizon[0].start = boundary.y1;
+        changedHorizon.unshift({
+          start: horizon[i].start,
+          end: boundary.y1,
+          boundary: horizon[i].boundary
+        });
+      }
+      if (boundary.y2 < horizon[j].end) {
+        changedHorizon[changedHorizon.length - 1].end = boundary.y2;
+        changedHorizon.push({
+          start: boundary.y2,
+          end: horizon[j].end,
+          boundary: horizon[j].boundary
+        });
+      }
+      for (q = i; q <= j; q++) {
+        horizonPart = horizon[q];
+        affectedBoundary = horizonPart.boundary;
+        if (affectedBoundary.x2New !== undefined) {
+          continue;
+        }
+        var used = false;
+        for (k = i - 1; !used && k >= 0 && horizon[k].start >= affectedBoundary.y1; k--) {
+          used = horizon[k].boundary === affectedBoundary;
+        }
+        for (k = j + 1; !used && k < horizon.length && horizon[k].end <= affectedBoundary.y2; k++) {
+          used = horizon[k].boundary === affectedBoundary;
+        }
+        for (k = 0; !used && k < changedHorizon.length; k++) {
+          used = changedHorizon[k].boundary === affectedBoundary;
+        }
+        if (!used) {
+          affectedBoundary.x2New = maxXNew;
+        }
+      }
+      Array.prototype.splice.apply(horizon, [i, j - i + 1].concat(changedHorizon));
+    });
+    horizon.forEach(function (horizonPart) {
+      var affectedBoundary = horizonPart.boundary;
+      if (affectedBoundary.x2New === undefined) {
+        affectedBoundary.x2New = Math.max(width, affectedBoundary.x2);
+      }
+    });
+  }
+  function TextLayerRenderTask(textContent, container, viewport, textDivs, enhanceTextSelection) {
+    this._textContent = textContent;
+    this._container = container;
+    this._viewport = viewport;
+    this._textDivs = textDivs || [];
+    this._textDivProperties = new WeakMap();
+    this._renderingDone = false;
+    this._canceled = false;
+    this._capability = createPromiseCapability();
+    this._renderTimer = null;
+    this._bounds = [];
+    this._enhanceTextSelection = !!enhanceTextSelection;
+  }
+  TextLayerRenderTask.prototype = {
+    get promise() {
+      return this._capability.promise;
+    },
+    cancel: function TextLayer_cancel() {
+      this._canceled = true;
+      if (this._renderTimer !== null) {
+        clearTimeout(this._renderTimer);
+        this._renderTimer = null;
+      }
+      this._capability.reject('canceled');
+    },
+    _render: function TextLayer_render(timeout) {
+      var textItems = this._textContent.items;
+      var textStyles = this._textContent.styles;
+      for (var i = 0, len = textItems.length; i < len; i++) {
+        appendText(this, textItems[i], textStyles);
+      }
+      if (!timeout) {
+        render(this);
+      } else {
+        var self = this;
+        this._renderTimer = setTimeout(function () {
+          render(self);
+          self._renderTimer = null;
+        }, timeout);
+      }
+    },
+    expandTextDivs: function TextLayer_expandTextDivs(expandDivs) {
+      if (!this._enhanceTextSelection || !this._renderingDone) {
+        return;
+      }
+      if (this._bounds !== null) {
+        expand(this);
+        this._bounds = null;
+      }
+      for (var i = 0, ii = this._textDivs.length; i < ii; i++) {
+        var div = this._textDivs[i];
+        var divProperties = this._textDivProperties.get(div);
+        if (divProperties.isWhitespace) {
+          continue;
+        }
+        if (expandDivs) {
+          var transform = '',
+              padding = '';
+          if (divProperties.scale !== 1) {
+            transform = 'scaleX(' + divProperties.scale + ')';
+          }
+          if (divProperties.angle !== 0) {
+            transform = 'rotate(' + divProperties.angle + 'deg) ' + transform;
+          }
+          if (divProperties.paddingLeft !== 0) {
+            padding += ' padding-left: ' + divProperties.paddingLeft / divProperties.scale + 'px;';
+            transform += ' translateX(' + -divProperties.paddingLeft / divProperties.scale + 'px)';
+          }
+          if (divProperties.paddingTop !== 0) {
+            padding += ' padding-top: ' + divProperties.paddingTop + 'px;';
+            transform += ' translateY(' + -divProperties.paddingTop + 'px)';
+          }
+          if (divProperties.paddingRight !== 0) {
+            padding += ' padding-right: ' + divProperties.paddingRight / divProperties.scale + 'px;';
+          }
+          if (divProperties.paddingBottom !== 0) {
+            padding += ' padding-bottom: ' + divProperties.paddingBottom + 'px;';
+          }
+          if (padding !== '') {
+            div.setAttribute('style', divProperties.style + padding);
+          }
+          if (transform !== '') {
+            CustomStyle.setProp('transform', div, transform);
+          }
+        } else {
+          div.style.padding = 0;
+          CustomStyle.setProp('transform', div, divProperties.originalTransform || '');
+        }
+      }
+    }
+  };
+  function renderTextLayer(renderParameters) {
+    var task = new TextLayerRenderTask(renderParameters.textContent, renderParameters.container, renderParameters.viewport, renderParameters.textDivs, renderParameters.enhanceTextSelection);
+    task._render(renderParameters.timeout);
+    return task;
+  }
+  return renderTextLayer;
+}();
+exports.renderTextLayer = renderTextLayer;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var g;
+g = function () {
+  return this;
+}();
+try {
+  g = g || Function("return this")() || (1, eval)("this");
+} catch (e) {
+  if (typeof window === "object") g = window;
+}
+module.exports = g;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var sharedUtil = __w_pdfjs_require__(0);
+var error = sharedUtil.error;
+function fixMetadata(meta) {
+  return meta.replace(/>\\376\\377([^<]+)/g, function (all, codes) {
+    var bytes = codes.replace(/\\([0-3])([0-7])([0-7])/g, function (code, d1, d2, d3) {
+      return String.fromCharCode(d1 * 64 + d2 * 8 + d3 * 1);
+    });
+    var chars = '';
+    for (var i = 0; i < bytes.length; i += 2) {
+      var code = bytes.charCodeAt(i) * 256 + bytes.charCodeAt(i + 1);
+      chars += code >= 32 && code < 127 && code !== 60 && code !== 62 && code !== 38 ? String.fromCharCode(code) : '&#x' + (0x10000 + code).toString(16).substring(1) + ';';
+    }
+    return '>' + chars;
+  });
+}
+function Metadata(meta) {
+  if (typeof meta === 'string') {
+    meta = fixMetadata(meta);
+    var parser = new DOMParser();
+    meta = parser.parseFromString(meta, 'application/xml');
+  } else if (!(meta instanceof Document)) {
+    error('Metadata: Invalid metadata object');
+  }
+  this.metaDocument = meta;
+  this.metadata = Object.create(null);
+  this.parse();
+}
+Metadata.prototype = {
+  parse: function Metadata_parse() {
+    var doc = this.metaDocument;
+    var rdf = doc.documentElement;
+    if (rdf.nodeName.toLowerCase() !== 'rdf:rdf') {
+      rdf = rdf.firstChild;
+      while (rdf && rdf.nodeName.toLowerCase() !== 'rdf:rdf') {
+        rdf = rdf.nextSibling;
+      }
+    }
+    var nodeName = rdf ? rdf.nodeName.toLowerCase() : null;
+    if (!rdf || nodeName !== 'rdf:rdf' || !rdf.hasChildNodes()) {
+      return;
+    }
+    var children = rdf.childNodes,
+        desc,
+        entry,
+        name,
+        i,
+        ii,
+        length,
+        iLength;
+    for (i = 0, length = children.length; i < length; i++) {
+      desc = children[i];
+      if (desc.nodeName.toLowerCase() !== 'rdf:description') {
+        continue;
+      }
+      for (ii = 0, iLength = desc.childNodes.length; ii < iLength; ii++) {
+        if (desc.childNodes[ii].nodeName.toLowerCase() !== '#text') {
+          entry = desc.childNodes[ii];
+          name = entry.nodeName.toLowerCase();
+          this.metadata[name] = entry.textContent.trim();
+        }
+      }
+    }
+  },
+  get: function Metadata_get(name) {
+    return this.metadata[name] || null;
+  },
+  has: function Metadata_has(name) {
+    return typeof this.metadata[name] !== 'undefined';
+  }
+};
+exports.Metadata = Metadata;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var sharedUtil = __w_pdfjs_require__(0);
+var displayDOMUtils = __w_pdfjs_require__(1);
+var shadow = sharedUtil.shadow;
+var getDefaultSetting = displayDOMUtils.getDefaultSetting;
+var WebGLUtils = function WebGLUtilsClosure() {
+  function loadShader(gl, code, shaderType) {
+    var shader = gl.createShader(shaderType);
+    gl.shaderSource(shader, code);
+    gl.compileShader(shader);
+    var compiled = gl.getShaderParameter(shader, gl.COMPILE_STATUS);
+    if (!compiled) {
+      var errorMsg = gl.getShaderInfoLog(shader);
+      throw new Error('Error during shader compilation: ' + errorMsg);
+    }
+    return shader;
+  }
+  function createVertexShader(gl, code) {
+    return loadShader(gl, code, gl.VERTEX_SHADER);
+  }
+  function createFragmentShader(gl, code) {
+    return loadShader(gl, code, gl.FRAGMENT_SHADER);
+  }
+  function createProgram(gl, shaders) {
+    var program = gl.createProgram();
+    for (var i = 0, ii = shaders.length; i < ii; ++i) {
+      gl.attachShader(program, shaders[i]);
+    }
+    gl.linkProgram(program);
+    var linked = gl.getProgramParameter(program, gl.LINK_STATUS);
+    if (!linked) {
+      var errorMsg = gl.getProgramInfoLog(program);
+      throw new Error('Error during program linking: ' + errorMsg);
+    }
+    return program;
+  }
+  function createTexture(gl, image, textureId) {
+    gl.activeTexture(textureId);
+    var texture = gl.createTexture();
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+    return texture;
+  }
+  var currentGL, currentCanvas;
+  function generateGL() {
+    if (currentGL) {
+      return;
+    }
+    currentCanvas = document.createElement('canvas');
+    currentGL = currentCanvas.getContext('webgl', { premultipliedalpha: false });
+  }
+  var smaskVertexShaderCode = '\
+  attribute vec2 a_position;                                    \
+  attribute vec2 a_texCoord;                                    \
+                                                                \
+  uniform vec2 u_resolution;                                    \
+                                                                \
+  varying vec2 v_texCoord;                                      \
+                                                                \
+  void main() {                                                 \
+    vec2 clipSpace = (a_position / u_resolution) * 2.0 - 1.0;   \
+    gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);          \
+                                                                \
+    v_texCoord = a_texCoord;                                    \
+  }                                                             ';
+  var smaskFragmentShaderCode = '\
+  precision mediump float;                                      \
+                                                                \
+  uniform vec4 u_backdrop;                                      \
+  uniform int u_subtype;                                        \
+  uniform sampler2D u_image;                                    \
+  uniform sampler2D u_mask;                                     \
+                                                                \
+  varying vec2 v_texCoord;                                      \
+                                                                \
+  void main() {                                                 \
+    vec4 imageColor = texture2D(u_image, v_texCoord);           \
+    vec4 maskColor = texture2D(u_mask, v_texCoord);             \
+    if (u_backdrop.a > 0.0) {                                   \
+      maskColor.rgb = maskColor.rgb * maskColor.a +             \
+                      u_backdrop.rgb * (1.0 - maskColor.a);     \
+    }                                                           \
+    float lum;                                                  \
+    if (u_subtype == 0) {                                       \
+      lum = maskColor.a;                                        \
+    } else {                                                    \
+      lum = maskColor.r * 0.3 + maskColor.g * 0.59 +            \
+            maskColor.b * 0.11;                                 \
+    }                                                           \
+    imageColor.a *= lum;                                        \
+    imageColor.rgb *= imageColor.a;                             \
+    gl_FragColor = imageColor;                                  \
+  }                                                             ';
+  var smaskCache = null;
+  function initSmaskGL() {
+    var canvas, gl;
+    generateGL();
+    canvas = currentCanvas;
+    currentCanvas = null;
+    gl = currentGL;
+    currentGL = null;
+    var vertexShader = createVertexShader(gl, smaskVertexShaderCode);
+    var fragmentShader = createFragmentShader(gl, smaskFragmentShaderCode);
+    var program = createProgram(gl, [vertexShader, fragmentShader]);
+    gl.useProgram(program);
+    var cache = {};
+    cache.gl = gl;
+    cache.canvas = canvas;
+    cache.resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+    cache.positionLocation = gl.getAttribLocation(program, 'a_position');
+    cache.backdropLocation = gl.getUniformLocation(program, 'u_backdrop');
+    cache.subtypeLocation = gl.getUniformLocation(program, 'u_subtype');
+    var texCoordLocation = gl.getAttribLocation(program, 'a_texCoord');
+    var texLayerLocation = gl.getUniformLocation(program, 'u_image');
+    var texMaskLocation = gl.getUniformLocation(program, 'u_mask');
+    var texCoordBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, texCoordBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0]), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(texCoordLocation);
+    gl.vertexAttribPointer(texCoordLocation, 2, gl.FLOAT, false, 0, 0);
+    gl.uniform1i(texLayerLocation, 0);
+    gl.uniform1i(texMaskLocation, 1);
+    smaskCache = cache;
+  }
+  function composeSMask(layer, mask, properties) {
+    var width = layer.width,
+        height = layer.height;
+    if (!smaskCache) {
+      initSmaskGL();
+    }
+    var cache = smaskCache,
+        canvas = cache.canvas,
+        gl = cache.gl;
+    canvas.width = width;
+    canvas.height = height;
+    gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+    gl.uniform2f(cache.resolutionLocation, width, height);
+    if (properties.backdrop) {
+      gl.uniform4f(cache.resolutionLocation, properties.backdrop[0], properties.backdrop[1], properties.backdrop[2], 1);
+    } else {
+      gl.uniform4f(cache.resolutionLocation, 0, 0, 0, 0);
+    }
+    gl.uniform1i(cache.subtypeLocation, properties.subtype === 'Luminosity' ? 1 : 0);
+    var texture = createTexture(gl, layer, gl.TEXTURE0);
+    var maskTexture = createTexture(gl, mask, gl.TEXTURE1);
+    var buffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([0, 0, width, 0, 0, height, 0, height, width, 0, width, height]), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(cache.positionLocation);
+    gl.vertexAttribPointer(cache.positionLocation, 2, gl.FLOAT, false, 0, 0);
+    gl.clearColor(0, 0, 0, 0);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.drawArrays(gl.TRIANGLES, 0, 6);
+    gl.flush();
+    gl.deleteTexture(texture);
+    gl.deleteTexture(maskTexture);
+    gl.deleteBuffer(buffer);
+    return canvas;
+  }
+  var figuresVertexShaderCode = '\
+  attribute vec2 a_position;                                    \
+  attribute vec3 a_color;                                       \
+                                                                \
+  uniform vec2 u_resolution;                                    \
+  uniform vec2 u_scale;                                         \
+  uniform vec2 u_offset;                                        \
+                                                                \
+  varying vec4 v_color;                                         \
+                                                                \
+  void main() {                                                 \
+    vec2 position = (a_position + u_offset) * u_scale;          \
+    vec2 clipSpace = (position / u_resolution) * 2.0 - 1.0;     \
+    gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);          \
+                                                                \
+    v_color = vec4(a_color / 255.0, 1.0);                       \
+  }                                                             ';
+  var figuresFragmentShaderCode = '\
+  precision mediump float;                                      \
+                                                                \
+  varying vec4 v_color;                                         \
+                                                                \
+  void main() {                                                 \
+    gl_FragColor = v_color;                                     \
+  }                                                             ';
+  var figuresCache = null;
+  function initFiguresGL() {
+    var canvas, gl;
+    generateGL();
+    canvas = currentCanvas;
+    currentCanvas = null;
+    gl = currentGL;
+    currentGL = null;
+    var vertexShader = createVertexShader(gl, figuresVertexShaderCode);
+    var fragmentShader = createFragmentShader(gl, figuresFragmentShaderCode);
+    var program = createProgram(gl, [vertexShader, fragmentShader]);
+    gl.useProgram(program);
+    var cache = {};
+    cache.gl = gl;
+    cache.canvas = canvas;
+    cache.resolutionLocation = gl.getUniformLocation(program, 'u_resolution');
+    cache.scaleLocation = gl.getUniformLocation(program, 'u_scale');
+    cache.offsetLocation = gl.getUniformLocation(program, 'u_offset');
+    cache.positionLocation = gl.getAttribLocation(program, 'a_position');
+    cache.colorLocation = gl.getAttribLocation(program, 'a_color');
+    figuresCache = cache;
+  }
+  function drawFigures(width, height, backgroundColor, figures, context) {
+    if (!figuresCache) {
+      initFiguresGL();
+    }
+    var cache = figuresCache,
+        canvas = cache.canvas,
+        gl = cache.gl;
+    canvas.width = width;
+    canvas.height = height;
+    gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+    gl.uniform2f(cache.resolutionLocation, width, height);
+    var count = 0;
+    var i, ii, rows;
+    for (i = 0, ii = figures.length; i < ii; i++) {
+      switch (figures[i].type) {
+        case 'lattice':
+          rows = figures[i].coords.length / figures[i].verticesPerRow | 0;
+          count += (rows - 1) * (figures[i].verticesPerRow - 1) * 6;
+          break;
+        case 'triangles':
+          count += figures[i].coords.length;
+          break;
+      }
+    }
+    var coords = new Float32Array(count * 2);
+    var colors = new Uint8Array(count * 3);
+    var coordsMap = context.coords,
+        colorsMap = context.colors;
+    var pIndex = 0,
+        cIndex = 0;
+    for (i = 0, ii = figures.length; i < ii; i++) {
+      var figure = figures[i],
+          ps = figure.coords,
+          cs = figure.colors;
+      switch (figure.type) {
+        case 'lattice':
+          var cols = figure.verticesPerRow;
+          rows = ps.length / cols | 0;
+          for (var row = 1; row < rows; row++) {
+            var offset = row * cols + 1;
+            for (var col = 1; col < cols; col++, offset++) {
+              coords[pIndex] = coordsMap[ps[offset - cols - 1]];
+              coords[pIndex + 1] = coordsMap[ps[offset - cols - 1] + 1];
+              coords[pIndex + 2] = coordsMap[ps[offset - cols]];
+              coords[pIndex + 3] = coordsMap[ps[offset - cols] + 1];
+              coords[pIndex + 4] = coordsMap[ps[offset - 1]];
+              coords[pIndex + 5] = coordsMap[ps[offset - 1] + 1];
+              colors[cIndex] = colorsMap[cs[offset - cols - 1]];
+              colors[cIndex + 1] = colorsMap[cs[offset - cols - 1] + 1];
+              colors[cIndex + 2] = colorsMap[cs[offset - cols - 1] + 2];
+              colors[cIndex + 3] = colorsMap[cs[offset - cols]];
+              colors[cIndex + 4] = colorsMap[cs[offset - cols] + 1];
+              colors[cIndex + 5] = colorsMap[cs[offset - cols] + 2];
+              colors[cIndex + 6] = colorsMap[cs[offset - 1]];
+              colors[cIndex + 7] = colorsMap[cs[offset - 1] + 1];
+              colors[cIndex + 8] = colorsMap[cs[offset - 1] + 2];
+              coords[pIndex + 6] = coords[pIndex + 2];
+              coords[pIndex + 7] = coords[pIndex + 3];
+              coords[pIndex + 8] = coords[pIndex + 4];
+              coords[pIndex + 9] = coords[pIndex + 5];
+              coords[pIndex + 10] = coordsMap[ps[offset]];
+              coords[pIndex + 11] = coordsMap[ps[offset] + 1];
+              colors[cIndex + 9] = colors[cIndex + 3];
+              colors[cIndex + 10] = colors[cIndex + 4];
+              colors[cIndex + 11] = colors[cIndex + 5];
+              colors[cIndex + 12] = colors[cIndex + 6];
+              colors[cIndex + 13] = colors[cIndex + 7];
+              colors[cIndex + 14] = colors[cIndex + 8];
+              colors[cIndex + 15] = colorsMap[cs[offset]];
+              colors[cIndex + 16] = colorsMap[cs[offset] + 1];
+              colors[cIndex + 17] = colorsMap[cs[offset] + 2];
+              pIndex += 12;
+              cIndex += 18;
+            }
+          }
+          break;
+        case 'triangles':
+          for (var j = 0, jj = ps.length; j < jj; j++) {
+            coords[pIndex] = coordsMap[ps[j]];
+            coords[pIndex + 1] = coordsMap[ps[j] + 1];
+            colors[cIndex] = colorsMap[cs[j]];
+            colors[cIndex + 1] = colorsMap[cs[j] + 1];
+            colors[cIndex + 2] = colorsMap[cs[j] + 2];
+            pIndex += 2;
+            cIndex += 3;
+          }
+          break;
+      }
+    }
+    if (backgroundColor) {
+      gl.clearColor(backgroundColor[0] / 255, backgroundColor[1] / 255, backgroundColor[2] / 255, 1.0);
+    } else {
+      gl.clearColor(0, 0, 0, 0);
+    }
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    var coordsBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, coordsBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, coords, gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(cache.positionLocation);
+    gl.vertexAttribPointer(cache.positionLocation, 2, gl.FLOAT, false, 0, 0);
+    var colorsBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, colorsBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, colors, gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(cache.colorLocation);
+    gl.vertexAttribPointer(cache.colorLocation, 3, gl.UNSIGNED_BYTE, false, 0, 0);
+    gl.uniform2f(cache.scaleLocation, context.scaleX, context.scaleY);
+    gl.uniform2f(cache.offsetLocation, context.offsetX, context.offsetY);
+    gl.drawArrays(gl.TRIANGLES, 0, count);
+    gl.flush();
+    gl.deleteBuffer(coordsBuffer);
+    gl.deleteBuffer(colorsBuffer);
+    return canvas;
+  }
+  function cleanup() {
+    if (smaskCache && smaskCache.canvas) {
+      smaskCache.canvas.width = 0;
+      smaskCache.canvas.height = 0;
+    }
+    if (figuresCache && figuresCache.canvas) {
+      figuresCache.canvas.width = 0;
+      figuresCache.canvas.height = 0;
+    }
+    smaskCache = null;
+    figuresCache = null;
+  }
+  return {
+    get isEnabled() {
+      if (getDefaultSetting('disableWebGL')) {
+        return false;
+      }
+      var enabled = false;
+      try {
+        generateGL();
+        enabled = !!currentGL;
+      } catch (e) {}
+      return shadow(this, 'isEnabled', enabled);
+    },
+    composeSMask: composeSMask,
+    drawFigures: drawFigures,
+    clear: cleanup
+  };
+}();
+exports.WebGLUtils = WebGLUtils;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var sharedUtil = __w_pdfjs_require__(0);
+var displayDOMUtils = __w_pdfjs_require__(1);
+var displayAPI = __w_pdfjs_require__(3);
+var displayAnnotationLayer = __w_pdfjs_require__(2);
+var displayTextLayer = __w_pdfjs_require__(5);
+var displayMetadata = __w_pdfjs_require__(7);
+var displaySVG = __w_pdfjs_require__(4);
+var globalScope = sharedUtil.globalScope;
+var deprecated = sharedUtil.deprecated;
+var warn = sharedUtil.warn;
+var LinkTarget = displayDOMUtils.LinkTarget;
+var DEFAULT_LINK_REL = displayDOMUtils.DEFAULT_LINK_REL;
+var isWorker = typeof window === 'undefined';
+if (!globalScope.PDFJS) {
+  globalScope.PDFJS = {};
+}
+var PDFJS = globalScope.PDFJS;
+PDFJS.version = '1.8.188';
+PDFJS.build = 'ad1023ff';
+PDFJS.pdfBug = false;
+if (PDFJS.verbosity !== undefined) {
+  sharedUtil.setVerbosityLevel(PDFJS.verbosity);
+}
+delete PDFJS.verbosity;
+Object.defineProperty(PDFJS, 'verbosity', {
+  get: function () {
+    return sharedUtil.getVerbosityLevel();
+  },
+  set: function (level) {
+    sharedUtil.setVerbosityLevel(level);
+  },
+  enumerable: true,
+  configurable: true
+});
+PDFJS.VERBOSITY_LEVELS = sharedUtil.VERBOSITY_LEVELS;
+PDFJS.OPS = sharedUtil.OPS;
+PDFJS.UNSUPPORTED_FEATURES = sharedUtil.UNSUPPORTED_FEATURES;
+PDFJS.isValidUrl = displayDOMUtils.isValidUrl;
+PDFJS.shadow = sharedUtil.shadow;
+PDFJS.createBlob = sharedUtil.createBlob;
+PDFJS.createObjectURL = function PDFJS_createObjectURL(data, contentType) {
+  return sharedUtil.createObjectURL(data, contentType, PDFJS.disableCreateObjectURL);
+};
+Object.defineProperty(PDFJS, 'isLittleEndian', {
+  configurable: true,
+  get: function PDFJS_isLittleEndian() {
+    var value = sharedUtil.isLittleEndian();
+    return sharedUtil.shadow(PDFJS, 'isLittleEndian', value);
+  }
+});
+PDFJS.removeNullCharacters = sharedUtil.removeNullCharacters;
+PDFJS.PasswordResponses = sharedUtil.PasswordResponses;
+PDFJS.PasswordException = sharedUtil.PasswordException;
+PDFJS.UnknownErrorException = sharedUtil.UnknownErrorException;
+PDFJS.InvalidPDFException = sharedUtil.InvalidPDFException;
+PDFJS.MissingPDFException = sharedUtil.MissingPDFException;
+PDFJS.UnexpectedResponseException = sharedUtil.UnexpectedResponseException;
+PDFJS.Util = sharedUtil.Util;
+PDFJS.PageViewport = sharedUtil.PageViewport;
+PDFJS.createPromiseCapability = sharedUtil.createPromiseCapability;
+PDFJS.maxImageSize = PDFJS.maxImageSize === undefined ? -1 : PDFJS.maxImageSize;
+PDFJS.cMapUrl = PDFJS.cMapUrl === undefined ? null : PDFJS.cMapUrl;
+PDFJS.cMapPacked = PDFJS.cMapPacked === undefined ? false : PDFJS.cMapPacked;
+PDFJS.disableFontFace = PDFJS.disableFontFace === undefined ? false : PDFJS.disableFontFace;
+PDFJS.imageResourcesPath = PDFJS.imageResourcesPath === undefined ? '' : PDFJS.imageResourcesPath;
+PDFJS.disableWorker = PDFJS.disableWorker === undefined ? false : PDFJS.disableWorker;
+PDFJS.workerSrc = PDFJS.workerSrc === undefined ? null : PDFJS.workerSrc;
+PDFJS.workerPort = PDFJS.workerPort === undefined ? null : PDFJS.workerPort;
+PDFJS.disableRange = PDFJS.disableRange === undefined ? false : PDFJS.disableRange;
+PDFJS.disableStream = PDFJS.disableStream === undefined ? false : PDFJS.disableStream;
+PDFJS.disableAutoFetch = PDFJS.disableAutoFetch === undefined ? false : PDFJS.disableAutoFetch;
+PDFJS.pdfBug = PDFJS.pdfBug === undefined ? false : PDFJS.pdfBug;
+PDFJS.postMessageTransfers = PDFJS.postMessageTransfers === undefined ? true : PDFJS.postMessageTransfers;
+PDFJS.disableCreateObjectURL = PDFJS.disableCreateObjectURL === undefined ? false : PDFJS.disableCreateObjectURL;
+PDFJS.disableWebGL = PDFJS.disableWebGL === undefined ? true : PDFJS.disableWebGL;
+PDFJS.externalLinkTarget = PDFJS.externalLinkTarget === undefined ? LinkTarget.NONE : PDFJS.externalLinkTarget;
+PDFJS.externalLinkRel = PDFJS.externalLinkRel === undefined ? DEFAULT_LINK_REL : PDFJS.externalLinkRel;
+PDFJS.isEvalSupported = PDFJS.isEvalSupported === undefined ? true : PDFJS.isEvalSupported;
+PDFJS.pdfjsNext = PDFJS.pdfjsNext === undefined ? false : PDFJS.pdfjsNext;
+var savedOpenExternalLinksInNewWindow = PDFJS.openExternalLinksInNewWindow;
+delete PDFJS.openExternalLinksInNewWindow;
+Object.defineProperty(PDFJS, 'openExternalLinksInNewWindow', {
+  get: function () {
+    return PDFJS.externalLinkTarget === LinkTarget.BLANK;
+  },
+  set: function (value) {
+    if (value) {
+      deprecated('PDFJS.openExternalLinksInNewWindow, please use ' + '"PDFJS.externalLinkTarget = PDFJS.LinkTarget.BLANK" instead.');
+    }
+    if (PDFJS.externalLinkTarget !== LinkTarget.NONE) {
+      warn('PDFJS.externalLinkTarget is already initialized');
+      return;
+    }
+    PDFJS.externalLinkTarget = value ? LinkTarget.BLANK : LinkTarget.NONE;
+  },
+  enumerable: true,
+  configurable: true
+});
+if (savedOpenExternalLinksInNewWindow) {
+  PDFJS.openExternalLinksInNewWindow = savedOpenExternalLinksInNewWindow;
+}
+PDFJS.getDocument = displayAPI.getDocument;
+PDFJS.PDFDataRangeTransport = displayAPI.PDFDataRangeTransport;
+PDFJS.PDFWorker = displayAPI.PDFWorker;
+Object.defineProperty(PDFJS, 'hasCanvasTypedArrays', {
+  configurable: true,
+  get: function PDFJS_hasCanvasTypedArrays() {
+    var value = displayDOMUtils.hasCanvasTypedArrays();
+    return sharedUtil.shadow(PDFJS, 'hasCanvasTypedArrays', value);
+  }
+});
+PDFJS.CustomStyle = displayDOMUtils.CustomStyle;
+PDFJS.LinkTarget = LinkTarget;
+PDFJS.addLinkAttributes = displayDOMUtils.addLinkAttributes;
+PDFJS.getFilenameFromUrl = displayDOMUtils.getFilenameFromUrl;
+PDFJS.isExternalLinkTargetSet = displayDOMUtils.isExternalLinkTargetSet;
+PDFJS.AnnotationLayer = displayAnnotationLayer.AnnotationLayer;
+PDFJS.renderTextLayer = displayTextLayer.renderTextLayer;
+PDFJS.Metadata = displayMetadata.Metadata;
+PDFJS.SVGGraphics = displaySVG.SVGGraphics;
+PDFJS.UnsupportedManager = displayAPI._UnsupportedManager;
+exports.globalScope = globalScope;
+exports.isWorker = isWorker;
+exports.PDFJS = globalScope.PDFJS;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var sharedUtil = __w_pdfjs_require__(0);
+var displayDOMUtils = __w_pdfjs_require__(1);
+var displayPatternHelper = __w_pdfjs_require__(12);
+var displayWebGL = __w_pdfjs_require__(8);
+var FONT_IDENTITY_MATRIX = sharedUtil.FONT_IDENTITY_MATRIX;
+var IDENTITY_MATRIX = sharedUtil.IDENTITY_MATRIX;
+var ImageKind = sharedUtil.ImageKind;
+var OPS = sharedUtil.OPS;
+var TextRenderingMode = sharedUtil.TextRenderingMode;
+var Uint32ArrayView = sharedUtil.Uint32ArrayView;
+var Util = sharedUtil.Util;
+var assert = sharedUtil.assert;
+var info = sharedUtil.info;
+var isNum = sharedUtil.isNum;
+var isArray = sharedUtil.isArray;
+var isLittleEndian = sharedUtil.isLittleEndian;
+var error = sharedUtil.error;
+var shadow = sharedUtil.shadow;
+var warn = sharedUtil.warn;
+var TilingPattern = displayPatternHelper.TilingPattern;
+var getShadingPatternFromIR = displayPatternHelper.getShadingPatternFromIR;
+var WebGLUtils = displayWebGL.WebGLUtils;
+var hasCanvasTypedArrays = displayDOMUtils.hasCanvasTypedArrays;
+var MIN_FONT_SIZE = 16;
+var MAX_FONT_SIZE = 100;
+var MAX_GROUP_SIZE = 4096;
+var MIN_WIDTH_FACTOR = 0.65;
+var COMPILE_TYPE3_GLYPHS = true;
+var MAX_SIZE_TO_COMPILE = 1000;
+var FULL_CHUNK_HEIGHT = 16;
+var HasCanvasTypedArraysCached = {
+  get value() {
+    return shadow(HasCanvasTypedArraysCached, 'value', hasCanvasTypedArrays());
+  }
+};
+var IsLittleEndianCached = {
+  get value() {
+    return shadow(IsLittleEndianCached, 'value', isLittleEndian());
+  }
+};
+function addContextCurrentTransform(ctx) {
+  if (!ctx.mozCurrentTransform) {
+    ctx._originalSave = ctx.save;
+    ctx._originalRestore = ctx.restore;
+    ctx._originalRotate = ctx.rotate;
+    ctx._originalScale = ctx.scale;
+    ctx._originalTranslate = ctx.translate;
+    ctx._originalTransform = ctx.transform;
+    ctx._originalSetTransform = ctx.setTransform;
+    ctx._transformMatrix = ctx._transformMatrix || [1, 0, 0, 1, 0, 0];
+    ctx._transformStack = [];
+    Object.defineProperty(ctx, 'mozCurrentTransform', {
+      get: function getCurrentTransform() {
+        return this._transformMatrix;
+      }
+    });
+    Object.defineProperty(ctx, 'mozCurrentTransformInverse', {
+      get: function getCurrentTransformInverse() {
+        var m = this._transformMatrix;
+        var a = m[0],
+            b = m[1],
+            c = m[2],
+            d = m[3],
+            e = m[4],
+            f = m[5];
+        var ad_bc = a * d - b * c;
+        var bc_ad = b * c - a * d;
+        return [d / ad_bc, b / bc_ad, c / bc_ad, a / ad_bc, (d * e - c * f) / bc_ad, (b * e - a * f) / ad_bc];
+      }
+    });
+    ctx.save = function ctxSave() {
+      var old = this._transformMatrix;
+      this._transformStack.push(old);
+      this._transformMatrix = old.slice(0, 6);
+      this._originalSave();
+    };
+    ctx.restore = function ctxRestore() {
+      var prev = this._transformStack.pop();
+      if (prev) {
+        this._transformMatrix = prev;
+        this._originalRestore();
+      }
+    };
+    ctx.translate = function ctxTranslate(x, y) {
+      var m = this._transformMatrix;
+      m[4] = m[0] * x + m[2] * y + m[4];
+      m[5] = m[1] * x + m[3] * y + m[5];
+      this._originalTranslate(x, y);
+    };
+    ctx.scale = function ctxScale(x, y) {
+      var m = this._transformMatrix;
+      m[0] = m[0] * x;
+      m[1] = m[1] * x;
+      m[2] = m[2] * y;
+      m[3] = m[3] * y;
+      this._originalScale(x, y);
+    };
+    ctx.transform = function ctxTransform(a, b, c, d, e, f) {
+      var m = this._transformMatrix;
+      this._transformMatrix = [m[0] * a + m[2] * b, m[1] * a + m[3] * b, m[0] * c + m[2] * d, m[1] * c + m[3] * d, m[0] * e + m[2] * f + m[4], m[1] * e + m[3] * f + m[5]];
+      ctx._originalTransform(a, b, c, d, e, f);
+    };
+    ctx.setTransform = function ctxSetTransform(a, b, c, d, e, f) {
+      this._transformMatrix = [a, b, c, d, e, f];
+      ctx._originalSetTransform(a, b, c, d, e, f);
+    };
+    ctx.rotate = function ctxRotate(angle) {
+      var cosValue = Math.cos(angle);
+      var sinValue = Math.sin(angle);
+      var m = this._transformMatrix;
+      this._transformMatrix = [m[0] * cosValue + m[2] * sinValue, m[1] * cosValue + m[3] * sinValue, m[0] * -sinValue + m[2] * cosValue, m[1] * -sinValue + m[3] * cosValue, m[4], m[5]];
+      this._originalRotate(angle);
+    };
+  }
+}
+var CachedCanvases = function CachedCanvasesClosure() {
+  function CachedCanvases(canvasFactory) {
+    this.canvasFactory = canvasFactory;
+    this.cache = Object.create(null);
+  }
+  CachedCanvases.prototype = {
+    getCanvas: function CachedCanvases_getCanvas(id, width, height, trackTransform) {
+      var canvasEntry;
+      if (this.cache[id] !== undefined) {
+        canvasEntry = this.cache[id];
+        this.canvasFactory.reset(canvasEntry, width, height);
+        canvasEntry.context.setTransform(1, 0, 0, 1, 0, 0);
+      } else {
+        canvasEntry = this.canvasFactory.create(width, height);
+        this.cache[id] = canvasEntry;
+      }
+      if (trackTransform) {
+        addContextCurrentTransform(canvasEntry.context);
+      }
+      return canvasEntry;
+    },
+    clear: function () {
+      for (var id in this.cache) {
+        var canvasEntry = this.cache[id];
+        this.canvasFactory.destroy(canvasEntry);
+        delete this.cache[id];
+      }
+    }
+  };
+  return CachedCanvases;
+}();
+function compileType3Glyph(imgData) {
+  var POINT_TO_PROCESS_LIMIT = 1000;
+  var width = imgData.width,
+      height = imgData.height;
+  var i,
+      j,
+      j0,
+      width1 = width + 1;
+  var points = new Uint8Array(width1 * (height + 1));
+  var POINT_TYPES = new Uint8Array([0, 2, 4, 0, 1, 0, 5, 4, 8, 10, 0, 8, 0, 2, 1, 0]);
+  var lineSize = width + 7 & ~7,
+      data0 = imgData.data;
+  var data = new Uint8Array(lineSize * height),
+      pos = 0,
+      ii;
+  for (i = 0, ii = data0.length; i < ii; i++) {
+    var mask = 128,
+        elem = data0[i];
+    while (mask > 0) {
+      data[pos++] = elem & mask ? 0 : 255;
+      mask >>= 1;
+    }
+  }
+  var count = 0;
+  pos = 0;
+  if (data[pos] !== 0) {
+    points[0] = 1;
+    ++count;
+  }
+  for (j = 1; j < width; j++) {
+    if (data[pos] !== data[pos + 1]) {
+      points[j] = data[pos] ? 2 : 1;
+      ++count;
+    }
+    pos++;
+  }
+  if (data[pos] !== 0) {
+    points[j] = 2;
+    ++count;
+  }
+  for (i = 1; i < height; i++) {
+    pos = i * lineSize;
+    j0 = i * width1;
+    if (data[pos - lineSize] !== data[pos]) {
+      points[j0] = data[pos] ? 1 : 8;
+      ++count;
+    }
+    var sum = (data[pos] ? 4 : 0) + (data[pos - lineSize] ? 8 : 0);
+    for (j = 1; j < width; j++) {
+      sum = (sum >> 2) + (data[pos + 1] ? 4 : 0) + (data[pos - lineSize + 1] ? 8 : 0);
+      if (POINT_TYPES[sum]) {
+        points[j0 + j] = POINT_TYPES[sum];
+        ++count;
+      }
+      pos++;
+    }
+    if (data[pos - lineSize] !== data[pos]) {
+      points[j0 + j] = data[pos] ? 2 : 4;
+      ++count;
+    }
+    if (count > POINT_TO_PROCESS_LIMIT) {
+      return null;
+    }
+  }
+  pos = lineSize * (height - 1);
+  j0 = i * width1;
+  if (data[pos] !== 0) {
+    points[j0] = 8;
+    ++count;
+  }
+  for (j = 1; j < width; j++) {
+    if (data[pos] !== data[pos + 1]) {
+      points[j0 + j] = data[pos] ? 4 : 8;
+      ++count;
+    }
+    pos++;
+  }
+  if (data[pos] !== 0) {
+    points[j0 + j] = 4;
+    ++count;
+  }
+  if (count > POINT_TO_PROCESS_LIMIT) {
+    return null;
+  }
+  var steps = new Int32Array([0, width1, -1, 0, -width1, 0, 0, 0, 1]);
+  var outlines = [];
+  for (i = 0; count && i <= height; i++) {
+    var p = i * width1;
+    var end = p + width;
+    while (p < end && !points[p]) {
+      p++;
+    }
+    if (p === end) {
+      continue;
+    }
+    var coords = [p % width1, i];
+    var type = points[p],
+        p0 = p,
+        pp;
+    do {
+      var step = steps[type];
+      do {
+        p += step;
+      } while (!points[p]);
+      pp = points[p];
+      if (pp !== 5 && pp !== 10) {
+        type = pp;
+        points[p] = 0;
+      } else {
+        type = pp & 0x33 * type >> 4;
+        points[p] &= type >> 2 | type << 2;
+      }
+      coords.push(p % width1);
+      coords.push(p / width1 | 0);
+      --count;
+    } while (p0 !== p);
+    outlines.push(coords);
+    --i;
+  }
+  var drawOutline = function (c) {
+    c.save();
+    c.scale(1 / width, -1 / height);
+    c.translate(0, -height);
+    c.beginPath();
+    for (var i = 0, ii = outlines.length; i < ii; i++) {
+      var o = outlines[i];
+      c.moveTo(o[0], o[1]);
+      for (var j = 2, jj = o.length; j < jj; j += 2) {
+        c.lineTo(o[j], o[j + 1]);
+      }
+    }
+    c.fill();
+    c.beginPath();
+    c.restore();
+  };
+  return drawOutline;
+}
+var CanvasExtraState = function CanvasExtraStateClosure() {
+  function CanvasExtraState(old) {
+    this.alphaIsShape = false;
+    this.fontSize = 0;
+    this.fontSizeScale = 1;
+    this.textMatrix = IDENTITY_MATRIX;
+    this.textMatrixScale = 1;
+    this.fontMatrix = FONT_IDENTITY_MATRIX;
+    this.leading = 0;
+    this.x = 0;
+    this.y = 0;
+    this.lineX = 0;
+    this.lineY = 0;
+    this.charSpacing = 0;
+    this.wordSpacing = 0;
+    this.textHScale = 1;
+    this.textRenderingMode = TextRenderingMode.FILL;
+    this.textRise = 0;
+    this.fillColor = '#000000';
+    this.strokeColor = '#000000';
+    this.patternFill = false;
+    this.fillAlpha = 1;
+    this.strokeAlpha = 1;
+    this.lineWidth = 1;
+    this.activeSMask = null;
+    this.resumeSMaskCtx = null;
+    this.old = old;
+  }
+  CanvasExtraState.prototype = {
+    clone: function CanvasExtraState_clone() {
+      return Object.create(this);
+    },
+    setCurrentPoint: function CanvasExtraState_setCurrentPoint(x, y) {
+      this.x = x;
+      this.y = y;
+    }
+  };
+  return CanvasExtraState;
+}();
+var CanvasGraphics = function CanvasGraphicsClosure() {
+  var EXECUTION_TIME = 15;
+  var EXECUTION_STEPS = 10;
+  function CanvasGraphics(canvasCtx, commonObjs, objs, canvasFactory, imageLayer) {
+    this.ctx = canvasCtx;
+    this.current = new CanvasExtraState();
+    this.stateStack = [];
+    this.pendingClip = null;
+    this.pendingEOFill = false;
+    this.res = null;
+    this.xobjs = null;
+    this.commonObjs = commonObjs;
+    this.objs = objs;
+    this.canvasFactory = canvasFactory;
+    this.imageLayer = imageLayer;
+    this.groupStack = [];
+    this.processingType3 = null;
+    this.baseTransform = null;
+    this.baseTransformStack = [];
+    this.groupLevel = 0;
+    this.smaskStack = [];
+    this.smaskCounter = 0;
+    this.tempSMask = null;
+    this.cachedCanvases = new CachedCanvases(this.canvasFactory);
+    if (canvasCtx) {
+      addContextCurrentTransform(canvasCtx);
+    }
+    this.cachedGetSinglePixelWidth = null;
+  }
+  function putBinaryImageData(ctx, imgData) {
+    if (typeof ImageData !== 'undefined' && imgData instanceof ImageData) {
+      ctx.putImageData(imgData, 0, 0);
+      return;
+    }
+    var height = imgData.height,
+        width = imgData.width;
+    var partialChunkHeight = height % FULL_CHUNK_HEIGHT;
+    var fullChunks = (height - partialChunkHeight) / FULL_CHUNK_HEIGHT;
+    var totalChunks = partialChunkHeight === 0 ? fullChunks : fullChunks + 1;
+    var chunkImgData = ctx.createImageData(width, FULL_CHUNK_HEIGHT);
+    var srcPos = 0,
+        destPos;
+    var src = imgData.data;
+    var dest = chunkImgData.data;
+    var i, j, thisChunkHeight, elemsInThisChunk;
+    if (imgData.kind === ImageKind.GRAYSCALE_1BPP) {
+      var srcLength = src.byteLength;
+      var dest32 = HasCanvasTypedArraysCached.value ? new Uint32Array(dest.buffer) : new Uint32ArrayView(dest);
+      var dest32DataLength = dest32.length;
+      var fullSrcDiff = width + 7 >> 3;
+      var white = 0xFFFFFFFF;
+      var black = IsLittleEndianCached.value || !HasCanvasTypedArraysCached.value ? 0xFF000000 : 0x000000FF;
+      for (i = 0; i < totalChunks; i++) {
+        thisChunkHeight = i < fullChunks ? FULL_CHUNK_HEIGHT : partialChunkHeight;
+        destPos = 0;
+        for (j = 0; j < thisChunkHeight; j++) {
+          var srcDiff = srcLength - srcPos;
+          var k = 0;
+          var kEnd = srcDiff > fullSrcDiff ? width : srcDiff * 8 - 7;
+          var kEndUnrolled = kEnd & ~7;
+          var mask = 0;
+          var srcByte = 0;
+          for (; k < kEndUnrolled; k += 8) {
+            srcByte = src[srcPos++];
+            dest32[destPos++] = srcByte & 128 ? white : black;
+            dest32[destPos++] = srcByte & 64 ? white : black;
+            dest32[destPos++] = srcByte & 32 ? white : black;
+            dest32[destPos++] = srcByte & 16 ? white : black;
+            dest32[destPos++] = srcByte & 8 ? white : black;
+            dest32[destPos++] = srcByte & 4 ? white : black;
+            dest32[destPos++] = srcByte & 2 ? white : black;
+            dest32[destPos++] = srcByte & 1 ? white : black;
+          }
+          for (; k < kEnd; k++) {
+            if (mask === 0) {
+              srcByte = src[srcPos++];
+              mask = 128;
+            }
+            dest32[destPos++] = srcByte & mask ? white : black;
+            mask >>= 1;
+          }
+        }
+        while (destPos < dest32DataLength) {
+          dest32[destPos++] = 0;
+        }
+        ctx.putImageData(chunkImgData, 0, i * FULL_CHUNK_HEIGHT);
+      }
+    } else if (imgData.kind === ImageKind.RGBA_32BPP) {
+      j = 0;
+      elemsInThisChunk = width * FULL_CHUNK_HEIGHT * 4;
+      for (i = 0; i < fullChunks; i++) {
+        dest.set(src.subarray(srcPos, srcPos + elemsInThisChunk));
+        srcPos += elemsInThisChunk;
+        ctx.putImageData(chunkImgData, 0, j);
+        j += FULL_CHUNK_HEIGHT;
+      }
+      if (i < totalChunks) {
+        elemsInThisChunk = width * partialChunkHeight * 4;
+        dest.set(src.subarray(srcPos, srcPos + elemsInThisChunk));
+        ctx.putImageData(chunkImgData, 0, j);
+      }
+    } else if (imgData.kind === ImageKind.RGB_24BPP) {
+      thisChunkHeight = FULL_CHUNK_HEIGHT;
+      elemsInThisChunk = width * thisChunkHeight;
+      for (i = 0; i < totalChunks; i++) {
+        if (i >= fullChunks) {
+          thisChunkHeight = partialChunkHeight;
+          elemsInThisChunk = width * thisChunkHeight;
+        }
+        destPos = 0;
+        for (j = elemsInThisChunk; j--;) {
+          dest[destPos++] = src[srcPos++];
+          dest[destPos++] = src[srcPos++];
+          dest[destPos++] = src[srcPos++];
+          dest[destPos++] = 255;
+        }
+        ctx.putImageData(chunkImgData, 0, i * FULL_CHUNK_HEIGHT);
+      }
+    } else {
+      error('bad image kind: ' + imgData.kind);
+    }
+  }
+  function putBinaryImageMask(ctx, imgData) {
+    var height = imgData.height,
+        width = imgData.width;
+    var partialChunkHeight = height % FULL_CHUNK_HEIGHT;
+    var fullChunks = (height - partialChunkHeight) / FULL_CHUNK_HEIGHT;
+    var totalChunks = partialChunkHeight === 0 ? fullChunks : fullChunks + 1;
+    var chunkImgData = ctx.createImageData(width, FULL_CHUNK_HEIGHT);
+    var srcPos = 0;
+    var src = imgData.data;
+    var dest = chunkImgData.data;
+    for (var i = 0; i < totalChunks; i++) {
+      var thisChunkHeight = i < fullChunks ? FULL_CHUNK_HEIGHT : partialChunkHeight;
+      var destPos = 3;
+      for (var j = 0; j < thisChunkHeight; j++) {
+        var mask = 0;
+        for (var k = 0; k < width; k++) {
+          if (!mask) {
+            var elem = src[srcPos++];
+            mask = 128;
+          }
+          dest[destPos] = elem & mask ? 0 : 255;
+          destPos += 4;
+          mask >>= 1;
+        }
+      }
+      ctx.putImageData(chunkImgData, 0, i * FULL_CHUNK_HEIGHT);
+    }
+  }
+  function copyCtxState(sourceCtx, destCtx) {
+    var properties = ['strokeStyle', 'fillStyle', 'fillRule', 'globalAlpha', 'lineWidth', 'lineCap', 'lineJoin', 'miterLimit', 'globalCompositeOperation', 'font'];
+    for (var i = 0, ii = properties.length; i < ii; i++) {
+      var property = properties[i];
+      if (sourceCtx[property] !== undefined) {
+        destCtx[property] = sourceCtx[property];
+      }
+    }
+    if (sourceCtx.setLineDash !== undefined) {
+      destCtx.setLineDash(sourceCtx.getLineDash());
+      destCtx.lineDashOffset = sourceCtx.lineDashOffset;
+    }
+  }
+  function composeSMaskBackdrop(bytes, r0, g0, b0) {
+    var length = bytes.length;
+    for (var i = 3; i < length; i += 4) {
+      var alpha = bytes[i];
+      if (alpha === 0) {
+        bytes[i - 3] = r0;
+        bytes[i - 2] = g0;
+        bytes[i - 1] = b0;
+      } else if (alpha < 255) {
+        var alpha_ = 255 - alpha;
+        bytes[i - 3] = bytes[i - 3] * alpha + r0 * alpha_ >> 8;
+        bytes[i - 2] = bytes[i - 2] * alpha + g0 * alpha_ >> 8;
+        bytes[i - 1] = bytes[i - 1] * alpha + b0 * alpha_ >> 8;
+      }
+    }
+  }
+  function composeSMaskAlpha(maskData, layerData, transferMap) {
+    var length = maskData.length;
+    var scale = 1 / 255;
+    for (var i = 3; i < length; i += 4) {
+      var alpha = transferMap ? transferMap[maskData[i]] : maskData[i];
+      layerData[i] = layerData[i] * alpha * scale | 0;
+    }
+  }
+  function composeSMaskLuminosity(maskData, layerData, transferMap) {
+    var length = maskData.length;
+    for (var i = 3; i < length; i += 4) {
+      var y = maskData[i - 3] * 77 + maskData[i - 2] * 152 + maskData[i - 1] * 28;
+      layerData[i] = transferMap ? layerData[i] * transferMap[y >> 8] >> 8 : layerData[i] * y >> 16;
+    }
+  }
+  function genericComposeSMask(maskCtx, layerCtx, width, height, subtype, backdrop, transferMap) {
+    var hasBackdrop = !!backdrop;
+    var r0 = hasBackdrop ? backdrop[0] : 0;
+    var g0 = hasBackdrop ? backdrop[1] : 0;
+    var b0 = hasBackdrop ? backdrop[2] : 0;
+    var composeFn;
+    if (subtype === 'Luminosity') {
+      composeFn = composeSMaskLuminosity;
+    } else {
+      composeFn = composeSMaskAlpha;
+    }
+    var PIXELS_TO_PROCESS = 1048576;
+    var chunkSize = Math.min(height, Math.ceil(PIXELS_TO_PROCESS / width));
+    for (var row = 0; row < height; row += chunkSize) {
+      var chunkHeight = Math.min(chunkSize, height - row);
+      var maskData = maskCtx.getImageData(0, row, width, chunkHeight);
+      var layerData = layerCtx.getImageData(0, row, width, chunkHeight);
+      if (hasBackdrop) {
+        composeSMaskBackdrop(maskData.data, r0, g0, b0);
+      }
+      composeFn(maskData.data, layerData.data, transferMap);
+      maskCtx.putImageData(layerData, 0, row);
+    }
+  }
+  function composeSMask(ctx, smask, layerCtx) {
+    var mask = smask.canvas;
+    var maskCtx = smask.context;
+    ctx.setTransform(smask.scaleX, 0, 0, smask.scaleY, smask.offsetX, smask.offsetY);
+    var backdrop = smask.backdrop || null;
+    if (!smask.transferMap && WebGLUtils.isEnabled) {
+      var composed = WebGLUtils.composeSMask(layerCtx.canvas, mask, {
+        subtype: smask.subtype,
+        backdrop: backdrop
+      });
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.drawImage(composed, smask.offsetX, smask.offsetY);
+      return;
+    }
+    genericComposeSMask(maskCtx, layerCtx, mask.width, mask.height, smask.subtype, backdrop, smask.transferMap);
+    ctx.drawImage(mask, 0, 0);
+  }
+  var LINE_CAP_STYLES = ['butt', 'round', 'square'];
+  var LINE_JOIN_STYLES = ['miter', 'round', 'bevel'];
+  var NORMAL_CLIP = {};
+  var EO_CLIP = {};
+  CanvasGraphics.prototype = {
+    beginDrawing: function CanvasGraphics_beginDrawing(transform, viewport, transparency) {
+      var width = this.ctx.canvas.width;
+      var height = this.ctx.canvas.height;
+      this.ctx.save();
+      this.ctx.fillStyle = 'rgb(255, 255, 255)';
+      this.ctx.fillRect(0, 0, width, height);
+      this.ctx.restore();
+      if (transparency) {
+        var transparentCanvas = this.cachedCanvases.getCanvas('transparent', width, height, true);
+        this.compositeCtx = this.ctx;
+        this.transparentCanvas = transparentCanvas.canvas;
+        this.ctx = transparentCanvas.context;
+        this.ctx.save();
+        this.ctx.transform.apply(this.ctx, this.compositeCtx.mozCurrentTransform);
+      }
+      this.ctx.save();
+      if (transform) {
+        this.ctx.transform.apply(this.ctx, transform);
+      }
+      this.ctx.transform.apply(this.ctx, viewport.transform);
+      this.baseTransform = this.ctx.mozCurrentTransform.slice();
+      if (this.imageLayer) {
+        this.imageLayer.beginLayout();
+      }
+    },
+    executeOperatorList: function CanvasGraphics_executeOperatorList(operatorList, executionStartIdx, continueCallback, stepper) {
+      var argsArray = operatorList.argsArray;
+      var fnArray = operatorList.fnArray;
+      var i = executionStartIdx || 0;
+      var argsArrayLen = argsArray.length;
+      if (argsArrayLen === i) {
+        return i;
+      }
+      var chunkOperations = argsArrayLen - i > EXECUTION_STEPS && typeof continueCallback === 'function';
+      var endTime = chunkOperations ? Date.now() + EXECUTION_TIME : 0;
+      var steps = 0;
+      var commonObjs = this.commonObjs;
+      var objs = this.objs;
+      var fnId;
+      while (true) {
+        if (stepper !== undefined && i === stepper.nextBreakPoint) {
+          stepper.breakIt(i, continueCallback);
+          return i;
+        }
+        fnId = fnArray[i];
+        if (fnId !== OPS.dependency) {
+          this[fnId].apply(this, argsArray[i]);
+        } else {
+          var deps = argsArray[i];
+          for (var n = 0, nn = deps.length; n < nn; n++) {
+            var depObjId = deps[n];
+            var common = depObjId[0] === 'g' && depObjId[1] === '_';
+            var objsPool = common ? commonObjs : objs;
+            if (!objsPool.isResolved(depObjId)) {
+              objsPool.get(depObjId, continueCallback);
+              return i;
+            }
+          }
+        }
+        i++;
+        if (i === argsArrayLen) {
+          return i;
+        }
+        if (chunkOperations && ++steps > EXECUTION_STEPS) {
+          if (Date.now() > endTime) {
+            continueCallback();
+            return i;
+          }
+          steps = 0;
+        }
+      }
+    },
+    endDrawing: function CanvasGraphics_endDrawing() {
+      if (this.current.activeSMask !== null) {
+        this.endSMaskGroup();
+      }
+      this.ctx.restore();
+      if (this.transparentCanvas) {
+        this.ctx = this.compositeCtx;
+        this.ctx.save();
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+        this.ctx.drawImage(this.transparentCanvas, 0, 0);
+        this.ctx.restore();
+        this.transparentCanvas = null;
+      }
+      this.cachedCanvases.clear();
+      WebGLUtils.clear();
+      if (this.imageLayer) {
+        this.imageLayer.endLayout();
+      }
+    },
+    setLineWidth: function CanvasGraphics_setLineWidth(width) {
+      this.current.lineWidth = width;
+      this.ctx.lineWidth = width;
+    },
+    setLineCap: function CanvasGraphics_setLineCap(style) {
+      this.ctx.lineCap = LINE_CAP_STYLES[style];
+    },
+    setLineJoin: function CanvasGraphics_setLineJoin(style) {
+      this.ctx.lineJoin = LINE_JOIN_STYLES[style];
+    },
+    setMiterLimit: function CanvasGraphics_setMiterLimit(limit) {
+      this.ctx.miterLimit = limit;
+    },
+    setDash: function CanvasGraphics_setDash(dashArray, dashPhase) {
+      var ctx = this.ctx;
+      if (ctx.setLineDash !== undefined) {
+        ctx.setLineDash(dashArray);
+        ctx.lineDashOffset = dashPhase;
+      }
+    },
+    setRenderingIntent: function CanvasGraphics_setRenderingIntent(intent) {},
+    setFlatness: function CanvasGraphics_setFlatness(flatness) {},
+    setGState: function CanvasGraphics_setGState(states) {
+      for (var i = 0, ii = states.length; i < ii; i++) {
+        var state = states[i];
+        var key = state[0];
+        var value = state[1];
+        switch (key) {
+          case 'LW':
+            this.setLineWidth(value);
+            break;
+          case 'LC':
+            this.setLineCap(value);
+            break;
+          case 'LJ':
+            this.setLineJoin(value);
+            break;
+          case 'ML':
+            this.setMiterLimit(value);
+            break;
+          case 'D':
+            this.setDash(value[0], value[1]);
+            break;
+          case 'RI':
+            this.setRenderingIntent(value);
+            break;
+          case 'FL':
+            this.setFlatness(value);
+            break;
+          case 'Font':
+            this.setFont(value[0], value[1]);
+            break;
+          case 'CA':
+            this.current.strokeAlpha = state[1];
+            break;
+          case 'ca':
+            this.current.fillAlpha = state[1];
+            this.ctx.globalAlpha = state[1];
+            break;
+          case 'BM':
+            this.ctx.globalCompositeOperation = value;
+            break;
+          case 'SMask':
+            if (this.current.activeSMask) {
+              if (this.stateStack.length > 0 && this.stateStack[this.stateStack.length - 1].activeSMask === this.current.activeSMask) {
+                this.suspendSMaskGroup();
+              } else {
+                this.endSMaskGroup();
+              }
+            }
+            this.current.activeSMask = value ? this.tempSMask : null;
+            if (this.current.activeSMask) {
+              this.beginSMaskGroup();
+            }
+            this.tempSMask = null;
+            break;
+        }
+      }
+    },
+    beginSMaskGroup: function CanvasGraphics_beginSMaskGroup() {
+      var activeSMask = this.current.activeSMask;
+      var drawnWidth = activeSMask.canvas.width;
+      var drawnHeight = activeSMask.canvas.height;
+      var cacheId = 'smaskGroupAt' + this.groupLevel;
+      var scratchCanvas = this.cachedCanvases.getCanvas(cacheId, drawnWidth, drawnHeight, true);
+      var currentCtx = this.ctx;
+      var currentTransform = currentCtx.mozCurrentTransform;
+      this.ctx.save();
+      var groupCtx = scratchCanvas.context;
+      groupCtx.scale(1 / activeSMask.scaleX, 1 / activeSMask.scaleY);
+      groupCtx.translate(-activeSMask.offsetX, -activeSMask.offsetY);
+      groupCtx.transform.apply(groupCtx, currentTransform);
+      activeSMask.startTransformInverse = groupCtx.mozCurrentTransformInverse;
+      copyCtxState(currentCtx, groupCtx);
+      this.ctx = groupCtx;
+      this.setGState([['BM', 'source-over'], ['ca', 1], ['CA', 1]]);
+      this.groupStack.push(currentCtx);
+      this.groupLevel++;
+    },
+    suspendSMaskGroup: function CanvasGraphics_endSMaskGroup() {
+      var groupCtx = this.ctx;
+      this.groupLevel--;
+      this.ctx = this.groupStack.pop();
+      composeSMask(this.ctx, this.current.activeSMask, groupCtx);
+      this.ctx.restore();
+      this.ctx.save();
+      copyCtxState(groupCtx, this.ctx);
+      this.current.resumeSMaskCtx = groupCtx;
+      var deltaTransform = Util.transform(this.current.activeSMask.startTransformInverse, groupCtx.mozCurrentTransform);
+      this.ctx.transform.apply(this.ctx, deltaTransform);
+      groupCtx.save();
+      groupCtx.setTransform(1, 0, 0, 1, 0, 0);
+      groupCtx.clearRect(0, 0, groupCtx.canvas.width, groupCtx.canvas.height);
+      groupCtx.restore();
+    },
+    resumeSMaskGroup: function CanvasGraphics_endSMaskGroup() {
+      var groupCtx = this.current.resumeSMaskCtx;
+      var currentCtx = this.ctx;
+      this.ctx = groupCtx;
+      this.groupStack.push(currentCtx);
+      this.groupLevel++;
+    },
+    endSMaskGroup: function CanvasGraphics_endSMaskGroup() {
+      var groupCtx = this.ctx;
+      this.groupLevel--;
+      this.ctx = this.groupStack.pop();
+      composeSMask(this.ctx, this.current.activeSMask, groupCtx);
+      this.ctx.restore();
+      copyCtxState(groupCtx, this.ctx);
+      var deltaTransform = Util.transform(this.current.activeSMask.startTransformInverse, groupCtx.mozCurrentTransform);
+      this.ctx.transform.apply(this.ctx, deltaTransform);
+    },
+    save: function CanvasGraphics_save() {
+      this.ctx.save();
+      var old = this.current;
+      this.stateStack.push(old);
+      this.current = old.clone();
+      this.current.resumeSMaskCtx = null;
+    },
+    restore: function CanvasGraphics_restore() {
+      if (this.current.resumeSMaskCtx) {
+        this.resumeSMaskGroup();
+      }
+      if (this.current.activeSMask !== null && (this.stateStack.length === 0 || this.stateStack[this.stateStack.length - 1].activeSMask !== this.current.activeSMask)) {
+        this.endSMaskGroup();
+      }
+      if (this.stateStack.length !== 0) {
+        this.current = this.stateStack.pop();
+        this.ctx.restore();
+        this.pendingClip = null;
+        this.cachedGetSinglePixelWidth = null;
+      }
+    },
+    transform: function CanvasGraphics_transform(a, b, c, d, e, f) {
+      this.ctx.transform(a, b, c, d, e, f);
+      this.cachedGetSinglePixelWidth = null;
+    },
+    constructPath: function CanvasGraphics_constructPath(ops, args) {
+      var ctx = this.ctx;
+      var current = this.current;
+      var x = current.x,
+          y = current.y;
+      for (var i = 0, j = 0, ii = ops.length; i < ii; i++) {
+        switch (ops[i] | 0) {
+          case OPS.rectangle:
+            x = args[j++];
+            y = args[j++];
+            var width = args[j++];
+            var height = args[j++];
+            if (width === 0) {
+              width = this.getSinglePixelWidth();
+            }
+            if (height === 0) {
+              height = this.getSinglePixelWidth();
+            }
+            var xw = x + width;
+            var yh = y + height;
+            this.ctx.moveTo(x, y);
+            this.ctx.lineTo(xw, y);
+            this.ctx.lineTo(xw, yh);
+            this.ctx.lineTo(x, yh);
+            this.ctx.lineTo(x, y);
+            this.ctx.closePath();
+            break;
+          case OPS.moveTo:
+            x = args[j++];
+            y = args[j++];
+            ctx.moveTo(x, y);
+            break;
+          case OPS.lineTo:
+            x = args[j++];
+            y = args[j++];
+            ctx.lineTo(x, y);
+            break;
+          case OPS.curveTo:
+            x = args[j + 4];
+            y = args[j + 5];
+            ctx.bezierCurveTo(args[j], args[j + 1], args[j + 2], args[j + 3], x, y);
+            j += 6;
+            break;
+          case OPS.curveTo2:
+            ctx.bezierCurveTo(x, y, args[j], args[j + 1], args[j + 2], args[j + 3]);
+            x = args[j + 2];
+            y = args[j + 3];
+            j += 4;
+            break;
+          case OPS.curveTo3:
+            x = args[j + 2];
+            y = args[j + 3];
+            ctx.bezierCurveTo(args[j], args[j + 1], x, y, x, y);
+            j += 4;
+            break;
+          case OPS.closePath:
+            ctx.closePath();
+            break;
+        }
+      }
+      current.setCurrentPoint(x, y);
+    },
+    closePath: function CanvasGraphics_closePath() {
+      this.ctx.closePath();
+    },
+    stroke: function CanvasGraphics_stroke(consumePath) {
+      consumePath = typeof consumePath !== 'undefined' ? consumePath : true;
+      var ctx = this.ctx;
+      var strokeColor = this.current.strokeColor;
+      ctx.lineWidth = Math.max(this.getSinglePixelWidth() * MIN_WIDTH_FACTOR, this.current.lineWidth);
+      ctx.globalAlpha = this.current.strokeAlpha;
+      if (strokeColor && strokeColor.hasOwnProperty('type') && strokeColor.type === 'Pattern') {
+        ctx.save();
+        ctx.strokeStyle = strokeColor.getPattern(ctx, this);
+        ctx.stroke();
+        ctx.restore();
+      } else {
+        ctx.stroke();
+      }
+      if (consumePath) {
+        this.consumePath();
+      }
+      ctx.globalAlpha = this.current.fillAlpha;
+    },
+    closeStroke: function CanvasGraphics_closeStroke() {
+      this.closePath();
+      this.stroke();
+    },
+    fill: function CanvasGraphics_fill(consumePath) {
+      consumePath = typeof consumePath !== 'undefined' ? consumePath : true;
+      var ctx = this.ctx;
+      var fillColor = this.current.fillColor;
+      var isPatternFill = this.current.patternFill;
+      var needRestore = false;
+      if (isPatternFill) {
+        ctx.save();
+        if (this.baseTransform) {
+          ctx.setTransform.apply(ctx, this.baseTransform);
+        }
+        ctx.fillStyle = fillColor.getPattern(ctx, this);
+        needRestore = true;
+      }
+      if (this.pendingEOFill) {
+        ctx.fill('evenodd');
+        this.pendingEOFill = false;
+      } else {
+        ctx.fill();
+      }
+      if (needRestore) {
+        ctx.restore();
+      }
+      if (consumePath) {
+        this.consumePath();
+      }
+    },
+    eoFill: function CanvasGraphics_eoFill() {
+      this.pendingEOFill = true;
+      this.fill();
+    },
+    fillStroke: function CanvasGraphics_fillStroke() {
+      this.fill(false);
+      this.stroke(false);
+      this.consumePath();
+    },
+    eoFillStroke: function CanvasGraphics_eoFillStroke() {
+      this.pendingEOFill = true;
+      this.fillStroke();
+    },
+    closeFillStroke: function CanvasGraphics_closeFillStroke() {
+      this.closePath();
+      this.fillStroke();
+    },
+    closeEOFillStroke: function CanvasGraphics_closeEOFillStroke() {
+      this.pendingEOFill = true;
+      this.closePath();
+      this.fillStroke();
+    },
+    endPath: function CanvasGraphics_endPath() {
+      this.consumePath();
+    },
+    clip: function CanvasGraphics_clip() {
+      this.pendingClip = NORMAL_CLIP;
+    },
+    eoClip: function CanvasGraphics_eoClip() {
+      this.pendingClip = EO_CLIP;
+    },
+    beginText: function CanvasGraphics_beginText() {
+      this.current.textMatrix = IDENTITY_MATRIX;
+      this.current.textMatrixScale = 1;
+      this.current.x = this.current.lineX = 0;
+      this.current.y = this.current.lineY = 0;
+    },
+    endText: function CanvasGraphics_endText() {
+      var paths = this.pendingTextPaths;
+      var ctx = this.ctx;
+      if (paths === undefined) {
+        ctx.beginPath();
+        return;
+      }
+      ctx.save();
+      ctx.beginPath();
+      for (var i = 0; i < paths.length; i++) {
+        var path = paths[i];
+        ctx.setTransform.apply(ctx, path.transform);
+        ctx.translate(path.x, path.y);
+        path.addToPath(ctx, path.fontSize);
+      }
+      ctx.restore();
+      ctx.clip();
+      ctx.beginPath();
+      delete this.pendingTextPaths;
+    },
+    setCharSpacing: function CanvasGraphics_setCharSpacing(spacing) {
+      this.current.charSpacing = spacing;
+    },
+    setWordSpacing: function CanvasGraphics_setWordSpacing(spacing) {
+      this.current.wordSpacing = spacing;
+    },
+    setHScale: function CanvasGraphics_setHScale(scale) {
+      this.current.textHScale = scale / 100;
+    },
+    setLeading: function CanvasGraphics_setLeading(leading) {
+      this.current.leading = -leading;
+    },
+    setFont: function CanvasGraphics_setFont(fontRefName, size) {
+      var fontObj = this.commonObjs.get(fontRefName);
+      var current = this.current;
+      if (!fontObj) {
+        error('Can\'t find font for ' + fontRefName);
+      }
+      current.fontMatrix = fontObj.fontMatrix ? fontObj.fontMatrix : FONT_IDENTITY_MATRIX;
+      if (current.fontMatrix[0] === 0 || current.fontMatrix[3] === 0) {
+        warn('Invalid font matrix for font ' + fontRefName);
+      }
+      if (size < 0) {
+        size = -size;
+        current.fontDirection = -1;
+      } else {
+        current.fontDirection = 1;
+      }
+      this.current.font = fontObj;
+      this.current.fontSize = size;
+      if (fontObj.isType3Font) {
+        return;
+      }
+      var name = fontObj.loadedName || 'sans-serif';
+      var bold = fontObj.black ? '900' : fontObj.bold ? 'bold' : 'normal';
+      var italic = fontObj.italic ? 'italic' : 'normal';
+      var typeface = '"' + name + '", ' + fontObj.fallbackName;
+      var browserFontSize = size < MIN_FONT_SIZE ? MIN_FONT_SIZE : size > MAX_FONT_SIZE ? MAX_FONT_SIZE : size;
+      this.current.fontSizeScale = size / browserFontSize;
+      var rule = italic + ' ' + bold + ' ' + browserFontSize + 'px ' + typeface;
+      this.ctx.font = rule;
+    },
+    setTextRenderingMode: function CanvasGraphics_setTextRenderingMode(mode) {
+      this.current.textRenderingMode = mode;
+    },
+    setTextRise: function CanvasGraphics_setTextRise(rise) {
+      this.current.textRise = rise;
+    },
+    moveText: function CanvasGraphics_moveText(x, y) {
+      this.current.x = this.current.lineX += x;
+      this.current.y = this.current.lineY += y;
+    },
+    setLeadingMoveText: function CanvasGraphics_setLeadingMoveText(x, y) {
+      this.setLeading(-y);
+      this.moveText(x, y);
+    },
+    setTextMatrix: function CanvasGraphics_setTextMatrix(a, b, c, d, e, f) {
+      this.current.textMatrix = [a, b, c, d, e, f];
+      this.current.textMatrixScale = Math.sqrt(a * a + b * b);
+      this.current.x = this.current.lineX = 0;
+      this.current.y = this.current.lineY = 0;
+    },
+    nextLine: function CanvasGraphics_nextLine() {
+      this.moveText(0, this.current.leading);
+    },
+    paintChar: function CanvasGraphics_paintChar(character, x, y) {
+      var ctx = this.ctx;
+      var current = this.current;
+      var font = current.font;
+      var textRenderingMode = current.textRenderingMode;
+      var fontSize = current.fontSize / current.fontSizeScale;
+      var fillStrokeMode = textRenderingMode & TextRenderingMode.FILL_STROKE_MASK;
+      var isAddToPathSet = !!(textRenderingMode & TextRenderingMode.ADD_TO_PATH_FLAG);
+      var addToPath;
+      if (font.disableFontFace || isAddToPathSet) {
+        addToPath = font.getPathGenerator(this.commonObjs, character);
+      }
+      if (font.disableFontFace) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.beginPath();
+        addToPath(ctx, fontSize);
+        if (fillStrokeMode === TextRenderingMode.FILL || fillStrokeMode === TextRenderingMode.FILL_STROKE) {
+          ctx.fill();
+        }
+        if (fillStrokeMode === TextRenderingMode.STROKE || fillStrokeMode === TextRenderingMode.FILL_STROKE) {
+          ctx.stroke();
+        }
+        ctx.restore();
+      } else {
+        if (fillStrokeMode === TextRenderingMode.FILL || fillStrokeMode === TextRenderingMode.FILL_STROKE) {
+          ctx.fillText(character, x, y);
+        }
+        if (fillStrokeMode === TextRenderingMode.STROKE || fillStrokeMode === TextRenderingMode.FILL_STROKE) {
+          ctx.strokeText(character, x, y);
+        }
+      }
+      if (isAddToPathSet) {
+        var paths = this.pendingTextPaths || (this.pendingTextPaths = []);
+        paths.push({
+          transform: ctx.mozCurrentTransform,
+          x: x,
+          y: y,
+          fontSize: fontSize,
+          addToPath: addToPath
+        });
+      }
+    },
+    get isFontSubpixelAAEnabled() {
+      var ctx = this.canvasFactory.create(10, 10).context;
+      ctx.scale(1.5, 1);
+      ctx.fillText('I', 0, 10);
+      var data = ctx.getImageData(0, 0, 10, 10).data;
+      var enabled = false;
+      for (var i = 3; i < data.length; i += 4) {
+        if (data[i] > 0 && data[i] < 255) {
+          enabled = true;
+          break;
+        }
+      }
+      return shadow(this, 'isFontSubpixelAAEnabled', enabled);
+    },
+    showText: function CanvasGraphics_showText(glyphs) {
+      var current = this.current;
+      var font = current.font;
+      if (font.isType3Font) {
+        return this.showType3Text(glyphs);
+      }
+      var fontSize = current.fontSize;
+      if (fontSize === 0) {
+        return;
+      }
+      var ctx = this.ctx;
+      var fontSizeScale = current.fontSizeScale;
+      var charSpacing = current.charSpacing;
+      var wordSpacing = current.wordSpacing;
+      var fontDirection = current.fontDirection;
+      var textHScale = current.textHScale * fontDirection;
+      var glyphsLength = glyphs.length;
+      var vertical = font.vertical;
+      var spacingDir = vertical ? 1 : -1;
+      var defaultVMetrics = font.defaultVMetrics;
+      var widthAdvanceScale = fontSize * current.fontMatrix[0];
+      var simpleFillText = current.textRenderingMode === TextRenderingMode.FILL && !font.disableFontFace;
+      ctx.save();
+      ctx.transform.apply(ctx, current.textMatrix);
+      ctx.translate(current.x, current.y + current.textRise);
+      if (current.patternFill) {
+        ctx.fillStyle = current.fillColor.getPattern(ctx, this);
+      }
+      if (fontDirection > 0) {
+        ctx.scale(textHScale, -1);
+      } else {
+        ctx.scale(textHScale, 1);
+      }
+      var lineWidth = current.lineWidth;
+      var scale = current.textMatrixScale;
+      if (scale === 0 || lineWidth === 0) {
+        var fillStrokeMode = current.textRenderingMode & TextRenderingMode.FILL_STROKE_MASK;
+        if (fillStrokeMode === TextRenderingMode.STROKE || fillStrokeMode === TextRenderingMode.FILL_STROKE) {
+          this.cachedGetSinglePixelWidth = null;
+          lineWidth = this.getSinglePixelWidth() * MIN_WIDTH_FACTOR;
+        }
+      } else {
+        lineWidth /= scale;
+      }
+      if (fontSizeScale !== 1.0) {
+        ctx.scale(fontSizeScale, fontSizeScale);
+        lineWidth /= fontSizeScale;
+      }
+      ctx.lineWidth = lineWidth;
+      var x = 0,
+          i;
+      for (i = 0; i < glyphsLength; ++i) {
+        var glyph = glyphs[i];
+        if (isNum(glyph)) {
+          x += spacingDir * glyph * fontSize / 1000;
+          continue;
+        }
+        var restoreNeeded = false;
+        var spacing = (glyph.isSpace ? wordSpacing : 0) + charSpacing;
+        var character = glyph.fontChar;
+        var accent = glyph.accent;
+        var scaledX, scaledY, scaledAccentX, scaledAccentY;
+        var width = glyph.width;
+        if (vertical) {
+          var vmetric, vx, vy;
+          vmetric = glyph.vmetric || defaultVMetrics;
+          vx = glyph.vmetric ? vmetric[1] : width * 0.5;
+          vx = -vx * widthAdvanceScale;
+          vy = vmetric[2] * widthAdvanceScale;
+          width = vmetric ? -vmetric[0] : width;
+          scaledX = vx / fontSizeScale;
+          scaledY = (x + vy) / fontSizeScale;
+        } else {
+          scaledX = x / fontSizeScale;
+          scaledY = 0;
+        }
+        if (font.remeasure && width > 0) {
+          var measuredWidth = ctx.measureText(character).width * 1000 / fontSize * fontSizeScale;
+          if (width < measuredWidth && this.isFontSubpixelAAEnabled) {
+            var characterScaleX = width / measuredWidth;
+            restoreNeeded = true;
+            ctx.save();
+            ctx.scale(characterScaleX, 1);
+            scaledX /= characterScaleX;
+          } else if (width !== measuredWidth) {
+            scaledX += (width - measuredWidth) / 2000 * fontSize / fontSizeScale;
+          }
+        }
+        if (glyph.isInFont || font.missingFile) {
+          if (simpleFillText && !accent) {
+            ctx.fillText(character, scaledX, scaledY);
+          } else {
+            this.paintChar(character, scaledX, scaledY);
+            if (accent) {
+              scaledAccentX = scaledX + accent.offset.x / fontSizeScale;
+              scaledAccentY = scaledY - accent.offset.y / fontSizeScale;
+              this.paintChar(accent.fontChar, scaledAccentX, scaledAccentY);
+            }
+          }
+        }
+        var charWidth = width * widthAdvanceScale + spacing * fontDirection;
+        x += charWidth;
+        if (restoreNeeded) {
+          ctx.restore();
+        }
+      }
+      if (vertical) {
+        current.y -= x * textHScale;
+      } else {
+        current.x += x * textHScale;
+      }
+      ctx.restore();
+    },
+    showType3Text: function CanvasGraphics_showType3Text(glyphs) {
+      var ctx = this.ctx;
+      var current = this.current;
+      var font = current.font;
+      var fontSize = current.fontSize;
+      var fontDirection = current.fontDirection;
+      var spacingDir = font.vertical ? 1 : -1;
+      var charSpacing = current.charSpacing;
+      var wordSpacing = current.wordSpacing;
+      var textHScale = current.textHScale * fontDirection;
+      var fontMatrix = current.fontMatrix || FONT_IDENTITY_MATRIX;
+      var glyphsLength = glyphs.length;
+      var isTextInvisible = current.textRenderingMode === TextRenderingMode.INVISIBLE;
+      var i, glyph, width, spacingLength;
+      if (isTextInvisible || fontSize === 0) {
+        return;
+      }
+      this.cachedGetSinglePixelWidth = null;
+      ctx.save();
+      ctx.transform.apply(ctx, current.textMatrix);
+      ctx.translate(current.x, current.y);
+      ctx.scale(textHScale, fontDirection);
+      for (i = 0; i < glyphsLength; ++i) {
+        glyph = glyphs[i];
+        if (isNum(glyph)) {
+          spacingLength = spacingDir * glyph * fontSize / 1000;
+          this.ctx.translate(spacingLength, 0);
+          current.x += spacingLength * textHScale;
+          continue;
+        }
+        var spacing = (glyph.isSpace ? wordSpacing : 0) + charSpacing;
+        var operatorList = font.charProcOperatorList[glyph.operatorListId];
+        if (!operatorList) {
+          warn('Type3 character \"' + glyph.operatorListId + '\" is not available');
+          continue;
+        }
+        this.processingType3 = glyph;
+        this.save();
+        ctx.scale(fontSize, fontSize);
+        ctx.transform.apply(ctx, fontMatrix);
+        this.executeOperatorList(operatorList);
+        this.restore();
+        var transformed = Util.applyTransform([glyph.width, 0], fontMatrix);
+        width = transformed[0] * fontSize + spacing;
+        ctx.translate(width, 0);
+        current.x += width * textHScale;
+      }
+      ctx.restore();
+      this.processingType3 = null;
+    },
+    setCharWidth: function CanvasGraphics_setCharWidth(xWidth, yWidth) {},
+    setCharWidthAndBounds: function CanvasGraphics_setCharWidthAndBounds(xWidth, yWidth, llx, lly, urx, ury) {
+      this.ctx.rect(llx, lly, urx - llx, ury - lly);
+      this.clip();
+      this.endPath();
+    },
+    getColorN_Pattern: function CanvasGraphics_getColorN_Pattern(IR) {
+      var pattern;
+      if (IR[0] === 'TilingPattern') {
+        var color = IR[1];
+        var baseTransform = this.baseTransform || this.ctx.mozCurrentTransform.slice();
+        var self = this;
+        var canvasGraphicsFactory = {
+          createCanvasGraphics: function (ctx) {
+            return new CanvasGraphics(ctx, self.commonObjs, self.objs, self.canvasFactory);
+          }
+        };
+        pattern = new TilingPattern(IR, color, this.ctx, canvasGraphicsFactory, baseTransform);
+      } else {
+        pattern = getShadingPatternFromIR(IR);
+      }
+      return pattern;
+    },
+    setStrokeColorN: function CanvasGraphics_setStrokeColorN() {
+      this.current.strokeColor = this.getColorN_Pattern(arguments);
+    },
+    setFillColorN: function CanvasGraphics_setFillColorN() {
+      this.current.fillColor = this.getColorN_Pattern(arguments);
+      this.current.patternFill = true;
+    },
+    setStrokeRGBColor: function CanvasGraphics_setStrokeRGBColor(r, g, b) {
+      var color = Util.makeCssRgb(r, g, b);
+      this.ctx.strokeStyle = color;
+      this.current.strokeColor = color;
+    },
+    setFillRGBColor: function CanvasGraphics_setFillRGBColor(r, g, b) {
+      var color = Util.makeCssRgb(r, g, b);
+      this.ctx.fillStyle = color;
+      this.current.fillColor = color;
+      this.current.patternFill = false;
+    },
+    shadingFill: function CanvasGraphics_shadingFill(patternIR) {
+      var ctx = this.ctx;
+      this.save();
+      var pattern = getShadingPatternFromIR(patternIR);
+      ctx.fillStyle = pattern.getPattern(ctx, this, true);
+      var inv = ctx.mozCurrentTransformInverse;
+      if (inv) {
+        var canvas = ctx.canvas;
+        var width = canvas.width;
+        var height = canvas.height;
+        var bl = Util.applyTransform([0, 0], inv);
+        var br = Util.applyTransform([0, height], inv);
+        var ul = Util.applyTransform([width, 0], inv);
+        var ur = Util.applyTransform([width, height], inv);
+        var x0 = Math.min(bl[0], br[0], ul[0], ur[0]);
+        var y0 = Math.min(bl[1], br[1], ul[1], ur[1]);
+        var x1 = Math.max(bl[0], br[0], ul[0], ur[0]);
+        var y1 = Math.max(bl[1], br[1], ul[1], ur[1]);
+        this.ctx.fillRect(x0, y0, x1 - x0, y1 - y0);
+      } else {
+        this.ctx.fillRect(-1e10, -1e10, 2e10, 2e10);
+      }
+      this.restore();
+    },
+    beginInlineImage: function CanvasGraphics_beginInlineImage() {
+      error('Should not call beginInlineImage');
+    },
+    beginImageData: function CanvasGraphics_beginImageData() {
+      error('Should not call beginImageData');
+    },
+    paintFormXObjectBegin: function CanvasGraphics_paintFormXObjectBegin(matrix, bbox) {
+      this.save();
+      this.baseTransformStack.push(this.baseTransform);
+      if (isArray(matrix) && matrix.length === 6) {
+        this.transform.apply(this, matrix);
+      }
+      this.baseTransform = this.ctx.mozCurrentTransform;
+      if (isArray(bbox) && bbox.length === 4) {
+        var width = bbox[2] - bbox[0];
+        var height = bbox[3] - bbox[1];
+        this.ctx.rect(bbox[0], bbox[1], width, height);
+        this.clip();
+        this.endPath();
+      }
+    },
+    paintFormXObjectEnd: function CanvasGraphics_paintFormXObjectEnd() {
+      this.restore();
+      this.baseTransform = this.baseTransformStack.pop();
+    },
+    beginGroup: function CanvasGraphics_beginGroup(group) {
+      this.save();
+      var currentCtx = this.ctx;
+      if (!group.isolated) {
+        info('TODO: Support non-isolated groups.');
+      }
+      if (group.knockout) {
+        warn('Knockout groups not supported.');
+      }
+      var currentTransform = currentCtx.mozCurrentTransform;
+      if (group.matrix) {
+        currentCtx.transform.apply(currentCtx, group.matrix);
+      }
+      assert(group.bbox, 'Bounding box is required.');
+      var bounds = Util.getAxialAlignedBoundingBox(group.bbox, currentCtx.mozCurrentTransform);
+      var canvasBounds = [0, 0, currentCtx.canvas.width, currentCtx.canvas.height];
+      bounds = Util.intersect(bounds, canvasBounds) || [0, 0, 0, 0];
+      var offsetX = Math.floor(bounds[0]);
+      var offsetY = Math.floor(bounds[1]);
+      var drawnWidth = Math.max(Math.ceil(bounds[2]) - offsetX, 1);
+      var drawnHeight = Math.max(Math.ceil(bounds[3]) - offsetY, 1);
+      var scaleX = 1,
+          scaleY = 1;
+      if (drawnWidth > MAX_GROUP_SIZE) {
+        scaleX = drawnWidth / MAX_GROUP_SIZE;
+        drawnWidth = MAX_GROUP_SIZE;
+      }
+      if (drawnHeight > MAX_GROUP_SIZE) {
+        scaleY = drawnHeight / MAX_GROUP_SIZE;
+        drawnHeight = MAX_GROUP_SIZE;
+      }
+      var cacheId = 'groupAt' + this.groupLevel;
+      if (group.smask) {
+        cacheId += '_smask_' + this.smaskCounter++ % 2;
+      }
+      var scratchCanvas = this.cachedCanvases.getCanvas(cacheId, drawnWidth, drawnHeight, true);
+      var groupCtx = scratchCanvas.context;
+      groupCtx.scale(1 / scaleX, 1 / scaleY);
+      groupCtx.translate(-offsetX, -offsetY);
+      groupCtx.transform.apply(groupCtx, currentTransform);
+      if (group.smask) {
+        this.smaskStack.push({
+          canvas: scratchCanvas.canvas,
+          context: groupCtx,
+          offsetX: offsetX,
+          offsetY: offsetY,
+          scaleX: scaleX,
+          scaleY: scaleY,
+          subtype: group.smask.subtype,
+          backdrop: group.smask.backdrop,
+          transferMap: group.smask.transferMap || null,
+          startTransformInverse: null
+        });
+      } else {
+        currentCtx.setTransform(1, 0, 0, 1, 0, 0);
+        currentCtx.translate(offsetX, offsetY);
+        currentCtx.scale(scaleX, scaleY);
+      }
+      copyCtxState(currentCtx, groupCtx);
+      this.ctx = groupCtx;
+      this.setGState([['BM', 'source-over'], ['ca', 1], ['CA', 1]]);
+      this.groupStack.push(currentCtx);
+      this.groupLevel++;
+      this.current.activeSMask = null;
+    },
+    endGroup: function CanvasGraphics_endGroup(group) {
+      this.groupLevel--;
+      var groupCtx = this.ctx;
+      this.ctx = this.groupStack.pop();
+      if (this.ctx.imageSmoothingEnabled !== undefined) {
+        this.ctx.imageSmoothingEnabled = false;
+      } else {
+        this.ctx.mozImageSmoothingEnabled = false;
+      }
+      if (group.smask) {
+        this.tempSMask = this.smaskStack.pop();
+      } else {
+        this.ctx.drawImage(groupCtx.canvas, 0, 0);
+      }
+      this.restore();
+    },
+    beginAnnotations: function CanvasGraphics_beginAnnotations() {
+      this.save();
+      this.current = new CanvasExtraState();
+      if (this.baseTransform) {
+        this.ctx.setTransform.apply(this.ctx, this.baseTransform);
+      }
+    },
+    endAnnotations: function CanvasGraphics_endAnnotations() {
+      this.restore();
+    },
+    beginAnnotation: function CanvasGraphics_beginAnnotation(rect, transform, matrix) {
+      this.save();
+      if (isArray(rect) && rect.length === 4) {
+        var width = rect[2] - rect[0];
+        var height = rect[3] - rect[1];
+        this.ctx.rect(rect[0], rect[1], width, height);
+        this.clip();
+        this.endPath();
+      }
+      this.transform.apply(this, transform);
+      this.transform.apply(this, matrix);
+    },
+    endAnnotation: function CanvasGraphics_endAnnotation() {
+      this.restore();
+    },
+    paintJpegXObject: function CanvasGraphics_paintJpegXObject(objId, w, h) {
+      var domImage = this.objs.get(objId);
+      if (!domImage) {
+        warn('Dependent image isn\'t ready yet');
+        return;
+      }
+      this.save();
+      var ctx = this.ctx;
+      ctx.scale(1 / w, -1 / h);
+      ctx.drawImage(domImage, 0, 0, domImage.width, domImage.height, 0, -h, w, h);
+      if (this.imageLayer) {
+        var currentTransform = ctx.mozCurrentTransformInverse;
+        var position = this.getCanvasPosition(0, 0);
+        this.imageLayer.appendImage({
+          objId: objId,
+          left: position[0],
+          top: position[1],
+          width: w / currentTransform[0],
+          height: h / currentTransform[3]
+        });
+      }
+      this.restore();
+    },
+    paintImageMaskXObject: function CanvasGraphics_paintImageMaskXObject(img) {
+      var ctx = this.ctx;
+      var width = img.width,
+          height = img.height;
+      var fillColor = this.current.fillColor;
+      var isPatternFill = this.current.patternFill;
+      var glyph = this.processingType3;
+      if (COMPILE_TYPE3_GLYPHS && glyph && glyph.compiled === undefined) {
+        if (width <= MAX_SIZE_TO_COMPILE && height <= MAX_SIZE_TO_COMPILE) {
+          glyph.compiled = compileType3Glyph({
+            data: img.data,
+            width: width,
+            height: height
+          });
+        } else {
+          glyph.compiled = null;
+        }
+      }
+      if (glyph && glyph.compiled) {
+        glyph.compiled(ctx);
+        return;
+      }
+      var maskCanvas = this.cachedCanvases.getCanvas('maskCanvas', width, height);
+      var maskCtx = maskCanvas.context;
+      maskCtx.save();
+      putBinaryImageMask(maskCtx, img);
+      maskCtx.globalCompositeOperation = 'source-in';
+      maskCtx.fillStyle = isPatternFill ? fillColor.getPattern(maskCtx, this) : fillColor;
+      maskCtx.fillRect(0, 0, width, height);
+      maskCtx.restore();
+      this.paintInlineImageXObject(maskCanvas.canvas);
+    },
+    paintImageMaskXObjectRepeat: function CanvasGraphics_paintImageMaskXObjectRepeat(imgData, scaleX, scaleY, positions) {
+      var width = imgData.width;
+      var height = imgData.height;
+      var fillColor = this.current.fillColor;
+      var isPatternFill = this.current.patternFill;
+      var maskCanvas = this.cachedCanvases.getCanvas('maskCanvas', width, height);
+      var maskCtx = maskCanvas.context;
+      maskCtx.save();
+      putBinaryImageMask(maskCtx, imgData);
+      maskCtx.globalCompositeOperation = 'source-in';
+      maskCtx.fillStyle = isPatternFill ? fillColor.getPattern(maskCtx, this) : fillColor;
+      maskCtx.fillRect(0, 0, width, height);
+      maskCtx.restore();
+      var ctx = this.ctx;
+      for (var i = 0, ii = positions.length; i < ii; i += 2) {
+        ctx.save();
+        ctx.transform(scaleX, 0, 0, scaleY, positions[i], positions[i + 1]);
+        ctx.scale(1, -1);
+        ctx.drawImage(maskCanvas.canvas, 0, 0, width, height, 0, -1, 1, 1);
+        ctx.restore();
+      }
+    },
+    paintImageMaskXObjectGroup: function CanvasGraphics_paintImageMaskXObjectGroup(images) {
+      var ctx = this.ctx;
+      var fillColor = this.current.fillColor;
+      var isPatternFill = this.current.patternFill;
+      for (var i = 0, ii = images.length; i < ii; i++) {
+        var image = images[i];
+        var width = image.width,
+            height = image.height;
+        var maskCanvas = this.cachedCanvases.getCanvas('maskCanvas', width, height);
+        var maskCtx = maskCanvas.context;
+        maskCtx.save();
+        putBinaryImageMask(maskCtx, image);
+        maskCtx.globalCompositeOperation = 'source-in';
+        maskCtx.fillStyle = isPatternFill ? fillColor.getPattern(maskCtx, this) : fillColor;
+        maskCtx.fillRect(0, 0, width, height);
+        maskCtx.restore();
+        ctx.save();
+        ctx.transform.apply(ctx, image.transform);
+        ctx.scale(1, -1);
+        ctx.drawImage(maskCanvas.canvas, 0, 0, width, height, 0, -1, 1, 1);
+        ctx.restore();
+      }
+    },
+    paintImageXObject: function CanvasGraphics_paintImageXObject(objId) {
+      var imgData = this.objs.get(objId);
+      if (!imgData) {
+        warn('Dependent image isn\'t ready yet');
+        return;
+      }
+      this.paintInlineImageXObject(imgData);
+    },
+    paintImageXObjectRepeat: function CanvasGraphics_paintImageXObjectRepeat(objId, scaleX, scaleY, positions) {
+      var imgData = this.objs.get(objId);
+      if (!imgData) {
+        warn('Dependent image isn\'t ready yet');
+        return;
+      }
+      var width = imgData.width;
+      var height = imgData.height;
+      var map = [];
+      for (var i = 0, ii = positions.length; i < ii; i += 2) {
+        map.push({
+          transform: [scaleX, 0, 0, scaleY, positions[i], positions[i + 1]],
+          x: 0,
+          y: 0,
+          w: width,
+          h: height
+        });
+      }
+      this.paintInlineImageXObjectGroup(imgData, map);
+    },
+    paintInlineImageXObject: function CanvasGraphics_paintInlineImageXObject(imgData) {
+      var width = imgData.width;
+      var height = imgData.height;
+      var ctx = this.ctx;
+      this.save();
+      ctx.scale(1 / width, -1 / height);
+      var currentTransform = ctx.mozCurrentTransformInverse;
+      var a = currentTransform[0],
+          b = currentTransform[1];
+      var widthScale = Math.max(Math.sqrt(a * a + b * b), 1);
+      var c = currentTransform[2],
+          d = currentTransform[3];
+      var heightScale = Math.max(Math.sqrt(c * c + d * d), 1);
+      var imgToPaint, tmpCanvas;
+      if (imgData instanceof HTMLElement || !imgData.data) {
+        imgToPaint = imgData;
+      } else {
+        tmpCanvas = this.cachedCanvases.getCanvas('inlineImage', width, height);
+        var tmpCtx = tmpCanvas.context;
+        putBinaryImageData(tmpCtx, imgData);
+        imgToPaint = tmpCanvas.canvas;
+      }
+      var paintWidth = width,
+          paintHeight = height;
+      var tmpCanvasId = 'prescale1';
+      while (widthScale > 2 && paintWidth > 1 || heightScale > 2 && paintHeight > 1) {
+        var newWidth = paintWidth,
+            newHeight = paintHeight;
+        if (widthScale > 2 && paintWidth > 1) {
+          newWidth = Math.ceil(paintWidth / 2);
+          widthScale /= paintWidth / newWidth;
+        }
+        if (heightScale > 2 && paintHeight > 1) {
+          newHeight = Math.ceil(paintHeight / 2);
+          heightScale /= paintHeight / newHeight;
+        }
+        tmpCanvas = this.cachedCanvases.getCanvas(tmpCanvasId, newWidth, newHeight);
+        tmpCtx = tmpCanvas.context;
+        tmpCtx.clearRect(0, 0, newWidth, newHeight);
+        tmpCtx.drawImage(imgToPaint, 0, 0, paintWidth, paintHeight, 0, 0, newWidth, newHeight);
+        imgToPaint = tmpCanvas.canvas;
+        paintWidth = newWidth;
+        paintHeight = newHeight;
+        tmpCanvasId = tmpCanvasId === 'prescale1' ? 'prescale2' : 'prescale1';
+      }
+      ctx.drawImage(imgToPaint, 0, 0, paintWidth, paintHeight, 0, -height, width, height);
+      if (this.imageLayer) {
+        var position = this.getCanvasPosition(0, -height);
+        this.imageLayer.appendImage({
+          imgData: imgData,
+          left: position[0],
+          top: position[1],
+          width: width / currentTransform[0],
+          height: height / currentTransform[3]
+        });
+      }
+      this.restore();
+    },
+    paintInlineImageXObjectGroup: function CanvasGraphics_paintInlineImageXObjectGroup(imgData, map) {
+      var ctx = this.ctx;
+      var w = imgData.width;
+      var h = imgData.height;
+      var tmpCanvas = this.cachedCanvases.getCanvas('inlineImage', w, h);
+      var tmpCtx = tmpCanvas.context;
+      putBinaryImageData(tmpCtx, imgData);
+      for (var i = 0, ii = map.length; i < ii; i++) {
+        var entry = map[i];
+        ctx.save();
+        ctx.transform.apply(ctx, entry.transform);
+        ctx.scale(1, -1);
+        ctx.drawImage(tmpCanvas.canvas, entry.x, entry.y, entry.w, entry.h, 0, -1, 1, 1);
+        if (this.imageLayer) {
+          var position = this.getCanvasPosition(entry.x, entry.y);
+          this.imageLayer.appendImage({
+            imgData: imgData,
+            left: position[0],
+            top: position[1],
+            width: w,
+            height: h
+          });
+        }
+        ctx.restore();
+      }
+    },
+    paintSolidColorImageMask: function CanvasGraphics_paintSolidColorImageMask() {
+      this.ctx.fillRect(0, 0, 1, 1);
+    },
+    paintXObject: function CanvasGraphics_paintXObject() {
+      warn('Unsupported \'paintXObject\' command.');
+    },
+    markPoint: function CanvasGraphics_markPoint(tag) {},
+    markPointProps: function CanvasGraphics_markPointProps(tag, properties) {},
+    beginMarkedContent: function CanvasGraphics_beginMarkedContent(tag) {},
+    beginMarkedContentProps: function CanvasGraphics_beginMarkedContentProps(tag, properties) {},
+    endMarkedContent: function CanvasGraphics_endMarkedContent() {},
+    beginCompat: function CanvasGraphics_beginCompat() {},
+    endCompat: function CanvasGraphics_endCompat() {},
+    consumePath: function CanvasGraphics_consumePath() {
+      var ctx = this.ctx;
+      if (this.pendingClip) {
+        if (this.pendingClip === EO_CLIP) {
+          ctx.clip('evenodd');
+        } else {
+          ctx.clip();
+        }
+        this.pendingClip = null;
+      }
+      ctx.beginPath();
+    },
+    getSinglePixelWidth: function CanvasGraphics_getSinglePixelWidth(scale) {
+      if (this.cachedGetSinglePixelWidth === null) {
+        this.ctx.save();
+        var inverse = this.ctx.mozCurrentTransformInverse;
+        this.ctx.restore();
+        this.cachedGetSinglePixelWidth = Math.sqrt(Math.max(inverse[0] * inverse[0] + inverse[1] * inverse[1], inverse[2] * inverse[2] + inverse[3] * inverse[3]));
+      }
+      return this.cachedGetSinglePixelWidth;
+    },
+    getCanvasPosition: function CanvasGraphics_getCanvasPosition(x, y) {
+      var transform = this.ctx.mozCurrentTransform;
+      return [transform[0] * x + transform[2] * y + transform[4], transform[1] * x + transform[3] * y + transform[5]];
+    }
+  };
+  for (var op in OPS) {
+    CanvasGraphics.prototype[OPS[op]] = CanvasGraphics.prototype[op];
+  }
+  return CanvasGraphics;
+}();
+exports.CanvasGraphics = CanvasGraphics;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var sharedUtil = __w_pdfjs_require__(0);
+var assert = sharedUtil.assert;
+var bytesToString = sharedUtil.bytesToString;
+var string32 = sharedUtil.string32;
+var shadow = sharedUtil.shadow;
+var warn = sharedUtil.warn;
+function FontLoader(docId) {
+  this.docId = docId;
+  this.styleElement = null;
+  this.nativeFontFaces = [];
+  this.loadTestFontId = 0;
+  this.loadingContext = {
+    requests: [],
+    nextRequestId: 0
+  };
+}
+FontLoader.prototype = {
+  insertRule: function fontLoaderInsertRule(rule) {
+    var styleElement = this.styleElement;
+    if (!styleElement) {
+      styleElement = this.styleElement = document.createElement('style');
+      styleElement.id = 'PDFJS_FONT_STYLE_TAG_' + this.docId;
+      document.documentElement.getElementsByTagName('head')[0].appendChild(styleElement);
+    }
+    var styleSheet = styleElement.sheet;
+    styleSheet.insertRule(rule, styleSheet.cssRules.length);
+  },
+  clear: function fontLoaderClear() {
+    if (this.styleElement) {
+      this.styleElement.remove();
+      this.styleElement = null;
+    }
+    this.nativeFontFaces.forEach(function (nativeFontFace) {
+      document.fonts.delete(nativeFontFace);
+    });
+    this.nativeFontFaces.length = 0;
+  }
+};
+var getLoadTestFont = function () {
+  return atob('T1RUTwALAIAAAwAwQ0ZGIDHtZg4AAAOYAAAAgUZGVE1lkzZwAAAEHAAAABxHREVGABQAFQ' + 'AABDgAAAAeT1MvMlYNYwkAAAEgAAAAYGNtYXABDQLUAAACNAAAAUJoZWFk/xVFDQAAALwA' + 'AAA2aGhlYQdkA+oAAAD0AAAAJGhtdHgD6AAAAAAEWAAAAAZtYXhwAAJQAAAAARgAAAAGbm' + 'FtZVjmdH4AAAGAAAAAsXBvc3T/hgAzAAADeAAAACAAAQAAAAEAALZRFsRfDzz1AAsD6AAA' + 'AADOBOTLAAAAAM4KHDwAAAAAA+gDIQAAAAgAAgAAAAAAAAABAAADIQAAAFoD6AAAAAAD6A' + 'ABAAAAAAAAAAAAAAAAAAAAAQAAUAAAAgAAAAQD6AH0AAUAAAKKArwAAACMAooCvAAAAeAA' + 'MQECAAACAAYJAAAAAAAAAAAAAQAAAAAAAAAAAAAAAFBmRWQAwAAuAC4DIP84AFoDIQAAAA' + 'AAAQAAAAAAAAAAACAAIAABAAAADgCuAAEAAAAAAAAAAQAAAAEAAAAAAAEAAQAAAAEAAAAA' + 'AAIAAQAAAAEAAAAAAAMAAQAAAAEAAAAAAAQAAQAAAAEAAAAAAAUAAQAAAAEAAAAAAAYAAQ' + 'AAAAMAAQQJAAAAAgABAAMAAQQJAAEAAgABAAMAAQQJAAIAAgABAAMAAQQJAAMAAgABAAMA' + 'AQQJAAQAAgABAAMAAQQJAAUAAgABAAMAAQQJAAYAAgABWABYAAAAAAAAAwAAAAMAAAAcAA' + 'EAAAAAADwAAwABAAAAHAAEACAAAAAEAAQAAQAAAC7//wAAAC7////TAAEAAAAAAAABBgAA' + 'AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAA' + 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' + 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' + 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' + 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAA' + 'AAAAD/gwAyAAAAAQAAAAAAAAAAAAAAAAAAAAABAAQEAAEBAQJYAAEBASH4DwD4GwHEAvgc' + 'A/gXBIwMAYuL+nz5tQXkD5j3CBLnEQACAQEBIVhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWF' + 'hYWFhYWFhYAAABAQAADwACAQEEE/t3Dov6fAH6fAT+fPp8+nwHDosMCvm1Cvm1DAz6fBQA' + 'AAAAAAABAAAAAMmJbzEAAAAAzgTjFQAAAADOBOQpAAEAAAAAAAAADAAUAAQAAAABAAAAAg' + 'ABAAAAAAAAAAAD6AAAAAAAAA==');
+};
+Object.defineProperty(FontLoader.prototype, 'loadTestFont', {
+  get: function () {
+    return shadow(this, 'loadTestFont', getLoadTestFont());
+  },
+  configurable: true
+});
+FontLoader.prototype.addNativeFontFace = function fontLoader_addNativeFontFace(nativeFontFace) {
+  this.nativeFontFaces.push(nativeFontFace);
+  document.fonts.add(nativeFontFace);
+};
+FontLoader.prototype.bind = function fontLoaderBind(fonts, callback) {
+  var rules = [];
+  var fontsToLoad = [];
+  var fontLoadPromises = [];
+  var getNativeFontPromise = function (nativeFontFace) {
+    return nativeFontFace.loaded.catch(function (e) {
+      warn('Failed to load font "' + nativeFontFace.family + '": ' + e);
+    });
+  };
+  var isFontLoadingAPISupported = FontLoader.isFontLoadingAPISupported && !FontLoader.isSyncFontLoadingSupported;
+  for (var i = 0, ii = fonts.length; i < ii; i++) {
+    var font = fonts[i];
+    if (font.attached || font.loading === false) {
+      continue;
+    }
+    font.attached = true;
+    if (isFontLoadingAPISupported) {
+      var nativeFontFace = font.createNativeFontFace();
+      if (nativeFontFace) {
+        this.addNativeFontFace(nativeFontFace);
+        fontLoadPromises.push(getNativeFontPromise(nativeFontFace));
+      }
+    } else {
+      var rule = font.createFontFaceRule();
+      if (rule) {
+        this.insertRule(rule);
+        rules.push(rule);
+        fontsToLoad.push(font);
+      }
+    }
+  }
+  var request = this.queueLoadingCallback(callback);
+  if (isFontLoadingAPISupported) {
+    Promise.all(fontLoadPromises).then(function () {
+      request.complete();
+    });
+  } else if (rules.length > 0 && !FontLoader.isSyncFontLoadingSupported) {
+    this.prepareFontLoadEvent(rules, fontsToLoad, request);
+  } else {
+    request.complete();
+  }
+};
+FontLoader.prototype.queueLoadingCallback = function FontLoader_queueLoadingCallback(callback) {
+  function LoadLoader_completeRequest() {
+    assert(!request.end, 'completeRequest() cannot be called twice');
+    request.end = Date.now();
+    while (context.requests.length > 0 && context.requests[0].end) {
+      var otherRequest = context.requests.shift();
+      setTimeout(otherRequest.callback, 0);
+    }
+  }
+  var context = this.loadingContext;
+  var requestId = 'pdfjs-font-loading-' + context.nextRequestId++;
+  var request = {
+    id: requestId,
+    complete: LoadLoader_completeRequest,
+    callback: callback,
+    started: Date.now()
+  };
+  context.requests.push(request);
+  return request;
+};
+FontLoader.prototype.prepareFontLoadEvent = function fontLoaderPrepareFontLoadEvent(rules, fonts, request) {
+  function int32(data, offset) {
+    return data.charCodeAt(offset) << 24 | data.charCodeAt(offset + 1) << 16 | data.charCodeAt(offset + 2) << 8 | data.charCodeAt(offset + 3) & 0xff;
+  }
+  function spliceString(s, offset, remove, insert) {
+    var chunk1 = s.substr(0, offset);
+    var chunk2 = s.substr(offset + remove);
+    return chunk1 + insert + chunk2;
+  }
+  var i, ii;
+  var canvas = document.createElement('canvas');
+  canvas.width = 1;
+  canvas.height = 1;
+  var ctx = canvas.getContext('2d');
+  var called = 0;
+  function isFontReady(name, callback) {
+    called++;
+    if (called > 30) {
+      warn('Load test font never loaded.');
+      callback();
+      return;
+    }
+    ctx.font = '30px ' + name;
+    ctx.fillText('.', 0, 20);
+    var imageData = ctx.getImageData(0, 0, 1, 1);
+    if (imageData.data[3] > 0) {
+      callback();
+      return;
+    }
+    setTimeout(isFontReady.bind(null, name, callback));
+  }
+  var loadTestFontId = 'lt' + Date.now() + this.loadTestFontId++;
+  var data = this.loadTestFont;
+  var COMMENT_OFFSET = 976;
+  data = spliceString(data, COMMENT_OFFSET, loadTestFontId.length, loadTestFontId);
+  var CFF_CHECKSUM_OFFSET = 16;
+  var XXXX_VALUE = 0x58585858;
+  var checksum = int32(data, CFF_CHECKSUM_OFFSET);
+  for (i = 0, ii = loadTestFontId.length - 3; i < ii; i += 4) {
+    checksum = checksum - XXXX_VALUE + int32(loadTestFontId, i) | 0;
+  }
+  if (i < loadTestFontId.length) {
+    checksum = checksum - XXXX_VALUE + int32(loadTestFontId + 'XXX', i) | 0;
+  }
+  data = spliceString(data, CFF_CHECKSUM_OFFSET, 4, string32(checksum));
+  var url = 'url(data:font/opentype;base64,' + btoa(data) + ');';
+  var rule = '@font-face { font-family:"' + loadTestFontId + '";src:' + url + '}';
+  this.insertRule(rule);
+  var names = [];
+  for (i = 0, ii = fonts.length; i < ii; i++) {
+    names.push(fonts[i].loadedName);
+  }
+  names.push(loadTestFontId);
+  var div = document.createElement('div');
+  div.setAttribute('style', 'visibility: hidden;' + 'width: 10px; height: 10px;' + 'position: absolute; top: 0px; left: 0px;');
+  for (i = 0, ii = names.length; i < ii; ++i) {
+    var span = document.createElement('span');
+    span.textContent = 'Hi';
+    span.style.fontFamily = names[i];
+    div.appendChild(span);
+  }
+  document.body.appendChild(div);
+  isFontReady(loadTestFontId, function () {
+    document.body.removeChild(div);
+    request.complete();
+  });
+};
+FontLoader.isFontLoadingAPISupported = typeof document !== 'undefined' && !!document.fonts;
+var isSyncFontLoadingSupported = function isSyncFontLoadingSupported() {
+  if (typeof navigator === 'undefined') {
+    return true;
+  }
+  var supported = false;
+  var m = /Mozilla\/5.0.*?rv:(\d+).*? Gecko/.exec(navigator.userAgent);
+  if (m && m[1] >= 14) {
+    supported = true;
+  }
+  return supported;
+};
+Object.defineProperty(FontLoader, 'isSyncFontLoadingSupported', {
+  get: function () {
+    return shadow(FontLoader, 'isSyncFontLoadingSupported', isSyncFontLoadingSupported());
+  },
+  enumerable: true,
+  configurable: true
+});
+var IsEvalSupportedCached = {
+  get value() {
+    return shadow(this, 'value', sharedUtil.isEvalSupported());
+  }
+};
+var FontFaceObject = function FontFaceObjectClosure() {
+  function FontFaceObject(translatedData, options) {
+    this.compiledGlyphs = Object.create(null);
+    for (var i in translatedData) {
+      this[i] = translatedData[i];
+    }
+    this.options = options;
+  }
+  FontFaceObject.prototype = {
+    createNativeFontFace: function FontFaceObject_createNativeFontFace() {
+      if (!this.data) {
+        return null;
+      }
+      if (this.options.disableFontFace) {
+        this.disableFontFace = true;
+        return null;
+      }
+      var nativeFontFace = new FontFace(this.loadedName, this.data, {});
+      if (this.options.fontRegistry) {
+        this.options.fontRegistry.registerFont(this);
+      }
+      return nativeFontFace;
+    },
+    createFontFaceRule: function FontFaceObject_createFontFaceRule() {
+      if (!this.data) {
+        return null;
+      }
+      if (this.options.disableFontFace) {
+        this.disableFontFace = true;
+        return null;
+      }
+      var data = bytesToString(new Uint8Array(this.data));
+      var fontName = this.loadedName;
+      var url = 'url(data:' + this.mimetype + ';base64,' + btoa(data) + ');';
+      var rule = '@font-face { font-family:"' + fontName + '";src:' + url + '}';
+      if (this.options.fontRegistry) {
+        this.options.fontRegistry.registerFont(this, url);
+      }
+      return rule;
+    },
+    getPathGenerator: function FontFaceObject_getPathGenerator(objs, character) {
+      if (!(character in this.compiledGlyphs)) {
+        var cmds = objs.get(this.loadedName + '_path_' + character);
+        var current, i, len;
+        if (this.options.isEvalSupported && IsEvalSupportedCached.value) {
+          var args,
+              js = '';
+          for (i = 0, len = cmds.length; i < len; i++) {
+            current = cmds[i];
+            if (current.args !== undefined) {
+              args = current.args.join(',');
+            } else {
+              args = '';
+            }
+            js += 'c.' + current.cmd + '(' + args + ');\n';
+          }
+          this.compiledGlyphs[character] = new Function('c', 'size', js);
+        } else {
+          this.compiledGlyphs[character] = function (c, size) {
+            for (i = 0, len = cmds.length; i < len; i++) {
+              current = cmds[i];
+              if (current.cmd === 'scale') {
+                current.args = [size, -size];
+              }
+              c[current.cmd].apply(c, current.args);
+            }
+          };
+        }
+      }
+      return this.compiledGlyphs[character];
+    }
+  };
+  return FontFaceObject;
+}();
+exports.FontFaceObject = FontFaceObject;
+exports.FontLoader = FontLoader;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var sharedUtil = __w_pdfjs_require__(0);
+var displayWebGL = __w_pdfjs_require__(8);
+var Util = sharedUtil.Util;
+var info = sharedUtil.info;
+var isArray = sharedUtil.isArray;
+var error = sharedUtil.error;
+var WebGLUtils = displayWebGL.WebGLUtils;
+var ShadingIRs = {};
+ShadingIRs.RadialAxial = {
+  fromIR: function RadialAxial_fromIR(raw) {
+    var type = raw[1];
+    var colorStops = raw[2];
+    var p0 = raw[3];
+    var p1 = raw[4];
+    var r0 = raw[5];
+    var r1 = raw[6];
+    return {
+      type: 'Pattern',
+      getPattern: function RadialAxial_getPattern(ctx) {
+        var grad;
+        if (type === 'axial') {
+          grad = ctx.createLinearGradient(p0[0], p0[1], p1[0], p1[1]);
+        } else if (type === 'radial') {
+          grad = ctx.createRadialGradient(p0[0], p0[1], r0, p1[0], p1[1], r1);
+        }
+        for (var i = 0, ii = colorStops.length; i < ii; ++i) {
+          var c = colorStops[i];
+          grad.addColorStop(c[0], c[1]);
+        }
+        return grad;
+      }
+    };
+  }
+};
+var createMeshCanvas = function createMeshCanvasClosure() {
+  function drawTriangle(data, context, p1, p2, p3, c1, c2, c3) {
+    var coords = context.coords,
+        colors = context.colors;
+    var bytes = data.data,
+        rowSize = data.width * 4;
+    var tmp;
+    if (coords[p1 + 1] > coords[p2 + 1]) {
+      tmp = p1;
+      p1 = p2;
+      p2 = tmp;
+      tmp = c1;
+      c1 = c2;
+      c2 = tmp;
+    }
+    if (coords[p2 + 1] > coords[p3 + 1]) {
+      tmp = p2;
+      p2 = p3;
+      p3 = tmp;
+      tmp = c2;
+      c2 = c3;
+      c3 = tmp;
+    }
+    if (coords[p1 + 1] > coords[p2 + 1]) {
+      tmp = p1;
+      p1 = p2;
+      p2 = tmp;
+      tmp = c1;
+      c1 = c2;
+      c2 = tmp;
+    }
+    var x1 = (coords[p1] + context.offsetX) * context.scaleX;
+    var y1 = (coords[p1 + 1] + context.offsetY) * context.scaleY;
+    var x2 = (coords[p2] + context.offsetX) * context.scaleX;
+    var y2 = (coords[p2 + 1] + context.offsetY) * context.scaleY;
+    var x3 = (coords[p3] + context.offsetX) * context.scaleX;
+    var y3 = (coords[p3 + 1] + context.offsetY) * context.scaleY;
+    if (y1 >= y3) {
+      return;
+    }
+    var c1r = colors[c1],
+        c1g = colors[c1 + 1],
+        c1b = colors[c1 + 2];
+    var c2r = colors[c2],
+        c2g = colors[c2 + 1],
+        c2b = colors[c2 + 2];
+    var c3r = colors[c3],
+        c3g = colors[c3 + 1],
+        c3b = colors[c3 + 2];
+    var minY = Math.round(y1),
+        maxY = Math.round(y3);
+    var xa, car, cag, cab;
+    var xb, cbr, cbg, cbb;
+    var k;
+    for (var y = minY; y <= maxY; y++) {
+      if (y < y2) {
+        k = y < y1 ? 0 : y1 === y2 ? 1 : (y1 - y) / (y1 - y2);
+        xa = x1 - (x1 - x2) * k;
+        car = c1r - (c1r - c2r) * k;
+        cag = c1g - (c1g - c2g) * k;
+        cab = c1b - (c1b - c2b) * k;
+      } else {
+        k = y > y3 ? 1 : y2 === y3 ? 0 : (y2 - y) / (y2 - y3);
+        xa = x2 - (x2 - x3) * k;
+        car = c2r - (c2r - c3r) * k;
+        cag = c2g - (c2g - c3g) * k;
+        cab = c2b - (c2b - c3b) * k;
+      }
+      k = y < y1 ? 0 : y > y3 ? 1 : (y1 - y) / (y1 - y3);
+      xb = x1 - (x1 - x3) * k;
+      cbr = c1r - (c1r - c3r) * k;
+      cbg = c1g - (c1g - c3g) * k;
+      cbb = c1b - (c1b - c3b) * k;
+      var x1_ = Math.round(Math.min(xa, xb));
+      var x2_ = Math.round(Math.max(xa, xb));
+      var j = rowSize * y + x1_ * 4;
+      for (var x = x1_; x <= x2_; x++) {
+        k = (xa - x) / (xa - xb);
+        k = k < 0 ? 0 : k > 1 ? 1 : k;
+        bytes[j++] = car - (car - cbr) * k | 0;
+        bytes[j++] = cag - (cag - cbg) * k | 0;
+        bytes[j++] = cab - (cab - cbb) * k | 0;
+        bytes[j++] = 255;
+      }
+    }
+  }
+  function drawFigure(data, figure, context) {
+    var ps = figure.coords;
+    var cs = figure.colors;
+    var i, ii;
+    switch (figure.type) {
+      case 'lattice':
+        var verticesPerRow = figure.verticesPerRow;
+        var rows = Math.floor(ps.length / verticesPerRow) - 1;
+        var cols = verticesPerRow - 1;
+        for (i = 0; i < rows; i++) {
+          var q = i * verticesPerRow;
+          for (var j = 0; j < cols; j++, q++) {
+            drawTriangle(data, context, ps[q], ps[q + 1], ps[q + verticesPerRow], cs[q], cs[q + 1], cs[q + verticesPerRow]);
+            drawTriangle(data, context, ps[q + verticesPerRow + 1], ps[q + 1], ps[q + verticesPerRow], cs[q + verticesPerRow + 1], cs[q + 1], cs[q + verticesPerRow]);
+          }
+        }
+        break;
+      case 'triangles':
+        for (i = 0, ii = ps.length; i < ii; i += 3) {
+          drawTriangle(data, context, ps[i], ps[i + 1], ps[i + 2], cs[i], cs[i + 1], cs[i + 2]);
+        }
+        break;
+      default:
+        error('illigal figure');
+        break;
+    }
+  }
+  function createMeshCanvas(bounds, combinesScale, coords, colors, figures, backgroundColor, cachedCanvases) {
+    var EXPECTED_SCALE = 1.1;
+    var MAX_PATTERN_SIZE = 3000;
+    var BORDER_SIZE = 2;
+    var offsetX = Math.floor(bounds[0]);
+    var offsetY = Math.floor(bounds[1]);
+    var boundsWidth = Math.ceil(bounds[2]) - offsetX;
+    var boundsHeight = Math.ceil(bounds[3]) - offsetY;
+    var width = Math.min(Math.ceil(Math.abs(boundsWidth * combinesScale[0] * EXPECTED_SCALE)), MAX_PATTERN_SIZE);
+    var height = Math.min(Math.ceil(Math.abs(boundsHeight * combinesScale[1] * EXPECTED_SCALE)), MAX_PATTERN_SIZE);
+    var scaleX = boundsWidth / width;
+    var scaleY = boundsHeight / height;
+    var context = {
+      coords: coords,
+      colors: colors,
+      offsetX: -offsetX,
+      offsetY: -offsetY,
+      scaleX: 1 / scaleX,
+      scaleY: 1 / scaleY
+    };
+    var paddedWidth = width + BORDER_SIZE * 2;
+    var paddedHeight = height + BORDER_SIZE * 2;
+    var canvas, tmpCanvas, i, ii;
+    if (WebGLUtils.isEnabled) {
+      canvas = WebGLUtils.drawFigures(width, height, backgroundColor, figures, context);
+      tmpCanvas = cachedCanvases.getCanvas('mesh', paddedWidth, paddedHeight, false);
+      tmpCanvas.context.drawImage(canvas, BORDER_SIZE, BORDER_SIZE);
+      canvas = tmpCanvas.canvas;
+    } else {
+      tmpCanvas = cachedCanvases.getCanvas('mesh', paddedWidth, paddedHeight, false);
+      var tmpCtx = tmpCanvas.context;
+      var data = tmpCtx.createImageData(width, height);
+      if (backgroundColor) {
+        var bytes = data.data;
+        for (i = 0, ii = bytes.length; i < ii; i += 4) {
+          bytes[i] = backgroundColor[0];
+          bytes[i + 1] = backgroundColor[1];
+          bytes[i + 2] = backgroundColor[2];
+          bytes[i + 3] = 255;
+        }
+      }
+      for (i = 0; i < figures.length; i++) {
+        drawFigure(data, figures[i], context);
+      }
+      tmpCtx.putImageData(data, BORDER_SIZE, BORDER_SIZE);
+      canvas = tmpCanvas.canvas;
+    }
+    return {
+      canvas: canvas,
+      offsetX: offsetX - BORDER_SIZE * scaleX,
+      offsetY: offsetY - BORDER_SIZE * scaleY,
+      scaleX: scaleX,
+      scaleY: scaleY
+    };
+  }
+  return createMeshCanvas;
+}();
+ShadingIRs.Mesh = {
+  fromIR: function Mesh_fromIR(raw) {
+    var coords = raw[2];
+    var colors = raw[3];
+    var figures = raw[4];
+    var bounds = raw[5];
+    var matrix = raw[6];
+    var background = raw[8];
+    return {
+      type: 'Pattern',
+      getPattern: function Mesh_getPattern(ctx, owner, shadingFill) {
+        var scale;
+        if (shadingFill) {
+          scale = Util.singularValueDecompose2dScale(ctx.mozCurrentTransform);
+        } else {
+          scale = Util.singularValueDecompose2dScale(owner.baseTransform);
+          if (matrix) {
+            var matrixScale = Util.singularValueDecompose2dScale(matrix);
+            scale = [scale[0] * matrixScale[0], scale[1] * matrixScale[1]];
+          }
+        }
+        var temporaryPatternCanvas = createMeshCanvas(bounds, scale, coords, colors, figures, shadingFill ? null : background, owner.cachedCanvases);
+        if (!shadingFill) {
+          ctx.setTransform.apply(ctx, owner.baseTransform);
+          if (matrix) {
+            ctx.transform.apply(ctx, matrix);
+          }
+        }
+        ctx.translate(temporaryPatternCanvas.offsetX, temporaryPatternCanvas.offsetY);
+        ctx.scale(temporaryPatternCanvas.scaleX, temporaryPatternCanvas.scaleY);
+        return ctx.createPattern(temporaryPatternCanvas.canvas, 'no-repeat');
+      }
+    };
+  }
+};
+ShadingIRs.Dummy = {
+  fromIR: function Dummy_fromIR() {
+    return {
+      type: 'Pattern',
+      getPattern: function Dummy_fromIR_getPattern() {
+        return 'hotpink';
+      }
+    };
+  }
+};
+function getShadingPatternFromIR(raw) {
+  var shadingIR = ShadingIRs[raw[0]];
+  if (!shadingIR) {
+    error('Unknown IR type: ' + raw[0]);
+  }
+  return shadingIR.fromIR(raw);
+}
+var TilingPattern = function TilingPatternClosure() {
+  var PaintType = {
+    COLORED: 1,
+    UNCOLORED: 2
+  };
+  var MAX_PATTERN_SIZE = 3000;
+  function TilingPattern(IR, color, ctx, canvasGraphicsFactory, baseTransform) {
+    this.operatorList = IR[2];
+    this.matrix = IR[3] || [1, 0, 0, 1, 0, 0];
+    this.bbox = Util.normalizeRect(IR[4]);
+    this.xstep = IR[5];
+    this.ystep = IR[6];
+    this.paintType = IR[7];
+    this.tilingType = IR[8];
+    this.color = color;
+    this.canvasGraphicsFactory = canvasGraphicsFactory;
+    this.baseTransform = baseTransform;
+    this.type = 'Pattern';
+    this.ctx = ctx;
+  }
+  TilingPattern.prototype = {
+    createPatternCanvas: function TilinPattern_createPatternCanvas(owner) {
+      var operatorList = this.operatorList;
+      var bbox = this.bbox;
+      var xstep = this.xstep;
+      var ystep = this.ystep;
+      var paintType = this.paintType;
+      var tilingType = this.tilingType;
+      var color = this.color;
+      var canvasGraphicsFactory = this.canvasGraphicsFactory;
+      info('TilingType: ' + tilingType);
+      var x0 = bbox[0],
+          y0 = bbox[1],
+          x1 = bbox[2],
+          y1 = bbox[3];
+      var topLeft = [x0, y0];
+      var botRight = [x0 + xstep, y0 + ystep];
+      var width = botRight[0] - topLeft[0];
+      var height = botRight[1] - topLeft[1];
+      var matrixScale = Util.singularValueDecompose2dScale(this.matrix);
+      var curMatrixScale = Util.singularValueDecompose2dScale(this.baseTransform);
+      var combinedScale = [matrixScale[0] * curMatrixScale[0], matrixScale[1] * curMatrixScale[1]];
+      width = Math.min(Math.ceil(Math.abs(width * combinedScale[0])), MAX_PATTERN_SIZE);
+      height = Math.min(Math.ceil(Math.abs(height * combinedScale[1])), MAX_PATTERN_SIZE);
+      var tmpCanvas = owner.cachedCanvases.getCanvas('pattern', width, height, true);
+      var tmpCtx = tmpCanvas.context;
+      var graphics = canvasGraphicsFactory.createCanvasGraphics(tmpCtx);
+      graphics.groupLevel = owner.groupLevel;
+      this.setFillAndStrokeStyleToContext(tmpCtx, paintType, color);
+      this.setScale(width, height, xstep, ystep);
+      this.transformToScale(graphics);
+      var tmpTranslate = [1, 0, 0, 1, -topLeft[0], -topLeft[1]];
+      graphics.transform.apply(graphics, tmpTranslate);
+      this.clipBbox(graphics, bbox, x0, y0, x1, y1);
+      graphics.executeOperatorList(operatorList);
+      return tmpCanvas.canvas;
+    },
+    setScale: function TilingPattern_setScale(width, height, xstep, ystep) {
+      this.scale = [width / xstep, height / ystep];
+    },
+    transformToScale: function TilingPattern_transformToScale(graphics) {
+      var scale = this.scale;
+      var tmpScale = [scale[0], 0, 0, scale[1], 0, 0];
+      graphics.transform.apply(graphics, tmpScale);
+    },
+    scaleToContext: function TilingPattern_scaleToContext() {
+      var scale = this.scale;
+      this.ctx.scale(1 / scale[0], 1 / scale[1]);
+    },
+    clipBbox: function clipBbox(graphics, bbox, x0, y0, x1, y1) {
+      if (isArray(bbox) && bbox.length === 4) {
+        var bboxWidth = x1 - x0;
+        var bboxHeight = y1 - y0;
+        graphics.ctx.rect(x0, y0, bboxWidth, bboxHeight);
+        graphics.clip();
+        graphics.endPath();
+      }
+    },
+    setFillAndStrokeStyleToContext: function setFillAndStrokeStyleToContext(context, paintType, color) {
+      switch (paintType) {
+        case PaintType.COLORED:
+          var ctx = this.ctx;
+          context.fillStyle = ctx.fillStyle;
+          context.strokeStyle = ctx.strokeStyle;
+          break;
+        case PaintType.UNCOLORED:
+          var cssColor = Util.makeCssRgb(color[0], color[1], color[2]);
+          context.fillStyle = cssColor;
+          context.strokeStyle = cssColor;
+          break;
+        default:
+          error('Unsupported paint type: ' + paintType);
+      }
+    },
+    getPattern: function TilingPattern_getPattern(ctx, owner) {
+      var temporaryPatternCanvas = this.createPatternCanvas(owner);
+      ctx = this.ctx;
+      ctx.setTransform.apply(ctx, this.baseTransform);
+      ctx.transform.apply(ctx, this.matrix);
+      this.scaleToContext();
+      return ctx.createPattern(temporaryPatternCanvas, 'repeat');
+    }
+  };
+  return TilingPattern;
+}();
+exports.getShadingPatternFromIR = getShadingPatternFromIR;
+exports.TilingPattern = TilingPattern;
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var pdfjsVersion = '1.8.188';
+var pdfjsBuild = 'ad1023ff';
+var pdfjsSharedUtil = __w_pdfjs_require__(0);
+var pdfjsDisplayGlobal = __w_pdfjs_require__(9);
+var pdfjsDisplayAPI = __w_pdfjs_require__(3);
+var pdfjsDisplayTextLayer = __w_pdfjs_require__(5);
+var pdfjsDisplayAnnotationLayer = __w_pdfjs_require__(2);
+var pdfjsDisplayDOMUtils = __w_pdfjs_require__(1);
+var pdfjsDisplaySVG = __w_pdfjs_require__(4);
+exports.PDFJS = pdfjsDisplayGlobal.PDFJS;
+exports.build = pdfjsDisplayAPI.build;
+exports.version = pdfjsDisplayAPI.version;
+exports.getDocument = pdfjsDisplayAPI.getDocument;
+exports.PDFDataRangeTransport = pdfjsDisplayAPI.PDFDataRangeTransport;
+exports.PDFWorker = pdfjsDisplayAPI.PDFWorker;
+exports.renderTextLayer = pdfjsDisplayTextLayer.renderTextLayer;
+exports.AnnotationLayer = pdfjsDisplayAnnotationLayer.AnnotationLayer;
+exports.CustomStyle = pdfjsDisplayDOMUtils.CustomStyle;
+exports.createPromiseCapability = pdfjsSharedUtil.createPromiseCapability;
+exports.PasswordResponses = pdfjsSharedUtil.PasswordResponses;
+exports.InvalidPDFException = pdfjsSharedUtil.InvalidPDFException;
+exports.MissingPDFException = pdfjsSharedUtil.MissingPDFException;
+exports.SVGGraphics = pdfjsDisplaySVG.SVGGraphics;
+exports.UnexpectedResponseException = pdfjsSharedUtil.UnexpectedResponseException;
+exports.OPS = pdfjsSharedUtil.OPS;
+exports.UNSUPPORTED_FEATURES = pdfjsSharedUtil.UNSUPPORTED_FEATURES;
+exports.isValidUrl = pdfjsDisplayDOMUtils.isValidUrl;
+exports.createValidAbsoluteUrl = pdfjsSharedUtil.createValidAbsoluteUrl;
+exports.createObjectURL = pdfjsSharedUtil.createObjectURL;
+exports.removeNullCharacters = pdfjsSharedUtil.removeNullCharacters;
+exports.shadow = pdfjsSharedUtil.shadow;
+exports.createBlob = pdfjsSharedUtil.createBlob;
+exports.RenderingCancelledException = pdfjsDisplayDOMUtils.RenderingCancelledException;
+exports.getFilenameFromUrl = pdfjsDisplayDOMUtils.getFilenameFromUrl;
+exports.addLinkAttributes = pdfjsDisplayDOMUtils.addLinkAttributes;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {
+
+if (typeof PDFJS === 'undefined' || !PDFJS.compatibilityChecked) {
+  var globalScope = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : undefined;
+  var userAgent = typeof navigator !== 'undefined' && navigator.userAgent || '';
+  var isAndroid = /Android/.test(userAgent);
+  var isAndroidPre3 = /Android\s[0-2][^\d]/.test(userAgent);
+  var isAndroidPre5 = /Android\s[0-4][^\d]/.test(userAgent);
+  var isChrome = userAgent.indexOf('Chrom') >= 0;
+  var isChromeWithRangeBug = /Chrome\/(39|40)\./.test(userAgent);
+  var isIOSChrome = userAgent.indexOf('CriOS') >= 0;
+  var isIE = userAgent.indexOf('Trident') >= 0;
+  var isIOS = /\b(iPad|iPhone|iPod)(?=;)/.test(userAgent);
+  var isOpera = userAgent.indexOf('Opera') >= 0;
+  var isSafari = /Safari\//.test(userAgent) && !/(Chrome\/|Android\s)/.test(userAgent);
+  var hasDOM = typeof window === 'object' && typeof document === 'object';
+  if (typeof PDFJS === 'undefined') {
+    globalScope.PDFJS = {};
+  }
+  PDFJS.compatibilityChecked = true;
+  (function checkTypedArrayCompatibility() {
+    if (typeof Uint8Array !== 'undefined') {
+      if (typeof Uint8Array.prototype.subarray === 'undefined') {
+        Uint8Array.prototype.subarray = function subarray(start, end) {
+          return new Uint8Array(this.slice(start, end));
+        };
+        Float32Array.prototype.subarray = function subarray(start, end) {
+          return new Float32Array(this.slice(start, end));
+        };
+      }
+      if (typeof Float64Array === 'undefined') {
+        globalScope.Float64Array = Float32Array;
+      }
+      return;
+    }
+    function subarray(start, end) {
+      return new TypedArray(this.slice(start, end));
+    }
+    function setArrayOffset(array, offset) {
+      if (arguments.length < 2) {
+        offset = 0;
+      }
+      for (var i = 0, n = array.length; i < n; ++i, ++offset) {
+        this[offset] = array[i] & 0xFF;
+      }
+    }
+    function TypedArray(arg1) {
+      var result, i, n;
+      if (typeof arg1 === 'number') {
+        result = [];
+        for (i = 0; i < arg1; ++i) {
+          result[i] = 0;
+        }
+      } else if ('slice' in arg1) {
+        result = arg1.slice(0);
+      } else {
+        result = [];
+        for (i = 0, n = arg1.length; i < n; ++i) {
+          result[i] = arg1[i];
+        }
+      }
+      result.subarray = subarray;
+      result.buffer = result;
+      result.byteLength = result.length;
+      result.set = setArrayOffset;
+      if (typeof arg1 === 'object' && arg1.buffer) {
+        result.buffer = arg1.buffer;
+      }
+      return result;
+    }
+    globalScope.Uint8Array = TypedArray;
+    globalScope.Int8Array = TypedArray;
+    globalScope.Uint32Array = TypedArray;
+    globalScope.Int32Array = TypedArray;
+    globalScope.Uint16Array = TypedArray;
+    globalScope.Float32Array = TypedArray;
+    globalScope.Float64Array = TypedArray;
+  })();
+  (function normalizeURLObject() {
+    if (!globalScope.URL) {
+      globalScope.URL = globalScope.webkitURL;
+    }
+  })();
+  (function checkObjectDefinePropertyCompatibility() {
+    if (typeof Object.defineProperty !== 'undefined') {
+      var definePropertyPossible = true;
+      try {
+        if (hasDOM) {
+          Object.defineProperty(new Image(), 'id', { value: 'test' });
+        }
+        var Test = function Test() {};
+        Test.prototype = {
+          get id() {}
+        };
+        Object.defineProperty(new Test(), 'id', {
+          value: '',
+          configurable: true,
+          enumerable: true,
+          writable: false
+        });
+      } catch (e) {
+        definePropertyPossible = false;
+      }
+      if (definePropertyPossible) {
+        return;
+      }
+    }
+    Object.defineProperty = function objectDefineProperty(obj, name, def) {
+      delete obj[name];
+      if ('get' in def) {
+        obj.__defineGetter__(name, def['get']);
+      }
+      if ('set' in def) {
+        obj.__defineSetter__(name, def['set']);
+      }
+      if ('value' in def) {
+        obj.__defineSetter__(name, function objectDefinePropertySetter(value) {
+          this.__defineGetter__(name, function objectDefinePropertyGetter() {
+            return value;
+          });
+          return value;
+        });
+        obj[name] = def.value;
+      }
+    };
+  })();
+  (function checkXMLHttpRequestResponseCompatibility() {
+    if (typeof XMLHttpRequest === 'undefined') {
+      return;
+    }
+    var xhrPrototype = XMLHttpRequest.prototype;
+    var xhr = new XMLHttpRequest();
+    if (!('overrideMimeType' in xhr)) {
+      Object.defineProperty(xhrPrototype, 'overrideMimeType', {
+        value: function xmlHttpRequestOverrideMimeType(mimeType) {}
+      });
+    }
+    if ('responseType' in xhr) {
+      return;
+    }
+    Object.defineProperty(xhrPrototype, 'responseType', {
+      get: function xmlHttpRequestGetResponseType() {
+        return this._responseType || 'text';
+      },
+      set: function xmlHttpRequestSetResponseType(value) {
+        if (value === 'text' || value === 'arraybuffer') {
+          this._responseType = value;
+          if (value === 'arraybuffer' && typeof this.overrideMimeType === 'function') {
+            this.overrideMimeType('text/plain; charset=x-user-defined');
+          }
+        }
+      }
+    });
+    if (typeof VBArray !== 'undefined') {
+      Object.defineProperty(xhrPrototype, 'response', {
+        get: function xmlHttpRequestResponseGet() {
+          if (this.responseType === 'arraybuffer') {
+            return new Uint8Array(new VBArray(this.responseBody).toArray());
+          }
+          return this.responseText;
+        }
+      });
+      return;
+    }
+    Object.defineProperty(xhrPrototype, 'response', {
+      get: function xmlHttpRequestResponseGet() {
+        if (this.responseType !== 'arraybuffer') {
+          return this.responseText;
+        }
+        var text = this.responseText;
+        var i,
+            n = text.length;
+        var result = new Uint8Array(n);
+        for (i = 0; i < n; ++i) {
+          result[i] = text.charCodeAt(i) & 0xFF;
+        }
+        return result.buffer;
+      }
+    });
+  })();
+  (function checkWindowBtoaCompatibility() {
+    if ('btoa' in globalScope) {
+      return;
+    }
+    var digits = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+    globalScope.btoa = function (chars) {
+      var buffer = '';
+      var i, n;
+      for (i = 0, n = chars.length; i < n; i += 3) {
+        var b1 = chars.charCodeAt(i) & 0xFF;
+        var b2 = chars.charCodeAt(i + 1) & 0xFF;
+        var b3 = chars.charCodeAt(i + 2) & 0xFF;
+        var d1 = b1 >> 2,
+            d2 = (b1 & 3) << 4 | b2 >> 4;
+        var d3 = i + 1 < n ? (b2 & 0xF) << 2 | b3 >> 6 : 64;
+        var d4 = i + 2 < n ? b3 & 0x3F : 64;
+        buffer += digits.charAt(d1) + digits.charAt(d2) + digits.charAt(d3) + digits.charAt(d4);
+      }
+      return buffer;
+    };
+  })();
+  (function checkWindowAtobCompatibility() {
+    if ('atob' in globalScope) {
+      return;
+    }
+    var digits = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+    globalScope.atob = function (input) {
+      input = input.replace(/=+$/, '');
+      if (input.length % 4 === 1) {
+        throw new Error('bad atob input');
+      }
+      for (var bc = 0, bs, buffer, idx = 0, output = ''; buffer = input.charAt(idx++); ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer, bc++ % 4) ? output += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0) {
+        buffer = digits.indexOf(buffer);
+      }
+      return output;
+    };
+  })();
+  (function checkFunctionPrototypeBindCompatibility() {
+    if (typeof Function.prototype.bind !== 'undefined') {
+      return;
+    }
+    Function.prototype.bind = function functionPrototypeBind(obj) {
+      var fn = this,
+          headArgs = Array.prototype.slice.call(arguments, 1);
+      var bound = function functionPrototypeBindBound() {
+        var args = headArgs.concat(Array.prototype.slice.call(arguments));
+        return fn.apply(obj, args);
+      };
+      return bound;
+    };
+  })();
+  (function checkDatasetProperty() {
+    if (!hasDOM) {
+      return;
+    }
+    var div = document.createElement('div');
+    if ('dataset' in div) {
+      return;
+    }
+    Object.defineProperty(HTMLElement.prototype, 'dataset', {
+      get: function () {
+        if (this._dataset) {
+          return this._dataset;
+        }
+        var dataset = {};
+        for (var j = 0, jj = this.attributes.length; j < jj; j++) {
+          var attribute = this.attributes[j];
+          if (attribute.name.substring(0, 5) !== 'data-') {
+            continue;
+          }
+          var key = attribute.name.substring(5).replace(/\-([a-z])/g, function (all, ch) {
+            return ch.toUpperCase();
+          });
+          dataset[key] = attribute.value;
+        }
+        Object.defineProperty(this, '_dataset', {
+          value: dataset,
+          writable: false,
+          enumerable: false
+        });
+        return dataset;
+      },
+      enumerable: true
+    });
+  })();
+  (function checkClassListProperty() {
+    function changeList(element, itemName, add, remove) {
+      var s = element.className || '';
+      var list = s.split(/\s+/g);
+      if (list[0] === '') {
+        list.shift();
+      }
+      var index = list.indexOf(itemName);
+      if (index < 0 && add) {
+        list.push(itemName);
+      }
+      if (index >= 0 && remove) {
+        list.splice(index, 1);
+      }
+      element.className = list.join(' ');
+      return index >= 0;
+    }
+    if (!hasDOM) {
+      return;
+    }
+    var div = document.createElement('div');
+    if ('classList' in div) {
+      return;
+    }
+    var classListPrototype = {
+      add: function (name) {
+        changeList(this.element, name, true, false);
+      },
+      contains: function (name) {
+        return changeList(this.element, name, false, false);
+      },
+      remove: function (name) {
+        changeList(this.element, name, false, true);
+      },
+      toggle: function (name) {
+        changeList(this.element, name, true, true);
+      }
+    };
+    Object.defineProperty(HTMLElement.prototype, 'classList', {
+      get: function () {
+        if (this._classList) {
+          return this._classList;
+        }
+        var classList = Object.create(classListPrototype, {
+          element: {
+            value: this,
+            writable: false,
+            enumerable: true
+          }
+        });
+        Object.defineProperty(this, '_classList', {
+          value: classList,
+          writable: false,
+          enumerable: false
+        });
+        return classList;
+      },
+      enumerable: true
+    });
+  })();
+  (function checkWorkerConsoleCompatibility() {
+    if (typeof importScripts === 'undefined' || 'console' in globalScope) {
+      return;
+    }
+    var consoleTimer = {};
+    var workerConsole = {
+      log: function log() {
+        var args = Array.prototype.slice.call(arguments);
+        globalScope.postMessage({
+          targetName: 'main',
+          action: 'console_log',
+          data: args
+        });
+      },
+      error: function error() {
+        var args = Array.prototype.slice.call(arguments);
+        globalScope.postMessage({
+          targetName: 'main',
+          action: 'console_error',
+          data: args
+        });
+      },
+      time: function time(name) {
+        consoleTimer[name] = Date.now();
+      },
+      timeEnd: function timeEnd(name) {
+        var time = consoleTimer[name];
+        if (!time) {
+          throw new Error('Unknown timer name ' + name);
+        }
+        this.log('Timer:', name, Date.now() - time);
+      }
+    };
+    globalScope.console = workerConsole;
+  })();
+  (function checkConsoleCompatibility() {
+    if (!hasDOM) {
+      return;
+    }
+    if (!('console' in window)) {
+      window.console = {
+        log: function () {},
+        error: function () {},
+        warn: function () {}
+      };
+      return;
+    }
+    if (!('bind' in console.log)) {
+      console.log = function (fn) {
+        return function (msg) {
+          return fn(msg);
+        };
+      }(console.log);
+      console.error = function (fn) {
+        return function (msg) {
+          return fn(msg);
+        };
+      }(console.error);
+      console.warn = function (fn) {
+        return function (msg) {
+          return fn(msg);
+        };
+      }(console.warn);
+      return;
+    }
+  })();
+  (function checkOnClickCompatibility() {
+    function ignoreIfTargetDisabled(event) {
+      if (isDisabled(event.target)) {
+        event.stopPropagation();
+      }
+    }
+    function isDisabled(node) {
+      return node.disabled || node.parentNode && isDisabled(node.parentNode);
+    }
+    if (isOpera) {
+      document.addEventListener('click', ignoreIfTargetDisabled, true);
+    }
+  })();
+  (function checkOnBlobSupport() {
+    if (isIE || isIOSChrome) {
+      PDFJS.disableCreateObjectURL = true;
+    }
+  })();
+  (function checkNavigatorLanguage() {
+    if (typeof navigator === 'undefined') {
+      return;
+    }
+    if ('language' in navigator) {
+      return;
+    }
+    PDFJS.locale = navigator.userLanguage || 'en-US';
+  })();
+  (function checkRangeRequests() {
+    if (isSafari || isAndroidPre3 || isChromeWithRangeBug || isIOS) {
+      PDFJS.disableRange = true;
+      PDFJS.disableStream = true;
+    }
+  })();
+  (function checkHistoryManipulation() {
+    if (!hasDOM) {
+      return;
+    }
+    if (!history.pushState || isAndroidPre3) {
+      PDFJS.disableHistory = true;
+    }
+  })();
+  (function checkSetPresenceInImageData() {
+    if (!hasDOM) {
+      return;
+    }
+    if (window.CanvasPixelArray) {
+      if (typeof window.CanvasPixelArray.prototype.set !== 'function') {
+        window.CanvasPixelArray.prototype.set = function (arr) {
+          for (var i = 0, ii = this.length; i < ii; i++) {
+            this[i] = arr[i];
+          }
+        };
+      }
+    } else {
+      var polyfill = false,
+          versionMatch;
+      if (isChrome) {
+        versionMatch = userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
+        polyfill = versionMatch && parseInt(versionMatch[2]) < 21;
+      } else if (isAndroid) {
+        polyfill = isAndroidPre5;
+      } else if (isSafari) {
+        versionMatch = userAgent.match(/Version\/([0-9]+)\.([0-9]+)\.([0-9]+) Safari\//);
+        polyfill = versionMatch && parseInt(versionMatch[1]) < 6;
+      }
+      if (polyfill) {
+        var contextPrototype = window.CanvasRenderingContext2D.prototype;
+        var createImageData = contextPrototype.createImageData;
+        contextPrototype.createImageData = function (w, h) {
+          var imageData = createImageData.call(this, w, h);
+          imageData.data.set = function (arr) {
+            for (var i = 0, ii = this.length; i < ii; i++) {
+              this[i] = arr[i];
+            }
+          };
+          return imageData;
+        };
+        contextPrototype = null;
+      }
+    }
+  })();
+  (function checkRequestAnimationFrame() {
+    function installFakeAnimationFrameFunctions() {
+      window.requestAnimationFrame = function (callback) {
+        return window.setTimeout(callback, 20);
+      };
+      window.cancelAnimationFrame = function (timeoutID) {
+        window.clearTimeout(timeoutID);
+      };
+    }
+    if (!hasDOM) {
+      return;
+    }
+    if (isIOS) {
+      installFakeAnimationFrameFunctions();
+      return;
+    }
+    if ('requestAnimationFrame' in window) {
+      return;
+    }
+    window.requestAnimationFrame = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+    if (window.requestAnimationFrame) {
+      return;
+    }
+    installFakeAnimationFrameFunctions();
+  })();
+  (function checkCanvasSizeLimitation() {
+    if (isIOS || isAndroid) {
+      PDFJS.maxCanvasPixels = 5242880;
+    }
+  })();
+  (function checkFullscreenSupport() {
+    if (!hasDOM) {
+      return;
+    }
+    if (isIE && window.parent !== window) {
+      PDFJS.disableFullscreen = true;
+    }
+  })();
+  (function checkCurrentScript() {
+    if (!hasDOM) {
+      return;
+    }
+    if ('currentScript' in document) {
+      return;
+    }
+    Object.defineProperty(document, 'currentScript', {
+      get: function () {
+        var scripts = document.getElementsByTagName('script');
+        return scripts[scripts.length - 1];
+      },
+      enumerable: true,
+      configurable: true
+    });
+  })();
+  (function checkInputTypeNumberAssign() {
+    if (!hasDOM) {
+      return;
+    }
+    var el = document.createElement('input');
+    try {
+      el.type = 'number';
+    } catch (ex) {
+      var inputProto = el.constructor.prototype;
+      var typeProperty = Object.getOwnPropertyDescriptor(inputProto, 'type');
+      Object.defineProperty(inputProto, 'type', {
+        get: function () {
+          return typeProperty.get.call(this);
+        },
+        set: function (value) {
+          typeProperty.set.call(this, value === 'number' ? 'text' : value);
+        },
+        enumerable: true,
+        configurable: true
+      });
+    }
+  })();
+  (function checkDocumentReadyState() {
+    if (!hasDOM) {
+      return;
+    }
+    if (!document.attachEvent) {
+      return;
+    }
+    var documentProto = document.constructor.prototype;
+    var readyStateProto = Object.getOwnPropertyDescriptor(documentProto, 'readyState');
+    Object.defineProperty(documentProto, 'readyState', {
+      get: function () {
+        var value = readyStateProto.get.call(this);
+        return value === 'interactive' ? 'loading' : value;
+      },
+      set: function (value) {
+        readyStateProto.set.call(this, value);
+      },
+      enumerable: true,
+      configurable: true
+    });
+  })();
+  (function checkChildNodeRemove() {
+    if (!hasDOM) {
+      return;
+    }
+    if (typeof Element.prototype.remove !== 'undefined') {
+      return;
+    }
+    Element.prototype.remove = function () {
+      if (this.parentNode) {
+        this.parentNode.removeChild(this);
+      }
+    };
+  })();
+  (function checkPromise() {
+    if (globalScope.Promise) {
+      if (typeof globalScope.Promise.all !== 'function') {
+        globalScope.Promise.all = function (iterable) {
+          var count = 0,
+              results = [],
+              resolve,
+              reject;
+          var promise = new globalScope.Promise(function (resolve_, reject_) {
+            resolve = resolve_;
+            reject = reject_;
+          });
+          iterable.forEach(function (p, i) {
+            count++;
+            p.then(function (result) {
+              results[i] = result;
+              count--;
+              if (count === 0) {
+                resolve(results);
+              }
+            }, reject);
+          });
+          if (count === 0) {
+            resolve(results);
+          }
+          return promise;
+        };
+      }
+      if (typeof globalScope.Promise.resolve !== 'function') {
+        globalScope.Promise.resolve = function (value) {
+          return new globalScope.Promise(function (resolve) {
+            resolve(value);
+          });
+        };
+      }
+      if (typeof globalScope.Promise.reject !== 'function') {
+        globalScope.Promise.reject = function (reason) {
+          return new globalScope.Promise(function (resolve, reject) {
+            reject(reason);
+          });
+        };
+      }
+      if (typeof globalScope.Promise.prototype.catch !== 'function') {
+        globalScope.Promise.prototype.catch = function (onReject) {
+          return globalScope.Promise.prototype.then(undefined, onReject);
+        };
+      }
+      return;
+    }
+    var STATUS_PENDING = 0;
+    var STATUS_RESOLVED = 1;
+    var STATUS_REJECTED = 2;
+    var REJECTION_TIMEOUT = 500;
+    var HandlerManager = {
+      handlers: [],
+      running: false,
+      unhandledRejections: [],
+      pendingRejectionCheck: false,
+      scheduleHandlers: function scheduleHandlers(promise) {
+        if (promise._status === STATUS_PENDING) {
+          return;
+        }
+        this.handlers = this.handlers.concat(promise._handlers);
+        promise._handlers = [];
+        if (this.running) {
+          return;
+        }
+        this.running = true;
+        setTimeout(this.runHandlers.bind(this), 0);
+      },
+      runHandlers: function runHandlers() {
+        var RUN_TIMEOUT = 1;
+        var timeoutAt = Date.now() + RUN_TIMEOUT;
+        while (this.handlers.length > 0) {
+          var handler = this.handlers.shift();
+          var nextStatus = handler.thisPromise._status;
+          var nextValue = handler.thisPromise._value;
+          try {
+            if (nextStatus === STATUS_RESOLVED) {
+              if (typeof handler.onResolve === 'function') {
+                nextValue = handler.onResolve(nextValue);
+              }
+            } else if (typeof handler.onReject === 'function') {
+              nextValue = handler.onReject(nextValue);
+              nextStatus = STATUS_RESOLVED;
+              if (handler.thisPromise._unhandledRejection) {
+                this.removeUnhandeledRejection(handler.thisPromise);
+              }
+            }
+          } catch (ex) {
+            nextStatus = STATUS_REJECTED;
+            nextValue = ex;
+          }
+          handler.nextPromise._updateStatus(nextStatus, nextValue);
+          if (Date.now() >= timeoutAt) {
+            break;
+          }
+        }
+        if (this.handlers.length > 0) {
+          setTimeout(this.runHandlers.bind(this), 0);
+          return;
+        }
+        this.running = false;
+      },
+      addUnhandledRejection: function addUnhandledRejection(promise) {
+        this.unhandledRejections.push({
+          promise: promise,
+          time: Date.now()
+        });
+        this.scheduleRejectionCheck();
+      },
+      removeUnhandeledRejection: function removeUnhandeledRejection(promise) {
+        promise._unhandledRejection = false;
+        for (var i = 0; i < this.unhandledRejections.length; i++) {
+          if (this.unhandledRejections[i].promise === promise) {
+            this.unhandledRejections.splice(i);
+            i--;
+          }
+        }
+      },
+      scheduleRejectionCheck: function scheduleRejectionCheck() {
+        if (this.pendingRejectionCheck) {
+          return;
+        }
+        this.pendingRejectionCheck = true;
+        setTimeout(function rejectionCheck() {
+          this.pendingRejectionCheck = false;
+          var now = Date.now();
+          for (var i = 0; i < this.unhandledRejections.length; i++) {
+            if (now - this.unhandledRejections[i].time > REJECTION_TIMEOUT) {
+              var unhandled = this.unhandledRejections[i].promise._value;
+              var msg = 'Unhandled rejection: ' + unhandled;
+              if (unhandled.stack) {
+                msg += '\n' + unhandled.stack;
+              }
+              try {
+                throw new Error(msg);
+              } catch (_) {
+                console.warn(msg);
+              }
+              this.unhandledRejections.splice(i);
+              i--;
+            }
+          }
+          if (this.unhandledRejections.length) {
+            this.scheduleRejectionCheck();
+          }
+        }.bind(this), REJECTION_TIMEOUT);
+      }
+    };
+    var Promise = function Promise(resolver) {
+      this._status = STATUS_PENDING;
+      this._handlers = [];
+      try {
+        resolver.call(this, this._resolve.bind(this), this._reject.bind(this));
+      } catch (e) {
+        this._reject(e);
+      }
+    };
+    Promise.all = function Promise_all(promises) {
+      var resolveAll, rejectAll;
+      var deferred = new Promise(function (resolve, reject) {
+        resolveAll = resolve;
+        rejectAll = reject;
+      });
+      var unresolved = promises.length;
+      var results = [];
+      if (unresolved === 0) {
+        resolveAll(results);
+        return deferred;
+      }
+      function reject(reason) {
+        if (deferred._status === STATUS_REJECTED) {
+          return;
+        }
+        results = [];
+        rejectAll(reason);
+      }
+      for (var i = 0, ii = promises.length; i < ii; ++i) {
+        var promise = promises[i];
+        var resolve = function (i) {
+          return function (value) {
+            if (deferred._status === STATUS_REJECTED) {
+              return;
+            }
+            results[i] = value;
+            unresolved--;
+            if (unresolved === 0) {
+              resolveAll(results);
+            }
+          };
+        }(i);
+        if (Promise.isPromise(promise)) {
+          promise.then(resolve, reject);
+        } else {
+          resolve(promise);
+        }
+      }
+      return deferred;
+    };
+    Promise.isPromise = function Promise_isPromise(value) {
+      return value && typeof value.then === 'function';
+    };
+    Promise.resolve = function Promise_resolve(value) {
+      return new Promise(function (resolve) {
+        resolve(value);
+      });
+    };
+    Promise.reject = function Promise_reject(reason) {
+      return new Promise(function (resolve, reject) {
+        reject(reason);
+      });
+    };
+    Promise.prototype = {
+      _status: null,
+      _value: null,
+      _handlers: null,
+      _unhandledRejection: null,
+      _updateStatus: function Promise__updateStatus(status, value) {
+        if (this._status === STATUS_RESOLVED || this._status === STATUS_REJECTED) {
+          return;
+        }
+        if (status === STATUS_RESOLVED && Promise.isPromise(value)) {
+          value.then(this._updateStatus.bind(this, STATUS_RESOLVED), this._updateStatus.bind(this, STATUS_REJECTED));
+          return;
+        }
+        this._status = status;
+        this._value = value;
+        if (status === STATUS_REJECTED && this._handlers.length === 0) {
+          this._unhandledRejection = true;
+          HandlerManager.addUnhandledRejection(this);
+        }
+        HandlerManager.scheduleHandlers(this);
+      },
+      _resolve: function Promise_resolve(value) {
+        this._updateStatus(STATUS_RESOLVED, value);
+      },
+      _reject: function Promise_reject(reason) {
+        this._updateStatus(STATUS_REJECTED, reason);
+      },
+      then: function Promise_then(onResolve, onReject) {
+        var nextPromise = new Promise(function (resolve, reject) {
+          this.resolve = resolve;
+          this.reject = reject;
+        });
+        this._handlers.push({
+          thisPromise: this,
+          onResolve: onResolve,
+          onReject: onReject,
+          nextPromise: nextPromise
+        });
+        HandlerManager.scheduleHandlers(this);
+        return nextPromise;
+      },
+      catch: function Promise_catch(onReject) {
+        return this.then(undefined, onReject);
+      }
+    };
+    globalScope.Promise = Promise;
+  })();
+  (function checkWeakMap() {
+    if (globalScope.WeakMap) {
+      return;
+    }
+    var id = 0;
+    function WeakMap() {
+      this.id = '$weakmap' + id++;
+    }
+    WeakMap.prototype = {
+      has: function (obj) {
+        return !!Object.getOwnPropertyDescriptor(obj, this.id);
+      },
+      get: function (obj, defaultValue) {
+        return this.has(obj) ? obj[this.id] : defaultValue;
+      },
+      set: function (obj, value) {
+        Object.defineProperty(obj, this.id, {
+          value: value,
+          enumerable: false,
+          configurable: true
+        });
+      },
+      delete: function (obj) {
+        delete obj[this.id];
+      }
+    };
+    globalScope.WeakMap = WeakMap;
+  })();
+  (function checkURLConstructor() {
+    var hasWorkingUrl = false;
+    try {
+      if (typeof URL === 'function' && typeof URL.prototype === 'object' && 'origin' in URL.prototype) {
+        var u = new URL('b', 'http://a');
+        u.pathname = 'c%20d';
+        hasWorkingUrl = u.href === 'http://a/c%20d';
+      }
+    } catch (e) {}
+    if (hasWorkingUrl) {
+      return;
+    }
+    var relative = Object.create(null);
+    relative['ftp'] = 21;
+    relative['file'] = 0;
+    relative['gopher'] = 70;
+    relative['http'] = 80;
+    relative['https'] = 443;
+    relative['ws'] = 80;
+    relative['wss'] = 443;
+    var relativePathDotMapping = Object.create(null);
+    relativePathDotMapping['%2e'] = '.';
+    relativePathDotMapping['.%2e'] = '..';
+    relativePathDotMapping['%2e.'] = '..';
+    relativePathDotMapping['%2e%2e'] = '..';
+    function isRelativeScheme(scheme) {
+      return relative[scheme] !== undefined;
+    }
+    function invalid() {
+      clear.call(this);
+      this._isInvalid = true;
+    }
+    function IDNAToASCII(h) {
+      if (h === '') {
+        invalid.call(this);
+      }
+      return h.toLowerCase();
+    }
+    function percentEscape(c) {
+      var unicode = c.charCodeAt(0);
+      if (unicode > 0x20 && unicode < 0x7F && [0x22, 0x23, 0x3C, 0x3E, 0x3F, 0x60].indexOf(unicode) === -1) {
+        return c;
+      }
+      return encodeURIComponent(c);
+    }
+    function percentEscapeQuery(c) {
+      var unicode = c.charCodeAt(0);
+      if (unicode > 0x20 && unicode < 0x7F && [0x22, 0x23, 0x3C, 0x3E, 0x60].indexOf(unicode) === -1) {
+        return c;
+      }
+      return encodeURIComponent(c);
+    }
+    var EOF,
+        ALPHA = /[a-zA-Z]/,
+        ALPHANUMERIC = /[a-zA-Z0-9\+\-\.]/;
+    function parse(input, stateOverride, base) {
+      function err(message) {
+        errors.push(message);
+      }
+      var state = stateOverride || 'scheme start',
+          cursor = 0,
+          buffer = '',
+          seenAt = false,
+          seenBracket = false,
+          errors = [];
+      loop: while ((input[cursor - 1] !== EOF || cursor === 0) && !this._isInvalid) {
+        var c = input[cursor];
+        switch (state) {
+          case 'scheme start':
+            if (c && ALPHA.test(c)) {
+              buffer += c.toLowerCase();
+              state = 'scheme';
+            } else if (!stateOverride) {
+              buffer = '';
+              state = 'no scheme';
+              continue;
+            } else {
+              err('Invalid scheme.');
+              break loop;
+            }
+            break;
+          case 'scheme':
+            if (c && ALPHANUMERIC.test(c)) {
+              buffer += c.toLowerCase();
+            } else if (c === ':') {
+              this._scheme = buffer;
+              buffer = '';
+              if (stateOverride) {
+                break loop;
+              }
+              if (isRelativeScheme(this._scheme)) {
+                this._isRelative = true;
+              }
+              if (this._scheme === 'file') {
+                state = 'relative';
+              } else if (this._isRelative && base && base._scheme === this._scheme) {
+                state = 'relative or authority';
+              } else if (this._isRelative) {
+                state = 'authority first slash';
+              } else {
+                state = 'scheme data';
+              }
+            } else if (!stateOverride) {
+              buffer = '';
+              cursor = 0;
+              state = 'no scheme';
+              continue;
+            } else if (c === EOF) {
+              break loop;
+            } else {
+              err('Code point not allowed in scheme: ' + c);
+              break loop;
+            }
+            break;
+          case 'scheme data':
+            if (c === '?') {
+              this._query = '?';
+              state = 'query';
+            } else if (c === '#') {
+              this._fragment = '#';
+              state = 'fragment';
+            } else {
+              if (c !== EOF && c !== '\t' && c !== '\n' && c !== '\r') {
+                this._schemeData += percentEscape(c);
+              }
+            }
+            break;
+          case 'no scheme':
+            if (!base || !isRelativeScheme(base._scheme)) {
+              err('Missing scheme.');
+              invalid.call(this);
+            } else {
+              state = 'relative';
+              continue;
+            }
+            break;
+          case 'relative or authority':
+            if (c === '/' && input[cursor + 1] === '/') {
+              state = 'authority ignore slashes';
+            } else {
+              err('Expected /, got: ' + c);
+              state = 'relative';
+              continue;
+            }
+            break;
+          case 'relative':
+            this._isRelative = true;
+            if (this._scheme !== 'file') {
+              this._scheme = base._scheme;
+            }
+            if (c === EOF) {
+              this._host = base._host;
+              this._port = base._port;
+              this._path = base._path.slice();
+              this._query = base._query;
+              this._username = base._username;
+              this._password = base._password;
+              break loop;
+            } else if (c === '/' || c === '\\') {
+              if (c === '\\') {
+                err('\\ is an invalid code point.');
+              }
+              state = 'relative slash';
+            } else if (c === '?') {
+              this._host = base._host;
+              this._port = base._port;
+              this._path = base._path.slice();
+              this._query = '?';
+              this._username = base._username;
+              this._password = base._password;
+              state = 'query';
+            } else if (c === '#') {
+              this._host = base._host;
+              this._port = base._port;
+              this._path = base._path.slice();
+              this._query = base._query;
+              this._fragment = '#';
+              this._username = base._username;
+              this._password = base._password;
+              state = 'fragment';
+            } else {
+              var nextC = input[cursor + 1];
+              var nextNextC = input[cursor + 2];
+              if (this._scheme !== 'file' || !ALPHA.test(c) || nextC !== ':' && nextC !== '|' || nextNextC !== EOF && nextNextC !== '/' && nextNextC !== '\\' && nextNextC !== '?' && nextNextC !== '#') {
+                this._host = base._host;
+                this._port = base._port;
+                this._username = base._username;
+                this._password = base._password;
+                this._path = base._path.slice();
+                this._path.pop();
+              }
+              state = 'relative path';
+              continue;
+            }
+            break;
+          case 'relative slash':
+            if (c === '/' || c === '\\') {
+              if (c === '\\') {
+                err('\\ is an invalid code point.');
+              }
+              if (this._scheme === 'file') {
+                state = 'file host';
+              } else {
+                state = 'authority ignore slashes';
+              }
+            } else {
+              if (this._scheme !== 'file') {
+                this._host = base._host;
+                this._port = base._port;
+                this._username = base._username;
+                this._password = base._password;
+              }
+              state = 'relative path';
+              continue;
+            }
+            break;
+          case 'authority first slash':
+            if (c === '/') {
+              state = 'authority second slash';
+            } else {
+              err('Expected \'/\', got: ' + c);
+              state = 'authority ignore slashes';
+              continue;
+            }
+            break;
+          case 'authority second slash':
+            state = 'authority ignore slashes';
+            if (c !== '/') {
+              err('Expected \'/\', got: ' + c);
+              continue;
+            }
+            break;
+          case 'authority ignore slashes':
+            if (c !== '/' && c !== '\\') {
+              state = 'authority';
+              continue;
+            } else {
+              err('Expected authority, got: ' + c);
+            }
+            break;
+          case 'authority':
+            if (c === '@') {
+              if (seenAt) {
+                err('@ already seen.');
+                buffer += '%40';
+              }
+              seenAt = true;
+              for (var i = 0; i < buffer.length; i++) {
+                var cp = buffer[i];
+                if (cp === '\t' || cp === '\n' || cp === '\r') {
+                  err('Invalid whitespace in authority.');
+                  continue;
+                }
+                if (cp === ':' && this._password === null) {
+                  this._password = '';
+                  continue;
+                }
+                var tempC = percentEscape(cp);
+                if (this._password !== null) {
+                  this._password += tempC;
+                } else {
+                  this._username += tempC;
+                }
+              }
+              buffer = '';
+            } else if (c === EOF || c === '/' || c === '\\' || c === '?' || c === '#') {
+              cursor -= buffer.length;
+              buffer = '';
+              state = 'host';
+              continue;
+            } else {
+              buffer += c;
+            }
+            break;
+          case 'file host':
+            if (c === EOF || c === '/' || c === '\\' || c === '?' || c === '#') {
+              if (buffer.length === 2 && ALPHA.test(buffer[0]) && (buffer[1] === ':' || buffer[1] === '|')) {
+                state = 'relative path';
+              } else if (buffer.length === 0) {
+                state = 'relative path start';
+              } else {
+                this._host = IDNAToASCII.call(this, buffer);
+                buffer = '';
+                state = 'relative path start';
+              }
+              continue;
+            } else if (c === '\t' || c === '\n' || c === '\r') {
+              err('Invalid whitespace in file host.');
+            } else {
+              buffer += c;
+            }
+            break;
+          case 'host':
+          case 'hostname':
+            if (c === ':' && !seenBracket) {
+              this._host = IDNAToASCII.call(this, buffer);
+              buffer = '';
+              state = 'port';
+              if (stateOverride === 'hostname') {
+                break loop;
+              }
+            } else if (c === EOF || c === '/' || c === '\\' || c === '?' || c === '#') {
+              this._host = IDNAToASCII.call(this, buffer);
+              buffer = '';
+              state = 'relative path start';
+              if (stateOverride) {
+                break loop;
+              }
+              continue;
+            } else if (c !== '\t' && c !== '\n' && c !== '\r') {
+              if (c === '[') {
+                seenBracket = true;
+              } else if (c === ']') {
+                seenBracket = false;
+              }
+              buffer += c;
+            } else {
+              err('Invalid code point in host/hostname: ' + c);
+            }
+            break;
+          case 'port':
+            if (/[0-9]/.test(c)) {
+              buffer += c;
+            } else if (c === EOF || c === '/' || c === '\\' || c === '?' || c === '#' || stateOverride) {
+              if (buffer !== '') {
+                var temp = parseInt(buffer, 10);
+                if (temp !== relative[this._scheme]) {
+                  this._port = temp + '';
+                }
+                buffer = '';
+              }
+              if (stateOverride) {
+                break loop;
+              }
+              state = 'relative path start';
+              continue;
+            } else if (c === '\t' || c === '\n' || c === '\r') {
+              err('Invalid code point in port: ' + c);
+            } else {
+              invalid.call(this);
+            }
+            break;
+          case 'relative path start':
+            if (c === '\\') {
+              err('\'\\\' not allowed in path.');
+            }
+            state = 'relative path';
+            if (c !== '/' && c !== '\\') {
+              continue;
+            }
+            break;
+          case 'relative path':
+            if (c === EOF || c === '/' || c === '\\' || !stateOverride && (c === '?' || c === '#')) {
+              if (c === '\\') {
+                err('\\ not allowed in relative path.');
+              }
+              var tmp;
+              if (tmp = relativePathDotMapping[buffer.toLowerCase()]) {
+                buffer = tmp;
+              }
+              if (buffer === '..') {
+                this._path.pop();
+                if (c !== '/' && c !== '\\') {
+                  this._path.push('');
+                }
+              } else if (buffer === '.' && c !== '/' && c !== '\\') {
+                this._path.push('');
+              } else if (buffer !== '.') {
+                if (this._scheme === 'file' && this._path.length === 0 && buffer.length === 2 && ALPHA.test(buffer[0]) && buffer[1] === '|') {
+                  buffer = buffer[0] + ':';
+                }
+                this._path.push(buffer);
+              }
+              buffer = '';
+              if (c === '?') {
+                this._query = '?';
+                state = 'query';
+              } else if (c === '#') {
+                this._fragment = '#';
+                state = 'fragment';
+              }
+            } else if (c !== '\t' && c !== '\n' && c !== '\r') {
+              buffer += percentEscape(c);
+            }
+            break;
+          case 'query':
+            if (!stateOverride && c === '#') {
+              this._fragment = '#';
+              state = 'fragment';
+            } else if (c !== EOF && c !== '\t' && c !== '\n' && c !== '\r') {
+              this._query += percentEscapeQuery(c);
+            }
+            break;
+          case 'fragment':
+            if (c !== EOF && c !== '\t' && c !== '\n' && c !== '\r') {
+              this._fragment += c;
+            }
+            break;
+        }
+        cursor++;
+      }
+    }
+    function clear() {
+      this._scheme = '';
+      this._schemeData = '';
+      this._username = '';
+      this._password = null;
+      this._host = '';
+      this._port = '';
+      this._path = [];
+      this._query = '';
+      this._fragment = '';
+      this._isInvalid = false;
+      this._isRelative = false;
+    }
+    function JURL(url, base) {
+      if (base !== undefined && !(base instanceof JURL)) {
+        base = new JURL(String(base));
+      }
+      this._url = url;
+      clear.call(this);
+      var input = url.replace(/^[ \t\r\n\f]+|[ \t\r\n\f]+$/g, '');
+      parse.call(this, input, null, base);
+    }
+    JURL.prototype = {
+      toString: function () {
+        return this.href;
+      },
+      get href() {
+        if (this._isInvalid) {
+          return this._url;
+        }
+        var authority = '';
+        if (this._username !== '' || this._password !== null) {
+          authority = this._username + (this._password !== null ? ':' + this._password : '') + '@';
+        }
+        return this.protocol + (this._isRelative ? '//' + authority + this.host : '') + this.pathname + this._query + this._fragment;
+      },
+      set href(href) {
+        clear.call(this);
+        parse.call(this, href);
+      },
+      get protocol() {
+        return this._scheme + ':';
+      },
+      set protocol(protocol) {
+        if (this._isInvalid) {
+          return;
+        }
+        parse.call(this, protocol + ':', 'scheme start');
+      },
+      get host() {
+        return this._isInvalid ? '' : this._port ? this._host + ':' + this._port : this._host;
+      },
+      set host(host) {
+        if (this._isInvalid || !this._isRelative) {
+          return;
+        }
+        parse.call(this, host, 'host');
+      },
+      get hostname() {
+        return this._host;
+      },
+      set hostname(hostname) {
+        if (this._isInvalid || !this._isRelative) {
+          return;
+        }
+        parse.call(this, hostname, 'hostname');
+      },
+      get port() {
+        return this._port;
+      },
+      set port(port) {
+        if (this._isInvalid || !this._isRelative) {
+          return;
+        }
+        parse.call(this, port, 'port');
+      },
+      get pathname() {
+        return this._isInvalid ? '' : this._isRelative ? '/' + this._path.join('/') : this._schemeData;
+      },
+      set pathname(pathname) {
+        if (this._isInvalid || !this._isRelative) {
+          return;
+        }
+        this._path = [];
+        parse.call(this, pathname, 'relative path start');
+      },
+      get search() {
+        return this._isInvalid || !this._query || this._query === '?' ? '' : this._query;
+      },
+      set search(search) {
+        if (this._isInvalid || !this._isRelative) {
+          return;
+        }
+        this._query = '?';
+        if (search[0] === '?') {
+          search = search.slice(1);
+        }
+        parse.call(this, search, 'query');
+      },
+      get hash() {
+        return this._isInvalid || !this._fragment || this._fragment === '#' ? '' : this._fragment;
+      },
+      set hash(hash) {
+        if (this._isInvalid) {
+          return;
+        }
+        this._fragment = '#';
+        if (hash[0] === '#') {
+          hash = hash.slice(1);
+        }
+        parse.call(this, hash, 'fragment');
+      },
+      get origin() {
+        var host;
+        if (this._isInvalid || !this._scheme) {
+          return '';
+        }
+        switch (this._scheme) {
+          case 'data':
+          case 'file':
+          case 'javascript':
+          case 'mailto':
+            return 'null';
+        }
+        host = this.host;
+        if (!host) {
+          return '';
+        }
+        return this._scheme + '://' + host;
+      }
+    };
+    var OriginalURL = globalScope.URL;
+    if (OriginalURL) {
+      JURL.createObjectURL = function (blob) {
+        return OriginalURL.createObjectURL.apply(OriginalURL, arguments);
+      };
+      JURL.revokeObjectURL = function (url) {
+        OriginalURL.revokeObjectURL(url);
+      };
+    }
+    globalScope.URL = JURL;
+  })();
+}
+/* WEBPACK VAR INJECTION */}.call(exports, __w_pdfjs_require__(6)))
+
+/***/ })
+/******/ ]);
+});

@@ -1,4 +1,4 @@
-# pdfh5.js v1.2.22
+# pdfh5.js v1.3.0
 
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)   [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
@@ -17,7 +17,7 @@
 
 ## 更新信息
 
-- 2019.11.27 更新：  1. 新增配置项属性limit，限制pdf加载最大页数。
+- 2020.04.27 更新：  重新优化了一下，测试版
 
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
@@ -137,12 +137,11 @@ var pdfh5 = new Pdfh5('#demo', {
 
 |参数名称|类型|取值|作用|
 |:---:|:---:|:---:|:---:|
-|pdfurl|  {String} | - |pdf地址，当前默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf，优先顺序： ？file= > pdfurl > data |
-|URIenable|  {Boolean} |true、false， 默认true | 可以无视地址栏参数，只拿配置项的pdfurl或者data来渲染pdf |
+|pdfurl|  {String} | - |pdf地址，当前默认优先获取配置项的pdfurl或者data来渲染pdf，优先顺序：  pdfurl > data |
+|URIenable|  {Boolean} |true、false， 默认false |  开启地址栏file参数|
 |data|  {String(blob) / Array(Uint8Array)} | - |pdf文件流 ，与pdfurl二选一。可以传普通文件流blob，也可以传转过码的Uint8Array|
 |type| {String}|"ajax"、"fetch"，默认"fetch"|请求pdf方式|
 |renderType| {String}|"canvas"、"svg"，默认"svg"|pdf渲染模式|
-|scale| {Number}|默认1.3。canvas模式下，为2|渲染的清晰度比例|
 |lazy| {Boolean}|true、false， 默认false|是否开启懒加载|
 |maxZoom|  {Number}|默认4|手势缩放最大倍数|
 |tapZoomFactor|  {Number}|默认2| 双击放大倍数|
@@ -191,7 +190,6 @@ $.ajax({
 	url: "https://gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
 	type: "get",
 	mimeType: 'text/plain; charset=x-user-defined',//jq ajax请求文件流的方式
-	cache: false,
 	success: function (data) {
 		var rawLength = data.length;
 		var array = [];

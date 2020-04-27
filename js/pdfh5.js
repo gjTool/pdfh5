@@ -1,6 +1,6 @@
 ; (function (g, fn) {
-    var version = "1.2.22", pdfjsVersion = "2.1.266";
-    console.log("The latest version and API of pdfh5 from: https://www.gjtool.cn  (pdf.js: " + pdfjsVersion + " , pdfh5.js: " + version + ")")
+    var version = "1.3.00", pdfjsVersion = "1.8.188";
+    console.log("pdfh5.js v" + version + " & pdf.js v" + pdfjsVersion + " & https://www.gjtool.cn")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {
             g.$ = require('./jquery-1.11.3.min.js');
@@ -158,6 +158,7 @@
                     x: (scale - 1) * (center.x + this.offset.x),
                     y: (scale - 1) * (center.y + this.offset.y)
                 });
+                this.done && this.done.call(this, this.getInitialZoomFactor() * this.zoomFactor)
             },
             scaleZoomFactor: function (scale) {
                 var originalZoomFactor = this.zoomFactor;
@@ -329,7 +330,6 @@
                             }
                             this.update();
                             this.stopAnimation();
-                            this.update();
                         } else {
                             if (timefn) {
                                 progress = timefn(progress);
@@ -440,7 +440,6 @@
                         });
                         this.is3d = false;
                     }
-                    this.done && this.done.call(this, zoomFactor)
                 }).bind(this), 0);
             },
             enable: function () {
@@ -620,33 +619,34 @@
     var Pdfh5 = function (dom, options) {
         this.version = version;
         this.container = $(dom);
-        this.thePDF = null;
-        this.totalNum = null;
-        this.pages = null;
-        this.initTime = 0;
-        this.scale = 1.3;
-        this.currentNum = 1;
-        this.loadedCount = 0;
-        this.endTime = 0;
-        this.pinchZoom = null;
-        this.timer = null;
-        this.docWidth = document.documentElement.clientWidth;
-        this.winWidth = $(window).width();
-        this.eventType = {};
-        this.cache = {};
-        this.cacheNum = 1;
         this.options = options;
-        this.resizeEvent = false;
-        this.init(options);
+        this.init();
     };
     Pdfh5.prototype = {
-        init: function (options) {
+        init: function () {
+            var self = this;
+            this.thePDF = null;
+            this.totalNum = null;
+            this.pages = null;
+            this.initTime = 0;
+            this.scale = 1.0;
+            this.currentNum = 1;
+            this.loadedCount = 0;
+            this.endTime = 0;
+            this.pinchZoom = null;
+            this.timer = null;
+            this.docWidth = document.documentElement.clientWidth;
+            this.winWidth = $(window).width();
+            this.cache = {};
+            this.eventType = {};
+            this.cacheNum = 1;
+            this.resizeEvent = false;
+            this.cacheData = null;
             if (this.container[0].pdfLoaded) {
                 this.destroy();
             }
             this.container[0].pdfLoaded = false;
             this.container.addClass("pdfjs")
-            var self = this;
             this.initTime = new Date().getTime();
             setTimeout(function () {
                 var arr1 = self.eventType["scroll"];
@@ -656,30 +656,26 @@
                     }
                 }
             }, 0)
-            options = options ? options : {};
-            options.pdfurl = options.pdfurl ? options.pdfurl : null;
-            options.data = options.data ? options.data : null;
-            options.scale = options.scale ? options.scale : self.scale;
-            options.zoomEnable = options.zoomEnable === false ? false : true;
-            options.scrollEnable = options.scrollEnable === false ? false : true;
-            options.loadingBar = options.loadingBar === false ? false : true;
-            options.pageNum = options.pageNum === false ? false : true;
-            options.backTop = options.backTop === false ? false : true;
-            options.URIenable = options.URIenable === false ? false : true;
-            options.fullscreen = options.fullscreen === false ? false : true;
-            options.lazy = options.lazy === true ? true : false;
-            options.renderType = options.renderType === "canvas" ? "canvas" : "svg";
-            options.resize = options.resize === false ? false : true;
-			if(options.limit){
-				var n = parseFloat(options.limit)
-				options.limit = isNaN(n) ? 0 : n < 0 ? 0 : n;
+            this.options = this.options ? this.options : {};
+            this.options.pdfurl = this.options.pdfurl ? this.options.pdfurl : null;
+            this.options.data = this.options.data ? this.options.data : null;
+            this.options.scale = this.scale;
+            this.options.zoomEnable = this.options.zoomEnable === false ? false : true;
+            this.options.scrollEnable = this.options.scrollEnable === false ? false : true;
+            this.options.loadingBar = this.options.loadingBar === false ? false : true;
+            this.options.pageNum = this.options.pageNum === false ? false : true;
+            this.options.backTop = this.options.backTop === false ? false : true;
+            this.options.URIenable = this.options.URIenable === true ? true : false;
+            this.options.fullscreen = this.options.fullscreen === false ? false : true;
+            this.options.lazy = this.options.lazy === true ? true : false;
+            this.options.renderType = this.options.renderType === "svg" ? "svg" : "canvas";
+            this.options.resize = this.options.resize === false ? false : true;
+			if(this.options.limit){
+				var n = parseFloat(this.options.limit)
+				this.options.limit = isNaN(n) ? 0 : n < 0 ? 0 : n;
 			}else{
-				options.limit = 0
+				this.options.limit = 0
 			}
-            if (options.renderType === "canvas") {
-                options.scale = 2;
-            }
-            options.type = options.type === "ajax" ? "ajax" : "fetch";
             var html = '<div class="loadingBar">' +
                 '<div class="progress">' +
                 ' <div class="glimmer">' +
@@ -715,13 +711,13 @@
             this.progressDom = this.progress[0];
             this.backTop = this.container.find('.backTop');
             this.loading = this.container.find('.loading');
-            if (!options.loadingBar) {
+            if (!this.options.loadingBar) {
                 this.loadingBar.hide()
             }
             var containerH = this.container.height(),
                 height = containerH * (1 / 3);
 
-            if (!options.scrollEnable) {
+            if (!this.options.scrollEnable) {
                 this.viewerContainer.css({
                     "overflow": "hidden"
                 })
@@ -733,11 +729,11 @@
             viewerContainer.addEventListener('scroll', function () {
                 var scrollTop = viewerContainer.scrollTop;
                 if (scrollTop >= 150) {
-                    if (options.backTop) {
+                    if (self.options.backTop) {
                         self.backTop.show();
                     }
                 } else {
-                    if (options.backTop) {
+                    if (self.options.backTop) {
                         self.backTop.fadeOut(200);
                     }
                 }
@@ -745,7 +741,7 @@
                     self.pages = self.viewerContainer.find('.pageContainer');
                 }
                 clearTimeout(self.timer);
-                if (options.pageNum && self.pageNum) {
+                if (self.options.pageNum && self.pageNum) {
                     self.pageNum.show();
                 }
                 var h = containerH;
@@ -754,7 +750,7 @@
                         var top = obj.getBoundingClientRect().top;
                         var bottom = obj.getBoundingClientRect().bottom;
                         if (top <= height && bottom > height) {
-                            if (options.pageNum) {
+                            if (self.options.pageNum) {
                                 self.pageNow.text(index + 1)
                             }
                             self.currentNum = index + 1;
@@ -771,11 +767,11 @@
                     self.pageNow.text(1)
                 }
                 self.timer = setTimeout(function () {
-                    if (options.pageNum && self.pageNum) {
+                    if (self.options.pageNum && self.pageNum) {
                         self.pageNum.fadeOut(200);
                     }
                 }, 1500)
-                if (options.lazy) {
+                if (self.options.lazy) {
                     var num = Math.floor(100 / self.totalNum).toFixed(2);
                     if (self.cache[self.cacheNum + ""] && !self.cache[self.cacheNum + ""].loaded) {
                         var page = self.cache[self.cacheNum + ""].page;
@@ -783,10 +779,10 @@
                         var pageNum = self.cacheNum;
                         self.cache[pageNum + ""].loaded = true;
                         var scaledViewport = self.cache[pageNum + ""].scaledViewport;
-                        if (options.renderType === "svg") {
-                            self.renderSvg(page, scaledViewport, pageNum, num, container, options)
+                        if (self.options.renderType === "svg") {
+                            self.renderSvg(page, scaledViewport, pageNum, num, container, self.options)
                         } else {
-                            self.renderCanvas(page, scaledViewport, pageNum, num, container, options)
+                            self.renderCanvas(page, scaledViewport, pageNum, num, container, self.options)
                         }
                     }
                     if (self.cache[(self.totalNum - 1) + ""] && self.cache[(self.totalNum - 1) + ""].loaded && !self.cache[self.totalNum + ""].loaded) {
@@ -795,10 +791,10 @@
                         var pageNum = self.totalNum;
                         self.cache[pageNum + ""].loaded = true;
                         var scaledViewport = self.cache[pageNum + ""].scaledViewport;
-                        if (options.renderType === "svg") {
-                            self.renderSvg(page, scaledViewport, pageNum, num, container, options)
+                        if (self.options.renderType === "svg") {
+                            self.renderSvg(page, scaledViewport, pageNum, num, container, self.options)
                         } else {
-                            self.renderCanvas(page, scaledViewport, pageNum, num, container, options)
+                            self.renderCanvas(page, scaledViewport, pageNum, num, container, self.options)
                         }
                     }
                 }
@@ -836,7 +832,6 @@
                     }
                 }
             })
-            //获取url带的参数地址
             function GetQueryString(name) {
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
                 var r = g.location.search.substr(1).match(reg);
@@ -844,69 +839,68 @@
                 return "";
             }
             var pdfurl = GetQueryString("file"), url = "";
-            if (pdfurl && options.URIenable) {
+            if (pdfurl && self.options.URIenable) {
                 url = pdfurl
-            } else if (options.pdfurl) {
-                url = options.pdfurl
+            } else if (self.options.pdfurl) {
+                url = self.options.pdfurl
             }
+            self.loadingBar.show();
+            self.progress.css({
+                width: "3%"
+            })
             if (url) {
-                if (options.type === "ajax") {
-                    $.ajax({
-                        type: "get",
-                        mimeType: 'text/plain; charset=x-user-defined',
-                        cache: false,
-                        url: url,
-                        success: function (data) {
-                            var rawLength = data.length;
-                            // var array = new Uint8Array(new ArrayBuffer(rawLength));
-                            // for (i = 0; i < rawLength; i++) {
-                            //     array[i] = data.charCodeAt(i) & 0xff;
-                            // }
-                            var array = [];
-                            for (i = 0; i < rawLength; i++) {
-                                array.push(data.charCodeAt(i) & 0xff);
-                            }
-                            self.renderPdf(options, {
-                                data: array
-                            })
-                        },
-                        error: function (err) {
-                            self.loading.hide()
-                            var time = new Date().getTime();
-                            self.endTime = time - self.initTime;
-                            var arr1 = self.eventType["complete"];
-                            if (arr1 && arr1 instanceof Array) {
-                                for (var i = 0; i < arr1.length; i++) {
-                                    arr1[i] && arr1[i].call(self, "error", err.statusText, self.endTime)
-                                }
-                            }
-                            var arr2 = self.eventType["error"];
-                            if (arr2 && arr2 instanceof Array) {
-                                for (var i = 0; i < arr2.length; i++) {
-                                    arr2[i] && arr2[i].call(self, err.statusText, self.endTime)
-                                }
-                            }
-                            throw Error(err.statusText)
+                $.ajax({
+                    type: "get",
+                    mimeType: 'text/plain; charset=x-user-defined',
+                    url: url,
+                    success: function (data) {
+                        var rawLength = data.length;
+                        // var array = new Uint8Array(new ArrayBuffer(rawLength));
+                        // for (i = 0; i < rawLength; i++) {
+                        //     array[i] = data.charCodeAt(i) & 0xff;
+                        // }
+                        var array = [];
+                        for (i = 0; i < rawLength; i++) {
+                            array.push(data.charCodeAt(i) & 0xff);
                         }
-                    });
-                } else {
-                    self.renderPdf(options, {
-                        url: url
-                    })
-                }
-            } else if (options.data) {
-                var data = options.data;
+                        self.cacheData = array
+                        self.renderPdf(self.options, {
+                            data: array
+                        })
+                    },
+                    error: function (err) {
+                        self.loading.hide()
+                        var time = new Date().getTime();
+                        self.endTime = time - self.initTime;
+                        var arr1 = self.eventType["complete"];
+                        if (arr1 && arr1 instanceof Array) {
+                            for (var i = 0; i < arr1.length; i++) {
+                                arr1[i] && arr1[i].call(self, "error", err.statusText, self.endTime)
+                            }
+                        }
+                        var arr2 = self.eventType["error"];
+                        if (arr2 && arr2 instanceof Array) {
+                            for (var i = 0; i < arr2.length; i++) {
+                                arr2[i] && arr2[i].call(self, err.statusText, self.endTime)
+                            }
+                        }
+                        throw Error(err.statusText)
+                    }
+                });
+            } else if (self.options.data) {
+                var data = self.options.data;
                 var rawLength = data.length;
                 if (typeof data === "string" && data != "") {
                     var array = [];
                     for (i = 0; i < rawLength; i++) {
                         array.push(data.charCodeAt(i) & 0xff);
                     }
-                    self.renderPdf(options, {
+                    self.cacheData = array
+                    self.renderPdf(self.options, {
                         data: array
                     })
                 } else if (typeof data === "object") {
-                    if (data[0] === 0) {
+                    if (data.length==0) {
                         var time = new Date().getTime();
                         self.endTime = time - self.initTime;
                         var arr1 = self.eventType["complete"];
@@ -923,7 +917,8 @@
                         }
                         throw Error("options.data is empty Array")
                     } else {
-                        self.renderPdf(options, {
+                        self.cacheData = data
+                        self.renderPdf(self.options, {
                             data: data
                         })
                     }
@@ -956,10 +951,7 @@
                 obj.cMapUrl = './js/cmaps/';
             }
             obj.cMapPacked = true;
-            self.loadingBar.show();
-            self.progress.css({
-                width: "3%"
-            })
+            
             pdfjsLib.getDocument(obj).then(function (pdf) {
                 self.loading.hide()
                 self.thePDF = pdf;
@@ -968,46 +960,59 @@
 					 self.totalNum = options.limit
 				}
                 self.pageTotal.text(self.totalNum)
-                var arr1 = self.eventType["ready"];
-                if (arr1 && arr1 instanceof Array) {
-                    for (var i = 0; i < arr1.length; i++) {
-                        arr1[i] && arr1[i].call(self)
-                    }
-                }
-                self.pinchZoom = new PinchZoom(self.viewer, {
-                    tapZoomFactor: options.tapZoomFactor,
-                    zoomOutFactor: options.zoomOutFactor,
-                    animationDuration: options.animationDuration,
-                    maxZoom: options.maxZoom,
-                    minZoom: options.minZoom
-                }, self.viewerContainer);
-                self.pinchZoom.done = function (scale) {
-                    if (scale == 1) {
-                        if (self.viewerContainer) {
-                            self.viewerContainer.css({
-                                '-webkit-overflow-scrolling': 'touch'
-                            })
-                        }
-
-                    } else {
-                        if (self.viewerContainer) {
-                            self.viewerContainer.css({
-                                '-webkit-overflow-scrolling': 'auto'
-                            })
-                        }
-                    }
-                    var arr1 = self.eventType["zoom"];
+                if(!self.pinchZoom){
+                    var arr1 = self.eventType["ready"];
                     if (arr1 && arr1 instanceof Array) {
                         for (var i = 0; i < arr1.length; i++) {
-                            arr1[i] && arr1[i].call(self, scale)
+                            arr1[i] && arr1[i].call(self)
                         }
                     }
+                    self.pinchZoom = new PinchZoom(self.viewer, {
+                        tapZoomFactor: options.tapZoomFactor,
+                        zoomOutFactor: options.zoomOutFactor,
+                        animationDuration: options.animationDuration,
+                        maxZoom: options.maxZoom,
+                        minZoom: options.minZoom
+                    }, self.viewerContainer);
+                    var timeout,firstZoom=true;
+                    self.pinchZoom.done = function (scale) {
+                        clearTimeout(timeout)
+                        timeout = setTimeout(function(){
+                            if(self.options.renderType==="svg"){
+                                return
+                            }
+                            console.log(scale)
+                            self.options.scale = scale;
+                            self.renderPdf(self.options,{data: self.cacheData})
+                        },400)
+                        if (scale == 1) {
+                            if (self.viewerContainer) {
+                                self.viewerContainer.css({
+                                    '-webkit-overflow-scrolling': 'touch'
+                                })
+                            }
+    
+                        } else {
+                            if (self.viewerContainer) {
+                                self.viewerContainer.css({
+                                    '-webkit-overflow-scrolling': 'auto'
+                                })
+                            }
+                        }
+                        var arr1 = self.eventType["zoom"];
+                        if (arr1 && arr1 instanceof Array) {
+                            for (var i = 0; i < arr1.length; i++) {
+                                arr1[i] && arr1[i].call(self, scale)
+                            }
+                        }
+                    }
+                    if (options.zoomEnable) {
+                        self.pinchZoom.enable()
+                    } else {
+                        self.pinchZoom.disable()
+                    }
                 }
-                if (options.zoomEnable) {
-                    self.pinchZoom.enable()
-                } else {
-                    self.pinchZoom.disable()
-                }
+                
                 var promise = Promise.resolve();
                 var num = Math.floor(100 / self.totalNum).toFixed(2);
                 for (var i = 1; i <= self.totalNum; i++) {
@@ -1023,26 +1028,32 @@
                             var viewport = page.getViewport(options.scale);
                             var scale = (self.docWidth / viewport.width).toFixed(2)
                             var scaledViewport = page.getViewport(parseFloat(scale))
-                            var container = document.createElement('div');
-                            container.id = 'pageContainer' + pageNum;
-                            container.className = 'pageContainer';
-                            container.setAttribute('name', 'page=' + pageNum);
-                            container.setAttribute('title', 'Page ' + pageNum);
-                            var loadEffect = document.createElement('div');
-                            loadEffect.className = 'loadEffect';
-                            container.appendChild(loadEffect);
-                            self.viewer[0].appendChild(container);
-                            if (window.ActiveXObject || "ActiveXObject" in window) {
-                                $(container).css({
-                                    'width': viewport.width + 'px',
-                                    "height": viewport.height + 'px'
-                                }).attr("data-scale", viewport.width / viewport.height)
-                            } else {
-                                $(container).css({
-                                    'max-width': viewport.width,
-                                    "max-height": viewport.height,
-                                    "min-height":   $(container).width() / (viewport.viewBox[2]/ viewport.viewBox[3]) + 'px'
-                                }).attr("data-scale", viewport.width / viewport.height)
+                            var div =document.getElementById('pageContainer' + pageNum)
+                            var container;
+                            if(!div){
+                                container = document.createElement('div');
+                                container.id = 'pageContainer' + pageNum;
+                                container.className = 'pageContainer';
+                                container.setAttribute('name', 'page=' + pageNum);
+                                container.setAttribute('title', 'Page ' + pageNum);
+                                var loadEffect = document.createElement('div');
+                                loadEffect.className = 'loadEffect';
+                                container.appendChild(loadEffect);
+                                self.viewer[0].appendChild(container);
+                                if (window.ActiveXObject || "ActiveXObject" in window) {
+                                    $(container).css({
+                                        'width': viewport.width + 'px',
+                                        "height": viewport.height + 'px'
+                                    }).attr("data-scale", viewport.width / viewport.height)
+                                } else {
+                                    $(container).css({
+                                        'max-width': viewport.width,
+                                        "max-height": viewport.height,
+                                        "min-height":   $(container).width() / (viewport.viewBox[2]/ viewport.viewBox[3]) + 'px'
+                                    }).attr("data-scale", viewport.width / viewport.height)
+                                }
+                            }else{
+                                container = div
                             }
                             self.cache[pageNum + ""].container = container;
                             self.cache[pageNum + ""].scaledViewport = scaledViewport;
@@ -1092,7 +1103,6 @@
         },
         renderSvg: function (page, scaledViewport, pageNum, num, container, options, viewport) {
             var self = this;
-
             return page.getOperatorList().then(function (opList) {
                 var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
                 return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
@@ -1104,13 +1114,6 @@
                     self.progress.css({
                         width: num * self.loadedCount + "%"
                     })
-                    if (window.ActiveXObject || "ActiveXObject" in window) {
-
-                     } else {
-                        $(container).css({
-                            // "min-height": svg.getBBox().height + 'px'
-                        })
-                    }
                     var time = new Date().getTime();
                     var arr1 = self.eventType["render"];
                     if (arr1 && arr1 instanceof Array) {
@@ -1144,7 +1147,6 @@
                 width: num * self.loadedCount + "%"
             })
             obj2.src = obj2.canvas.toDataURL("image/jpeg");
-            //在canvas上绘制
             return page.render({
                 canvasContext: context,
                 viewport: viewport
@@ -1160,13 +1162,18 @@
                 }
                 obj2.src = obj2.canvas.toDataURL("image/jpeg");
                 img.src = obj2.src;
-                container.appendChild(img);
-                img.onload = function () {
-                    $(container).css({
-                        "min-height": img.height + 'px'
-                    })
+                img.className = "canvasImg"+pageNum;
+                var img0=$("#pageContainer"+pageNum).find(".canvasImg"+pageNum)[0];
+                if(container && !img0){
+                    container.appendChild(img);
+                    img.onload = function () {
+                        // $(container).css({
+                        //     "min-height": img.height + 'px'
+                        // })
+                    }
+                }else if(img0){
+                    img0.src = obj2.src
                 }
-
                 var time = new Date().getTime();
                 var arr1 = self.eventType["render"];
                 if (arr1 && arr1 instanceof Array) {

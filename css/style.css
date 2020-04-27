@@ -33,8 +33,7 @@ button,
 input,
 select,
 textarea {
-	font: 12px/1.5tahoma, arial, \5b8b\4f53;
-	font-family: "Fredoka One", cursive;
+	font-size:12px;
 }
 
 h1,
