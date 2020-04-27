@@ -141,7 +141,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |URIenable|  {Boolean} |true、false， 默认false |  开启地址栏file参数|
 |data|  {String(blob) / Array(Uint8Array)} | - |pdf文件流 ，与pdfurl二选一。可以传普通文件流blob，也可以传转过码的Uint8Array|
 |type| {String}|"ajax"、"fetch"，默认"fetch"|请求pdf方式|
-|renderType| {String}|"canvas"、"svg"，默认"svg"|pdf渲染模式|
+|renderType| {String}|"canvas"、"svg"，默认"canvas"|pdf渲染模式|
 |lazy| {Boolean}|true、false， 默认false|是否开启懒加载|
 |maxZoom|  {Number}|默认4|手势缩放最大倍数|
 |tapZoomFactor|  {Number}|默认2| 双击放大倍数|
@@ -157,7 +157,6 @@ $.ajax({
 	url: "https://gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
 	type: "get",
 	mimeType: 'text/plain; charset=x-user-defined',//jq ajax请求文件流的方式
-	cache: false,
 	success: function (data) {
 		var pdfh5 = new Pdfh5('#demo', {
 			data: data
@@ -171,7 +170,6 @@ $.ajax({
 	url: "https://gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
 	type: "get",
 	mimeType: 'text/plain; charset=x-user-defined',//jq ajax请求文件流的方式
-	cache: false,
 	success: function (data) {
 		var rawLength = data.length;
 		var array = new Uint8Array(new ArrayBuffer(rawLength));
@@ -264,4 +262,10 @@ pdfh5.on("ready", function () {
 - *鑫 ¥9.99
 - *手 ¥9.99
 - *勇 ￥19.99 【支付宝留言：“鼓励共享优质代码”】
+<<<<<<< HEAD
 - *爷 ¥5.00
+=======
+- *爷 ¥5.00
+- *超 ¥20.00
+- 3*Y ¥5.00
+>>>>>>> b62860efac6ed61af4c4e73ce0f6a1745166f1ba
