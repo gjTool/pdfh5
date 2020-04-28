@@ -1,5 +1,5 @@
 ; (function (g, fn) {
-    var version = "1.3.2", pdfjsVersion = "1.8.188";
+    var version = "1.3.4", pdfjsVersion = "1.8.188";
     console.log("pdfh5.js v" + version + " & pdf.js v" + pdfjsVersion + " & https://www.gjtool.cn")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {
@@ -844,10 +844,13 @@
             } else if (self.options.pdfurl) {
                 url = self.options.pdfurl
             }
-            self.loadingBar.show();
-            self.progress.css({
-                width: "3%"
-            })
+			if(self.options.loadingBar){
+				self.loadingBar.show();
+				self.progress.css({
+				    width: "3%"
+				})
+			}
+            
             if (url) {
                 $.ajax({
                     type: "get",
@@ -1115,9 +1118,11 @@
                     container.appendChild(svg);
                     svg.style.width = "100%";
                     svg.style.height = "100%";
-                    self.progress.css({
-                        width: num * self.loadedCount + "%"
-                    })
+					if(self.options.loadingBar){
+						self.progress.css({
+						    width: num * self.loadedCount + "%"
+						})
+					}
                     var time = new Date().getTime();
                     var arr1 = self.eventType["render"];
                     if (arr1 && arr1 instanceof Array) {
@@ -1146,10 +1151,11 @@
             var context = canvas.getContext('2d');
             canvas.height = viewport.height;
             canvas.width = viewport.width;
-
-            self.progress.css({
-                width: num * self.loadedCount + "%"
-            })
+			if(self.options.loadingBar){
+				self.progress.css({
+					width: num * self.loadedCount + "%"
+				})
+			}
             obj2.src = obj2.canvas.toDataURL("image/jpeg");
             return page.render({
                 canvasContext: context,
@@ -1193,9 +1199,11 @@
         finalRender: function (options) {
             var time = new Date().getTime();
             var self = this;
-            self.progress.css({
-                width: "100%"
-            });
+			if(self.options.loadingBar){
+				self.progress.css({
+				    width: "100%"
+				});
+			}
             setTimeout(function () {
                 self.loadingBar.hide();
             }, 300)

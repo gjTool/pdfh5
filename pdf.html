@@ -71,7 +71,9 @@
             $("#app").remove()
             $("#demo").show()
              pdfh5 = new Pdfh5('#demo', {
-                pdfurl: "git.pdf"
+                pdfurl: "git.pdf",
+				lazy:true,
+				loadingBar:false
             });
             // setTimeout(() => {
             //     var pdfh5 = new Pdfh5('#demo', {
