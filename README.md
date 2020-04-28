@@ -1,4 +1,4 @@
-# pdfh5.js v1.3.3
+# pdfh5.js v1.3.5
 
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)   [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
@@ -256,10 +256,14 @@ pdfh5.on("ready", function () {
 - [靓仔城](https://github.com/ljc7877376) ￥6.67
 - 南蓝 ￥8.80
 - 我是太阳 ￥29.99
-- *小波 ￥1.00 【支付宝留言：“打赏一块钱，我做两天都做不好双指缩放”】
+- *小波 ￥1.00
 - *鑫 ¥9.99
 - *手 ¥9.99
-- *勇 ￥19.99 【支付宝留言：“鼓励共享优质代码”】
+- *勇 ￥19.99 
 - *爷 ¥5.00
 - *超 ¥20.00
 - 3*Y ¥5.00
+- *阳 ¥5.00
+- **雄 ¥5.00
+- A*r ¥1.23
+- *客 ¥5.00

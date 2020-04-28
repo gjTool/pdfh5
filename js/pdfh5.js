@@ -1,6 +1,6 @@
 ; (function (g, fn) {
-    var version = "1.3.4", pdfjsVersion = "1.8.188";
-    console.log("pdfh5.js v" + version + " & pdf.js v" + pdfjsVersion + " & https://www.gjtool.cn")
+    var version = "1.3.5", pdfjsVersion = "1.8.188";
+    console.log("pdfh5.js v" + version + " & https://www.gjtool.cn")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {
             g.$ = require('./jquery-1.11.3.min.js');
@@ -984,14 +984,17 @@
                             if(self.options.renderType==="svg"){
                                 return
                             }
+							if(scale<=1 || self.options.scale ==3){
+								return
+							}
+							console.log(scale,self.options.scale)
                             if (self.thePDF) {
                                 self.thePDF.destroy();
                                 self.thePDF = null;
                             }
-                            console.log(scale)
                             self.options.scale = scale;
                             self.renderPdf(self.options,{data: self.cacheData})
-                        },400)
+                        },310)
                         if (scale == 1) {
                             if (self.viewerContainer) {
                                 self.viewerContainer.css({
