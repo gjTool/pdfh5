@@ -1,6 +1,6 @@
 {
   "_from": "pdfh5",
-  "_id": "pdfh5@1.3.5",
+  "_id": "pdfh5@1.3.6",
   "_inBundle": false,
   "_integrity": "sha512-9I0AcoEdefvFJZqwv/1Q5ht4QGzmieoVqkd0uehp+62H0KrWtnXYfnHjlwQcfiStdynpCYYJu3A6F1AVUBbqbQ==",
   "_location": "/pdfh5",
@@ -19,7 +19,7 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/pdfh5/-/pdfh5-1.3.5.tgz",
+  "_resolved": "https://registry.npmjs.org/pdfh5/-/pdfh5-1.3.6.tgz",
   "_shasum": "c5e1a233c4baa346727bb968e7a68e2c3453b5aa",
   "_spec": "pdfh5",
   "_where": "/Users/gaojin/npm-pdfh5",
@@ -57,5 +57,5 @@
     "url": "git+https://github.com/gjTool/pdfh5.git"
   },
   "scripts": {},
-  "version": "1.3.5"
+  "version": "1.3.6"
 }

@@ -1,9 +1,13 @@
 node_modules
 package-lock.json
 pdf
+index
+git
 testPDF
 example
 fonts
 version
 test
 testPDF
+.github
+.vscode
