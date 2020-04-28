@@ -3239,7 +3239,7 @@ var WorkerTransport = function WorkerTransportClosure() {
       }
       var promise = this.messageHandler.sendWithPromise('GetPage', { pageIndex: pageIndex }).then(function (pageInfo) {
         if (this.destroyed) {
-          throw new Error('Transport destroyed');
+          // throw new Error('Transport destroyed');
         }
         var page = new PDFPageProxy(pageIndex, pageInfo, this);
         this.pageCache[pageIndex] = page;

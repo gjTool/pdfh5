@@ -1,5 +1,5 @@
 ; (function (g, fn) {
-    var version = "1.3.00", pdfjsVersion = "1.8.188";
+    var version = "1.3.01", pdfjsVersion = "1.8.188";
     console.log("pdfh5.js v" + version + " & pdf.js v" + pdfjsVersion + " & https://www.gjtool.cn")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {
@@ -34,7 +34,7 @@
             this.options.tapZoomFactor = isNaN(options.tapZoomFactor) ? 2 : options.tapZoomFactor;
             this.options.zoomOutFactor = isNaN(options.zoomOutFactor) ? 1.2 : options.zoomOutFactor;
             this.options.animationDuration = isNaN(options.animationDuration) ? 300 : options.animationDuration;
-            this.options.maxZoom = isNaN(options.maxZoom) ? 4 : options.maxZoom;
+            this.options.maxZoom = isNaN(options.maxZoom) ? 3 : options.maxZoom;
             this.options.minZoom = isNaN(options.minZoom) ? 0.8 : options.minZoom;
             this.setupMarkup();
             this.bindEvents();
@@ -58,7 +58,7 @@
                 tapZoomFactor: 2,
                 zoomOutFactor: 1.2,
                 animationDuration: 300,
-                maxZoom: 4,
+                maxZoom: 3,
                 minZoom: 0.8,
                 lockDragAxis: false,
                 use2d: true,
@@ -629,7 +629,7 @@
             this.totalNum = null;
             this.pages = null;
             this.initTime = 0;
-            this.scale = 1.0;
+            this.scale = 1;
             this.currentNum = 1;
             this.loadedCount = 0;
             this.endTime = 0;
@@ -642,6 +642,7 @@
             this.cacheNum = 1;
             this.resizeEvent = false;
             this.cacheData = null;
+            this.pdfjsLibPromise=null;
             if (this.container[0].pdfLoaded) {
                 this.destroy();
             }
@@ -948,11 +949,11 @@
             if (options.cMapUrl) {
                 obj.cMapUrl = options.cMapUrl;
             } else {
-                obj.cMapUrl = './js/cmaps/';
+                obj.cMapUrl = 'https://www.gjtool.cn/cmaps/';
             }
             obj.cMapPacked = true;
             
-            pdfjsLib.getDocument(obj).then(function (pdf) {
+            this.pdfjsLibPromise = pdfjsLib.getDocument(obj).then(function (pdf) {
                 self.loading.hide()
                 self.thePDF = pdf;
                 self.totalNum = pdf.numPages;
@@ -980,6 +981,10 @@
                         timeout = setTimeout(function(){
                             if(self.options.renderType==="svg"){
                                 return
+                            }
+                            if (self.thePDF) {
+                                self.thePDF.destroy();
+                                self.thePDF = null;
                             }
                             console.log(scale)
                             self.options.scale = scale;
