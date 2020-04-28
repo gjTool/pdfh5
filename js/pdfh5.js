@@ -1,5 +1,5 @@
 ; (function (g, fn) {
-    var version = "1.3.1", pdfjsVersion = "1.8.188";
+    var version = "1.3.2", pdfjsVersion = "1.8.188";
     console.log("pdfh5.js v" + version + " & pdf.js v" + pdfjsVersion + " & https://www.gjtool.cn")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {

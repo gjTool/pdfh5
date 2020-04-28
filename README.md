@@ -1,8 +1,8 @@
-# pdfh5.js v1.3.1
+# pdfh5.js v1.3.2
 
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)   [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
-**pdfh5.js 基于pdf.js和jQuery，web/h5/移动端PDF预览手势缩放插件。支持canvas和svg两种渲染模式，支持ajax和fetch两种请求方式。支持懒加载。**
+**pdfh5.js 基于pdf.js和jQuery，web/h5/移动端PDF预览手势缩放插件。**
 
 
 - [pdfh5博客主页](https://www.gjtool.cn/)  
