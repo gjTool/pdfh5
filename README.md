@@ -143,7 +143,6 @@ var pdfh5 = new Pdfh5('#demo', {
 |renderType| {String}|"canvas"、"svg"，默认"canvas"|pdf渲染模式|
 |lazy| {Boolean}|true、false， 默认false|是否开启懒加载|
 |maxZoom|  {Number}|默认3|手势缩放最大倍数|
-|tapZoomFactor|  {Number}|默认2| 双击放大倍数|
 |scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动|
 |zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
 |cMapUrl| {String}| 默认"https://wwww.gjtool.cn//cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径，例如 cMapUrl:"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"|

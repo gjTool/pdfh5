@@ -31,7 +31,6 @@
                 y: 0
             };
             this.options = $.extend({}, this.defaults, options);
-            this.options.tapZoomFactor = isNaN(options.tapZoomFactor) ? 2 : options.tapZoomFactor;
             this.options.zoomOutFactor = isNaN(options.zoomOutFactor) ? 1.2 : options.zoomOutFactor;
             this.options.animationDuration = isNaN(options.animationDuration) ? 300 : options.animationDuration;
             this.options.maxZoom = isNaN(options.maxZoom) ? 3 : options.maxZoom;
@@ -541,7 +540,7 @@
 
                     if (time - lastTouchStart < 300 && Math.abs(pageY - lastTouchY) < 10 && Math.abs(lastTop - top) < 10) {
                         cancelEvent(event);
-                        target.handleDoubleTap(event);
+                        // target.handleDoubleTap(event);
                         switch (interaction) {
                             case "zoom":
                                 target.handleZoomEnd(event);
