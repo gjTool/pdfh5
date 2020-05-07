@@ -1,5 +1,5 @@
 ; (function (g, fn) {
-    var version = "1.3.5", pdfjsVersion = "1.8.188";
+    var version = "1.3.5", pdfjsVersion = "2.3.200";
     console.log("pdfh5.js v" + version + " & https://www.gjtool.cn")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {
@@ -951,7 +951,7 @@
             if (options.cMapUrl) {
                 obj.cMapUrl = options.cMapUrl;
             } else {
-                obj.cMapUrl = 'https://www.gjtool.cn/cmaps/';
+                obj.cMapUrl = 'https://unpkg.com/pdfjs-dist@2.0.943/cmaps/';
             }
             obj.cMapPacked = true;
             
