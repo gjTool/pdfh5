@@ -9,7 +9,6 @@
 
 - [pdfh5项目GitHub地址](https://github.com/gjTool/pdfh5)  
 
-- [pdfh5打包下载](https://www.gjtool.cn/download/pdfh5.zip)  
 
 
 
@@ -249,7 +248,8 @@ pdfh5.on("ready", function () {
 ![支付宝二维码](https://www.gjtool.cn/download/zfb.jpg) ![微信二维码](https://www.gjtool.cn/download/wx.jpg)
 
 - 感谢打赏！请打赏的童鞋在[pdfh5.js打赏榜](https://www.gjtool.cn/articles/2019/09/24/1569327833358.html)留下github、QQ、微信 。然后，我会对打赏过的童鞋的问题及时响应。（当然是在我不忙的时候啦）
-
+- 相比打赏，点star还要重要些，请各位走过路过帮忙点下star，万分感谢
+- QQ群：651601340
 
 ## 打赏榜单
 - [JayLin](https://github.com/110117ab) ￥6.66
@@ -268,3 +268,4 @@ pdfh5.on("ready", function () {
 - A*r ¥1.23
 - *客 ¥5.00
 - *运 ¥66.66
+- *辰 ¥30.00
