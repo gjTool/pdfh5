@@ -1,5 +1,7 @@
-; (function (g, fn) {
-    var version = "1.3.8", pdfjsVersion = "2.3.200";
+;
+(function(g, fn) {
+    var version = "1.3.8",
+        pdfjsVersion = "2.3.200";
     console.log("pdfh5.js v" + version + " & https://www.gjtool.cn")
     if (typeof require !== 'undefined') {
         if (g.$ === undefined) {
@@ -8,9 +10,11 @@
         g.pdfjsWorker = require('./pdf.worker.js');
         g.pdfjsLib = require('./pdf.js');
     }
-    var pdfjsLib = g.pdfjsLib, $ = g.$, pdfjsWorker = g.pdfjsWorker;
+    var pdfjsLib = g.pdfjsLib,
+        $ = g.$,
+        pdfjsWorker = g.pdfjsWorker;
     if (typeof define === 'function' && define.amd) {
-        define(function () {
+        define(function() {
             return fn(g, pdfjsWorker, pdfjsLib, $, version)
         })
     } else if (typeof module !== 'undefined' && module.exports) {
@@ -18,37 +22,37 @@
     } else {
         g.Pdfh5 = fn(g, pdfjsWorker, pdfjsLib, $, version)
     }
-})(typeof window !== 'undefined' ? window : this, function (g, pdfjsWorker, pdfjsLib, $, version) {
+})(typeof window !== 'undefined' ? window : this, function(g, pdfjsWorker, pdfjsLib, $, version) {
     'use strict';
-    var definePinchZoom = function ($) {
-        var PinchZoom = function (el, options, viewerContainer) {
-            this.el = $(el);
-            this.viewerContainer = viewerContainer;
-            this.zoomFactor = 1;
-            this.lastScale = 1;
-            this.offset = {
-                x: 0,
-                y: 0
-            };
-            this.options = $.extend({}, this.defaults, options);
-            this.options.zoomOutFactor = isNaN(options.zoomOutFactor) ? 1.2 : options.zoomOutFactor;
-            this.options.animationDuration = isNaN(options.animationDuration) ? 300 : options.animationDuration;
-            this.options.maxZoom = isNaN(options.maxZoom) ? 3 : options.maxZoom;
-            this.options.minZoom = isNaN(options.minZoom) ? 0.8 : options.minZoom;
-            this.setupMarkup();
-            this.bindEvents();
-            this.update();
-            this.enable();
-            this.height = 0;
-            this.load = false;
-            this.direction = null;
-            this.clientY = null;
-            this.lastclientY = null;
-        },
-            sum = function (a, b) {
+    var definePinchZoom = function($) {
+        var PinchZoom = function(el, options, viewerContainer) {
+                this.el = $(el);
+                this.viewerContainer = viewerContainer;
+                this.zoomFactor = 1;
+                this.lastScale = 1;
+                this.offset = {
+                    x: 0,
+                    y: 0
+                };
+                this.options = $.extend({}, this.defaults, options);
+                this.options.zoomOutFactor = isNaN(options.zoomOutFactor) ? 1.2 : options.zoomOutFactor;
+                this.options.animationDuration = isNaN(options.animationDuration) ? 300 : options.animationDuration;
+                this.options.maxZoom = isNaN(options.maxZoom) ? 3 : options.maxZoom;
+                this.options.minZoom = isNaN(options.minZoom) ? 0.8 : options.minZoom;
+                this.setupMarkup();
+                this.bindEvents();
+                this.update();
+                this.enable();
+                this.height = 0;
+                this.load = false;
+                this.direction = null;
+                this.clientY = null;
+                this.lastclientY = null;
+            },
+            sum = function(a, b) {
                 return a + b;
             },
-            isCloseTo = function (value, expected) {
+            isCloseTo = function(value, expected) {
                 return value > expected - 0.01 && value < expected + 0.01;
             };
 
@@ -67,14 +71,14 @@
                 dragEndEventName: 'pz_dragend',
                 doubleTapEventName: 'pz_doubletap'
             },
-            handleDragStart: function (event) {
+            handleDragStart: function(event) {
                 this.el.trigger(this.options.dragStartEventName);
                 this.stopAnimation();
                 this.lastDragPosition = false;
                 this.hasInteraction = true;
                 this.handleDrag(event);
             },
-            handleDrag: function (event) {
+            handleDrag: function(event) {
 
                 if (this.zoomFactor > 1.0) {
                     var touch = this.getTouches(event)[0];
@@ -84,11 +88,11 @@
                 }
             },
 
-            handleDragEnd: function () {
+            handleDragEnd: function() {
                 this.el.trigger(this.options.dragEndEventName);
                 this.end();
             },
-            handleZoomStart: function (event) {
+            handleZoomStart: function(event) {
                 this.el.trigger(this.options.zoomStartEventName);
                 this.stopAnimation();
                 this.lastScale = 1;
@@ -96,7 +100,7 @@
                 this.lastZoomCenter = false;
                 this.hasInteraction = true;
             },
-            handleZoom: function (event, newScale) {
+            handleZoom: function(event, newScale) {
                 var touchCenter = this.getTouchCenter(this.getTouches(event)),
                     scale = newScale / this.lastScale;
                 this.lastScale = newScale;
@@ -109,15 +113,15 @@
                 this.lastZoomCenter = touchCenter;
             },
 
-            handleZoomEnd: function () {
+            handleZoomEnd: function() {
                 this.el.trigger(this.options.zoomEndEventName);
                 this.end();
             },
-            handleDoubleTap: function (event) {
+            handleDoubleTap: function(event) {
                 var center = this.getTouches(event)[0],
                     zoomFactor = this.zoomFactor > 1 ? 1 : this.options.tapZoomFactor,
                     startZoomFactor = this.zoomFactor,
-                    updateProgress = (function (progress) {
+                    updateProgress = (function(progress) {
                         this.scaleTo(startZoomFactor + progress * (zoomFactor - startZoomFactor), center);
                     }).bind(this);
 
@@ -131,7 +135,7 @@
                 this.animate(this.options.animationDuration, updateProgress, this.swing);
                 this.el.trigger(this.options.doubleTapEventName);
             },
-            sanitizeOffset: function (offset) {
+            sanitizeOffset: function(offset) {
                 var maxX = (this.zoomFactor - 1) * this.getContainerX(),
                     maxY = (this.zoomFactor - 1) * this.getContainerY(),
                     maxOffsetX = Math.max(maxX, 0),
@@ -148,10 +152,10 @@
                     y: y
                 };
             },
-            scaleTo: function (zoomFactor, center) {
+            scaleTo: function(zoomFactor, center) {
                 this.scale(zoomFactor / this.zoomFactor, center);
             },
-            scale: function (scale, center) {
+            scale: function(scale, center) {
                 scale = this.scaleZoomFactor(scale);
                 this.addOffset({
                     x: (scale - 1) * (center.x + this.offset.x),
@@ -159,13 +163,13 @@
                 });
                 this.done && this.done.call(this, this.getInitialZoomFactor() * this.zoomFactor)
             },
-            scaleZoomFactor: function (scale) {
+            scaleZoomFactor: function(scale) {
                 var originalZoomFactor = this.zoomFactor;
                 this.zoomFactor *= scale;
                 this.zoomFactor = Math.min(this.options.maxZoom, Math.max(this.zoomFactor, this.options.minZoom));
                 return this.zoomFactor / originalZoomFactor;
             },
-            drag: function (center, lastCenter, event) {
+            drag: function(center, lastCenter, event) {
                 if (lastCenter) {
                     if (this.options.lockDragAxis) {
                         if (Math.abs(center.x - lastCenter.x) > Math.abs(center.y - lastCenter.y)) {
@@ -192,45 +196,45 @@
                     }
                 }
             },
-            getTouchCenter: function (touches) {
+            getTouchCenter: function(touches) {
                 return this.getVectorAvg(touches);
             },
-            getVectorAvg: function (vectors) {
+            getVectorAvg: function(vectors) {
                 return {
-                    x: vectors.map(function (v) {
+                    x: vectors.map(function(v) {
                         return v.x;
                     }).reduce(sum) / vectors.length,
-                    y: vectors.map(function (v) {
+                    y: vectors.map(function(v) {
                         return v.y;
                     }).reduce(sum) / vectors.length
                 };
             },
-            addOffset: function (offset) {
+            addOffset: function(offset) {
                 this.offset = {
                     x: this.offset.x + offset.x,
                     y: this.offset.y + offset.y
                 };
             },
 
-            sanitize: function () {
+            sanitize: function() {
                 if (this.zoomFactor < this.options.zoomOutFactor) {
                     this.zoomOutAnimation();
                 } else if (this.isInsaneOffset(this.offset)) {
                     this.sanitizeOffsetAnimation();
                 }
             },
-            isInsaneOffset: function (offset) {
+            isInsaneOffset: function(offset) {
                 var sanitizedOffset = this.sanitizeOffset(offset);
                 return sanitizedOffset.x !== offset.x ||
                     sanitizedOffset.y !== offset.y;
             },
-            sanitizeOffsetAnimation: function () {
+            sanitizeOffsetAnimation: function() {
                 var targetOffset = this.sanitizeOffset(this.offset),
                     startOffset = {
                         x: this.offset.x,
                         y: this.offset.y
                     },
-                    updateProgress = (function (progress) {
+                    updateProgress = (function(progress) {
                         this.offset.x = startOffset.x + progress * (targetOffset.x - startOffset.x);
                         this.offset.y = startOffset.y + progress * (targetOffset.y - startOffset.y);
                         this.update();
@@ -242,11 +246,11 @@
                     this.swing
                 );
             },
-            zoomOutAnimation: function () {
+            zoomOutAnimation: function() {
                 var startZoomFactor = this.zoomFactor,
                     zoomFactor = 1,
                     center = this.getCurrentZoomCenter(),
-                    updateProgress = (function (progress) {
+                    updateProgress = (function(progress) {
                         this.scaleTo(startZoomFactor + progress * (zoomFactor - startZoomFactor), center);
                     }).bind(this);
 
@@ -256,17 +260,17 @@
                     this.swing
                 );
             },
-            updateAspectRatio: function () {
+            updateAspectRatio: function() {
                 this.setContainerY(this.getContainerX() / this.getAspectRatio());
             },
-            getInitialZoomFactor: function () {
+            getInitialZoomFactor: function() {
                 if (this.container[0] && this.el[0]) {
                     return this.container[0].offsetWidth / this.el[0].offsetWidth;
                 } else {
                     return 0
                 }
             },
-            getAspectRatio: function () {
+            getAspectRatio: function() {
                 if (this.el[0]) {
                     var offsetHeight = this.el[0].offsetHeight;
                     return this.container[0].offsetWidth / offsetHeight;
@@ -275,7 +279,7 @@
                 }
 
             },
-            getCurrentZoomCenter: function () {
+            getCurrentZoomCenter: function() {
                 var length = this.container[0].offsetWidth * this.zoomFactor,
                     offsetLeft = this.offset.x,
                     offsetRight = length - offsetLeft - this.container[0].offsetWidth,
@@ -301,22 +305,22 @@
                 };
             },
 
-            canDrag: function () {
+            canDrag: function() {
                 return !isCloseTo(this.zoomFactor, 1);
             },
 
-            getTouches: function (event) {
+            getTouches: function(event) {
                 var position = this.container.offset();
-                return Array.prototype.slice.call(event.touches).map(function (touch) {
+                return Array.prototype.slice.call(event.touches).map(function(touch) {
                     return {
                         x: touch.pageX - position.left,
                         y: touch.pageY - position.top
                     };
                 });
             },
-            animate: function (duration, framefn, timefn, callback) {
+            animate: function(duration, framefn, timefn, callback) {
                 var startTime = new Date().getTime(),
-                    renderFrame = (function () {
+                    renderFrame = (function() {
                         if (!this.inAnimation) {
                             return;
                         }
@@ -341,15 +345,15 @@
                 this.inAnimation = true;
                 requestAnimationFrame(renderFrame);
             },
-            stopAnimation: function () {
+            stopAnimation: function() {
                 this.inAnimation = false;
 
             },
-            swing: function (p) {
+            swing: function(p) {
                 return -Math.cos(p * Math.PI) / 2 + 0.5;
             },
 
-            getContainerX: function () {
+            getContainerX: function() {
                 if (this.el[0]) {
                     return this.el[0].offsetWidth;
                 } else {
@@ -357,14 +361,14 @@
                 }
             },
 
-            getContainerY: function () {
+            getContainerY: function() {
                 return this.el[0].offsetHeight;
             },
-            setContainerY: function (y) {
+            setContainerY: function(y) {
                 y = y.toFixed(2);
                 return this.container.height(y);
             },
-            setupMarkup: function () {
+            setupMarkup: function() {
                 this.container = $('<div class="pinch-zoom-container"></div>');
                 this.el.before(this.container);
                 this.container.append(this.el);
@@ -384,25 +388,25 @@
 
             },
 
-            end: function () {
+            end: function() {
                 this.hasInteraction = false;
                 this.sanitize();
                 this.update();
 
             },
-            bindEvents: function () {
+            bindEvents: function() {
                 detectGestures(this.container.eq(0), this, this.viewerContainer);
                 $(g).on('resize', this.update.bind(this));
                 $(this.el).find('img').on('load', this.update.bind(this));
 
             },
-            update: function () {
+            update: function() {
 
                 if (this.updatePlaned) {
                     return;
                 }
                 this.updatePlaned = true;
-                setTimeout((function () {
+                setTimeout((function() {
                     this.updatePlaned = false;
                     this.updateAspectRatio();
                     var zoomFactor = this.getInitialZoomFactor() * this.zoomFactor,
@@ -413,8 +417,8 @@
                     var transform3d = 'scale3d(' + zoomFactor + ', ' + zoomFactor + ',1) ' +
                         'translate3d(' + offsetX + 'px,' + offsetY + 'px,0px)',
                         transform2d = 'scale(' + zoomFactor + ', ' + zoomFactor + ') ' +
-                            'translate(' + offsetX + 'px,' + offsetY + 'px)',
-                        removeClone = (function () {
+                        'translate(' + offsetX + 'px,' + offsetY + 'px)',
+                        removeClone = (function() {
                             if (this.clone) {
                                 this.clone.remove();
                                 delete this.clone;
@@ -441,13 +445,13 @@
                     }
                 }).bind(this), 0);
             },
-            enable: function () {
+            enable: function() {
                 this.enabled = true;
             },
-            disable: function () {
+            disable: function() {
                 this.enabled = false;
             },
-            destroy: function () {
+            destroy: function() {
                 var dom = this.el.clone();
                 var p = this.container.parent();
                 this.container.remove();
@@ -456,7 +460,7 @@
             }
         };
 
-        var detectGestures = function (el, target, viewerContainer) {
+        var detectGestures = function(el, target, viewerContainer) {
             var interaction = null,
                 fingers = 0,
                 lastTouchStart = null,
@@ -465,7 +469,7 @@
                 clientY = null,
                 lastclientY = 0,
                 lastTop = 0,
-                setInteraction = function (newInteraction, event) {
+                setInteraction = function(newInteraction, event) {
                     if (interaction !== newInteraction) {
 
                         if (interaction && !newInteraction) {
@@ -491,7 +495,7 @@
                     interaction = newInteraction;
                 },
 
-                updateInteraction = function (event) {
+                updateInteraction = function(event) {
                     if (fingers === 2) {
                         setInteraction('zoom');
                     } else if (fingers === 1 && target.canDrag()) {
@@ -501,8 +505,8 @@
                     }
                 },
 
-                targetTouches = function (touches) {
-                    return Array.prototype.slice.call(touches).map(function (touch) {
+                targetTouches = function(touches) {
+                    return Array.prototype.slice.call(touches).map(function(touch) {
                         return {
                             x: touch.pageX,
                             y: touch.pageY
@@ -510,25 +514,25 @@
                     });
                 },
 
-                getDistance = function (a, b) {
+                getDistance = function(a, b) {
                     var x, y;
                     x = a.x - b.x;
                     y = a.y - b.y;
                     return Math.sqrt(x * x + y * y);
                 },
 
-                calculateScale = function (startTouches, endTouches) {
+                calculateScale = function(startTouches, endTouches) {
                     var startDistance = getDistance(startTouches[0], startTouches[1]),
                         endDistance = getDistance(endTouches[0], endTouches[1]);
                     return endDistance / startDistance;
                 },
 
-                cancelEvent = function (event) {
+                cancelEvent = function(event) {
                     event.stopPropagation();
                     event.preventDefault();
                 },
 
-                detectDoubleTap = function (event) {
+                detectDoubleTap = function(event) {
                     var time = (new Date()).getTime();
                     var pageY = event.changedTouches[0].pageY;
                     var top = parentNode.scrollTop || 0;
@@ -562,7 +566,7 @@
                 var parentNode = viewerContainer[0];
             }
             if (parentNode) {
-                parentNode.addEventListener('touchstart', function (event) {
+                parentNode.addEventListener('touchstart', function(event) {
                     if (target.enabled) {
                         firstMove = true;
                         fingers = event.touches.length;
@@ -574,7 +578,7 @@
                     }
                 });
 
-                parentNode.addEventListener('touchmove', function (event) {
+                parentNode.addEventListener('touchmove', function(event) {
                     if (target.enabled) {
                         lastclientY = event.changedTouches[0].clientY;
                         if (firstMove) {
@@ -600,7 +604,7 @@
                     }
                 });
 
-                parentNode.addEventListener('touchend', function (event) {
+                parentNode.addEventListener('touchend', function(event) {
                     if (target.enabled) {
                         fingers = event.touches.length;
                         if (fingers > 1) {
@@ -615,14 +619,14 @@
         return PinchZoom;
     };
     var PinchZoom = definePinchZoom($);
-    var Pdfh5 = function (dom, options) {
+    var Pdfh5 = function(dom, options) {
         this.version = version;
         this.container = $(dom);
         this.options = options;
         this.init();
     };
     Pdfh5.prototype = {
-        init: function () {
+        init: function() {
             var self = this;
             this.thePDF = null;
             this.totalNum = null;
@@ -641,14 +645,14 @@
             this.cacheNum = 1;
             this.resizeEvent = false;
             this.cacheData = null;
-            this.pdfjsLibPromise=null;
+            this.pdfjsLibPromise = null;
             if (this.container[0].pdfLoaded) {
                 this.destroy();
             }
             this.container[0].pdfLoaded = false;
             this.container.addClass("pdfjs")
             this.initTime = new Date().getTime();
-            setTimeout(function () {
+            setTimeout(function() {
                 var arr1 = self.eventType["scroll"];
                 if (arr1 && arr1 instanceof Array) {
                     for (var i = 0; i < arr1.length; i++) {
@@ -670,12 +674,12 @@
             this.options.lazy = this.options.lazy === true ? true : false;
             this.options.renderType = this.options.renderType === "svg" ? "svg" : "canvas";
             this.options.resize = this.options.resize === false ? false : true;
-			if(this.options.limit){
-				var n = parseFloat(this.options.limit)
-				this.options.limit = isNaN(n) ? 0 : n < 0 ? 0 : n;
-			}else{
-				this.options.limit = 0
-			}
+            if (this.options.limit) {
+                var n = parseFloat(this.options.limit)
+                this.options.limit = isNaN(n) ? 0 : n < 0 ? 0 : n;
+            } else {
+                this.options.limit = 0
+            }
             var html = '<div class="loadingBar">' +
                 '<div class="progress">' +
                 ' <div class="glimmer">' +
@@ -726,7 +730,7 @@
                     "overflow": "auto"
                 })
             }
-            viewerContainer.addEventListener('scroll', function () {
+            viewerContainer.addEventListener('scroll', function() {
                 var scrollTop = viewerContainer.scrollTop;
                 if (scrollTop >= 150) {
                     if (self.options.backTop) {
@@ -746,7 +750,7 @@
                 }
                 var h = containerH;
                 if (self.pages) {
-                    self.pages.each(function (index, obj) {
+                    self.pages.each(function(index, obj) {
                         var top = obj.getBoundingClientRect().top;
                         var bottom = obj.getBoundingClientRect().bottom;
                         if (top <= height && bottom > height) {
@@ -766,7 +770,7 @@
                 if (scrollTop === 0) {
                     self.pageNow.text(1)
                 }
-                self.timer = setTimeout(function () {
+                self.timer = setTimeout(function() {
                     if (self.options.pageNum && self.pageNum) {
                         self.pageNum.fadeOut(200);
                     }
@@ -805,7 +809,7 @@
                     }
                 }
             })
-            this.backTop.on('click tap', function () {
+            this.backTop.on('click tap', function() {
                 var mart = self.viewer.css('transform');
                 var arr = mart.replace(/[a-z\(\)\s]/g, '').split(',');
                 var s1 = arr[0];
@@ -832,31 +836,33 @@
                     }
                 }
             })
+
             function GetQueryString(name) {
                 var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
                 var r = g.location.search.substr(1).match(reg);
                 if (r != null) return decodeURIComponent(r[2]);
                 return "";
             }
-            var pdfurl = GetQueryString("file"), url = "";
+            var pdfurl = GetQueryString("file"),
+                url = "";
             if (pdfurl && self.options.URIenable) {
                 url = pdfurl
             } else if (self.options.pdfurl) {
                 url = self.options.pdfurl
             }
-			if(self.options.loadingBar){
-				self.loadingBar.show();
-				self.progress.css({
-				    width: "3%"
-				})
-			}
-            
+            if (self.options.loadingBar) {
+                self.loadingBar.show();
+                self.progress.css({
+                    width: "3%"
+                })
+            }
+
             if (url) {
                 $.ajax({
                     type: "get",
                     mimeType: 'text/plain; charset=x-user-defined',
                     url: url,
-                    success: function (data) {
+                    success: function(data) {
                         var rawLength = data.length;
                         // var array = new Uint8Array(new ArrayBuffer(rawLength));
                         // for (i = 0; i < rawLength; i++) {
@@ -871,7 +877,7 @@
                             data: array
                         })
                     },
-                    error: function (err) {
+                    error: function(err) {
                         self.loading.hide()
                         var time = new Date().getTime();
                         self.endTime = time - self.initTime;
@@ -903,7 +909,7 @@
                         data: array
                     })
                 } else if (typeof data === "object") {
-                    if (data.length==0) {
+                    if (data.length == 0) {
                         var time = new Date().getTime();
                         self.endTime = time - self.initTime;
                         var arr1 = self.eventType["complete"];
@@ -945,7 +951,7 @@
                 throw Error("Expect options.pdfurl or options.data!")
             }
         },
-        renderPdf: function (options, obj) {
+        renderPdf: function(options, obj) {
             this.container[0].pdfLoaded = true;
             var self = this;
             if (options.cMapUrl) {
@@ -954,16 +960,16 @@
                 obj.cMapUrl = 'https://unpkg.com/pdfjs-dist@2.0.943/cmaps/';
             }
             obj.cMapPacked = true;
-            
-            this.pdfjsLibPromise = pdfjsLib.getDocument(obj).then(function (pdf) {
+
+            this.pdfjsLibPromise = pdfjsLib.getDocument(obj).then(function(pdf) {
                 self.loading.hide()
                 self.thePDF = pdf;
                 self.totalNum = pdf.numPages;
-				if(options.limit>0){
-					 self.totalNum = options.limit
-				}
+                if (options.limit > 0) {
+                    self.totalNum = options.limit
+                }
                 self.pageTotal.text(self.totalNum)
-                if(!self.pinchZoom){
+                if (!self.pinchZoom) {
                     var arr1 = self.eventType["ready"];
                     if (arr1 && arr1 instanceof Array) {
                         for (var i = 0; i < arr1.length; i++) {
@@ -977,31 +983,31 @@
                         maxZoom: options.maxZoom,
                         minZoom: options.minZoom
                     }, self.viewerContainer);
-                    var timeout,firstZoom=true;
-                    self.pinchZoom.done = function (scale) {
+                    var timeout, firstZoom = true;
+                    self.pinchZoom.done = function(scale) {
                         clearTimeout(timeout)
-                        timeout = setTimeout(function(){
-                            if(self.options.renderType==="svg"){
+                        timeout = setTimeout(function() {
+                            if (self.options.renderType === "svg") {
                                 return
                             }
-							if(scale<=1 || self.options.scale ==3){
-								return
-							}
-							console.log(scale,self.options.scale)
+                            if (scale <= 1 || self.options.scale == 3) {
+                                return
+                            }
+                            console.log(scale, self.options.scale)
                             if (self.thePDF) {
                                 self.thePDF.destroy();
                                 self.thePDF = null;
                             }
                             self.options.scale = scale;
-                            self.renderPdf(self.options,{data: self.cacheData})
-                        },310)
+                            self.renderPdf(self.options, { data: self.cacheData })
+                        }, 310)
                         if (scale == 1) {
                             if (self.viewerContainer) {
                                 self.viewerContainer.css({
                                     '-webkit-overflow-scrolling': 'touch'
                                 })
                             }
-    
+
                         } else {
                             if (self.viewerContainer) {
                                 self.viewerContainer.css({
@@ -1022,7 +1028,7 @@
                         self.pinchZoom.disable()
                     }
                 }
-                
+
                 var promise = Promise.resolve();
                 var num = Math.floor(100 / self.totalNum).toFixed(2);
                 for (var i = 1; i <= self.totalNum; i++) {
@@ -1032,15 +1038,15 @@
                         container: null,
                         scaledViewport: null
                     };
-                    promise = promise.then(function (pageNum) {
-                        return self.thePDF.getPage(pageNum).then(function (page) {
+                    promise = promise.then(function(pageNum) {
+                        return self.thePDF.getPage(pageNum).then(function(page) {
                             self.cache[pageNum + ""].page = page;
                             var viewport = page.getViewport(options.scale);
                             var scale = (self.docWidth / viewport.width).toFixed(2)
                             var scaledViewport = page.getViewport(parseFloat(scale))
-                            var div =document.getElementById('pageContainer' + pageNum)
+                            var div = document.getElementById('pageContainer' + pageNum)
                             var container;
-                            if(!div){
+                            if (!div) {
                                 container = document.createElement('div');
                                 container.id = 'pageContainer' + pageNum;
                                 container.className = 'pageContainer';
@@ -1056,24 +1062,29 @@
                                         "height": viewport.height + 'px'
                                     }).attr("data-scale", viewport.width / viewport.height)
                                 } else {
+                                    var h = $(container).width() / (viewport.viewBox[2] / viewport.viewBox[3]);
+                                    if (h > viewport.height) {
+                                        h = viewport.height
+                                    }
                                     $(container).css({
                                         'max-width': viewport.width,
                                         "max-height": viewport.height,
-                                        "min-height":   $(container).width() / (viewport.viewBox[2]/ viewport.viewBox[3]) + 'px'
+                                        "min-height": h + 'px'
                                     }).attr("data-scale", viewport.width / viewport.height)
                                 }
-                            }else{
+                            } else {
                                 container = div
                             }
                             self.cache[pageNum + ""].container = container;
                             self.cache[pageNum + ""].scaledViewport = scaledViewport;
-                            var sum = 0, containerH = self.container.height();
+                            var sum = 0,
+                                containerH = self.container.height();
                             self.pages = self.viewerContainer.find('.pageContainer');
                             if (options.resize) {
                                 self.resize()
                             }
                             if (self.pages && options.lazy) {
-                                self.pages.each(function (index, obj) {
+                                self.pages.each(function(index, obj) {
                                     var top = obj.offsetTop;
                                     if (top <= containerH) {
                                         sum = index + 1;
@@ -1093,7 +1104,7 @@
                     }.bind(null, i));
                 }
 
-            }).catch(function (err) {
+            }).catch(function(err) {
                 self.loading.hide();
                 var time = new Date().getTime();
                 self.endTime = time - self.initTime;
@@ -1111,21 +1122,21 @@
                 }
             })
         },
-        renderSvg: function (page, scaledViewport, pageNum, num, container, options, viewport) {
+        renderSvg: function(page, scaledViewport, pageNum, num, container, options, viewport) {
             var self = this;
-            return page.getOperatorList().then(function (opList) {
+            return page.getOperatorList().then(function(opList) {
                 var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
-                return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
+                return svgGfx.getSVG(opList, scaledViewport).then(function(svg) {
                     self.loadedCount++;
                     container.children[0].style.display = "none";
                     container.appendChild(svg);
                     svg.style.width = "100%";
                     svg.style.height = "100%";
-					if(self.options.loadingBar){
-						self.progress.css({
-						    width: num * self.loadedCount + "%"
-						})
-					}
+                    if (self.options.loadingBar) {
+                        self.progress.css({
+                            width: num * self.loadedCount + "%"
+                        })
+                    }
                     var time = new Date().getTime();
                     var arr1 = self.eventType["render"];
                     if (arr1 && arr1 instanceof Array) {
@@ -1139,7 +1150,7 @@
                 });
             });
         },
-        renderCanvas: function (page, viewport, pageNum, num, container, options) {
+        renderCanvas: function(page, viewport, pageNum, num, container, options) {
             var self = this;
             var viewport = page.getViewport(options.scale);
             var scale = (self.docWidth / viewport.width).toFixed(2)
@@ -1154,16 +1165,16 @@
             var context = canvas.getContext('2d');
             canvas.height = viewport.height;
             canvas.width = viewport.width;
-			if(self.options.loadingBar){
-				self.progress.css({
-					width: num * self.loadedCount + "%"
-				})
-			}
+            if (self.options.loadingBar) {
+                self.progress.css({
+                    width: num * self.loadedCount + "%"
+                })
+            }
             obj2.src = obj2.canvas.toDataURL("image/jpeg");
             return page.render({
                 canvasContext: context,
                 viewport: viewport
-            }).then(function () {
+            }).then(function() {
                 self.loadedCount++;
                 var img = new Image();
                 var time = new Date().getTime();
@@ -1175,16 +1186,16 @@
                 }
                 obj2.src = obj2.canvas.toDataURL("image/jpeg");
                 img.src = obj2.src;
-                img.className = "canvasImg"+pageNum;
-                var img0=$("#pageContainer"+pageNum).find(".canvasImg"+pageNum)[0];
-                if(container && !img0){
+                img.className = "canvasImg" + pageNum;
+                var img0 = $("#pageContainer" + pageNum).find(".canvasImg" + pageNum)[0];
+                if (container && !img0) {
                     container.appendChild(img);
-                    img.onload = function () {
+                    img.onload = function() {
                         // $(container).css({
                         //     "min-height": img.height + 'px'
                         // })
                     }
-                }else if(img0){
+                } else if (img0) {
                     img0.src = obj2.src
                 }
                 var time = new Date().getTime();
@@ -1199,15 +1210,15 @@
                 }
             })
         },
-        finalRender: function (options) {
+        finalRender: function(options) {
             var time = new Date().getTime();
             var self = this;
-			if(self.options.loadingBar){
-				self.progress.css({
-				    width: "100%"
-				});
-			}
-            setTimeout(function () {
+            if (self.options.loadingBar) {
+                self.progress.css({
+                    width: "100%"
+                });
+            }
+            setTimeout(function() {
                 self.loadingBar.hide();
             }, 300)
             self.endTime = time - self.initTime;
@@ -1240,7 +1251,7 @@
                 }
             }
         },
-        resize: function () {
+        resize: function() {
             var self = this;
             if (self.resizeEvent) {
                 return
@@ -1249,33 +1260,34 @@
             var timer;
             if (self.pages) {
                 self.getH()
-                $(window).on("resize", function () {
+                $(window).on("resize", function() {
                     clearTimeout(timer)
-                    timer = setTimeout(function () {
+                    timer = setTimeout(function() {
                         var winWidth = $(window).width();
-                        if (self.winWidth !== winWidth){
-                            self.pages.each(function (i, item) {
-                                var w = $(item).width(), s = $(item).attr("data-scale");
+                        if (self.winWidth !== winWidth) {
+                            self.pages.each(function(i, item) {
+                                var w = $(item).width(),
+                                    s = $(item).attr("data-scale");
                                 $(item).css({
-                                    "min-height": w/s  + 'px'
+                                    "min-height": w / s + 'px'
                                 })
                             })
                         }
                         self.getH()
-                    },300)
+                    }, 300)
                 })
             }
         },
-        getH:function(){
+        getH: function() {
             var self = this;
-            var num =0;
-            self.pages.each(function (i, item) {
+            var num = 0;
+            self.pages.each(function(i, item) {
                 var w = $(item).height();
                 num + w
             })
             $(".pinch-zoom-container").height(num)
         },
-        show: function (callback) {
+        show: function(callback) {
             this.container.show();
             callback && callback.call(this)
             var arr = this.eventType["show"];
@@ -1285,7 +1297,7 @@
                 }
             }
         },
-        hide: function (callback) {
+        hide: function(callback) {
             this.container.hide()
             callback && callback.call(this)
             var arr = this.eventType["hide"];
@@ -1295,13 +1307,13 @@
                 }
             }
         },
-        on: function (type, callback) {
+        on: function(type, callback) {
             if (this.eventType[type] && this.eventType[type] instanceof Array) {
                 this.eventType[type].push(callback)
             }
             this.eventType[type] = [callback]
         },
-        off: function (type) {
+        off: function(type) {
             if (type !== undefined) {
                 this.eventType[type] = [null]
             } else {
@@ -1310,7 +1322,7 @@
                 }
             }
         },
-        scrollEnable: function (flag) {
+        scrollEnable: function(flag) {
             if (flag === false) {
                 this.viewerContainer.css({
                     "overflow": "hidden"
@@ -1327,7 +1339,7 @@
                 }
             }
         },
-        zoomEnable: function (flag) {
+        zoomEnable: function(flag) {
             if (flag === false) {
                 this.pinchZoom.disable()
             } else {
@@ -1340,7 +1352,7 @@
                 }
             }
         },
-        reset: function (callback) {
+        reset: function(callback) {
             if (this.pinchZoom) {
                 this.pinchZoom.offset.y = 0;
                 this.pinchZoom.offset.x = 0;
@@ -1359,7 +1371,7 @@
                 }
             }
         },
-        destroy: function (callback) {
+        destroy: function(callback) {
             this.reset();
             this.off();
             if (this.thePDF) {
