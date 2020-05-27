@@ -1,4 +1,4 @@
-# pdfh5.js v1.3.8
+# pdfh5.js v1.3.9
 
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)   [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
@@ -16,7 +16,7 @@
 
 ## 更新信息
 
-- 2020.05.19 更新：  修复pc端浏览，pdf每一页下方会多余空白的问题
+- 2020.05.27 更新：  修复小问题
 
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）

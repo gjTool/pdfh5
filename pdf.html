@@ -20,10 +20,10 @@
             width: 100%;
             height: 100%;
         }
-
+        
         #demo {
             display: none;
-			/* height: 50%; */
+            /* height: 50%; */
         }
     </style>
 </head>
@@ -67,12 +67,12 @@
     <script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
     <script type="text/javascript">
         var pdfh5;
-        $(function () {
+        $(function() {
             $("#app").remove()
             $("#demo").show()
-             pdfh5 = new Pdfh5('#demo', {
+            pdfh5 = new Pdfh5('#demo', {
                 pdfurl: "git.pdf",
-				// ,URIenable:true //开启浏览器地址栏file参数获取
+                // ,URIenable:true //开启浏览器地址栏file参数获取
             });
             // setTimeout(() => {
             //     var pdfh5 = new Pdfh5('#demo', {
@@ -141,30 +141,28 @@
             //pdfh5显示、隐藏（附带回调函数）：   pdfh5.show pdfh5.hide 
 
             //pdf准备开始渲染，此时可以拿到pdf总页数
-            pdfh5.on("ready", function () {
-                console.log("pdf准备开始渲染，总页数：" + this.totalNum)
-            })
-            //监听pdf渲染成功
-            pdfh5.on("success", function (time) {
-                time = time/1000
-                console.log("pdf渲染完成，总耗时" + time + "秒")
-            })
-            //监听pdf渲染失败
-            // pdfh5.on("error", function (time) {
-            //     console.log("渲染失败，总耗时" + time + "毫秒")
-            // })
-             //监听完成事件，加载失败、渲染成功都会触发
-            //  pdfh5.on("complete", function (status, msg, time) {
-            //     console.log("状态：" + status + "，信息：" + msg + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum)
-            // })
-            //on方法,监听事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
-            // 缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
+            pdfh5.on("ready", function() {
+                    console.log("pdf准备开始渲染，总页数：" + this.totalNum)
+                })
+                //监听pdf渲染成功
+            pdfh5.on("success", function(time) {
+                    time = time / 1000
+                    console.log("pdf渲染完成，总耗时" + time + "秒")
+                })
+                //监听pdf渲染失败
+                // pdfh5.on("error", function (time) {
+                //     console.log("渲染失败，总耗时" + time + "毫秒")
+                // })
+                //监听完成事件，加载失败、渲染成功都会触发
+                //  pdfh5.on("complete", function (status, msg, time) {
+                //     console.log("状态：" + status + "，信息：" + msg + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum)
+                // })
+                //on方法,监听事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
+                // 缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
 
             //pdfh5支持在线预览 
             //http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf
         })
-
-
     </script>
 </body>
 

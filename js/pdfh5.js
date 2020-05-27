@@ -1,6 +1,6 @@
 ;
 (function(g, fn) {
-    var version = "1.3.8",
+    var version = "1.3.9",
         pdfjsVersion = "2.3.200";
     console.log("pdfh5.js v" + version + " & https://www.gjtool.cn")
     if (typeof require !== 'undefined') {
@@ -58,7 +58,7 @@
 
         PinchZoom.prototype = {
             defaults: {
-                tapZoomFactor: 2,
+                tapZoomFactor: 3,
                 zoomOutFactor: 1.2,
                 animationDuration: 300,
                 maxZoom: 3,
@@ -544,7 +544,7 @@
 
                     if (time - lastTouchStart < 300 && Math.abs(pageY - lastTouchY) < 10 && Math.abs(lastTop - top) < 10) {
                         cancelEvent(event);
-                        // target.handleDoubleTap(event);
+                        target.handleDoubleTap(event);
                         switch (interaction) {
                             case "zoom":
                                 target.handleZoomEnd(event);
@@ -1340,6 +1340,9 @@
             }
         },
         zoomEnable: function(flag) {
+            if (!this.pinchZoom) {
+                return
+            }
             if (flag === false) {
                 this.pinchZoom.disable()
             } else {

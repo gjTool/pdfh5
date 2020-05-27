@@ -19,6 +19,7 @@
 	  });
 	  //监听完成事件
 	  this.pdfh5.on("complete", function (status, msg, time) {
+		this.zoomEnable(false);
 		console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
 	  })
 	}
