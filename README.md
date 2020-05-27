@@ -144,7 +144,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |maxZoom|  {Number}|默认3|手势缩放最大倍数|
 |scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动|
 |zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
-|cMapUrl| {String}| 默认"https://wwww.gjtool.cn//cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径，例如 cMapUrl:"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"|
+|cMapUrl| {String}| 默认"https://www.gjtool.cn/cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径，例如 cMapUrl:"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"|
 |limit| {Number}| 默认0 |限制pdf加载最大页数|
 
 ## 	pdf文件流请求示例（以jq ajax为例）
@@ -208,8 +208,8 @@ pdfh5.scrollEnable(false) //不允许pdf滚动
 
 |参数名称|类型|取值|作用|
 |:---:|:---:|:---:|:---:|
-|scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动|
-|zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
+|scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动(需要在pdf加载完成后使用)|
+|zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放(需要在pdf加载完成后使用)|
 |show| {Function}|带一个回调函数参数|pdfh5显示|
 |hide| {Function}|带一个回调函数参数|pdfh5隐藏|
 |reset| {Function}|带一个回调函数参数|pdfh5还原|
