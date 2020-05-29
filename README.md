@@ -247,7 +247,7 @@ pdfh5.on("ready", function () {
 ## 打赏赞助作者：
 ![支付宝二维码](https://www.gjtool.cn/download/zfb.jpg) ![微信二维码](https://www.gjtool.cn/download/wx.jpg)
 
-- 感谢打赏！请打赏的童鞋在[pdfh5.js打赏榜](https://www.gjtool.cn/articles/2019/09/24/1569327833358.html)留下github、QQ、微信 。然后，我会对打赏过的童鞋的问题及时响应。（当然是在我不忙的时候啦）
+- 感谢打赏！请打赏的童鞋留下github、QQ、微信 。然后，我会对打赏过的童鞋的问题及时响应。（当然是在我不忙的时候啦）
 - 相比打赏，点star还要重要些，请各位走过路过帮忙点下star，万分感谢
 - QQ群：651601340
 
