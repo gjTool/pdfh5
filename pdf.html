@@ -72,6 +72,13 @@
             $("#demo").show()
             pdfh5 = new Pdfh5('#demo', {
                 pdfurl: "git.pdf",
+				logo:{
+					src:"pdfh5.png",
+					bottom:"10px",
+					right:"10px",
+					width:"40px",
+					height:"40px"
+				}
                 // ,URIenable:true //开启浏览器地址栏file参数获取
             });
             // setTimeout(() => {
@@ -163,6 +170,14 @@
             //pdfh5支持在线预览 
             //http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf
         })
+        var a = document.createElement("a");
+        a.style.display = "none";
+        a.href="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg";
+        a.target="_blank";
+        a.download="bb.jpg";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     </script>
 </body>
 

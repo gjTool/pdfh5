@@ -1,6 +1,6 @@
 ;
 (function(g, fn) {
-    var version = "1.3.9",
+    var version = "1.3.10",
         pdfjsVersion = "2.3.200";
     console.log("pdfh5.js v" + version + " & https://www.gjtool.cn")
     if (typeof require !== 'undefined') {
@@ -674,7 +674,12 @@
             this.options.lazy = this.options.lazy === true ? true : false;
             this.options.renderType = this.options.renderType === "svg" ? "svg" : "canvas";
             this.options.resize = this.options.resize === false ? false : true;
-            if (this.options.limit) {
+			if(this.options.logo &&  Object.prototype.toString.call(this.options.logo) === '[object Object]'  && this.options.logo.src){
+				
+			}else{
+				this.options.logo = false;
+			}
+			if (this.options.limit) {
                 var n = parseFloat(this.options.limit)
                 this.options.limit = isNaN(n) ? 0 : n < 0 ? 0 : n;
             } else {
@@ -1052,9 +1057,35 @@
                                 container.className = 'pageContainer';
                                 container.setAttribute('name', 'page=' + pageNum);
                                 container.setAttribute('title', 'Page ' + pageNum);
+								
                                 var loadEffect = document.createElement('div');
                                 loadEffect.className = 'loadEffect';
                                 container.appendChild(loadEffect);
+								if(options.logo){
+									var pdfLogo = document.createElement('img');
+									pdfLogo.className = 'pdfLogo';
+									if(options.logo.top){
+										pdfLogo.style.top = options.logo.top;
+									}
+									if(options.logo.left){
+										pdfLogo.style.left = options.logo.left;
+									}
+									if(options.logo.right){
+										pdfLogo.style.right = options.logo.right;
+									}
+									if(options.logo.bottom){
+										pdfLogo.style.bottom = options.logo.bottom;
+									}
+									if(options.logo.width){
+										pdfLogo.style.width = options.logo.width;
+									}
+									if(options.logo.height){
+										pdfLogo.style.height = options.logo.height;
+									}
+									pdfLogo.src = options.logo.src;
+									container.appendChild(pdfLogo);
+								}
+								
                                 self.viewer[0].appendChild(container);
                                 if (window.ActiveXObject || "ActiveXObject" in window) {
                                     $(container).css({
@@ -1400,8 +1431,6 @@
             this.progress = null;
             this.loadedCount = 0;
             this.timer = null;
-            this.show = null;
-            this.hide = null;
             callback && callback.call(this)
             var arr = this.eventType["destroy"];
             if (arr && arr instanceof Array) {

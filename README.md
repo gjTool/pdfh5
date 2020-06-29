@@ -1,5 +1,4 @@
-# pdfh5.js v1.3.9
-
+# pdfh5.js
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)   [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
 **pdfh5.js 基于pdf.js和jQuery，web/h5/移动端PDF预览手势缩放插件。**
@@ -16,7 +15,7 @@
 
 ## 更新信息
 
-- 2020.05.27 更新：  修复小问题
+- 2020.06.29 更新：  增加水印logo添加方法，在配置项里配置logo参数
 
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
@@ -146,6 +145,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
 |cMapUrl| {String}| 默认"https://www.gjtool.cn/cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径，例如 cMapUrl:"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"|
 |limit| {Number}| 默认0 |限制pdf加载最大页数|
+|logo| {Object}|{src:"pdfh5.png",bottom:"10px",right:"10px",width:"40px",height:"40px"}src水印图片路径（建议使用png透明图片），width水印宽度，height水印高度，还有位置参数top/left/right/bottom 可以设置。默认false |给每页pdf添加水印logo|
 
 ## 	pdf文件流请求示例（以jq ajax为例）
 1.
