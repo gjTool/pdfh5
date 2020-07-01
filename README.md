@@ -9,13 +9,13 @@
 - [pdfh5项目GitHub地址](https://github.com/gjTool/pdfh5)  
 
 
-
+#### react/vue2均可使用，example/test是vue2使用示例，example/react-test是react使用示例
 
 ![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
 
 ## 更新信息
 
-- 2020.06.29 更新：  增加水印logo添加方法，在配置项里配置logo参数
+- 2020.07.01 更新：  修复fs问题
 
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
@@ -56,7 +56,7 @@ var pdfh5 = new Pdfh5('#demo', {
 });
 ```
 
-####  二、npm安装方式（适应于vue）
+####  二、npm安装方式（适应于vue）, react使用方法类似vue（example/react-test是react使用示例）
 
 - 	1.安装
 
@@ -137,7 +137,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |:---:|:---:|:---:|:---:|
 |pdfurl|  {String} | - |pdf地址 |
 |URIenable|  {Boolean} |true、false， 默认false |  true开启地址栏file参数|
-|data|  {String(blob) | - |pdf文件流 ，与pdfurl二选一|
+|data|  {String(blob)/Array(arraybuffer) | - |pdf文件流 ，与pdfurl二选一|
 |renderType| {String}|"canvas"、"svg"，默认"canvas"|pdf渲染模式|
 |lazy| {Boolean}|true、false， 默认false|是否开启懒加载|
 |maxZoom|  {Number}|默认3|手势缩放最大倍数|
