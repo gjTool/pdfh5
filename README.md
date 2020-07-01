@@ -153,7 +153,7 @@ var pdfh5 = new Pdfh5('#demo', {
 1.
 ```javascript
 $.ajax({
-	url: "https://gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
+	url: "https://www.gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
 	type: "get",
 	mimeType: 'text/plain; charset=x-user-defined',//jq ajax请求文件流的方式
 	success: function (data) {
@@ -166,7 +166,7 @@ $.ajax({
 2.
 ```javascript
 $.ajax({
-	url: "https://gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
+	url: "https://www.gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
 	type: "get",
 	mimeType: 'text/plain; charset=x-user-defined',//jq ajax请求文件流的方式
 	success: function (data) {
@@ -184,7 +184,7 @@ $.ajax({
 3.
 ```javascript
 $.ajax({
-	url: "https://gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
+	url: "https://www.gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
 	type: "get",
 	mimeType: 'text/plain; charset=x-user-defined',//jq ajax请求文件流的方式
 	success: function (data) {
@@ -201,7 +201,7 @@ $.ajax({
 ```
 4.
 ```javascript
-axios.get("https://gjtool.cn/pdfh5/git.pdf",{
+axios.get("https://www.gjtool.cn/pdfh5/git.pdf",{
 	responseType:"arraybuffer"
 }).then(res=>{
 	this.pdfh5 = new Pdfh5('#demo', {
