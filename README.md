@@ -9,7 +9,9 @@
 - [pdfh5项目GitHub地址](https://github.com/gjTool/pdfh5)  
 
 
-#### react/vue2均可使用，example/test是vue2使用示例，example/react-test是react使用示例
+#### react、vue均可使用
+#### example/test是vue使用示例，vue示例展示axios调用接口展示pdf，跨域代理，相对路径等方法
+#### example/react-test是react使用示例
 
 ![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
 
@@ -197,6 +199,17 @@ $.ajax({
 	}
 });
 ```
+4.
+```javascript
+axios.get("https://gjtool.cn/pdfh5/git.pdf",{
+	responseType:"arraybuffer"
+}).then(res=>{
+	this.pdfh5 = new Pdfh5('#demo', {
+		data: res.data
+	});
+})
+```
+
 ## methods 方法列表
 
 - **示例：** 是否允许pdf滚动
