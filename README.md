@@ -10,8 +10,8 @@
 
 
 #### react、vue均可使用
-#### example/test是vue使用示例，vue示例展示axios调用接口展示pdf，跨域代理，相对路径等方法
-#### example/react-test是react使用示例
+#### [example/test](https://github.com/gjTool/pdfh5/tree/master/example/test)是vue使用示例，vue示例展示axios调用接口展示pdf，跨域代理，相对路径等方法
+#### [example/react-test](https://github.com/gjTool/pdfh5/tree/master/example/react-test)是react使用示例
 
 ![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
 
