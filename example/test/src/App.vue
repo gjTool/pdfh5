@@ -9,10 +9,13 @@
     name: 'App',
 	data() {
 	  return {
-	    pdfh5: null
+	    pdfh5: null,
+      a:1,
+      b:()=>this.a
 	  };
 	},
 	mounted() {
+    console.log(this.a,this.b())
 		//实例化
 	  this.pdfh5 = new Pdfh5("#demo", {
       pdfurl: "../../static/git.pdf"
@@ -21,7 +24,12 @@
 	  this.pdfh5.on("complete", function (status, msg, time) {
       console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
 	  })
-	}
+	},
+  methods:{
+    geta(){
+      return this.a
+    }
+  }
   }
 </script>
 
