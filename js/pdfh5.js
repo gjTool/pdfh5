@@ -1,6 +1,6 @@
 ;
 (function(g, fn) {
-    var version = "1.3.11",
+    var version = "1.3.12",
         pdfjsVersion = "2.3.200";
     console.log("pdfh5.js v" + version + " & https://www.gjtool.cn")
     if (typeof require !== 'undefined') {
@@ -674,6 +674,7 @@
             this.options.lazy = this.options.lazy === true ? true : false;
             this.options.renderType = this.options.renderType === "svg" ? "svg" : "canvas";
             this.options.resize = this.options.resize === false ? false : true;
+			this.options.goto =  isNaN(this.options.goto)  ? 0 : this.options.goto;
 			if(this.options.logo &&  Object.prototype.toString.call(this.options.logo) === '[object Object]'  && this.options.logo.src){
 				
 			}else{
@@ -685,6 +686,7 @@
             } else {
                 this.options.limit = 0
             }
+			this.options.type = this.options.type === "fetch" ? "fetch" : "ajax";
             var html = '<div class="loadingBar">' +
                 '<div class="progress">' +
                 ' <div class="glimmer">' +
@@ -863,44 +865,50 @@
             }
 
             if (url) {
-                $.ajax({
-                    type: "get",
-                    mimeType: 'text/plain; charset=x-user-defined',
-                    url: url,
-                    success: function(data) {
-                        var rawLength = data.length;
-                        // var array = new Uint8Array(new ArrayBuffer(rawLength));
-                        // for (i = 0; i < rawLength; i++) {
-                        //     array[i] = data.charCodeAt(i) & 0xff;
-                        // }
-                        var array = [];
-                        for (i = 0; i < rawLength; i++) {
-                            array.push(data.charCodeAt(i) & 0xff);
-                        }
-                        self.cacheData = array
-                        self.renderPdf(self.options, {
-                            data: array
-                        })
-                    },
-                    error: function(err) {
-                        self.loading.hide()
-                        var time = new Date().getTime();
-                        self.endTime = time - self.initTime;
-                        var arr1 = self.eventType["complete"];
-                        if (arr1 && arr1 instanceof Array) {
-                            for (var i = 0; i < arr1.length; i++) {
-                                arr1[i] && arr1[i].call(self, "error", err.statusText, self.endTime)
-                            }
-                        }
-                        var arr2 = self.eventType["error"];
-                        if (arr2 && arr2 instanceof Array) {
-                            for (var i = 0; i < arr2.length; i++) {
-                                arr2[i] && arr2[i].call(self, err.statusText, self.endTime)
-                            }
-                        }
-                        throw Error(err.statusText)
-                    }
-                });
+				if (self.options.type === "ajax") {
+					$.ajax({
+					    type: "get",
+					    mimeType: 'text/plain; charset=x-user-defined',
+					    url: url,
+					    success: function(data) {
+					        var rawLength = data.length;
+					        // var array = new Uint8Array(new ArrayBuffer(rawLength));
+					        // for (i = 0; i < rawLength; i++) {
+					        //     array[i] = data.charCodeAt(i) & 0xff;
+					        // }
+					        var array = [];
+					        for (i = 0; i < rawLength; i++) {
+					            array.push(data.charCodeAt(i) & 0xff);
+					        }
+					        self.cacheData = array
+					        self.renderPdf(self.options, {
+					            data: array
+					        })
+					    },
+					    error: function(err) {
+					        self.loading.hide()
+					        var time = new Date().getTime();
+					        self.endTime = time - self.initTime;
+					        var arr1 = self.eventType["complete"];
+					        if (arr1 && arr1 instanceof Array) {
+					            for (var i = 0; i < arr1.length; i++) {
+					                arr1[i] && arr1[i].call(self, "error", err.statusText, self.endTime)
+					            }
+					        }
+					        var arr2 = self.eventType["error"];
+					        if (arr2 && arr2 instanceof Array) {
+					            for (var i = 0; i < arr2.length; i++) {
+					                arr2[i] && arr2[i].call(self, err.statusText, self.endTime)
+					            }
+					        }
+					        throw Error(err.statusText)
+					    }
+					});
+				}else{
+					self.renderPdf(self.options, {
+					    url: url
+					})
+				}
             } else if (self.options.data) {
                 var data = self.options.data;
                 var rawLength = data.length;
@@ -965,7 +973,6 @@
                 obj.cMapUrl = 'https://unpkg.com/pdfjs-dist@2.0.943/cmaps/';
             }
             obj.cMapPacked = true;
-
             this.pdfjsLibPromise = pdfjsLib.getDocument(obj).then(function(pdf) {
                 self.loading.hide()
                 self.thePDF = pdf;
@@ -1036,7 +1043,8 @@
 
                 var promise = Promise.resolve();
                 var num = Math.floor(100 / self.totalNum).toFixed(2);
-                for (var i = 1; i <= self.totalNum; i++) {
+				var i=1;
+                for ( i = 1; i <= self.totalNum; i++) {
                     self.cache[i + ""] = {
                         page: null,
                         loaded: false,
@@ -1045,6 +1053,15 @@
                     };
                     promise = promise.then(function(pageNum) {
                         return self.thePDF.getPage(pageNum).then(function(page) {
+							setTimeout(function(){
+								if(self.options.goto){
+									if(pageNum == self.options.goto){
+										console.log(pageNum,self.options.goto)
+										self.goto(pageNum)
+									}
+								}
+							},0)
+							
                             self.cache[pageNum + ""].page = page;
                             var viewport = page.getViewport(options.scale);
                             var scale = (self.docWidth / viewport.width).toFixed(2)
@@ -1134,7 +1151,6 @@
                         });
                     }.bind(null, i));
                 }
-
             }).catch(function(err) {
                 self.loading.hide();
                 var time = new Date().getTime();
@@ -1229,6 +1245,7 @@
                 } else if (img0) {
                     img0.src = obj2.src
                 }
+				container.children[0].style.display = "none";
                 var time = new Date().getTime();
                 var arr1 = self.eventType["render"];
                 if (arr1 && arr1 instanceof Array) {
@@ -1353,6 +1370,30 @@
                 }
             }
         },
+		goto:function(num){
+			var self = this;
+		
+			if(!isNaN(num)){
+				if (self.viewerContainer) {
+				    self.pages = self.viewerContainer.find('.pageContainer');
+					if (self.pages) {
+						var h = 0;
+						if(num-1>0){
+							self.pages.each(function(index, obj) {
+							    var top = obj.getBoundingClientRect().top;
+								console.log(index)
+							   if(index===num-1){
+								   h = top;
+							   }
+							})
+						}
+						self.viewerContainer.animate({
+						    scrollTop: h
+						}, 300)
+					}
+				}
+			}
+		},
         scrollEnable: function(flag) {
             if (flag === false) {
                 this.viewerContainer.css({

@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="format-detection" content="telephone=no" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-    <meta http-equiv="pragma" content="no-cache">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="expires" content="0">
-    <title>PDFH5</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/pdfh5.css" />
-    <link href="https://www.gjtool.cn/download/pdfh5.png" type="image/x-icon" rel="shortcut icon" />
-    <style>
-        html,
+	<head>
+		<meta charset="UTF-8">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+		<meta http-equiv="pragma" content="no-cache">
+		<meta http-equiv="cache-control" content="no-cache">
+		<meta http-equiv="expires" content="0">
+		<title>PDFH5</title>
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/pdfh5.css" />
+		<link href="https://www.gjtool.cn/download/pdfh5.png" type="image/x-icon" rel="shortcut icon" />
+		<style>
+			html,
         body {
             width: 100%;
             height: 100%;
@@ -26,159 +26,147 @@
             /* height: 50%; */
         }
     </style>
-</head>
+	</head>
 
-<body>
-    <div id="app">
-        <div class="text-wrapper">
-            <div class="text part1">
-                <div>
-                    <span class="letter">
-                        <div class="character">L</div> <span></span>
-                    </span>
-                    <span class="letter">
-                        <div class="character">o</div> <span></span>
-                    </span>
-                    <span class="letter">
-                        <div class="character">a</div> <span></span>
-                    </span>
-                    <span class="letter">
-                        <div class="character">d</div> <span></span>
-                    </span>
-                    <span class="letter">
-                        <div class="character">i</div> <span></span>
-                    </span>
-                    <span class="letter">
-                        <div class="character">n</div> <span></span>
-                    </span>
-                    <span class="letter">
-                        <div class="character">g</div> <span></span>
-                    </span>
-                </div>
-            </div>
-            <div class="how-to"><span>正在加载中，请您耐心等待...</span></div>
-        </div>
+	<body>
+		<div id="app">
+			<div class="text-wrapper">
+				<div class="text part1">
+					<div>
+						<span class="letter">
+							<div class="character">L</div> <span></span>
+						</span>
+						<span class="letter">
+							<div class="character">o</div> <span></span>
+						</span>
+						<span class="letter">
+							<div class="character">a</div> <span></span>
+						</span>
+						<span class="letter">
+							<div class="character">d</div> <span></span>
+						</span>
+						<span class="letter">
+							<div class="character">i</div> <span></span>
+						</span>
+						<span class="letter">
+							<div class="character">n</div> <span></span>
+						</span>
+						<span class="letter">
+							<div class="character">g</div> <span></span>
+						</span>
+					</div>
+				</div>
+				<div class="how-to"><span>正在加载中，请您耐心等待...</span></div>
+			</div>
 
-    </div>
-    <div id="demo"></div>
-    <script src="js/pdf.js"></script>
-    <script src="js/pdf.worker.js"></script>
-    <script src="js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
-    <script type="text/javascript">
-        var pdfh5;
-        $(function() {
-            $("#app").remove()
-            $("#demo").show()
-            pdfh5 = new Pdfh5('#demo', {
-                pdfurl: "git.pdf",
-				logo:{
-					src:"pdfh5.png",
-					bottom:"10px",
-					right:"10px",
-					width:"40px",
-					height:"40px"
-				}
-                // ,URIenable:true //开启浏览器地址栏file参数获取
-            });
-            // setTimeout(() => {
-            //     var pdfh5 = new Pdfh5('#demo', {
-            //         pdfurl: "https://www.gjtool.cn/pdfh5/git.pdf"
-            //     });
-            //     setTimeout(() => {
-            //         var pdfh5 = new Pdfh5('#demo', {
-            //             pdfurl: "1.pdf"
-            //         });
-            //         setTimeout(() => {
-            //             var pdfh5 = new Pdfh5('#demo', {
-            //                 pdfurl: "test.pdf"
-            //             });
-            //             pdfh5.on("complete", function (status, msg, time) {
-            //                 console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
-            //             })
-            //         }, 5000);
-            //     }, 5000);
-            // }, 5000);
+		</div>
+		<div id="demo"></div>
+		<script src="js/pdf.js"></script>
+		<script src="js/pdf.worker.js"></script>
+		<script src="js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			var pdfh5;
+			$(function() {
+				$("#app").remove()
+				$("#demo").show()
+				pdfh5 = new Pdfh5('#demo', {
+					pdfurl: "git.pdf",
+					goto:3
+					// ,URIenable:true //开启浏览器地址栏file参数获取
+				});
+				// setTimeout(() => {
+				//     var pdfh5 = new Pdfh5('#demo', {
+				//         pdfurl: "https://www.gjtool.cn/pdfh5/git.pdf"
+				//     });
+				//     setTimeout(() => {
+				//         var pdfh5 = new Pdfh5('#demo', {
+				//             pdfurl: "1.pdf"
+				//         });
+				//         setTimeout(() => {
+				//             var pdfh5 = new Pdfh5('#demo', {
+				//                 pdfurl: "test.pdf"
+				//             });
+				//             pdfh5.on("complete", function (status, msg, time) {
+				//                 console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
+				//             })
+				//         }, 5000);
+				//     }, 5000);
+				// }, 5000);
 
-            //配置项参数 renderType:"svg" 渲染模式为svg，默认canvas
-            // var pdfh5 = new Pdfh5('#demo', {
-            //     pdfurl: "./default.pdf",
-            //     renderType:"svg"
-            // });
+				//配置项参数 renderType:"svg" 渲染模式为svg，默认canvas
+				// var pdfh5 = new Pdfh5('#demo', {
+				//     pdfurl: "./default.pdf",
+				//     renderType:"svg"
+				// });
 
-            //配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
-            // var pdfh5 = new Pdfh5('#demo', {
-            //     pdfurl: "./default.pdf",
-            //     lazy:true 
-            // });
+				//配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
+				// var pdfh5 = new Pdfh5('#demo', {
+				//     pdfurl: "./default.pdf",
+				//     lazy:true 
+				// });
 
-            //配置项参数 URIenable:true 开启获取地址栏file参数，获取地址栏pdf路径?file=xxx.pdf，默认false不开启
-            // var pdfh5 = new Pdfh5('#demo', {
-            //     URIenable:false,
-            //     pdfurl: "./default.pdf"
-            // });
+				//配置项参数 URIenable:true 开启获取地址栏file参数，获取地址栏pdf路径?file=xxx.pdf，默认false不开启
+				// var pdfh5 = new Pdfh5('#demo', {
+				//     URIenable:false,
+				//     pdfurl: "./default.pdf"
+				// });
 
-            //配置项参数 是否显示小部件 顶部绿色加载进度条loadingBar 左上角页码显示pageNum 右下角回到顶部按钮backTop  默认显示
-            //		var pdfh5 = new Pdfh5('#demo', {
-            // 			 loadingBar: false,
-            //           pageNum:false,
-            //           backTop:false
-            // 		});
+				//配置项参数 是否显示小部件 顶部绿色加载进度条loadingBar 左上角页码显示pageNum 右下角回到顶部按钮backTop  默认显示
+				//		var pdfh5 = new Pdfh5('#demo', {
+				// 			 loadingBar: false,
+				//           pageNum:false,
+				//           backTop:false
+				// 		});
 
-            //配置项参数data，文件流形式传入  pdfurl和data二选一
-            //		var pdfh5 = new Pdfh5('#demo', {
-            // 			data: data
-            // 		});
+				//配置项参数data，文件流形式传入  pdfurl和data二选一
+				//		var pdfh5 = new Pdfh5('#demo', {
+				// 			data: data
+				// 		});
 
-            //配置项参数scrollEnable:false不允许pdf滚动,true允许pdf滚动  默认允许
-            //		var pdfh5 = new Pdfh5('#demo', {
-            // 			scrollEnable:false,//是否允许pdf滚动
-            // 			pdfurl: url
-            // 		});
-            //pdfh5.scrollEnable(true)允许pdf滚动,pdfh5.scrollEnable(false)不允许pdf滚动
+				//配置项参数scrollEnable:false不允许pdf滚动,true允许pdf滚动  默认允许
+				//		var pdfh5 = new Pdfh5('#demo', {
+				// 			scrollEnable:false,//是否允许pdf滚动
+				// 			pdfurl: url
+				// 		});
+				//pdfh5.scrollEnable(true)允许pdf滚动,pdfh5.scrollEnable(false)不允许pdf滚动
 
-            //配置项参数zoomEnable:false不允许pdf手势缩放,true允许pdf手势缩放  默认允许
-            //		var pdfh5 = new Pdfh5('#demo', {
-            // 			zoomEnable:false,//是否允许pdf手势缩放
-            // 			pdfurl: url
-            // 		});
-            //pdfh5.zoomEnable(true)允许pdf手势缩放，pdfh5.zoomEnable(false)不允许pdf手势缩放
+				//配置项参数zoomEnable:false不允许pdf手势缩放,true允许pdf手势缩放  默认允许
+				//		var pdfh5 = new Pdfh5('#demo', {
+				// 			zoomEnable:false,//是否允许pdf手势缩放
+				// 			pdfurl: url
+				// 		});
+				//pdfh5.zoomEnable(true)允许pdf手势缩放，pdfh5.zoomEnable(false)不允许pdf手势缩放
 
-            //pdfh5还原、销毁（附带回调函数）：   pdfh5.reset pdfh5.destroy 
-            //pdfh5显示、隐藏（附带回调函数）：   pdfh5.show pdfh5.hide 
+				//pdfh5还原、销毁（附带回调函数）：   pdfh5.reset pdfh5.destroy 
+				//pdfh5显示、隐藏（附带回调函数）：   pdfh5.show pdfh5.hide 
 
-            //pdf准备开始渲染，此时可以拿到pdf总页数
-            pdfh5.on("ready", function() {
-                    console.log("pdf准备开始渲染，总页数：" + this.totalNum)
-                })
-                //监听pdf渲染成功
-            pdfh5.on("success", function(time) {
-                    time = time / 1000
-                    console.log("pdf渲染完成，总耗时" + time + "秒")
-                })
-                //监听pdf渲染失败
-                // pdfh5.on("error", function (time) {
-                //     console.log("渲染失败，总耗时" + time + "毫秒")
-                // })
-                //监听完成事件，加载失败、渲染成功都会触发
-                //  pdfh5.on("complete", function (status, msg, time) {
-                //     console.log("状态：" + status + "，信息：" + msg + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum)
-                // })
-                //on方法,监听事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
-                // 缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
+				//pdf准备开始渲染，此时可以拿到pdf总页数
+				pdfh5.on("ready", function() {
+					console.log("pdf准备开始渲染，总页数：" + this.totalNum)
+				})
+				//监听pdf渲染成功
+				pdfh5.on("success", function(time) {
+					time = time / 1000
+					console.log("pdf渲染完成，总耗时" + time + "秒");
+					//滚动到第3页
+					// pdfh5.goto(3);
+				})
+				//监听pdf渲染失败
+				// pdfh5.on("error", function (time) {
+				//     console.log("渲染失败，总耗时" + time + "毫秒")
+				// })
+				//监听完成事件，加载失败、渲染成功都会触发
+				//  pdfh5.on("complete", function (status, msg, time) {
+				//     console.log("状态：" + status + "，信息：" + msg + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum)
+				// })
+				//on方法,监听事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
+				// 缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
 
-            //pdfh5支持在线预览 
-            //http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf
-        })
-        var a = document.createElement("a");
-        a.style.display = "none";
-        a.href="https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2534506313,1688529724&fm=26&gp=0.jpg";
-        a.target="_blank";
-        a.download="bb.jpg";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    </script>
-</body>
+				//pdfh5支持在线预览 
+				//http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf
+			})
+		</script>
+	</body>
 
 </html>

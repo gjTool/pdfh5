@@ -17,7 +17,8 @@
 
 ## 更新信息
 
-- 2020.07.01 更新：  修复fs问题
+- 2020.07.09 更新：  1.新增goto配置属性，pdf加载会默认跳转到第几页，新增goto方法，在页面加载完成使用，跳转到第几页
+					2.修复loading没有隐藏的bug
 
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
@@ -148,7 +149,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |cMapUrl| {String}| 默认"https://www.gjtool.cn/cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径，例如 cMapUrl:"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"|
 |limit| {Number}| 默认0 |限制pdf加载最大页数|
 |logo| {Object}|{src:"pdfh5.png",bottom:"10px",right:"10px",width:"40px",height:"40px"}src水印图片路径（建议使用png透明图片），width水印宽度，height水印高度，还有位置参数top/left/right/bottom 可以设置。默认false |给每页pdf添加水印logo|
-
+|goto| {Number}| 默认0 |加载pdf跳转到第几页|
 ## 	pdf文件流请求示例（以jq ajax为例）
 1.
 ```javascript
@@ -223,12 +224,12 @@ pdfh5.scrollEnable(false) //不允许pdf滚动
 |:---:|:---:|:---:|:---:|
 |scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动(需要在pdf加载完成后使用)|
 |zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放(需要在pdf加载完成后使用)|
-|show| {Function}|带一个回调函数参数|pdfh5显示|
-|hide| {Function}|带一个回调函数参数|pdfh5隐藏|
-|reset| {Function}|带一个回调函数参数|pdfh5还原|
-|destroy| {Function}|带一个回调函数参数|pdfh5销毁|
+|show| {Function}|带一个回调函数|pdfh5显示|
+|hide| {Function}|带一个回调函数|pdfh5隐藏|
+|reset| {Function}|带一个回调函数|pdfh5还原|
+|destroy| {Function}|带一个回调函数|pdfh5销毁|
 |on| {String, Function}|String：监听的事件名，Function：监听的事件回调|on方法监听所有事件|
-
+|goto | {Function(pageNum)}| pdf跳转到第几页（pdf加载完成后使用）|
 
 ## on方法监听所有事件-事件名列表
 
@@ -256,7 +257,6 @@ pdfh5.on("ready", function () {
 |hide | {Function}| 监听pdfh5隐藏|
 |reset | {Function}| 监听pdfh5还原|
 |destroy | {Function}| 监听pdfh5销毁|
-
 ## 打赏赞助作者：
 ![支付宝二维码](https://www.gjtool.cn/download/zfb.jpg) ![微信二维码](https://www.gjtool.cn/download/wx.jpg)
 
