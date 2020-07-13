@@ -39,7 +39,7 @@
     height: 100%;
     position: relative;
     z-index: 100;
-	user-select:none;
+	/* user-select:none; */
 }
 
 .pdfjs .pageNum {
@@ -143,7 +143,70 @@
     transition: all .3s;
 }
 .pdfjs .pdfViewer .pageContainer img.pdfLogo{
-	user-select:none;
+	/* user-select:none; */
 	position:absolute;
 	z-index: 101;
+}
+.pdfjs .textLayer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  opacity: 0.2;
+  line-height: 1.0;
+  z-index: 101;
+}
+
+.pdfjs .textLayer > span {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+  transform: translate(-99px, -80px) scaleX(1) !important;
+}
+
+.pdfjs .textLayer .highlight {
+  margin: -1px;
+  padding: 1px;
+  background-color: rgba(180, 0, 170, 1);
+  border-radius: 4px;
+}
+
+.pdfjs .textLayer .highlight.begin {
+  border-radius: 4px 0px 0px 4px;
+}
+
+.pdfjs .textLayer .highlight.end {
+  border-radius: 0px 4px 4px 0px;
+}
+
+.pdfjs .textLayer .highlight.middle {
+  border-radius: 0px;
+}
+
+.pdfjs .textLayer .highlight.selected {
+  background-color: rgba(0, 100, 0, 1);
+}
+
+.pdfjs .textLayer ::selection {
+  background: rgba(0, 0, 255, 1);
+}
+
+.pdfjs .textLayer .endOfContent {
+  display: block;
+  position: absolute;
+  left: 0px;
+  top: 100%;
+  right: 0px;
+  bottom: 0px;
+  z-index: -1;
+  cursor: default;
+  /* user-select: none; */
+}
+
+.pdfjs .textLayer .endOfContent.active {
+  top: 0px;
 }

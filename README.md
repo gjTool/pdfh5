@@ -17,8 +17,7 @@
 
 ## 更新信息
 
-- 2020.07.09 更新：  1.新增goto配置属性，pdf加载会默认跳转到第几页，新增goto方法，在页面加载完成使用，跳转到第几页
-					2.修复loading没有隐藏的bug
+- 2020.07.13 更新：  修复pc端bug，修改logo渲染方法，添加textLayer，让移动端可以复制文本(测试阶段)
 
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
@@ -143,13 +142,15 @@ var pdfh5 = new Pdfh5('#demo', {
 |data|  {String(blob)/Array(arraybuffer) | - |pdf文件流 ，与pdfurl二选一|
 |renderType| {String}|"canvas"、"svg"，默认"canvas"|pdf渲染模式|
 |lazy| {Boolean}|true、false， 默认false|是否开启懒加载|
-|maxZoom|  {Number}|默认3|手势缩放最大倍数|
+|maxZoom|  {Number}|最大倍数3|手势缩放最大倍数|
+|scale|  {Number}|最大比例5，默认1.5|pdf渲染的比例|
 |scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动|
 |zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
 |cMapUrl| {String}| 默认"https://www.gjtool.cn/cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径，例如 cMapUrl:"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"|
 |limit| {Number}| 默认0 |限制pdf加载最大页数|
-|logo| {Object}|{src:"pdfh5.png",bottom:"10px",right:"10px",width:"40px",height:"40px"}src水印图片路径（建议使用png透明图片），width水印宽度，height水印高度，还有位置参数top/left/right/bottom 可以设置。默认false |给每页pdf添加水印logo|
+|logo| {Object}|{src:"pdfh5.png",x:10,y:10,width:40,height:40}src水印图片路径（建议使用png透明图片），width水印宽度，height水印高度，以每页pdf左上角为0点，x、y为偏移值。 默认false |给每页pdf添加水印logo|
 |goto| {Number}| 默认0 |加载pdf跳转到第几页|
+|textLayer|  {Boolean} | true、false， 默认false |是否开启textLayer，可以复制文本|
 ## 	pdf文件流请求示例（以jq ajax为例）
 1.
 ```javascript

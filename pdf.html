@@ -72,7 +72,14 @@
 				$("#demo").show()
 				pdfh5 = new Pdfh5('#demo', {
 					pdfurl: "git.pdf",
-					goto:3
+					textLayer:true,
+					logo: {
+						src: "pdfh5.png",
+						x: 10,
+						y: 10,
+						width: 40,
+						height: 40
+					}
 					// ,URIenable:true //开启浏览器地址栏file参数获取
 				});
 				// setTimeout(() => {
