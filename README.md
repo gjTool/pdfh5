@@ -258,6 +258,11 @@ pdfh5.on("ready", function () {
 |hide | {Function}| 监听pdfh5隐藏|
 |reset | {Function}| 监听pdfh5还原|
 |destroy | {Function}| 监听pdfh5销毁|
+
+## 扫码加入微信群：
+![image.png](https://www.gjtool.cn/upload/2020/07/image-22c10803a21047efb646369e89f40d42.png)
+
+
 ## 打赏赞助作者：
 ![支付宝二维码](https://www.gjtool.cn/download/zfb.jpg) ![微信二维码](https://www.gjtool.cn/download/wx.jpg)
 
