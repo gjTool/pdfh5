@@ -260,7 +260,7 @@ pdfh5.on("ready", function () {
 |destroy | {Function}| 监听pdfh5销毁|
 
 ## 扫码加入微信群：
-![image.png](https://www.gjtool.cn/upload/2020/07/image-22c10803a21047efb646369e89f40d42.png)
+![image.png](https://www.gjtool.cn/download/wxqun.png)
 
 
 ## 打赏赞助作者：
