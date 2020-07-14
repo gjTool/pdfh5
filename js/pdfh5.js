@@ -1,6 +1,6 @@
 ;
 (function(g, fn) {
-	var version = "1.3.13",
+	var version = "1.3.14",
 		pdfjsVersion = "2.3.200";
 	console.log("pdfh5.js v" + version + " & https://www.gjtool.cn")
 	if (typeof require !== 'undefined') {
@@ -24,15 +24,34 @@
 	}
 })(typeof window !== 'undefined' ? window : this, function(g, pdfjsWorker, pdfjsLib, $, version) {
 	'use strict';
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
+
+	var _createClass = function() {
+		function defineProperties(target, props) {
+			for (var i = 0; i < props.length; i++) {
+				var descriptor = props[i];
+				descriptor.enumerable = descriptor.enumerable || false;
+				descriptor.configurable = true;
+				if ("value" in descriptor) descriptor.writable = true;
+				Object.defineProperty(target, descriptor.key, descriptor);
+			}
+		}
+		return function(Constructor, protoProps, staticProps) {
+			if (protoProps) defineProperties(Constructor.prototype, protoProps);
+			if (staticProps) defineProperties(Constructor, staticProps);
+			return Constructor;
+		};
+	}();
+
+	function _classCallCheck(instance, Constructor) {
+		if (!(instance instanceof Constructor)) {
+			throw new TypeError("Cannot call a class as a function");
+		}
+	}
+
 	var renderTextLayer = pdfjsLib.renderTextLayer;
 	var EXPAND_DIVS_TIMEOUT = 300; // ms
-	
-	var TextLayerBuilder = function () {
+
+	var TextLayerBuilder = function() {
 		function TextLayerBuilder(_ref) {
 			var textLayerDiv = _ref.textLayerDiv;
 			var eventBus = _ref.eventBus;
@@ -42,9 +61,9 @@
 			var findController = _ref$findController === undefined ? null : _ref$findController;
 			var _ref$enhanceTextSelec = _ref.enhanceTextSelection;
 			var enhanceTextSelection = _ref$enhanceTextSelec === undefined ? false : _ref$enhanceTextSelec;
-	
+
 			_classCallCheck(this, TextLayerBuilder);
-	
+
 			this.textLayerDiv = textLayerDiv;
 			this.eventBus = eventBus;
 			this.textContent = null;
@@ -59,21 +78,21 @@
 			this.findController = findController;
 			this.textLayerRenderTask = null;
 			this.enhanceTextSelection = enhanceTextSelection;
-	
+
 			this._onUpdateTextLayerMatches = null;
 			this._bindMouse();
 		}
-	
+
 		/**
-	  * @private
-	  */
-	
-	
+		 * @private
+		 */
+
+
 		_createClass(TextLayerBuilder, [{
 			key: "_finishRendering",
 			value: function _finishRendering() {
 				this.renderingDone = true;
-	
+
 				if (!this.enhanceTextSelection) {
 					var endOfContent = document.createElement("div");
 					endOfContent.className = "endOfContent";
@@ -87,26 +106,26 @@
 					});
 				}
 			}
-	
+
 			/**
-	   * Renders the text layer.
-	   *
-	   * @param {number} [timeout] - Wait for a specified amount of milliseconds
-	   *                             before rendering.
-	   */
-	
+			 * Renders the text layer.
+			 *
+			 * @param {number} [timeout] - Wait for a specified amount of milliseconds
+			 *                             before rendering.
+			 */
+
 		}, {
 			key: "render",
 			value: function render() {
 				var _this = this;
-	
+
 				var timeout = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
-	
+
 				if (!(this.textContent || this.textContentStream) || this.renderingDone) {
 					return;
 				}
 				this.cancel();
-	
+
 				this.textDivs = [];
 				var textLayerFrag = document.createDocumentFragment();
 				this.textLayerRenderTask = renderTextLayer({
@@ -119,16 +138,16 @@
 					timeout: timeout,
 					enhanceTextSelection: this.enhanceTextSelection
 				});
-				this.textLayerRenderTask.promise.then(function () {
+				this.textLayerRenderTask.promise.then(function() {
 					_this.textLayerDiv.appendChild(textLayerFrag);
 					_this._finishRendering();
 					_this._updateMatches();
-				}, function (reason) {
+				}, function(reason) {
 					// Cancelled or failed to render text layer; skipping errors.
 				});
-	
+
 				if (!this._onUpdateTextLayerMatches) {
-					this._onUpdateTextLayerMatches = function (evt) {
+					this._onUpdateTextLayerMatches = function(evt) {
 						if (evt.pageIndex === _this.pageIdx || evt.pageIndex === -1) {
 							_this._updateMatches();
 						}
@@ -138,11 +157,11 @@
 					}
 				}
 			}
-	
+
 			/**
-	   * Cancel rendering of the text layer.
-	   */
-	
+			 * Cancel rendering of the text layer.
+			 */
+
 		}, {
 			key: "cancel",
 			value: function cancel() {
@@ -176,35 +195,35 @@
 				}
 				var findController = this.findController;
 				var textContentItemsStr = this.textContentItemsStr;
-	
-	
+
+
 				var i = 0,
-				    iIndex = 0;
+					iIndex = 0;
 				var end = textContentItemsStr.length - 1;
 				var queryLen = findController.state.query.length;
 				var result = [];
-	
+
 				for (var m = 0, mm = matches.length; m < mm; m++) {
 					// Calculate the start position.
 					var matchIdx = matches[m];
-	
+
 					// Loop over the divIdxs.
 					while (i !== end && matchIdx >= iIndex + textContentItemsStr[i].length) {
 						iIndex += textContentItemsStr[i].length;
 						i++;
 					}
-	
+
 					if (i === textContentItemsStr.length) {
 						console.error("Could not find a matching mapping");
 					}
-	
+
 					var match = {
 						begin: {
 							divIdx: i,
 							offset: matchIdx - iIndex
 						}
 					};
-	
+
 					// Calculate the end position.
 					if (matchesLength) {
 						// Multiterm search.
@@ -213,14 +232,14 @@
 						// Phrase search.
 						matchIdx += queryLen;
 					}
-	
+
 					// Somewhat the same array as above, but use > instead of >= to get
 					// the end position right.
 					while (i !== end && matchIdx > iIndex + textContentItemsStr[i].length) {
 						iIndex += textContentItemsStr[i].length;
 						i++;
 					}
-	
+
 					match.end = {
 						divIdx: i,
 						offset: matchIdx - iIndex
@@ -240,8 +259,8 @@
 				var pageIdx = this.pageIdx;
 				var textContentItemsStr = this.textContentItemsStr;
 				var textDivs = this.textDivs;
-	
-	
+
+
 				var isSelectedPage = pageIdx === findController.selected.pageIdx;
 				var selectedMatchIdx = findController.selected.matchIdx;
 				var highlightAll = findController.state.highlightAll;
@@ -250,13 +269,13 @@
 					divIdx: -1,
 					offset: undefined
 				};
-	
+
 				function beginText(begin, className) {
 					var divIdx = begin.divIdx;
 					textDivs[divIdx].textContent = "";
 					appendTextToDiv(divIdx, 0, begin.offset, className);
 				}
-	
+
 				function appendTextToDiv(divIdx, fromOffset, toOffset, className) {
 					var div = textDivs[divIdx];
 					var content = textContentItemsStr[divIdx].substring(fromOffset, toOffset);
@@ -270,9 +289,9 @@
 					}
 					div.appendChild(node);
 				}
-	
+
 				var i0 = selectedMatchIdx,
-				    i1 = i0 + 1;
+					i1 = i0 + 1;
 				if (highlightAll) {
 					i0 = 0;
 					i1 = matches.length;
@@ -280,14 +299,14 @@
 					// Not highlighting all and this isn't the selected page, so do nothing.
 					return;
 				}
-	
+
 				for (var i = i0; i < i1; i++) {
 					var match = matches[i];
 					var begin = match.begin;
 					var end = match.end;
 					var isSelected = isSelectedPage && i === selectedMatchIdx;
 					var highlightSuffix = isSelected ? " selected" : "";
-	
+
 					if (isSelected) {
 						// Attempt to scroll the selected match into view.
 						findController.scrollMatchIntoView({
@@ -296,7 +315,7 @@
 							matchIndex: selectedMatchIdx
 						});
 					}
-	
+
 					// Match inside new div.
 					if (!prevEnd || begin.divIdx !== prevEnd.divIdx) {
 						// If there was a previous div, then add the text at the end.
@@ -308,7 +327,7 @@
 					} else {
 						appendTextToDiv(prevEnd.divIdx, prevEnd.offset, begin.offset);
 					}
-	
+
 					if (begin.divIdx === end.divIdx) {
 						appendTextToDiv(begin.divIdx, begin.offset, end.offset, "highlight" + highlightSuffix);
 					} else {
@@ -320,7 +339,7 @@
 					}
 					prevEnd = end;
 				}
-	
+
 				if (prevEnd) {
 					appendTextToDiv(prevEnd.divIdx, prevEnd.offset, infinity.offset);
 				}
@@ -337,9 +356,9 @@
 				var pageIdx = this.pageIdx;
 				var textContentItemsStr = this.textContentItemsStr;
 				var textDivs = this.textDivs;
-	
+
 				var clearedUntilDivIdx = -1;
-	
+
 				// Clear all current matches.
 				for (var i = 0, ii = matches.length; i < ii; i++) {
 					var match = matches[i];
@@ -351,7 +370,7 @@
 					}
 					clearedUntilDivIdx = match.end.divIdx + 1;
 				}
-	
+
 				if (!findController || !findController.highlightMatches) {
 					return;
 				}
@@ -359,28 +378,28 @@
 				// used for the textLayer.
 				var pageMatches = findController.pageMatches[pageIdx] || null;
 				var pageMatchesLength = findController.pageMatchesLength[pageIdx] || null;
-	
+
 				this.matches = this._convertMatches(pageMatches, pageMatchesLength);
 				this._renderMatches(this.matches);
 			}
-	
+
 			/**
-	   * Improves text selection by adding an additional div where the mouse was
-	   * clicked. This reduces flickering of the content if the mouse is slowly
-	   * dragged up or down.
-	   *
-	   * @private
-	   */
-	
+			 * Improves text selection by adding an additional div where the mouse was
+			 * clicked. This reduces flickering of the content if the mouse is slowly
+			 * dragged up or down.
+			 *
+			 * @private
+			 */
+
 		}, {
 			key: "_bindMouse",
 			value: function _bindMouse() {
 				var _this2 = this;
-	
+
 				var div = this.textLayerDiv;
 				var expandDivsTimer = null;
-	
-				div.addEventListener("mousedown", function (evt) {
+
+				div.addEventListener("mousedown", function(evt) {
 					if (_this2.enhanceTextSelection && _this2.textLayerRenderTask) {
 						_this2.textLayerRenderTask.expandTextDivs(true);
 						if ((typeof PDFJSDev === "undefined" || !PDFJSDev.test("MOZCENTRAL")) && expandDivsTimer) {
@@ -389,7 +408,7 @@
 						}
 						return;
 					}
-	
+
 					var end = div.querySelector(".endOfContent");
 					if (!end) {
 						return;
@@ -411,11 +430,11 @@
 					}
 					end.classList.add("active");
 				});
-	
-				div.addEventListener("mouseup", function () {
+
+				div.addEventListener("mouseup", function() {
 					if (_this2.enhanceTextSelection && _this2.textLayerRenderTask) {
 						if (typeof PDFJSDev === "undefined" || !PDFJSDev.test("MOZCENTRAL")) {
-							expandDivsTimer = setTimeout(function () {
+							expandDivsTimer = setTimeout(function() {
 								if (_this2.textLayerRenderTask) {
 									_this2.textLayerRenderTask.expandTextDivs(false);
 								}
@@ -426,7 +445,7 @@
 						}
 						return;
 					}
-	
+
 					var end = div.querySelector(".endOfContent");
 					if (!end) {
 						return;
@@ -438,35 +457,35 @@
 				});
 			}
 		}]);
-	
+
 		return TextLayerBuilder;
 	}();
-	
+
 	/**
 	 * @implements IPDFTextLayerFactory
 	 */
-	
-	
-	var DefaultTextLayerFactory = function () {
+
+
+	var DefaultTextLayerFactory = function() {
 		function DefaultTextLayerFactory() {
 			_classCallCheck(this, DefaultTextLayerFactory);
 		}
-	
+
 		_createClass(DefaultTextLayerFactory, [{
 			key: "createTextLayerBuilder",
-	
+
 			/**
-	   * @param {HTMLDivElement} textLayerDiv
-	   * @param {number} pageIndex
-	   * @param {PageViewport} viewport
-	   * @param {boolean} enhanceTextSelection
-	   * @param {EventBus} eventBus
-	   * @returns {TextLayerBuilder}
-	   */
+			 * @param {HTMLDivElement} textLayerDiv
+			 * @param {number} pageIndex
+			 * @param {PageViewport} viewport
+			 * @param {boolean} enhanceTextSelection
+			 * @param {EventBus} eventBus
+			 * @returns {TextLayerBuilder}
+			 */
 			value: function createTextLayerBuilder(textLayerDiv, pageIndex, viewport) {
 				var enhanceTextSelection = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
 				var eventBus = arguments[4];
-	
+
 				return new TextLayerBuilder({
 					textLayerDiv: textLayerDiv,
 					pageIndex: pageIndex,
@@ -476,13 +495,13 @@
 				});
 			}
 		}]);
-	
+
 		return DefaultTextLayerFactory;
 	}();
-	
+
 	g.TextLayerBuilder = TextLayerBuilder;
 	g.DefaultTextLayerFactory = DefaultTextLayerFactory;
-	
+
 	var definePinchZoom = function($) {
 		var PinchZoom = function(el, options, viewerContainer) {
 				this.el = $(el);
@@ -1136,16 +1155,18 @@
 			this.options.textLayer = this.options.textLayer === true ? true : false;
 			this.options.goto = isNaN(this.options.goto) ? 0 : this.options.goto;
 			if (this.options.logo && Object.prototype.toString.call(this.options.logo) === '[object Object]' && this.options.logo
-				.src) {} else {
+				.src) {
+				this.options.logo.img = new Image();
+				this.options.logo.img.src = this.options.logo.src;
+				this.options.logo.img.style.display = "none";
+				document.body.appendChild(this.options.logo.img)
+				this.options.logo.img.onload = function() {
+					// console.log(self.options.logo.img)
+				}
+			} else {
 				this.options.logo = false;
 			}
-			this.options.logo.img = new Image();
-			this.options.logo.img.src = this.options.logo.src;
-			this.options.logo.img.style.display = "none";
-			document.body.appendChild(this.options.logo.img)
-			this.options.logo.img.onload = function() {
-				// console.log(self.options.logo.img)
-			}
+
 			if (this.options.limit) {
 				var n = parseFloat(this.options.limit)
 				this.options.limit = isNaN(n) ? 0 : n < 0 ? 0 : n;
@@ -1543,7 +1564,7 @@
 								container.setAttribute('name', 'page=' + pageNum);
 								container.setAttribute('title', 'Page ' + pageNum);
 								// container.setAttribute('id', 'page-' + (page.pageIndex + 1));
-							
+
 								var loadEffect = document.createElement('div');
 								loadEffect.className = 'loadEffect';
 								container.appendChild(loadEffect);
@@ -1656,7 +1677,8 @@
 			var context = canvas.getContext('2d');
 			if (options.logo) {
 				context.drawImage(self.options.logo.img, self.options.logo.x,
-				 self.options.logo.y, self.options.logo.width*self.options.scale, self.options.logo.height*self.options.scale);
+					self.options.logo.y, self.options.logo.width * self.options.scale, self.options.logo.height * self.options.scale
+				);
 			}
 			canvas.height = viewport.height;
 			canvas.width = viewport.width;
@@ -1671,8 +1693,9 @@
 				viewport: viewport
 			}).then(function() {
 				if (options.logo) {
-					context.drawImage(self.options.logo.img, self.options.logo.x, 
-					self.options.logo.y, self.options.logo.width*self.options.scale, self.options.logo.height*self.options.scale);
+					context.drawImage(self.options.logo.img, self.options.logo.x,
+						self.options.logo.y, self.options.logo.width * self.options.scale, self.options.logo.height * self.options.scale
+					);
 				}
 				self.loadedCount++;
 				var img = new Image();
@@ -1706,11 +1729,11 @@
 				}
 			}).then(function() {
 				return page.getTextContent();
-			}).then(function(textContent){
-				if(!self.options.textLayer){
+			}).then(function(textContent) {
+				if (!self.options.textLayer) {
 					return
 				}
-				if($(container).find(".textLayer")[0]){
+				if ($(container).find(".textLayer")[0]) {
 					return
 				}
 				var textLayerDiv = document.createElement('div');
@@ -1723,9 +1746,9 @@
 					pageIndex: page.pageIndex,
 					viewport: viewport
 				});
-				
+
 				textLayer.setTextContent(textContent);
-				
+
 				textLayer.render();
 			});
 		},
@@ -1780,7 +1803,7 @@
 			if (self.pages) {
 				$(window).on("resize", function() {
 					self.pages.each(function(i, item) {
-						$(item).css("min-height","auto")
+						$(item).css("min-height", "auto")
 					})
 				})
 			}

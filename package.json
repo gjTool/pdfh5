@@ -1,6 +1,6 @@
 {
     "_from": "pdfh5",
-    "_id": "pdfh5@1.3.13",
+    "_id": "pdfh5@1.3.14",
     "_inBundle": false,
     "_integrity": "sha512-9I0AcoEdefvFJZqwv/1Q5ht4QGzmieoVqkd0uehp+62H0KrWtnXYfnHjlwQcfiStdynpCYYJu3A6F1AVUBbqbQ==",
     "_location": "/pdfh5",
@@ -57,5 +57,5 @@
         "url": "git+https://github.com/gjTool/pdfh5.git"
     },
     "scripts": {},
-    "version": "1.3.13"
+    "version": "1.3.14"
 }
