@@ -1,6 +1,6 @@
 ;
 (function(g, fn) {
-	var version = "1.3.16",
+	var version = "1.3.17",
 		pdfjsVersion = "2.3.200";
 	console.log("pdfh5.js v" + version + "  https://www.gjtool.cn")
 	if (typeof require !== 'undefined') {
@@ -1562,12 +1562,11 @@
 							var viewport = page.getViewport(options.scale);
 							var scale = (self.docWidth / viewport.width).toFixed(2)
 							var scaledViewport = page.getViewport(parseFloat(scale))
-							var div = self.container.find('#pageContainer' + pageNum)[0];
+							var div = self.container.find('.pageContainer' + pageNum)[0];
 							var container;
 							if (!div) {
 								container = document.createElement('div');
-								container.id = 'pageContainer' + pageNum;
-								container.className = 'pageContainer';
+								container.className = 'pageContainer pageContainer' + pageNum;
 								container.setAttribute('name', 'page=' + pageNum);
 								container.setAttribute('title', 'Page ' + pageNum);
 								// container.setAttribute('id', 'page-' + (page.pageIndex + 1));
@@ -1717,7 +1716,7 @@
 
 				img.src = obj2.src;
 				img.className = "canvasImg" + pageNum;
-				var img0 = $("#pageContainer" + pageNum).find(".canvasImg" + pageNum)[0];
+				var img0 = self.container.find(".pageContainer" + pageNum).find(".canvasImg" + pageNum)[0];
 				if (container && !img0) {
 					container.appendChild(img);
 				} else if (img0) {
