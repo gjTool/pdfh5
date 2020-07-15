@@ -25,6 +25,10 @@
             display: none;
             /* height: 50%; */
         }
+		#demo2 {
+		    /* display: none; */
+		    height: 50%;
+		}
     </style>
 	</head>
 
@@ -61,6 +65,7 @@
 
 		</div>
 		<div id="demo"></div>
+		<!-- <div id="demo2"></div> -->
 		<script src="js/pdf.js"></script>
 		<script src="js/pdf.worker.js"></script>
 		<script src="js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
@@ -71,17 +76,15 @@
 				$("#app").remove()
 				$("#demo").show()
 				pdfh5 = new Pdfh5('#demo', {
-					pdfurl: "git.pdf",
-					textLayer:true,
-					logo: {
-						src: "pdfh5.png",
-						x: 10,
-						y: 10,
-						width: 40,
-						height: 40
-					}
-					// ,URIenable:true //开启浏览器地址栏file参数获取
+					pdfurl: "git.pdf"
+					// ,textLayer:true
+					, logo:{src:"pdfh5.png",x:10,y:10,width:40,height:40}
+					,URIenable:true //开启浏览器地址栏file参数获取
 				});
+				// new Pdfh5('#demo2', {
+				// 	pdfurl: "test.pdf"
+				// });
+				
 				// setTimeout(() => {
 				//     var pdfh5 = new Pdfh5('#demo', {
 				//         pdfurl: "https://www.gjtool.cn/pdfh5/git.pdf"

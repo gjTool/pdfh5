@@ -1,6 +1,6 @@
 ;
 (function(g, fn) {
-	var version = "1.3.14",
+	var version = "1.3.15",
 		pdfjsVersion = "2.3.200";
 	console.log("pdfh5.js v" + version + " & https://www.gjtool.cn")
 	if (typeof require !== 'undefined') {
@@ -539,7 +539,7 @@
 				tapZoomFactor: 3,
 				zoomOutFactor: 1.2,
 				animationDuration: 300,
-				maxZoom: 3,
+				maxZoom: 5,
 				minZoom: 0.8,
 				lockDragAxis: false,
 				use2d: true,
@@ -1101,32 +1101,39 @@
 		this.version = version;
 		this.container = $(dom);
 		this.options = options;
-		this.init();
+		this.thePDF = null;
+		this.totalNum = null;
+		this.pages = null;
+		this.initTime = 0;
+		this.scale = 1.5;
+		this.currentNum = 1;
+		this.loadedCount = 0;
+		this.endTime = 0;
+		this.pinchZoom = null;
+		this.timer = null;
+		this.docWidth = document.documentElement.clientWidth;
+		this.winWidth = $(window).width();
+		this.cache = {};
+		this.eventType = {};
+		this.cacheNum = 1;
+		this.resizeEvent = false;
+		this.cacheData = null;
+		this.pdfjsLibPromise = null;
+		this.init(options);
 	};
 	Pdfh5.prototype = {
-		init: function() {
+		init: function(options) {
 			var self = this;
-			this.thePDF = null;
-			this.totalNum = null;
-			this.pages = null;
-			this.initTime = 0;
-			this.scale = 1.5;
-			this.currentNum = 1;
-			this.loadedCount = 0;
-			this.endTime = 0;
-			this.pinchZoom = null;
-			this.timer = null;
-			this.docWidth = document.documentElement.clientWidth;
-			this.winWidth = $(window).width();
-			this.cache = {};
-			this.eventType = {};
-			this.cacheNum = 1;
-			this.resizeEvent = false;
-			this.cacheData = null;
-			this.pdfjsLibPromise = null;
 			if (this.container[0].pdfLoaded) {
 				this.destroy();
 			}
+			if (options.cMapUrl) {
+				pdfjsLib.cMapUrl = options.cMapUrl;
+			} else {
+				pdfjsLib.cMapUrl = 'https://unpkg.com/pdfjs-dist@2.0.943/cmaps/';
+			}
+			pdfjsLib.cMapPacked = true;
+			pdfjsLib.rangeChunkSize = 65536;
 			this.container[0].pdfLoaded = false;
 			this.container.addClass("pdfjs")
 			this.initTime = new Date().getTime();
@@ -1555,7 +1562,7 @@
 							var viewport = page.getViewport(options.scale);
 							var scale = (self.docWidth / viewport.width).toFixed(2)
 							var scaledViewport = page.getViewport(parseFloat(scale))
-							var div = document.getElementById('pageContainer' + pageNum)
+							var div = self.container.find('#pageContainer' + pageNum)[0];
 							var container;
 							if (!div) {
 								container = document.createElement('div');
