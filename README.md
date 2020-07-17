@@ -260,6 +260,9 @@ pdfh5.on("ready", function () {
 |reset | {Function}| 监听pdfh5还原|
 |destroy | {Function}| 监听pdfh5销毁|
 
+## 扫下面小程序码，微信授权登陆即可搜索vip影视漫画小说，免费观看：
+![image.png](https://www.gjtool.cn/download/weixin_advert.jpeg)
+
 ## 扫码加入微信群：
 ![image.png](https://www.gjtool.cn/download/wxqun.png)
 
