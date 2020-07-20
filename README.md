@@ -153,6 +153,19 @@ var pdfh5 = new Pdfh5('#demo', {
 |goto| {Number}| 默认0 |加载pdf跳转到第几页|
 |textLayer|  {Boolean} | true、false， 默认false |是否开启textLayer，可以复制文本（canvas模式下使用）|
 |background|  {Object} | {color:"#fff",image:"url('pdfh5.png')",repeat:"no-repeat",position:"left top",size:"40px 40px"}，和css的background属性语法相同，默认false|是否开启背景图模式|
+
+- 以下属性可选
+|参数名称|类型|取值|作用|
+|:---:|:---:|:---:|:---:|
+|httpHeaders| {Object}| 默认空 |设置httpHeaders信息|
+|withCredentials| {Boolean}| 默认false |是否使用cookie或授权标头之类的凭据发出跨站点访问|
+|password| {String}| 默认空 |用于访问有密码的PDF|
+|stopAtErrors| {Boolean}| 默认false |当无法成功解析关联的PDF数据时，停止解析|
+|disableFontFace| {Boolean}| 默认false |默认情况下，字体会转换为OpenType字体，并通过字体规则来加载。如果禁用，字体将使用内置的字体渲染器渲染。|
+|disableRange| {Boolean}| 默认false |禁用范围请求加载PDF文件。启用后，如果服务器支持部分内容请求，则将以块的形式获取PDF。|
+|disableStream| {Boolean}| 默认false |禁用流式传输PDF文件数据。默认情况下，PDF.js尝试加载成块的PDF。|
+|disableAutoFetch| {Boolean}| 默认false |禁用PDF文件数据的预取。启用范围请求后，即使不需要显示当前页面，PDF.js也会自动继续获取更多数据。默认值为“ false”。注意：还必须禁用流传输disableStream|
+
 ## 	pdf文件流请求示例（以jq ajax为例）
 1.
 ```javascript
