@@ -155,6 +155,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |background|  {Object} | {color:"#fff",image:"url('pdfh5.png')",repeat:"no-repeat",position:"left top",size:"40px 40px"}，和css的background属性语法相同，默认false|是否开启背景图模式|
 
 - 以下属性可选
+
 |参数名称|类型|取值|作用|
 |:---:|:---:|:---:|:---:|
 |httpHeaders| {Object}| 默认空 |设置httpHeaders信息|
