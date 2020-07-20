@@ -21,7 +21,7 @@
 
 ## 更新信息
 
-- 2020.07.15 更新：  修复同时渲染多个pdf内容错乱bug
+- 2020.07.20 更新：  新增background配置属性，给每页pdf增加背景图，语法和css的background属性一样。可以做类似整页平铺水印的效果
 
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
@@ -140,7 +140,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |:---:|:---:|:---:|:---:|
 |pdfurl|  {String} | - |pdf地址 |
 |URIenable|  {Boolean} |true、false， 默认false |  true开启地址栏file参数|
-|data|  {String(blob)/Array(arraybuffer) | - |pdf文件流 ，与pdfurl二选一|
+|data|  {String(blob)/Array(arraybuffer) | - |pdf文件流 ，与pdfurl二选一(二进制PDF数据。使用类型化数组（Uint8Array）可以提高内存使用率。如果PDF数据是BASE64编码的，请先使用atob（）将其转换为二进制字符串。)|
 |renderType| {String}|"canvas"、"svg"，默认"canvas"|pdf渲染模式|
 |lazy| {Boolean}|true、false， 默认false|是否开启懒加载|
 |maxZoom|  {Number}|最大倍数3|手势缩放最大倍数|
@@ -149,9 +149,10 @@ var pdfh5 = new Pdfh5('#demo', {
 |zoomEnable| {Boolean}|true、false， 默认true|是否允许pdf手势缩放|
 |cMapUrl| {String}| 默认"https://www.gjtool.cn/cmaps/"|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径，例如 cMapUrl:"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"|
 |limit| {Number}| 默认0 |限制pdf加载最大页数|
-|logo| {Object}|{src:"pdfh5.png",x:10,y:10,width:40,height:40}src水印图片路径（建议使用png透明图片），width水印宽度，height水印高度，以每页pdf左上角为0点，x、y为偏移值。 默认false |给每页pdf添加水印logo|
+|logo| {Object}|{src:"pdfh5.png",x:10,y:10,width:40,height:40}src水印图片路径（建议使用png透明图片），width水印宽度，height水印高度，以每页pdf左上角为0点，x、y为偏移值。 默认false |给每页pdf添加水印logo（canvas模式下使用）|
 |goto| {Number}| 默认0 |加载pdf跳转到第几页|
-|textLayer|  {Boolean} | true、false， 默认false |是否开启textLayer，可以复制文本|
+|textLayer|  {Boolean} | true、false， 默认false |是否开启textLayer，可以复制文本（canvas模式下使用）|
+|background|  {Object} | {color:"#fff",image:"url('pdfh5.png')",repeat:"no-repeat",position:"left top",size:"40px 40px"}，和css的background属性语法相同，默认false|是否开启背景图模式|
 ## 	pdf文件流请求示例（以jq ajax为例）
 1.
 ```javascript

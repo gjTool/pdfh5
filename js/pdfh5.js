@@ -1,6 +1,6 @@
 ;
 (function(g, fn) {
-	var version = "1.3.17",
+	var version = "1.3.18",
 		pdfjsVersion = "2.3.200";
 	console.log("pdfh5.js v" + version + "  https://www.gjtool.cn")
 	if (typeof require !== 'undefined') {
@@ -1167,13 +1167,12 @@
 				this.options.logo.img.src = this.options.logo.src;
 				this.options.logo.img.style.display = "none";
 				document.body.appendChild(this.options.logo.img)
-				this.options.logo.img.onload = function() {
-					// console.log(self.options.logo.img)
-				}
 			} else {
 				this.options.logo = false;
 			}
-
+			if(!(this.options.background && (this.options.background.color || this.options.background.image))){
+				this.options.background = false
+			}
 			if (this.options.limit) {
 				var n = parseFloat(this.options.limit)
 				this.options.limit = isNaN(n) ? 0 : n < 0 ? 0 : n;
@@ -1367,10 +1366,6 @@
 						url: url,
 						success: function(data) {
 							var rawLength = data.length;
-							// var array = new Uint8Array(new ArrayBuffer(rawLength));
-							// for (i = 0; i < rawLength; i++) {
-							//     array[i] = data.charCodeAt(i) & 0xff;
-							// }
 							var array = [];
 							for (i = 0; i < rawLength; i++) {
 								array.push(data.charCodeAt(i) & 0xff);
@@ -1466,6 +1461,31 @@
 				obj.cMapUrl = options.cMapUrl;
 			} else {
 				obj.cMapUrl = 'https://unpkg.com/pdfjs-dist@2.0.943/cmaps/';
+			}
+			if(options.httpHeaders){
+				obj.httpHeaders = options.httpHeaders;
+			}
+			if(options.withCredentials){
+				obj.withCredentials = true;
+			}
+			if(options.password){
+				obj.password = options.password;
+				console.log(obj.password)
+			}
+			if(options.stopAtErrors){
+				obj.stopAtErrors = true;
+			}
+			if(options.disableFontFace){
+				obj.disableFontFace = true;
+			}
+			if(options.disableRange){
+				obj.disableRange = true;
+			}
+			if(options.disableStream){
+				obj.disableStream = true;
+			}
+			if(options.disableAutoFetch){
+				obj.disableAutoFetch = true;
 			}
 			obj.cMapPacked = true;
 			obj.rangeChunkSize = 65536;
@@ -1569,8 +1589,6 @@
 								container.className = 'pageContainer pageContainer' + pageNum;
 								container.setAttribute('name', 'page=' + pageNum);
 								container.setAttribute('title', 'Page ' + pageNum);
-								// container.setAttribute('id', 'page-' + (page.pageIndex + 1));
-
 								var loadEffect = document.createElement('div');
 								loadEffect.className = 'loadEffect';
 								container.appendChild(loadEffect);
@@ -1593,6 +1611,28 @@
 								}
 							} else {
 								container = div
+							}
+							if(options.background){
+								/*背颜色*/
+								if(options.background.color){
+									container.style["background-color"] = options.background.color	
+								}
+								 /*背景图片*/
+								if(options.background.image){
+									container.style["background-image"] = options.background.image	
+								}
+								/*平铺与否*/
+								if(options.background.repeat){
+									container.style["background-repeat"] = options.background.repeat	
+								}
+								/*背景图片位置*/
+								if(options.background.position){
+									container.style["background-position"] = options.background.position	
+								}
+								/*背景图像的尺寸*/
+								if(options.background.size){
+									container.style["background-size"] = options.background.size	
+								}
 							}
 							self.cache[pageNum + ""].container = container;
 							self.cache[pageNum + ""].scaledViewport = scaledViewport;
@@ -1693,11 +1733,15 @@
 					width: num * self.loadedCount + "%"
 				})
 			}
-			obj2.src = obj2.canvas.toDataURL("image/jpeg");
-			return page.render({
+			obj2.src = obj2.canvas.toDataURL("image/png");
+			var renderObj = {
 				canvasContext: context,
 				viewport: viewport
-			}).then(function() {
+			}
+			if(options.background){
+				renderObj.background = "rgba(255, 255, 255, 0)"
+			}
+			return page.render(renderObj).then(function() {
 				if (options.logo) {
 					context.drawImage(self.options.logo.img, self.options.logo.x,
 						self.options.logo.y, self.options.logo.width * self.options.scale, self.options.logo.height * self.options.scale
@@ -1712,7 +1756,7 @@
 				} else {
 					time2 = time - self.renderTime
 				}
-				obj2.src = obj2.canvas.toDataURL("image/jpeg");
+				obj2.src = obj2.canvas.toDataURL("image/png");
 
 				img.src = obj2.src;
 				img.className = "canvasImg" + pageNum;

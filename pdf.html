@@ -81,10 +81,14 @@
 				$("#app").remove()
 				$("#demo").show()
 				pdfh5 = new Pdfh5('#demo', {
-					pdfurl: "git.pdf"
-					// ,textLayer:true
-					, logo:{src:"pdfh5.png",x:10,y:10,width:40,height:40}
-					,URIenable:true //开启浏览器地址栏file参数获取
+					pdfurl: "git.pdf",
+					background:{
+						image:"url('pdfh5.png')",
+						repeat:"no-repeat",
+						position:"left top",
+						size:"40px 40px"
+					},
+					URIenable:true //开启浏览器地址栏file参数获取
 				});
 				// new Pdfh5('#demo2', {
 				// 	pdfurl: "222.pdf"
