@@ -45,7 +45,7 @@
 <div id="demo"></div>
 ```
 
-- 	3.依次引入js   
+- 	3.依次引入js（需引用本项目的js,不要引用官方的pdf.js,jquery可以引用其它版的）   
 
 ```javascript
 <script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
