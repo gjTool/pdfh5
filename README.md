@@ -112,6 +112,12 @@ npm install pdfh5
 </style>
 ```
 
+- **注意：如果css引用报错的话，按下面的方式引用。** 
+```javascript
+  import Pdfh5 from "pdfh5";
+  import "pdfh5/css/pdfh5.css";
+```
+
 # API接口方法
 
 
