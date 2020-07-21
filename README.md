@@ -66,7 +66,7 @@ var pdfh5 = new Pdfh5('#demo', {
 
 - 	1.安装
 
-```
+```javascript
 npm install pdfh5
 ```
 - 	2.使用
