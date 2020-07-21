@@ -122,7 +122,7 @@ npm install pdfh5
 
 
 ## 实例化
-- **pdfh5实例化的时候传两个参数，selector选择器，options配置项参数，options可以不填写，会自动获取浏览器地址栏？file=后面的地址。会返回一个pdfh5实例对象，可以用来操作pdf，监听相关事件** 
+- **pdfh5实例化的时候传两个参数，selector选择器，options配置项参数，会返回一个pdfh5实例对象，可以用来操作pdf，监听相关事件** 
 ```javascript
 var pdfh5 = new Pdfh5(selector, options);
 ```
@@ -133,12 +133,11 @@ var pdfh5 = new Pdfh5(selector, options);
 
 ## options配置项参数列表
 
-- **示例：** 配置项参数 lazy:true 开启懒加载，默认是false,不开启懒加载
+- **示例：** 配置项参数 pdfurl
 
 ```javascript
 var pdfh5 = new Pdfh5('#demo', {
-	pdfurl: "./default.pdf",
-	lazy:true 
+	pdfurl: "./default.pdf"
 });
 ```
 
@@ -223,7 +222,7 @@ $.ajax({
 	}
 });
 ```
-4.
+4. axios示例
 ```javascript
 axios.get("https://www.gjtool.cn/pdfh5/git.pdf",{
 	responseType:"arraybuffer"
