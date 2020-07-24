@@ -284,7 +284,7 @@ pdfh5.on("ready", function () {
 ![image.png](https://www.gjtool.cn/download/weixin_advert.jpeg)
 
 ## 扫码加入微信群：
-![image.png](https://www.gjtool.cn/download/wxqun.png)
+![image.png](https://www.gjtool.cn/download/wxqun.png?1111)
 
 
 ## 打赏赞助作者：
