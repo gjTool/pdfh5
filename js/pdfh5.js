@@ -1613,7 +1613,7 @@
 								container = div
 							}
 							if(options.background){
-								/*背颜色*/
+								/*背景颜色*/
 								if(options.background.color){
 									container.style["background-color"] = options.background.color	
 								}
@@ -1682,6 +1682,8 @@
 		},
 		renderSvg: function(page, scaledViewport, pageNum, num, container, options, viewport) {
 			var self = this;
+			var viewport = page.getViewport(options.scale);
+			var scale = (self.docWidth / viewport.width).toFixed(2)
 			return page.getOperatorList().then(function(opList) {
 				var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
 				return svgGfx.getSVG(opList, scaledViewport).then(function(svg) {
@@ -1706,7 +1708,30 @@
 						self.finalRender(options)
 					}
 				});
-			});
+			}).then(function() {
+				return page.getTextContent();
+			}).then(function(textContent) {
+				if (!self.options.textLayer) {
+					return
+				}
+				if ($(container).find(".textLayer")[0]) {
+					return
+				}
+				var textLayerDiv = document.createElement('div');
+				textLayerDiv.setAttribute('class', 'textLayer');
+				container.appendChild(textLayerDiv);
+				viewport.width = viewport.width * scale;
+				viewport.height = viewport.height * scale;
+				var textLayer = new TextLayerBuilder({
+					textLayerDiv: textLayerDiv,
+					pageIndex: page.pageIndex,
+					viewport: viewport
+				});
+
+				textLayer.setTextContent(textContent);
+
+				textLayer.render();
+			});;
 		},
 		renderCanvas: function(page, viewport, pageNum, num, container, options) {
 			var self = this;
