@@ -73,7 +73,7 @@
 		<div id="demo3"></div> -->
 		<script src="js/pdf.js"></script>
 		<script src="js/pdf.worker.js"></script>
-		<script src="js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-2.1.1.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			var pdfh5;
@@ -81,7 +81,7 @@
 				$("#app").remove()
 				$("#demo").show()
 				pdfh5 = new Pdfh5('#demo', {
-					pdfurl: "http://113.106.251.58:7070/RoadFlowEngine/Mobile/DDAppFileDetail?MD5=054a7492fcb144789c4c74e5e081aea2&filename=3333.pdf",
+					pdfurl: "git.pdf",
 					// renderType:"svg",
 					// textLayer:true,
 					// background:{
@@ -92,6 +92,9 @@
 					// },
 					URIenable:true //开启浏览器地址栏file参数获取
 				});
+				pdfh5.on("zoom", function (scale) {
+				    console.log(scale)
+				})
 				// new Pdfh5('#demo2', {
 				// 	pdfurl: "222.pdf"
 				// });

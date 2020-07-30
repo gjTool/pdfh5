@@ -1,11 +1,11 @@
 ;
 (function(g, fn) {
-	var version = "1.3.18",
+	var version = "1.3.19",
 		pdfjsVersion = "2.3.200";
 	console.log("pdfh5.js v" + version + "  https://www.gjtool.cn")
 	if (typeof require !== 'undefined') {
 		if (g.$ === undefined) {
-			g.$ = require('./jquery-1.11.3.min.js');
+			g.$ = require('./jquery-2.1.1.min.js');
 		}
 		g.pdfjsWorker = require('./pdf.worker.js');
 		g.pdfjsLib = require('./pdf.js');
