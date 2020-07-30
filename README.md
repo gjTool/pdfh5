@@ -50,7 +50,7 @@
 ```javascript
 <script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/pdf.worker.js" type="text/javascript" charset="utf-8"></script>
-<script src="js/jquery-1.11.3.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/jquery-2.1.1.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
 ```
 
