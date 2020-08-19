@@ -284,7 +284,7 @@ pdfh5.on("ready", function () {
 ![image.png](https://www.gjtool.cn/download/weixin_advert.jpeg)
 
 ## 扫码加入微信群：
-![image.png](https://www.gjtool.cn/download/wxqun.jpg?555)
+![image.png](https://www.gjtool.cn/download/wxqun.jpg?666)
 
 
 ## 打赏赞助作者：
@@ -318,3 +318,4 @@ pdfh5.on("ready", function () {
 - *阳 ¥10.00
 - 自闭中 ¥16.66+¥16.00
 - *焕 ¥6.66
+- *人 ¥5.00
