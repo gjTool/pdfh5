@@ -147,7 +147,9 @@ var pdfh5 = new Pdfh5('#demo', {
 |URIenable|  {Boolean} |true、false， 默认false |  true开启地址栏file参数|
 |data|  {String(blob)/Array(arraybuffer) | - |pdf文件流 ，与pdfurl二选一(二进制PDF数据。使用类型化数组（Uint8Array）可以提高内存使用率。如果PDF数据是BASE64编码的，请先使用atob（）将其转换为二进制字符串。)|
 |renderType| {String}|"canvas"、"svg"，默认"canvas"|pdf渲染模式|
-|lazy| {Boolean}|true、false， 默认false|是否开启懒加载|
+|pageNum| {Boolean}|true、false， 默认true|是否显示左上角页码|
+|backTop| {Boolean}|true、false， 默认true|是否显示右上角回到顶部按钮|
+|lazy| {Boolean}|true、false， 默认false|是否开启懒加载(实际是延迟加载图片，即屏幕滚动到pdf位置时加载图片)|
 |maxZoom|  {Number}|最大倍数3|手势缩放最大倍数|
 |scale|  {Number}|最大比例5，默认1.5|pdf渲染的比例|
 |scrollEnable| {Boolean}|true、false， 默认true|是否允许pdf滚动|
@@ -284,7 +286,7 @@ pdfh5.on("ready", function () {
 ![image.png](https://www.gjtool.cn/download/weixin_advert.jpeg)
 
 ## 扫码加入微信群：
-![image.png](https://www.gjtool.cn/download/wxqun.jpg?12312399)
+![image.png](https://www.gjtool.cn/download/wxqun.jpg?453451321)
 
 
 ## 打赏赞助作者：
@@ -318,4 +320,4 @@ pdfh5.on("ready", function () {
 - *阳 ¥10.00
 - 自闭中 ¥16.66+¥16.00
 - *焕 ¥6.66
-- *人 ¥5.00
+ - *人 ¥5.00
