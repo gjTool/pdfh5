@@ -285,8 +285,8 @@ pdfh5.on("ready", function () {
 ## 扫下面小程序码，微信授权登陆即可搜索vip影视漫画小说，免费观看：
 ![image.png](https://www.gjtool.cn/download/weixin_advert.jpeg)
 
-## 前端微信群，邀请加入：
-![image.png](https://www.gjtool.cn/download/wxqun.jpg)
+## 前端技术交流微信群，现有100+人，扫码加我微信，邀请加入：
+![image.png](https://www.gjtool.cn/download/wxqun.jpg?wdf32437658)
 
 ## 打赏赞助作者：
 ![支付宝二维码](https://www.gjtool.cn/download/zfb.jpg) ![微信二维码](https://www.gjtool.cn/download/wx.jpg)
