@@ -1170,7 +1170,7 @@
 			} else {
 				this.options.logo = false;
 			}
-			if(!(this.options.background && (this.options.background.color || this.options.background.image))){
+			if (!(this.options.background && (this.options.background.color || this.options.background.image))) {
 				this.options.background = false
 			}
 			if (this.options.limit) {
@@ -1462,29 +1462,29 @@
 			} else {
 				obj.cMapUrl = 'https://unpkg.com/pdfjs-dist@2.0.943/cmaps/';
 			}
-			if(options.httpHeaders){
+			if (options.httpHeaders) {
 				obj.httpHeaders = options.httpHeaders;
 			}
-			if(options.withCredentials){
+			if (options.withCredentials) {
 				obj.withCredentials = true;
 			}
-			if(options.password){
+			if (options.password) {
 				obj.password = options.password;
 				console.log(obj.password)
 			}
-			if(options.stopAtErrors){
+			if (options.stopAtErrors) {
 				obj.stopAtErrors = true;
 			}
-			if(options.disableFontFace){
+			if (options.disableFontFace) {
 				obj.disableFontFace = true;
 			}
-			if(options.disableRange){
+			if (options.disableRange) {
 				obj.disableRange = true;
 			}
-			if(options.disableStream){
+			if (options.disableStream) {
 				obj.disableStream = true;
 			}
-			if(options.disableAutoFetch){
+			if (options.disableAutoFetch) {
 				obj.disableAutoFetch = true;
 			}
 			obj.cMapPacked = true;
@@ -1612,26 +1612,26 @@
 							} else {
 								container = div
 							}
-							if(options.background){
+							if (options.background) {
 								/*背景颜色*/
-								if(options.background.color){
-									container.style["background-color"] = options.background.color	
+								if (options.background.color) {
+									container.style["background-color"] = options.background.color
 								}
-								 /*背景图片*/
-								if(options.background.image){
-									container.style["background-image"] = options.background.image	
+								/*背景图片*/
+								if (options.background.image) {
+									container.style["background-image"] = options.background.image
 								}
 								/*平铺与否*/
-								if(options.background.repeat){
-									container.style["background-repeat"] = options.background.repeat	
+								if (options.background.repeat) {
+									container.style["background-repeat"] = options.background.repeat
 								}
 								/*背景图片位置*/
-								if(options.background.position){
-									container.style["background-position"] = options.background.position	
+								if (options.background.position) {
+									container.style["background-position"] = options.background.position
 								}
 								/*背景图像的尺寸*/
-								if(options.background.size){
-									container.style["background-size"] = options.background.size	
+								if (options.background.size) {
+									container.style["background-size"] = options.background.size
 								}
 							}
 							self.cache[pageNum + ""].container = container;
@@ -1747,8 +1747,9 @@
 			}
 			var context = canvas.getContext('2d');
 			if (options.logo) {
-				context.drawImage(self.options.logo.img, self.options.logo.x,
-					self.options.logo.y, self.options.logo.width * self.options.scale, self.options.logo.height * self.options.scale
+				context.drawImage(self.options.logo.img, self.options.logo.x * self.options.scale,
+					self.options.logo.y * self.options.scale, self.options.logo.width * self.options.scale, self.options.logo.height *
+					self.options.scale
 				);
 			}
 			canvas.height = viewport.height;
@@ -1763,13 +1764,14 @@
 				canvasContext: context,
 				viewport: viewport
 			}
-			if(options.background){
+			if (options.background) {
 				renderObj.background = "rgba(255, 255, 255, 0)"
 			}
 			return page.render(renderObj).then(function() {
 				if (options.logo) {
-					context.drawImage(self.options.logo.img, self.options.logo.x,
-						self.options.logo.y, self.options.logo.width * self.options.scale, self.options.logo.height * self.options.scale
+					context.drawImage(self.options.logo.img, self.options.logo.x * self.options.scale,
+						self.options.logo.y * self.options.scale, self.options.logo.width * self.options.scale, self.options.logo.height *
+						self.options.scale
 					);
 				}
 				self.loadedCount++;

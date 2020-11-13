@@ -81,7 +81,7 @@
 				$("#app").remove()
 				$("#demo").show()
 				pdfh5 = new Pdfh5('#demo', {
-					pdfurl: "git.pdf",
+					pdfurl: "https://www.gjtool.cn/pdfh5/git.pdf",
 					// renderType:"svg",
 					// textLayer:true,
 					// background:{
@@ -183,9 +183,15 @@
 				//     console.log("渲染失败，总耗时" + time + "毫秒")
 				// })
 				//监听完成事件，加载失败、渲染成功都会触发
-				//  pdfh5.on("complete", function (status, msg, time) {
-				//     console.log("状态：" + status + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum,msg)
-				// })
+				 pdfh5.on("complete", function (status, msg, time) {
+				    console.log("状态：" + status + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum,msg)
+				})
+				
+				//监听渲染中事件
+				 pdfh5.on("render", function (currentNum, time, currentPageDom) {
+					 currentPageDom.append("<span class='name-logo'>张三</span>")
+					console.log("当前页码：" + currentNum)
+				})
 				//on方法,监听事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
 				// 缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
 
