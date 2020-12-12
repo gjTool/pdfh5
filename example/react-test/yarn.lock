@@ -5122,9 +5122,9 @@ inherits@2.0.3:
   integrity sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
 
 ini@^1.3.5:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.5.tgz#eee25f56db1c9ec6085e0c22778083f596abf927"
-  integrity sha512-RZY5huIKCMRWDUqZlEi72f/lmXKMvuszcMBduliQ3nnWbx9X/ZBQO7DijMEYS9EhHBb2qacRUMtC7svLwe0lcw==
+  version "1.3.8"
+  resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.8.tgz#a29da425b48806f34767a4efce397269af28432c"
+  integrity sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==
 
 inquirer@7.0.4:
   version "7.0.4"
@@ -7379,10 +7379,10 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-pdfh5@^1.3.11:
-  version "1.3.11"
-  resolved "https://registry.npm.taobao.org/pdfh5/download/pdfh5-1.3.11.tgz#30dd138248e9551711cc054507566f265fe282f0"
-  integrity sha1-MN0TgkjpVRcRzAVFB1ZvJl/igvA=
+pdfh5@^1.3.19:
+  version "1.3.19"
+  resolved "https://registry.yarnpkg.com/pdfh5/-/pdfh5-1.3.19.tgz#6c6da4c4dcc4a428c87e07100f2304922abe3d56"
+  integrity sha512-jqzNikGS+yUda3pMAIz8bPOqGpB+dTovlBnzZFn5GGRjuXCTzGZjqTOrp2z0Tuc9lq3uxQNHDRm+m+xXwg+I0Q==
 
 performance-now@^2.1.0:
   version "2.1.0"
