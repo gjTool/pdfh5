@@ -21,8 +21,7 @@
 
 ## 更新信息
 
-- 2020.07.30 更新：  更新jquery版本至jquery-2.1.1.min.js
-
+- 2021.02.03 更新：  更新goto方法，增加base64字符码加载说明
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
 
@@ -234,7 +233,14 @@ axios.get("https://www.gjtool.cn/pdfh5/git.pdf",{
 	});
 })
 ```
+5. base64码加载示例
+```javascript
+let pdfBase64 = "adfxcvadfasdfxxxxx";
 
+ new Pdfh5('#demo', {
+ 	pdfurl: "data:application/pdf;base64,"+pdfBase64,
+ });
+```
 ## methods 方法列表
 
 - **示例：** 是否允许pdf滚动
