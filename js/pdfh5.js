@@ -1926,18 +1926,15 @@
 			if (!isNaN(num)) {
 				if (self.viewerContainer) {
 					self.pages = self.viewerContainer.find('.pageContainer');
+
 					if (self.pages) {
 						var h = 0;
+						var signHeight = 0;
 						if (num - 1 > 0) {
-							self.pages.each(function(index, obj) {
-								var top = obj.getBoundingClientRect().top;
-								if (index === num - 1) {
-									h = top;
-								}
-							})
+							signHeight = self.pages[0].getBoundingClientRect().height;
 						}
 						self.viewerContainer.animate({
-							scrollTop: h
+							scrollTop: signHeight* (num - 1)+8*num
 						}, 300)
 					}
 				}

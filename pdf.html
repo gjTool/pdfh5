@@ -90,7 +90,8 @@
 					// 	position:"left top",
 					// 	size:"40px 40px"
 					// },
-					URIenable:true //开启浏览器地址栏file参数获取
+					// goto:6,
+					// URIenable:true //开启浏览器地址栏file参数获取
 				});
 				pdfh5.on("zoom", function (scale) {
 				    console.log(scale)
@@ -189,7 +190,7 @@
 				
 				//监听渲染中事件
 				 pdfh5.on("render", function (currentNum, time, currentPageDom) {
-					 currentPageDom.append("<span class='name-logo'>张三</span>")
+					 // currentPageDom.append("<span class='name-logo'>张三</span>")
 					console.log("当前页码：" + currentNum)
 				})
 				//on方法,监听事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
