@@ -292,7 +292,7 @@ pdfh5.on("ready", function () {
 ![image.png](https://www.gjtool.cn/download/weixin_advert.jpeg)
 
 ## 前端技术交流微信群，现有100+人，扫码加我微信，邀请加入：
-![image.png](https://www.gjtool.cn/download/wxqun.jpg?1wdf324376583333333333)
+![image.png](https://www.gjtool.cn/download/wxqun.jpg?1wdf3243276583333333333)
 
 ## 打赏赞助作者：
 ![支付宝二维码](https://www.gjtool.cn/download/zfb.jpg) ![微信二维码](https://www.gjtool.cn/download/wx.jpg)
