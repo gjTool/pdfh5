@@ -288,13 +288,10 @@ pdfh5.on("ready", function () {
 |reset | {Function}| 监听pdfh5还原|
 |destroy | {Function}| 监听pdfh5销毁|
 
-## 扫下面小程序码，微信授权登陆即可搜索vip影视漫画小说，免费观看：
-![image.png](https://www.gjtool.cn/download/weixin_advert.jpeg)
+## 前端技术交流微信群：
+![image.png](https://www.gjtool.cn/download/wxqun.jpg?222)
 
-## 前端技术交流微信群，现有100+人，扫码加我微信，邀请加入：
-![image.png](https://www.gjtool.cn/download/wxqun.jpg?1wdf3243276583333333333)
-
-## 打赏赞助作者：
+## 打赏赞助作者，请他喝一杯咖啡：
 ![支付宝二维码](https://www.gjtool.cn/download/zfb.jpg) ![微信二维码](https://www.gjtool.cn/download/wx.jpg)
 
 - 感谢打赏！请打赏的童鞋留下github、QQ、微信 。然后，我会对打赏过的童鞋的问题及时响应。（当然是在我不忙的时候啦）
