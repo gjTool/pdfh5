@@ -289,11 +289,11 @@ pdfh5.on("ready", function () {
 |destroy | {Function}| 监听pdfh5销毁|
 
 ## 前端技术交流微信群：
-![image.png](https://www.gjtool.cn/download/wxqun.jpg?7777)
+![image.png](https://www.gjtool.cn/download/wxqun.jpg?3453454365463456)
 
 ## 打赏赞助作者，请他喝一杯咖啡：
 ![支付宝二维码](https://www.gjtool.cn/download/zfb.jpg)
- ![微信二维码](https://www.gjtool.cn/download/wx.jpg?123123)
+ ![微信二维码](https://www.gjtool.cn/download/wx.jpg?45345345345345)
 
 - 感谢打赏！请打赏的童鞋留下github、QQ、微信 。然后，我会对打赏过的童鞋的问题及时响应。（当然是在我不忙的时候啦）
 - 相比打赏，点star还要重要些，请各位走过路过帮忙点下star，万分感谢
