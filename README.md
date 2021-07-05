@@ -288,8 +288,8 @@ pdfh5.on("ready", function () {
 |reset | {Function}| 监听pdfh5还原|
 |destroy | {Function}| 监听pdfh5销毁|
 
-## 前端技术交流微信群：
-![image.png](https://www.gjtool.cn/download/wxqun.jpg?3453454365463456)
+## 前端技术交流微信群，添加拉群微信专用号，看到会自动把你拉进交流群的。添加微信注明来意，没有的一律不加：
+![image.png](https://www.gjtool.cn/download/wxqun.jpg?23412545)
 
 ## 打赏赞助作者，请他喝一杯咖啡：
 ![支付宝二维码](https://www.gjtool.cn/download/zfb.jpg)
@@ -330,3 +330,9 @@ pdfh5.on("ready", function () {
 - *蕾 ¥16.66
 - *军 ¥10.00
 - **强 ¥58.88
+- E*y ¥6.60
+- J*u ¥13.00
+- A*a ¥50.00
+- *东 ¥8.80
+- j*y ¥9.99
+- *宇 ¥6.66
