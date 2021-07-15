@@ -288,16 +288,18 @@ pdfh5.on("ready", function () {
 |reset | {Function}| 监听pdfh5还原|
 |destroy | {Function}| 监听pdfh5销毁|
 
-## 前端技术交流微信群，添加拉群微信专用号，看到会自动把你拉进交流群的。添加微信注明来意，没有的一律不加：
-![image.png](https://www.gjtool.cn/download/wxqun.jpg?23412545)
+## 前端技术交流微信群：
+![image.png](https://www.gjtool.cn/download/wxqun.jpg?64545)
 
 ## 打赏赞助作者，请他喝一杯咖啡：
 ![支付宝二维码](https://www.gjtool.cn/download/zfb.jpg)
- ![微信二维码](https://www.gjtool.cn/download/wx.jpg?45345345345345)
+ ![微信二维码](https://www.gjtool.cn/download/wx.jpg?1111)
 
 - 感谢打赏！请打赏的童鞋留下github、QQ、微信 。然后，我会对打赏过的童鞋的问题及时响应。（当然是在我不忙的时候啦）
 - 相比打赏，点star还要重要些，请各位走过路过帮忙点下star，万分感谢
 
+## 免费看vip电影小程序，扫码即可打开小程序观看：
+![小程序二维码](https://www.gjtool.cn/h5/static/weixin_advert.jpeg)
 
 ## 打赏榜单
 - [JayLin](https://github.com/110117ab) ￥6.66
