@@ -299,7 +299,7 @@ pdfh5.on("ready", function () {
 - 相比打赏，点star还要重要些，请各位走过路过帮忙点下star，万分感谢
 
 ## 免费看vip电影小程序，扫码即可打开小程序观看：
-![小程序二维码](https://www.gjtool.cn/h5/static/weixin_advert.jpeg)
+![小程序二维码](https://www.gjtool.cn/h5/static/weixin_advert.jpeg?1111)
 
 ## 打赏榜单
 - [JayLin](https://github.com/110117ab) ￥6.66
