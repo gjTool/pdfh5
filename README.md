@@ -142,25 +142,25 @@ var pdfh5 = new Pdfh5('#demo', {
 });
 ```
 
-|参数名称		|类型								|取值																																								|作用																																							|
-|:---:			|:---:								|:---:																																								|:---:																																							|
-|pdfurl			|  {String}							| -																																									|pdf地址																																						|
-|URIenable		|  {Boolean}						|true、false， 默认false																																			|  true开启地址栏file参数																																		|
-|data			|  {String(blob)/Array(arraybuffer)	| -																																									|pdf文件流 ，与pdfurl二选一(二进制PDF数据。使用类型化数组（Uint8Array）可以提高内存使用率。如果PDF数据是BASE64编码的，请先使用atob（）将其转换为二进制字符串。)	|
-|renderType		| {String}							|"canvas"、"svg"，默认"canvas"																																		|pdf渲染模式																																					|
-|pageNum		| {Boolean}							|true、false， 默认true																																				|是否显示左上角页码																																				|
-|backTop		| {Boolean}							|true、false， 默认true																																				|是否显示右上角回到顶部按钮																																		|
-|lazy			| {Boolean}							|true、false， 默认false																																			|是否开启懒加载(实际是延迟加载图片，即屏幕滚动到pdf位置时加载图片)																								|
-|maxZoom		|  {Number}							|最大倍数3																																							|手势缩放最大倍数																																				|
-|scale			|  {Number}							|最大比例5，默认1.5																																					|pdf渲染的比例																																					|
-|scrollEnable	| {Boolean}							|true、false， 默认true																																				|是否允许pdf滚动																																				|
-|zoomEnable		| {Boolean}							|true、false， 默认true																																				|是否允许pdf手势缩放																																			|
-|cMapUrl		| {String}							| 默认"https://www.gjtool.cn/cmaps/"																																|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径，例如 cMapUrl:"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"													|
-|limit			| {Number}							| 默认0																																								|限制pdf加载最大页数																																			|
-|logo			| {Object}							|{src:"pdfh5.png",x:10,y:10,width:40,height:40}src水印图片路径（建议使用png透明图片），width水印宽度，height水印高度，以每页pdf左上角为0点，x、y为偏移值。 默认false|给每页pdf添加水印logo（canvas模式下使用）																														|
-|goto			| {Number}							| 默认0																																								|加载pdf跳转到第几页																																			|
-|textLayer		|  {Boolean}						| true、false， 默认false																																			|是否开启textLayer，可以复制文本（canvas模式下使用）【处于测试阶段，位置偏移严重】																				|
-|background		|  {Object}							| {color:"#fff",image:"url('pdfh5.png')",repeat:"no-repeat",position:"left top",size:"40px 40px"}，和css的background属性语法相同，默认false							|是否开启背景图模式																																				|
+|参数名称		|类型					|取值																																								|作用																																							|
+|:---:			|:---:					|:---:																																								|:---:																																							|
+|pdfurl			|  {String}				| -																																									|pdf地址																																						|
+|URIenable		|  {Boolean}			|true、false， 默认false																																			|  true开启地址栏file参数																																		|
+|data			|  {Array(arraybuffer)	| -																																									|pdf文件流 ，与pdfurl二选一(二进制PDF数据。使用类型化数组（Uint8Array）可以提高内存使用率。如果PDF数据是BASE64编码的，请先使用atob（）将其转换为二进制字符串。)	|
+|renderType		| {String}				|"canvas"、"svg"，默认"canvas"																																		|pdf渲染模式																																					|
+|pageNum		| {Boolean}				|true、false， 默认true																																				|是否显示左上角页码																																				|
+|backTop		| {Boolean}				|true、false， 默认true																																				|是否显示右上角回到顶部按钮																																		|
+|lazy			| {Boolean}				|true、false， 默认false																																			|是否开启懒加载(实际是延迟加载图片，即屏幕滚动到pdf位置时加载图片)																								|
+|maxZoom		|  {Number}				|最大倍数3																																							|手势缩放最大倍数																																				|
+|scale			|  {Number}				|最大比例5，默认1.5																																					|pdf渲染的比例																																					|
+|scrollEnable	| {Boolean}				|true、false， 默认true																																				|是否允许pdf滚动																																				|
+|zoomEnable		| {Boolean}				|true、false， 默认true																																				|是否允许pdf手势缩放																																			|
+|cMapUrl		| {String}				| 默认"https://www.gjtool.cn/cmaps/"																																|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径，例如 cMapUrl:"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"													|
+|limit			| {Number}				| 默认0																																								|限制pdf加载最大页数																																			|
+|logo			| {Object}				|{src:"pdfh5.png",x:10,y:10,width:40,height:40}src水印图片路径（建议使用png透明图片），width水印宽度，height水印高度，以每页pdf左上角为0点，x、y为偏移值。 默认false|给每页pdf添加水印logo（canvas模式下使用）																														|
+|goto			| {Number}				| 默认0																																								|加载pdf跳转到第几页																																			|
+|textLayer		|  {Boolean}			| true、false， 默认false																																			|是否开启textLayer，可以复制文本（canvas模式下使用）【处于测试阶段，位置偏移严重】																				|
+|background		|  {Object}				| {color:"#fff",image:"url('pdfh5.png')",repeat:"no-repeat",position:"left top",size:"40px 40px"}，和css的background属性语法相同，默认false							|是否开启背景图模式																																				|
 
 - 以下属性可选
 
