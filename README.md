@@ -259,7 +259,7 @@ pdfh5.scrollEnable(false) //不允许pdf滚动
 |reset			| {Function}		|带一个回调函数																		|pdfh5还原										|
 |destroy		| {Function}		|带一个回调函数																		|pdfh5销毁										|
 |on				| {String, Function}|String：监听的事件名，Function：监听的事件回调										|on方法监听所有事件								|
-|goto			| {Number}}			|Number:要跳转的pdf页数																|pdf跳转到第几页（pdf加载完成后使用）			|
+|goto			| {Number}			|Number:要跳转的pdf页数																|pdf跳转到第几页（pdf加载完成后使用）			|
 |download		| {String, Function}|String：下载pdf的名称，默认download.pdf，Function：下载完成后的回调|下载pdf										|
 
 ## on方法监听所有事件-事件名列表
