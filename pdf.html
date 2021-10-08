@@ -16,24 +16,26 @@
 		<link href="https://www.gjtool.cn/download/pdfh5.png" type="image/x-icon" rel="shortcut icon" />
 		<style>
 			html,
-        body {
-            width: 100%;
-            height: 100%;
-        }
-        
-        #demo {
-            display: none;
-            /* height: 33%; */
-        }
-		#demo2 {
-		    /* display: none; */
-		    height: 33%;
-		}
-		#demo3 {
-		    /* display: none; */
-		    height: 33%;
-		}
-    </style>
+			body {
+				width: 100%;
+				height: 100%;
+			}
+
+			#demo {
+				display: none;
+				/* height: 33%; */
+			}
+
+			#demo2 {
+				/* display: none; */
+				height: 33%;
+			}
+
+			#demo3 {
+				/* display: none; */
+				height: 33%;
+			}
+		</style>
 	</head>
 
 	<body>
@@ -69,34 +71,72 @@
 
 		</div>
 		<div id="demo"></div>
-	<!-- 	<div id="demo2"></div>
+		<!-- 	<div id="demo2"></div>
 		<div id="demo3"></div> -->
 		<script src="js/pdf.js"></script>
 		<script src="js/pdf.worker.js"></script>
 		<script src="js/jquery-2.1.1.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
+		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script type="text/javascript">
 			var pdfh5;
 			$(function() {
 				$("#app").remove()
 				$("#demo").show()
-				pdfh5 = new Pdfh5('#demo', {
-					pdfurl: "https://www.gjtool.cn/pdfh5/git.pdf",
-					backTop:false
-					// renderType:"svg",
-					// textLayer:true,
-					// background:{
-					// 	image:"url('pdfh5.png')",
-					// 	repeat:"no-repeat",
-					// 	position:"left top",
-					// 	size:"40px 40px"
-					// },
-					// goto:6,
-					// URIenable:true //开启浏览器地址栏file参数获取
+				$.ajax({
+					url: "https://www.gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
+					type: "get",
+					mimeType: 'text/plain; charset=x-user-defined', //jq ajax请求文件流的方式
+					// dataType: 'arraybuffer',
+					success: function(data) {
+						pdfh5 = new Pdfh5('#demo', {
+							data: data,
+						});
+						pdfh5.on("success", function(time) {
+							time = time / 1000
+							console.log("pdf渲染完成，总耗时" + time + "秒");
+							//滚动到第3页
+							// pdfh5.goto(3);
+							this.download("2222",function(){
+								console.log(11111)
+							})
+						})
+					}
 				});
-				pdfh5.on("zoom", function (scale) {
-				    console.log(scale)
-				})
+				// axios.get("https://www.gjtool.cn/pdfh5/git.pdf", {
+				// 	responseType: "arraybuffer"
+				// }).then(res => {
+				// 	pdfh5 = new Pdfh5('#demo', {
+				// 		data: res.data
+				// 	});
+				// 	pdfh5.on("success", function(time) {
+				// 		time = time / 1000
+				// 		console.log("pdf渲染完成，总耗时" + time + "秒");
+				// 		//滚动到第3页
+				// 		// pdfh5.goto(3);
+				// 		this.download()
+				// 	})
+				// })
+				// pdfh5 = new Pdfh5('#demo', {
+				// 	pdfurl: "test.pdf",
+				// 	goto: 0,
+				// 	// scrollEnable: false // 是否允许pdf滚动
+				// 	zoomEnable: false, // 是否允许pdf手势缩放
+				// 	// limit: 3
+				// });
+				// //监听pdf渲染成功
+				// pdfh5.on("success", function(time) {
+				// 	time = time / 1000
+				// 	console.log("pdf渲染完成，总耗时" + time + "秒");
+				// 	//滚动到第3页
+				// 	// pdfh5.goto(3);
+				// 	this.download("xxxx",function(){
+				// 		console.log(11111)
+				// 	})
+				// })
+				// pdfh5.on("zoom", function(scale) {
+				// 	console.log(scale)
+				// })
 				// new Pdfh5('#demo2', {
 				// 	pdfurl: "222.pdf"
 				// });
@@ -170,30 +210,24 @@
 				//pdfh5显示、隐藏（附带回调函数）：   pdfh5.show pdfh5.hide 
 
 				//pdf准备开始渲染，此时可以拿到pdf总页数
-				pdfh5.on("ready", function() {
-					console.log("pdf准备开始渲染，总页数：" + this.totalNum)
-				})
-				//监听pdf渲染成功
-				pdfh5.on("success", function(time) {
-					time = time / 1000
-					console.log("pdf渲染完成，总耗时" + time + "秒");
-					//滚动到第3页
-					// pdfh5.goto(3);
-				})
+				// pdfh5.on("ready", function() {
+				// 	console.log("pdf准备开始渲染，总页数：" + this.totalNum)
+				// })
+
 				//监听pdf渲染失败
 				// pdfh5.on("error", function (time) {
 				//     console.log("渲染失败，总耗时" + time + "毫秒")
 				// })
 				//监听完成事件，加载失败、渲染成功都会触发
-				 pdfh5.on("complete", function (status, msg, time) {
-				    console.log("状态：" + status + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum,msg)
-				})
-				
+				// pdfh5.on("complete", function(status, msg, time) {
+				// 	console.log("状态：" + status + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum, msg)
+				// })
+
 				//监听渲染中事件
-				 pdfh5.on("render", function (currentNum, time, currentPageDom) {
-					 // currentPageDom.append("<span class='name-logo'>张三</span>")
-					console.log("当前页码：" + currentNum)
-				})
+				// pdfh5.on("render", function(currentNum, time, currentPageDom) {
+				// 	// currentPageDom.append("<span class='name-logo'>张三</span>")
+				// 	console.log("当前页码：" + currentNum)
+				// })
 				//on方法,监听事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
 				// 缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
 
