@@ -11,7 +11,9 @@
 
 - [pdfh5项目GitHub地址](https://github.com/gjTool/pdfh5)  
 
+- [pdfh5项目gitee地址](https://gitee.com/gjTool/pdfh5)
 
+- **注意：github经常被墙，需要看文档的可以去gitee上看**
 
 #### react、vue均可使用
 #### [example/test](https://github.com/gjTool/pdfh5/tree/master/example/test)是vue使用示例，vue示例展示axios调用接口展示pdf，跨域代理，相对路径等方法
