@@ -149,7 +149,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |data			|  {Array(arraybuffer)	| -																																									|pdf文件流 ，与pdfurl二选一(二进制PDF数据。使用类型化数组（Uint8Array）可以提高内存使用率。如果PDF数据是BASE64编码的，请先使用atob（）将其转换为二进制字符串。)	|
 |renderType		| {String}				|"canvas"、"svg"，默认"canvas"																																		|pdf渲染模式																																					|
 |pageNum		| {Boolean}				|true、false， 默认true																																				|是否显示左上角页码																																				|
-|backTop		| {Boolean}				|true、false， 默认true																																				|是否显示右上角回到顶部按钮																																		|
+|backTop		| {Boolean}				|true、false， 默认true																																				|是否显示右下角回到顶部按钮																																		|
 |lazy			| {Boolean}				|true、false， 默认false																																			|是否开启懒加载(实际是延迟加载图片，即屏幕滚动到pdf位置时加载图片)																								|
 |maxZoom		|  {Number}				|最大倍数3																																							|手势缩放最大倍数																																				|
 |scale			|  {Number}				|最大比例5，默认1.5																																					|pdf渲染的比例																																					|
