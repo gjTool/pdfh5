@@ -127,10 +127,10 @@ npm install pdfh5
 ```javascript
 var pdfh5 = new Pdfh5(selector, options);
 ```
-|参数名称|类型|取值|是否必须|作用|
-|:---:|:---:|:---:|:---:|:---:|
-|selector|  {String} | - | √ |pdfh5的容器选择器|
-|options|  {Object} | - | × |pdfh5的配置项参数|
+|参数名称	|类型		|取值	|是否必须	|作用				|
+|:---:		|:---:		|:---:	|:---:		|:---:				|
+|selector	|  {String}	| -		| √		|pdfh5的容器选择器	|
+|options	|  {Object}	| -		| ×			|pdfh5的配置项参数	|
 
 ## options配置项参数列表
 
@@ -146,7 +146,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |:---:			|:---:					|:---:																																								|:---:																																							|
 |pdfurl			|  {String}				| -																																									|pdf地址																																						|
 |URIenable		|  {Boolean}			|true、false， 默认false																																			|  true开启地址栏file参数																																		|
-|data			|  {Array(arraybuffer)	| -																																									|pdf文件流 ，与pdfurl二选一(二进制PDF数据。使用类型化数组（Uint8Array）可以提高内存使用率。如果PDF数据是BASE64编码的，请先使用atob（）将其转换为二进制字符串。)	|
+|data			|  {Array(arraybuffer)}	| -																																									|pdf文件流 ，与pdfurl二选一(二进制PDF数据。使用类型化数组（Uint8Array）可以提高内存使用率。如果PDF数据是BASE64编码的，请先使用atob（）将其转换为二进制字符串。)	|
 |renderType		| {String}				|"canvas"、"svg"，默认"canvas"																																		|pdf渲染模式																																					|
 |pageNum		| {Boolean}				|true、false， 默认true																																				|是否显示左上角页码																																				|
 |backTop		| {Boolean}				|true、false， 默认true																																				|是否显示右下角回到顶部按钮																																		|
@@ -252,16 +252,16 @@ pdfh5.scrollEnable(true) //允许pdf滚动
 pdfh5.scrollEnable(false) //不允许pdf滚动
 ```
 
-|参数名称		|类型				|取值																				|作用											|
-|:---:			|:---:				|:---:																				|:---:											|
-|scrollEnable	| {Boolean}			|true、false， 默认true																|是否允许pdf滚动(需要在pdf加载完成后使用)		|
-|zoomEnable		| {Boolean}			|true、false， 默认true																|是否允许pdf手势缩放(需要在pdf加载完成后使用)	|
-|show			| {Function}		|带一个回调函数																		|pdfh5显示										|
-|hide			| {Function}		|带一个回调函数																		|pdfh5隐藏										|
-|reset			| {Function}		|带一个回调函数																		|pdfh5还原										|
-|destroy		| {Function}		|带一个回调函数																		|pdfh5销毁										|
-|on				| {String, Function}|String：监听的事件名，Function：监听的事件回调										|on方法监听所有事件								|
-|goto			| {Number}			|Number:要跳转的pdf页数																|pdf跳转到第几页（pdf加载完成后使用）			|
+|方法名			|传参				|传参取值															|作用											|
+|:---:			|:---:				|:---:																|:---:											|
+|scrollEnable	| {Boolean}			|true、false， 默认true												|是否允许pdf滚动(需要在pdf加载完成后使用)		|
+|zoomEnable		| {Boolean}			|true、false， 默认true												|是否允许pdf手势缩放(需要在pdf加载完成后使用)	|
+|show			| {Function}		|带一个回调函数														|pdfh5显示										|
+|hide			| {Function}		|带一个回调函数														|pdfh5隐藏										|
+|reset			| {Function}		|带一个回调函数														|pdfh5还原										|
+|destroy		| {Function}		|带一个回调函数														|pdfh5销毁										|
+|on				| {String, Function}|String：监听的事件名，Function：监听的事件回调						|on方法监听所有事件								|
+|goto			| {Number}			|Number:要跳转的pdf页数												|pdf跳转到第几页（pdf加载完成后使用）			|
 |download		| {String, Function}|String：下载pdf的名称，默认download.pdf，Function：下载完成后的回调|下载pdf										|
 
 ## on方法监听所有事件-事件名列表
@@ -273,7 +273,7 @@ pdfh5.on("ready", function () {
 	console.log("总页数：" + this.totalNum)
 })
 ```
-|参数名称		|回调											|作用																				|
+|事件名			|回调											|作用																				|
 |:---:			|:---:											|:---:																				|
 |init			| {Function}									|监听pdfh5开始初始化																|
 |ready			| {Function}									|监听pdf准备开始渲染，此时可以拿到pdf总页数											|
