@@ -1522,7 +1522,7 @@
 			}
 			obj.cMapPacked = true;
 			obj.rangeChunkSize = 65536;
-			this.pdfjsLibPromise = pdfjsLib.getDocument(obj).then(function(pdf) {
+			this.pdfjsLibPromise = pdfjsLib.getDocument(obj).promise.then(function(pdf) {
 				self.loading.hide()
 				self.thePDF = pdf;
 				self.totalNum = pdf.numPages;
@@ -1612,9 +1612,9 @@
 							}, 0)
 
 							self.cache[pageNum + ""].page = page;
-							var viewport = page.getViewport(options.scale);
+							var viewport = page.getViewport({scale:options.scale});
 							var scale = (self.docWidth / viewport.width).toFixed(2)
-							var scaledViewport = page.getViewport(parseFloat(scale))
+							var scaledViewport = page.getViewport({scale:parseFloat(scale)})
 							var div = self.container.find('.pageContainer' +
 								pageNum)[0];
 							var container;
@@ -1730,7 +1730,7 @@
 		},
 		renderSvg: function(page, scaledViewport, pageNum, num, container, options, viewport) {
 			var self = this;
-			var viewport = page.getViewport(options.scale);
+			var viewport = page.getViewport({scale:options.scale});
 			var scale = (self.docWidth / viewport.width).toFixed(2)
 			return page.getOperatorList().then(function(opList) {
 				var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
@@ -1784,7 +1784,7 @@
 		},
 		renderCanvas: function(page, viewport, pageNum, num, container, options) {
 			var self = this;
-			var viewport = page.getViewport(options.scale);
+			var viewport = page.getViewport({scale:options.scale});
 			var scale = (self.docWidth / viewport.width).toFixed(2)
 			var canvas = document.createElement("canvas");
 			var obj2 = {
@@ -1817,7 +1817,7 @@
 			if (options.background) {
 				renderObj.background = "rgba(255, 255, 255, 0)"
 			}
-			return page.render(renderObj).then(function() {
+			return page.render(renderObj).promise.then(function() {
 				if (options.logo) {
 					context.drawImage(self.options.logo.img, self.options.logo.x * self.options
 						.scale,
