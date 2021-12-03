@@ -15,6 +15,8 @@
 
 - **注意：github经常被墙，需要看文档的可以去gitee上看**
 
+### **QQ交流群：196422291**
+
 #### react、vue均可使用
 #### [example/test](https://github.com/gjTool/pdfh5/tree/master/example/test)是vue使用示例，vue示例展示axios调用接口展示pdf，跨域代理，相对路径等方法
 #### [example/react-test](https://github.com/gjTool/pdfh5/tree/master/example/react-test)是react使用示例
@@ -290,6 +292,7 @@ pdfh5.on("ready", function () {
 |hide			| {Function}									| 监听pdfh5隐藏																		|
 |reset			| {Function}									| 监听pdfh5还原																		|
 |destroy		| {Function}									| 监听pdfh5销毁																		|
+### **QQ交流群：196422291**
 
 ## 前端技术交流微信群：
 ![image.png](https://www.gjtool.cn/download/wxqun.jpg?64545)
@@ -301,8 +304,7 @@ pdfh5.on("ready", function () {
 - 感谢打赏！请打赏的童鞋留下github、QQ、微信 。然后，我会对打赏过的童鞋的问题及时响应。（当然是在我不忙的时候啦）
 - 相比打赏，点star还要重要些，请各位走过路过帮忙点下star，万分感谢
 
-## 免费看vip电影小程序，扫码即可打开小程序观看：
-![小程序二维码](https://www.gjtool.cn/h5/static/weixin_advert.jpeg?1111)
+### **QQ交流群：196422291**
 
 ## 打赏榜单
 - [JayLin](https://github.com/110117ab) ￥6.66
