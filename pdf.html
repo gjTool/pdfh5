@@ -75,7 +75,7 @@
 		<div id="demo3"></div> -->
 		<script src="js/pdf.js"></script>
 		<script src="js/pdf.worker.js"></script>
-		<script src="js/jquery-2.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/jquery-3.6.0.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
 		<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 		<script type="text/javascript">
@@ -83,26 +83,26 @@
 			$(function() {
 				$("#app").remove()
 				$("#demo").show()
-				$.ajax({
-					url: "https://www.gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
-					type: "get",
-					mimeType: 'text/plain; charset=x-user-defined', //jq ajax请求文件流的方式
-					// dataType: 'arraybuffer',
-					success: function(data) {
-						pdfh5 = new Pdfh5('#demo', {
-							data: data,
-						});
-						pdfh5.on("success", function(time) {
-							time = time / 1000
-							console.log("pdf渲染完成，总耗时" + time + "秒");
-							//滚动到第3页
-							// pdfh5.goto(3);
-							this.download("2222",function(){
-								console.log(11111)
-							})
-						})
-					}
-				});
+				// $.ajax({
+				// 	url: "页面崩溃PDF(1).pdf", //假设这是pdf文件流的请求接口
+				// 	type: "get",
+				// 	mimeType: 'text/plain; charset=x-user-defined', //jq ajax请求文件流的方式
+				// 	// dataType: 'arraybuffer',
+				// 	success: function(data) {
+				// 		pdfh5 = new Pdfh5('#demo', {
+				// 			data: data,
+				// 		});
+				// 		pdfh5.on("success", function(time) {
+				// 			time = time / 1000
+				// 			console.log("pdf渲染完成，总耗时" + time + "秒");
+				// 			//滚动到第3页
+				// 			// pdfh5.goto(3);
+				// 			this.download("2222",function(){
+				// 				console.log(11111)
+				// 			})
+				// 		})
+				// 	}
+				// });
 				// axios.get("https://www.gjtool.cn/pdfh5/git.pdf", {
 				// 	responseType: "arraybuffer"
 				// }).then(res => {
@@ -117,13 +117,14 @@
 				// 		this.download()
 				// 	})
 				// })
-				// pdfh5 = new Pdfh5('#demo', {
-				// 	pdfurl: "test.pdf",
-				// 	goto: 0,
-				// 	// scrollEnable: false // 是否允许pdf滚动
-				// 	zoomEnable: false, // 是否允许pdf手势缩放
-				// 	// limit: 3
-				// });
+				pdfh5 = new Pdfh5('#demo', {
+					pdfurl: "test.pdf",
+					URIenable:true,
+					// goto: 0,
+					// scrollEnable: false // 是否允许pdf滚动
+					// zoomEnable: false, // 是否允许pdf手势缩放
+					// limit: 3
+				});
 				// //监听pdf渲染成功
 				// pdfh5.on("success", function(time) {
 				// 	time = time / 1000

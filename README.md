@@ -17,7 +17,7 @@
 
 ### **QQ交流群：196422291**
 
-#### react、vue均可使用
+#### react、vue2.x均可使用，vue3.x暂时没有适配
 #### [example/test](https://github.com/gjTool/pdfh5/tree/master/example/test)是vue使用示例，vue示例展示axios调用接口展示pdf，跨域代理，相对路径等方法
 #### [example/react-test](https://github.com/gjTool/pdfh5/tree/master/example/react-test)是react使用示例
 
@@ -25,7 +25,7 @@
 
 ## 更新信息
 
-- 2021.10.08 更新：  修复一些bug，新增下载pdf方法pdfh5.download("xx.pdf",function(){})
+- 2021.12.31 更新：  更新jQuery版本
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
 
