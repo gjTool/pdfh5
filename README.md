@@ -154,7 +154,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |scale			|  Number				|最大比例5，默认1.5																																					|pdf渲染的比例																																					|
 |scrollEnable	| Boolean				|true、false， 默认true																																				|是否允许pdf滚动																																				|
 |zoomEnable		| Boolean				|true、false， 默认true																																				|是否允许pdf手势缩放																																			|
-|cMapUrl		| String				| 默认"https://www.gjtool.cn/cmaps/"																																|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径，例如 cMapUrl:"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"													|
+|cMapUrl		| String				| 默认"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"																																	|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径												|
 |limit			| Number				| 默认0																																								|限制pdf加载最大页数																																			|
 |logo			| Object				|{src:"pdfh5.png",x:10,y:10,width:40,height:40}src水印图片路径（建议使用png透明图片），width水印宽度，height水印高度，以每页pdf左上角为0点，x、y为偏移值。 默认false|给每页pdf添加水印logo（canvas模式下使用）																														|
 |goto			| Number				| 默认0																																								|加载pdf跳转到第几页																																			|
