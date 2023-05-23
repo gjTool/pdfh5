@@ -1148,11 +1148,7 @@
 			if (this.container[0].pdfLoaded) {
 				this.destroy();
 			}
-			if (options.cMapUrl) {
-				pdfjsLib.cMapUrl = options.cMapUrl;
-			} else {
-				pdfjsLib.cMapUrl = 'https://unpkg.com/pdfjs-dist@2.0.943/cmaps/';
-			}
+
 			pdfjsLib.cMapPacked = true;
 			pdfjsLib.rangeChunkSize = 65536;
 			this.container[0].pdfLoaded = false;
@@ -1492,8 +1488,8 @@
 			if (options.cMapUrl) {
 				obj.cMapUrl = options.cMapUrl;
 			} else {
-				// obj.cMapUrl = 'https://unpkg.com/pdfjs-dist@2.0.943/cmaps/';
-				obj.cMapUrl = "https://www.gjtool.cn/cmaps/"
+				 obj.cMapUrl = 'https://unpkg.com/pdfjs-dist@2.0.943/cmaps/';
+				
 			}
 			if (options.httpHeaders) {
 				obj.httpHeaders = options.httpHeaders;
