@@ -1,12 +1,7 @@
 # pdfh5.js
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dw/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)  [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
-- [全栈开发技术交流QQ群521681398](https://qm.qq.com/cgi-bin/qm/qr?k=3_qouxqe5w3gRCcHjpqkwtx-4yS6QSPD&jump_from=webapi&authKey=FlHU4wH2xOQUthUpgF5W3b1VXowCVmSRfJLU4GRcDVyBayJd1ank4HkOWSZei2f3)  
-**由于精力有限，本插件暂时不会更新了，如果有问题可以到博客留言并留下联系方式，抽空回复**
-
-
-
-
+**由于精力有限，本插件暂时不会更新了，如果有问题可以加Q群咨询，有空会解答的**
 
 - [pdfh5博客主页](https://www.gjtool.cn/)  
 
@@ -23,7 +18,7 @@
 
 ## 更新信息
 
-- 2023.05.23 更新：  修改默认cMapUrl地址为官方pdf.js的字体文件路径
+- 2023.07.10 更新： 更新官方pdf.js为最新版3.9.0，修复部分bugs
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
 
@@ -90,11 +85,15 @@ npm install pdfh5
 	mounted() {
 		//实例化
 	  this.pdfh5 = new Pdfh5("#demo", {
-		pdfurl: "../../static/test.pdf"
+		pdfurl: "../../static/test.pdf",
+		// cMapUrl:"https://unpkg.com/pdfjs-dist@3.8.162/cmaps/",
+		// responseType: "blob" // blob arraybuffer
 	  });
 	  //监听完成事件
 	  this.pdfh5.on("complete", function (status, msg, time) {
 		console.log("状态：" + status + "，信息：" + msg + "，耗时：" + time + "毫秒，总页数：" + this.totalNum)
+		//禁止手势缩放
+		this.pdfh5.zoomEnable(false);
 	  })
 	}
   }
@@ -145,6 +144,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |参数名称		|类型					|取值																																								|作用																																							|
 |:---:			|:---:					|:---:																																								|:---:																																							|
 |pdfurl			|  String				| -																																									|pdf地址																																						|
+|responseType			|  String				|blob 、 arraybuffer 默认 blob																																							|请求pdf数据格式																																					|
 |URIenable		|  Boolean			|true、false， 默认false																																			|  true开启地址栏file参数																																		|
 |data			|  Array(arraybuffer)	| -																																									|pdf文件流 ，与pdfurl二选一(二进制PDF数据。使用类型化数组（Uint8Array）可以提高内存使用率。如果PDF数据是BASE64编码的，请先使用atob（）将其转换为二进制字符串。)	|
 |renderType		| String				|"canvas"、"svg"，默认"canvas"																																		|pdf渲染模式																																					|
@@ -155,7 +155,7 @@ var pdfh5 = new Pdfh5('#demo', {
 |scale			|  Number				|最大比例5，默认1.5																																					|pdf渲染的比例																																					|
 |scrollEnable	| Boolean				|true、false， 默认true																																				|是否允许pdf滚动																																				|
 |zoomEnable		| Boolean				|true、false， 默认true																																				|是否允许pdf手势缩放																																			|
-|cMapUrl		| String				| 默认"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"																																	|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径												|
+|cMapUrl		| String				| "																																|解析pdf时，特殊情况下显示完整字体的cmaps文件夹路径，例如 cMapUrl:"https://unpkg.com/pdfjs-dist@2.0.943/cmaps/"													|
 |limit			| Number				| 默认0																																								|限制pdf加载最大页数																																			|
 |logo			| Object				|{src:"pdfh5.png",x:10,y:10,width:40,height:40}src水印图片路径（建议使用png透明图片），width水印宽度，height水印高度，以每页pdf左上角为0点，x、y为偏移值。 默认false|给每页pdf添加水印logo（canvas模式下使用）																														|
 |goto			| Number				| 默认0																																								|加载pdf跳转到第几页																																			|
@@ -175,72 +175,20 @@ var pdfh5 = new Pdfh5('#demo', {
 |disableStream		| Boolean	| 默认false	|禁用流式传输PDF文件数据。默认情况下，PDF.js尝试加载成块的PDF。																							|
 |disableAutoFetch	| Boolean	| 默认false	|禁用PDF文件数据的预取。启用范围请求后，即使不需要显示当前页面，PDF.js也会自动继续获取更多数据。默认值为“ false”。注意：还必须禁用流传输disableStream	|
 
-## 	pdf文件流请求示例（以jq ajax为例）
+## 	pdf请求示例
 1.
 ```javascript
-$.ajax({
-	url: "https://www.gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
-	type: "get",
-	mimeType: 'text/plain; charset=x-user-defined',//jq ajax请求文件流的方式
-	success: function (data) {
-		var pdfh5 = new Pdfh5('#demo', {
-			data: data
-		});
-	}
+new Pdfh5('#demo', {
+	pdfurl: "git.pdf",
+	// responseType: "blob" // blob arraybuffer
 });
 ```
-2.
-```javascript
-$.ajax({
-	url: "https://www.gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
-	type: "get",
-	mimeType: 'text/plain; charset=x-user-defined',//jq ajax请求文件流的方式
-	success: function (data) {
-		var rawLength = data.length;
-		var array = new Uint8Array(new ArrayBuffer(rawLength));
-		for (i = 0; i < rawLength; i++) {
-		    array[i] = data.charCodeAt(i) & 0xff;
-		}
-		var pdfh5 = new Pdfh5('#demo', {
-			data: array
-		});
-	}
-});
-```
-3.
-```javascript
-$.ajax({
-	url: "https://www.gjtool.cn/pdfh5/git.pdf", //假设这是pdf文件流的请求接口
-	type: "get",
-	mimeType: 'text/plain; charset=x-user-defined',//jq ajax请求文件流的方式
-	success: function (data) {
-		var rawLength = data.length;
-		var array = [];
-		for (i = 0; i < rawLength; i++) {
-		    array.push(data.charCodeAt(i) & 0xff);
-		}
-		var pdfh5 = new Pdfh5('#demo', {
-			data: array
-		});
-	}
-});
-```
-4. axios示例
-```javascript
-axios.get("https://www.gjtool.cn/pdfh5/git.pdf",{
-	responseType:"arraybuffer"
-}).then(res=>{
-	this.pdfh5 = new Pdfh5('#demo', {
-		data: res.data
-	});
-})
-```
-5. base64码加载示例
-```javascript
-let pdfBase64 = "adfxcvadfasdfxxxxx";
 
+
+3. pdf文件流或者buffer已经得到，如何渲染
+```javascript
  new Pdfh5('#demo', {
- 	pdfurl: "data:application/pdf;base64,"+pdfBase64,
+ 	data: blob,  //blob arraybuffer
  });
 ```
 ## methods 方法列表
@@ -319,7 +267,7 @@ pdfh5.on("ready", function () {
 - *。 ¥5.20
 - 半*) ¥5.00
 - *1 ¥15.00
-- *蕾 ¥16.66
+- *蕾 ¥16.66+¥8.80
 - *军 ¥10.00
 - **强 ¥58.88
 - E*y ¥6.60
@@ -333,3 +281,4 @@ pdfh5.on("ready", function () {
 - *☺ ￥6.66
 - *霸 ￥6.66
 - a*r ￥20.00
+- 木槿(**耀) ￥50.00

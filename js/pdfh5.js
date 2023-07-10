@@ -1,31 +1,39 @@
 ;
-(function(g, fn) {
-	var version = "1.4.2",
-		pdfjsVersion = "2.3.200";
-	console.log("pdfh5.js v" + version + "  https://www.gjtool.cn")
+(function (g, fn) {
+	var version = "1.4.5",
+		pdfjsVersion = "3.9.0";
+	console.log("pdfh5.js v" + version + " && pdf.js v" + pdfjsVersion + " https://www.gjtool.cn");
 	if (typeof require !== 'undefined') {
 		if (g.$ === undefined) {
 			g.$ = require('./jquery-3.6.0.min.js');
 		}
-		g.pdfjsWorker = require('./pdf.worker.js');
-		g.pdfjsLib = require('./pdf.js');
+		if (typeof g !== "undefined" && g["pdfjs-dist/build/pdf.worker"]) {
+			g.pdfjsWorker = g["pdfjs-dist/build/pdf.worker"] ? g["pdfjs-dist/build/pdf.worker"] : g.pdfjsWorker;
+		} else {
+			g.pdfjsWorker = require("./pdf.worker.js");
+		}
+		if (typeof g !== "undefined" && g["pdfjs-dist/build/pdf"]) {
+			g.pdfjsLib = g["pdfjs-dist/build/pdf"] ? g["pdfjs-dist/build/pdf"] : g.pdfjsLib;
+		} else {
+			g.pdfjsLib = require("./pdf.js");
+		}
 	}
 	var pdfjsLib = g.pdfjsLib,
 		$ = g.$,
 		pdfjsWorker = g.pdfjsWorker;
 	if (typeof define === 'function' && define.amd) {
-		define(function() {
-			return fn(g, pdfjsWorker, pdfjsLib, $, version)
-		})
+		define(function () {
+			return fn(g, pdfjsWorker, pdfjsLib, $, version);
+		});
 	} else if (typeof module !== 'undefined' && module.exports) {
-		module.exports = fn(g, pdfjsWorker, pdfjsLib, $, version)
+		module.exports = fn(g, pdfjsWorker, pdfjsLib, $, version);
 	} else {
-		g.Pdfh5 = fn(g, pdfjsWorker, pdfjsLib, $, version)
+		g.Pdfh5 = fn(g, pdfjsWorker, pdfjsLib, $, version);
 	}
-})(typeof window !== 'undefined' ? window : this, function(g, pdfjsWorker, pdfjsLib, $, version) {
+})(typeof window !== 'undefined' ? window : this, function (g, pdfjsWorker, pdfjsLib, $, version) {
 	'use strict';
 
-	var _createClass = function() {
+	var _createClass = function () {
 		function defineProperties(target, props) {
 			for (var i = 0; i < props.length; i++) {
 				var descriptor = props[i];
@@ -35,7 +43,7 @@
 				Object.defineProperty(target, descriptor.key, descriptor);
 			}
 		}
-		return function(Constructor, protoProps, staticProps) {
+		return function (Constructor, protoProps, staticProps) {
 			if (protoProps) defineProperties(Constructor.prototype, protoProps);
 			if (staticProps) defineProperties(Constructor, staticProps);
 			return Constructor;
@@ -51,7 +59,7 @@
 	var renderTextLayer = pdfjsLib.renderTextLayer;
 	var EXPAND_DIVS_TIMEOUT = 300; // ms
 
-	var TextLayerBuilder = function() {
+	var TextLayerBuilder = function () {
 		function TextLayerBuilder(_ref) {
 			var textLayerDiv = _ref.textLayerDiv;
 			var eventBus = _ref.eventBus;
@@ -139,16 +147,16 @@
 					timeout: timeout,
 					enhanceTextSelection: this.enhanceTextSelection
 				});
-				this.textLayerRenderTask.promise.then(function() {
+				this.textLayerRenderTask.promise.then(function () {
 					_this.textLayerDiv.appendChild(textLayerFrag);
 					_this._finishRendering();
 					_this._updateMatches();
-				}, function(reason) {
+				}, function (reason) {
 					// Cancelled or failed to render text layer; skipping errors.
 				});
 
 				if (!this._onUpdateTextLayerMatches) {
-					this._onUpdateTextLayerMatches = function(evt) {
+					this._onUpdateTextLayerMatches = function (evt) {
 						if (evt.pageIndex === _this.pageIdx || evt.pageIndex === -1) {
 							_this._updateMatches();
 						}
@@ -404,11 +412,11 @@
 				var div = this.textLayerDiv;
 				var expandDivsTimer = null;
 
-				div.addEventListener("mousedown", function(evt) {
+				div.addEventListener("mousedown", function (evt) {
 					if (_this2.enhanceTextSelection && _this2.textLayerRenderTask) {
 						_this2.textLayerRenderTask.expandTextDivs(true);
 						if ((typeof PDFJSDev === "undefined" || !PDFJSDev.test(
-								"MOZCENTRAL")) && expandDivsTimer) {
+							"MOZCENTRAL")) && expandDivsTimer) {
 							clearTimeout(expandDivsTimer);
 							expandDivsTimer = null;
 						}
@@ -420,14 +428,14 @@
 						return;
 					}
 					if (typeof PDFJSDev === "undefined" || !PDFJSDev.test(
-							"MOZCENTRAL")) {
+						"MOZCENTRAL")) {
 						// On non-Firefox browsers, the selection will feel better if the height
 						// of the `endOfContent` div is adjusted to start at mouse click
 						// location. This avoids flickering when the selection moves up.
 						// However it does not work when selection is started on empty space.
 						var adjustTop = evt.target !== div;
 						if (typeof PDFJSDev === "undefined" || PDFJSDev.test(
-								"GENERIC")) {
+							"GENERIC")) {
 							adjustTop = adjustTop && window.getComputedStyle(end)
 								.getPropertyValue("-moz-user-select") !== "none";
 						}
@@ -441,11 +449,11 @@
 					end.classList.add("active");
 				});
 
-				div.addEventListener("mouseup", function() {
+				div.addEventListener("mouseup", function () {
 					if (_this2.enhanceTextSelection && _this2.textLayerRenderTask) {
 						if (typeof PDFJSDev === "undefined" || !PDFJSDev.test(
-								"MOZCENTRAL")) {
-							expandDivsTimer = setTimeout(function() {
+							"MOZCENTRAL")) {
+							expandDivsTimer = setTimeout(function () {
 								if (_this2.textLayerRenderTask) {
 									_this2.textLayerRenderTask.expandTextDivs(
 										false);
@@ -463,7 +471,7 @@
 						return;
 					}
 					if (typeof PDFJSDev === "undefined" || !PDFJSDev.test(
-							"MOZCENTRAL")) {
+						"MOZCENTRAL")) {
 						end.style.top = "";
 					}
 					end.classList.remove("active");
@@ -479,7 +487,7 @@
 	 */
 
 
-	var DefaultTextLayerFactory = function() {
+	var DefaultTextLayerFactory = function () {
 		function DefaultTextLayerFactory() {
 			_classCallCheck(this, DefaultTextLayerFactory);
 		}
@@ -516,36 +524,36 @@
 	g.TextLayerBuilder = TextLayerBuilder;
 	g.DefaultTextLayerFactory = DefaultTextLayerFactory;
 
-	var definePinchZoom = function($) {
-		var PinchZoom = function(el, options, viewerContainer) {
-				this.el = $(el);
-				this.viewerContainer = viewerContainer;
-				this.zoomFactor = 1;
-				this.lastScale = 1;
-				this.offset = {
-					x: 0,
-					y: 0
-				};
-				this.options = $.extend({}, this.defaults, options);
-				this.options.zoomOutFactor = isNaN(options.zoomOutFactor) ? 1.2 : options.zoomOutFactor;
-				this.options.animationDuration = isNaN(options.animationDuration) ? 300 : options
-					.animationDuration;
-				this.options.maxZoom = isNaN(options.maxZoom) ? 3 : options.maxZoom;
-				this.options.minZoom = isNaN(options.minZoom) ? 0.8 : options.minZoom;
-				this.setupMarkup();
-				this.bindEvents();
-				this.update();
-				this.enable();
-				this.height = 0;
-				this.load = false;
-				this.direction = null;
-				this.clientY = null;
-				this.lastclientY = null;
-			},
-			sum = function(a, b) {
+	var definePinchZoom = function ($) {
+		var PinchZoom = function (el, options, viewerContainer) {
+			this.el = $(el);
+			this.viewerContainer = viewerContainer;
+			this.zoomFactor = 1;
+			this.lastScale = 1;
+			this.offset = {
+				x: 0,
+				y: 0
+			};
+			this.options = $.extend({}, this.defaults, options);
+			this.options.zoomOutFactor = isNaN(options.zoomOutFactor) ? 1.2 : options.zoomOutFactor;
+			this.options.animationDuration = isNaN(options.animationDuration) ? 300 : options
+				.animationDuration;
+			this.options.maxZoom = isNaN(options.maxZoom) ? 3 : options.maxZoom;
+			this.options.minZoom = isNaN(options.minZoom) ? 0.8 : options.minZoom;
+			this.setupMarkup();
+			this.bindEvents();
+			this.update();
+			this.enable();
+			this.height = 0;
+			this.load = false;
+			this.direction = null;
+			this.clientY = null;
+			this.lastclientY = null;
+		},
+			sum = function (a, b) {
 				return a + b;
 			},
-			isCloseTo = function(value, expected) {
+			isCloseTo = function (value, expected) {
 				return value > expected - 0.01 && value < expected + 0.01;
 			};
 
@@ -564,14 +572,14 @@
 				dragEndEventName: 'pz_dragend',
 				doubleTapEventName: 'pz_doubletap'
 			},
-			handleDragStart: function(event) {
+			handleDragStart: function (event) {
 				this.el.trigger(this.options.dragStartEventName);
 				this.stopAnimation();
 				this.lastDragPosition = false;
 				this.hasInteraction = true;
 				this.handleDrag(event);
 			},
-			handleDrag: function(event) {
+			handleDrag: function (event) {
 
 				if (this.zoomFactor > 1.0) {
 					var touch = this.getTouches(event)[0];
@@ -581,11 +589,11 @@
 				}
 			},
 
-			handleDragEnd: function() {
+			handleDragEnd: function () {
 				this.el.trigger(this.options.dragEndEventName);
 				this.end();
 			},
-			handleZoomStart: function(event) {
+			handleZoomStart: function (event) {
 				this.el.trigger(this.options.zoomStartEventName);
 				this.stopAnimation();
 				this.lastScale = 1;
@@ -593,7 +601,7 @@
 				this.lastZoomCenter = false;
 				this.hasInteraction = true;
 			},
-			handleZoom: function(event, newScale) {
+			handleZoom: function (event, newScale) {
 				var touchCenter = this.getTouchCenter(this.getTouches(event)),
 					scale = newScale / this.lastScale;
 				this.lastScale = newScale;
@@ -606,15 +614,15 @@
 				this.lastZoomCenter = touchCenter;
 			},
 
-			handleZoomEnd: function() {
+			handleZoomEnd: function () {
 				this.el.trigger(this.options.zoomEndEventName);
 				this.end();
 			},
-			handleDoubleTap: function(event) {
+			handleDoubleTap: function (event) {
 				var center = this.getTouches(event)[0],
 					zoomFactor = this.zoomFactor > 1 ? 1 : this.options.tapZoomFactor,
 					startZoomFactor = this.zoomFactor,
-					updateProgress = (function(progress) {
+					updateProgress = (function (progress) {
 						this.scaleTo(startZoomFactor + progress * (zoomFactor - startZoomFactor),
 							center);
 					}).bind(this);
@@ -629,7 +637,7 @@
 				this.animate(this.options.animationDuration, updateProgress, this.swing);
 				this.el.trigger(this.options.doubleTapEventName);
 			},
-			sanitizeOffset: function(offset) {
+			sanitizeOffset: function (offset) {
 				var maxX = (this.zoomFactor - 1) * this.getContainerX(),
 					maxY = (this.zoomFactor - 1) * this.getContainerY(),
 					maxOffsetX = Math.max(maxX, 0),
@@ -646,25 +654,25 @@
 					y: y
 				};
 			},
-			scaleTo: function(zoomFactor, center) {
+			scaleTo: function (zoomFactor, center) {
 				this.scale(zoomFactor / this.zoomFactor, center);
 			},
-			scale: function(scale, center) {
+			scale: function (scale, center) {
 				scale = this.scaleZoomFactor(scale);
 				this.addOffset({
 					x: (scale - 1) * (center.x + this.offset.x),
 					y: (scale - 1) * (center.y + this.offset.y)
 				});
-				this.done && this.done.call(this, this.getInitialZoomFactor() * this.zoomFactor)
+				this.done && this.done.call(this, this.getInitialZoomFactor() * this.zoomFactor);
 			},
-			scaleZoomFactor: function(scale) {
+			scaleZoomFactor: function (scale) {
 				var originalZoomFactor = this.zoomFactor;
 				this.zoomFactor *= scale;
 				this.zoomFactor = Math.min(this.options.maxZoom, Math.max(this.zoomFactor, this.options
 					.minZoom));
 				return this.zoomFactor / originalZoomFactor;
 			},
-			drag: function(center, lastCenter, event) {
+			drag: function (center, lastCenter, event) {
 				if (lastCenter) {
 					if (this.options.lockDragAxis) {
 						if (Math.abs(center.x - lastCenter.x) > Math.abs(center.y - lastCenter.y)) {
@@ -691,45 +699,45 @@
 					}
 				}
 			},
-			getTouchCenter: function(touches) {
+			getTouchCenter: function (touches) {
 				return this.getVectorAvg(touches);
 			},
-			getVectorAvg: function(vectors) {
+			getVectorAvg: function (vectors) {
 				return {
-					x: vectors.map(function(v) {
+					x: vectors.map(function (v) {
 						return v.x;
 					}).reduce(sum) / vectors.length,
-					y: vectors.map(function(v) {
+					y: vectors.map(function (v) {
 						return v.y;
 					}).reduce(sum) / vectors.length
 				};
 			},
-			addOffset: function(offset) {
+			addOffset: function (offset) {
 				this.offset = {
 					x: this.offset.x + offset.x,
 					y: this.offset.y + offset.y
 				};
 			},
 
-			sanitize: function() {
+			sanitize: function () {
 				if (this.zoomFactor < this.options.zoomOutFactor) {
 					this.zoomOutAnimation();
 				} else if (this.isInsaneOffset(this.offset)) {
 					this.sanitizeOffsetAnimation();
 				}
 			},
-			isInsaneOffset: function(offset) {
+			isInsaneOffset: function (offset) {
 				var sanitizedOffset = this.sanitizeOffset(offset);
 				return sanitizedOffset.x !== offset.x ||
 					sanitizedOffset.y !== offset.y;
 			},
-			sanitizeOffsetAnimation: function() {
+			sanitizeOffsetAnimation: function () {
 				var targetOffset = this.sanitizeOffset(this.offset),
 					startOffset = {
 						x: this.offset.x,
 						y: this.offset.y
 					},
-					updateProgress = (function(progress) {
+					updateProgress = (function (progress) {
 						this.offset.x = startOffset.x + progress * (targetOffset.x - startOffset.x);
 						this.offset.y = startOffset.y + progress * (targetOffset.y - startOffset.y);
 						this.update();
@@ -741,11 +749,11 @@
 					this.swing
 				);
 			},
-			zoomOutAnimation: function() {
+			zoomOutAnimation: function () {
 				var startZoomFactor = this.zoomFactor,
 					zoomFactor = 1,
 					center = this.getCurrentZoomCenter(),
-					updateProgress = (function(progress) {
+					updateProgress = (function (progress) {
 						this.scaleTo(startZoomFactor + progress * (zoomFactor - startZoomFactor),
 							center);
 					}).bind(this);
@@ -756,26 +764,26 @@
 					this.swing
 				);
 			},
-			updateAspectRatio: function() {
+			updateAspectRatio: function () {
 				this.setContainerY(this.getContainerX() / this.getAspectRatio());
 			},
-			getInitialZoomFactor: function() {
+			getInitialZoomFactor: function () {
 				if (this.container[0] && this.el[0]) {
 					return this.container[0].offsetWidth / this.el[0].offsetWidth;
 				} else {
-					return 0
+					return 0;
 				}
 			},
-			getAspectRatio: function() {
+			getAspectRatio: function () {
 				if (this.el[0]) {
 					var offsetHeight = this.el[0].offsetHeight;
 					return this.container[0].offsetWidth / offsetHeight;
 				} else {
-					return 0
+					return 0;
 				}
 
 			},
-			getCurrentZoomCenter: function() {
+			getCurrentZoomCenter: function () {
 				var length = this.container[0].offsetWidth * this.zoomFactor,
 					offsetLeft = this.offset.x,
 					offsetRight = length - offsetLeft - this.container[0].offsetWidth,
@@ -802,22 +810,22 @@
 				};
 			},
 
-			canDrag: function() {
+			canDrag: function () {
 				return !isCloseTo(this.zoomFactor, 1);
 			},
 
-			getTouches: function(event) {
+			getTouches: function (event) {
 				var position = this.container.offset();
-				return Array.prototype.slice.call(event.touches).map(function(touch) {
+				return Array.prototype.slice.call(event.touches).map(function (touch) {
 					return {
 						x: touch.pageX - position.left,
 						y: touch.pageY - position.top
 					};
 				});
 			},
-			animate: function(duration, framefn, timefn, callback) {
+			animate: function (duration, framefn, timefn, callback) {
 				var startTime = new Date().getTime(),
-					renderFrame = (function() {
+					renderFrame = (function () {
 						if (!this.inAnimation) {
 							return;
 						}
@@ -842,15 +850,15 @@
 				this.inAnimation = true;
 				requestAnimationFrame(renderFrame);
 			},
-			stopAnimation: function() {
+			stopAnimation: function () {
 				this.inAnimation = false;
 
 			},
-			swing: function(p) {
+			swing: function (p) {
 				return -Math.cos(p * Math.PI) / 2 + 0.5;
 			},
 
-			getContainerX: function() {
+			getContainerX: function () {
 				if (this.el[0]) {
 					return this.el[0].offsetWidth;
 				} else {
@@ -858,14 +866,14 @@
 				}
 			},
 
-			getContainerY: function() {
+			getContainerY: function () {
 				return this.el[0].offsetHeight;
 			},
-			setContainerY: function(y) {
+			setContainerY: function (y) {
 				y = y.toFixed(2);
 				return this.container.height(y);
 			},
-			setupMarkup: function() {
+			setupMarkup: function () {
 				this.container = $('<div class="pinch-zoom-container"></div>');
 				this.el.before(this.container);
 				this.container.append(this.el);
@@ -885,25 +893,25 @@
 
 			},
 
-			end: function() {
+			end: function () {
 				this.hasInteraction = false;
 				this.sanitize();
 				this.update();
 
 			},
-			bindEvents: function() {
+			bindEvents: function () {
 				detectGestures(this.container.eq(0), this, this.viewerContainer);
 				$(g).on('resize', this.update.bind(this));
 				$(this.el).find('img').on('load', this.update.bind(this));
 
 			},
-			update: function() {
+			update: function () {
 
 				if (this.updatePlaned) {
 					return;
 				}
 				this.updatePlaned = true;
-				setTimeout((function() {
+				setTimeout((function () {
 					this.updatePlaned = false;
 					this.updateAspectRatio();
 					var zoomFactor = this.getInitialZoomFactor() * this.zoomFactor,
@@ -914,8 +922,8 @@
 					var transform3d = 'scale3d(' + zoomFactor + ', ' + zoomFactor + ',1) ' +
 						'translate3d(' + offsetX + 'px,' + offsetY + 'px,0px)',
 						transform2d = 'scale(' + zoomFactor + ', ' + zoomFactor + ') ' +
-						'translate(' + offsetX + 'px,' + offsetY + 'px)',
-						removeClone = (function() {
+							'translate(' + offsetX + 'px,' + offsetY + 'px)',
+						removeClone = (function () {
 							if (this.clone) {
 								this.clone.remove();
 								delete this.clone;
@@ -942,13 +950,13 @@
 					}
 				}).bind(this), 0);
 			},
-			enable: function() {
+			enable: function () {
 				this.enabled = true;
 			},
-			disable: function() {
+			disable: function () {
 				this.enabled = false;
 			},
-			destroy: function() {
+			destroy: function () {
 				var dom = this.el.clone();
 				var p = this.container.parent();
 				this.container.remove();
@@ -957,7 +965,7 @@
 			}
 		};
 
-		var detectGestures = function(el, target, viewerContainer) {
+		var detectGestures = function (el, target, viewerContainer) {
 			var interaction = null,
 				fingers = 0,
 				lastTouchStart = null,
@@ -966,7 +974,7 @@
 				clientY = null,
 				lastclientY = 0,
 				lastTop = 0,
-				setInteraction = function(newInteraction, event) {
+				setInteraction = function (newInteraction, event) {
 					if (interaction !== newInteraction) {
 
 						if (interaction && !newInteraction) {
@@ -992,7 +1000,7 @@
 					interaction = newInteraction;
 				},
 
-				updateInteraction = function(event) {
+				updateInteraction = function (event) {
 					if (fingers === 2) {
 						setInteraction('zoom');
 					} else if (fingers === 1 && target.canDrag()) {
@@ -1002,8 +1010,8 @@
 					}
 				},
 
-				targetTouches = function(touches) {
-					return Array.prototype.slice.call(touches).map(function(touch) {
+				targetTouches = function (touches) {
+					return Array.prototype.slice.call(touches).map(function (touch) {
 						return {
 							x: touch.pageX,
 							y: touch.pageY
@@ -1011,25 +1019,25 @@
 					});
 				},
 
-				getDistance = function(a, b) {
+				getDistance = function (a, b) {
 					var x, y;
 					x = a.x - b.x;
 					y = a.y - b.y;
 					return Math.sqrt(x * x + y * y);
 				},
 
-				calculateScale = function(startTouches, endTouches) {
+				calculateScale = function (startTouches, endTouches) {
 					var startDistance = getDistance(startTouches[0], startTouches[1]),
 						endDistance = getDistance(endTouches[0], endTouches[1]);
 					return endDistance / startDistance;
 				},
 
-				cancelEvent = function(event) {
+				cancelEvent = function (event) {
 					event.stopPropagation();
 					event.preventDefault();
 				},
 
-				detectDoubleTap = function(event) {
+				detectDoubleTap = function (event) {
 					var time = (new Date()).getTime();
 					var pageY = event.changedTouches[0].pageY;
 					var top = parentNode.scrollTop || 0;
@@ -1040,7 +1048,7 @@
 					}
 
 					if (time - lastTouchStart < 300 && Math.abs(pageY - lastTouchY) < 10 && Math.abs(
-							lastTop - top) < 10) {
+						lastTop - top) < 10) {
 						cancelEvent(event);
 						target.handleDoubleTap(event);
 						switch (interaction) {
@@ -1064,7 +1072,7 @@
 				var parentNode = viewerContainer[0];
 			}
 			if (parentNode) {
-				parentNode.addEventListener('touchstart', function(event) {
+				parentNode.addEventListener('touchstart', function (event) {
 					if (target.enabled) {
 						firstMove = true;
 						fingers = event.touches.length;
@@ -1076,7 +1084,7 @@
 					}
 				});
 
-				parentNode.addEventListener('touchmove', function(event) {
+				parentNode.addEventListener('touchmove', function (event) {
 					if (target.enabled) {
 						lastclientY = event.changedTouches[0].clientY;
 						if (firstMove) {
@@ -1103,7 +1111,7 @@
 					}
 				});
 
-				parentNode.addEventListener('touchend', function(event) {
+				parentNode.addEventListener('touchend', function (event) {
 					if (target.enabled) {
 						fingers = event.touches.length;
 						if (fingers > 1) {
@@ -1118,7 +1126,7 @@
 		return PinchZoom;
 	};
 	var PinchZoom = definePinchZoom($);
-	var Pdfh5 = function(dom, options) {
+	var Pdfh5 = function (dom, options) {
 		this.version = version;
 		this.container = $(dom);
 		this.options = options;
@@ -1143,25 +1151,24 @@
 		this.init(options);
 	};
 	Pdfh5.prototype = {
-		init: function(options) {
+		init: function (options) {
 			var self = this;
 			if (this.container[0].pdfLoaded) {
 				this.destroy();
 			}
-
 			pdfjsLib.cMapPacked = true;
 			pdfjsLib.rangeChunkSize = 65536;
 			this.container[0].pdfLoaded = false;
-			this.container.addClass("pdfjs")
+			this.container.addClass("pdfjs");
 			this.initTime = new Date().getTime();
-			setTimeout(function() {
+			setTimeout(function () {
 				var arr1 = self.eventType["scroll"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
-						arr1[i] && arr1[i].call(self, self.initTime)
+						arr1[i] && arr1[i].call(self, self.initTime);
 					}
 				}
-			}, 0)
+			}, 0);
 			this.options = this.options ? this.options : {};
 			this.options.pdfurl = this.options.pdfurl ? this.options.pdfurl : null;
 			this.options.data = this.options.data ? this.options.data : null;
@@ -1180,23 +1187,23 @@
 			this.options.goto = isNaN(this.options.goto) ? 0 : this.options.goto;
 			if (this.options.logo && Object.prototype.toString.call(this.options.logo) ===
 				'[object Object]' && this.options.logo
-				.src) {
+					.src) {
 				this.options.logo.img = new Image();
 				this.options.logo.img.src = this.options.logo.src;
 				this.options.logo.img.style.display = "none";
-				document.body.appendChild(this.options.logo.img)
+				document.body.appendChild(this.options.logo.img);
 			} else {
 				this.options.logo = false;
 			}
 			if (!(this.options.background && (this.options.background.color || this.options.background
-					.image))) {
-				this.options.background = false
+				.image))) {
+				this.options.background = false;
 			}
 			if (this.options.limit) {
-				var n = parseFloat(this.options.limit)
+				var n = parseFloat(this.options.limit);
 				this.options.limit = isNaN(n) ? 0 : n < 0 ? 0 : n;
 			} else {
-				this.options.limit = 0
+				this.options.limit = 0;
 			}
 			this.options.type = this.options.type === "fetch" ? "fetch" : "ajax";
 			var html = '<div class="loadingBar">' +
@@ -1235,7 +1242,7 @@
 			this.backTop = this.container.find('.backTop');
 			this.loading = this.container.find('.loading');
 			if (!this.options.loadingBar) {
-				this.loadingBar.hide()
+				this.loadingBar.hide();
 			}
 			var containerH = this.container.height(),
 				height = containerH * (1 / 3);
@@ -1243,13 +1250,13 @@
 			if (!this.options.scrollEnable) {
 				this.viewerContainer.css({
 					"overflow": "hidden"
-				})
+				});
 			} else {
 				this.viewerContainer.css({
 					"overflow": "auto"
-				})
+				});
 			}
-			viewerContainer.addEventListener('scroll', function() {
+			viewerContainer.addEventListener('scroll', function () {
 				var scrollTop = viewerContainer.scrollTop;
 				if (scrollTop >= 150) {
 					if (self.options.backTop) {
@@ -1269,31 +1276,31 @@
 				}
 				var h = containerH;
 				if (self.pages) {
-					self.pages.each(function(index, obj) {
+					self.pages.each(function (index, obj) {
 						var top = obj.getBoundingClientRect().top;
 						var bottom = obj.getBoundingClientRect().bottom;
 						if (top <= height && bottom > height) {
 							if (self.options.pageNum) {
-								self.pageNow.text(index + 1)
+								self.pageNow.text(index + 1);
 							}
 							self.currentNum = index + 1;
 						}
 						if (top <= h && bottom > h) {
 							self.cacheNum = index + 1;
 						}
-					})
+					});
 				}
 				if (scrollTop + self.container.height() >= self.viewer[0].offsetHeight) {
-					self.pageNow.text(self.totalNum)
+					self.pageNow.text(self.totalNum);
 				}
 				if (scrollTop === 0) {
-					self.pageNow.text(1)
+					self.pageNow.text(1);
 				}
-				self.timer = setTimeout(function() {
+				self.timer = setTimeout(function () {
 					if (self.options.pageNum && self.pageNum) {
 						self.pageNum.fadeOut(200);
 					}
-				}, 1500)
+				}, 1500);
 				if (self.options.lazy) {
 					var num = Math.floor(100 / self.totalNum).toFixed(2);
 					if (self.cache[self.cacheNum + ""] && !self.cache[self.cacheNum + ""].loaded) {
@@ -1304,10 +1311,10 @@
 						var scaledViewport = self.cache[pageNum + ""].scaledViewport;
 						if (self.options.renderType === "svg") {
 							self.renderSvg(page, scaledViewport, pageNum, num, container, self
-								.options)
+								.options);
 						} else {
 							self.renderCanvas(page, scaledViewport, pageNum, num, container, self
-								.options)
+								.options);
 						}
 					}
 					if (self.cache[(self.totalNum - 1) + ""] && self.cache[(self.totalNum - 1) + ""]
@@ -1320,21 +1327,21 @@
 						var scaledViewport = self.cache[pageNum + ""].scaledViewport;
 						if (self.options.renderType === "svg") {
 							self.renderSvg(page, scaledViewport, pageNum, num, container, self
-								.options)
+								.options);
 						} else {
 							self.renderCanvas(page, scaledViewport, pageNum, num, container, self
-								.options)
+								.options);
 						}
 					}
 				}
 				var arr1 = self.eventType["scroll"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
-						arr1[i] && arr1[i].call(self, scrollTop, self.currentNum)
+						arr1[i] && arr1[i].call(self, scrollTop, self.currentNum);
 					}
 				}
-			})
-			this.backTop.on('click tap', function() {
+			});
+			this.backTop.on('click tap', function () {
 				var mart = self.viewer.css('transform');
 				var arr = mart.replace(/[a-z\(\)\s]/g, '').split(',');
 				var s1 = arr[0];
@@ -1342,25 +1349,25 @@
 				var x = arr[4] / 2;
 				var left = self.viewer[0].getBoundingClientRect().left;
 				if (left <= -self.docWidth * 2) {
-					x = -self.docWidth / 2
+					x = -self.docWidth / 2;
 				}
 				self.viewer.css({
 					transform: 'scale(' + s1 + ', ' + s2 + ') translate(' + x + 'px, 0px)'
-				})
+				});
 				if (self.pinchZoom) {
 					self.pinchZoom.offset.y = 0;
 					self.pinchZoom.lastclientY = 0;
 				}
 				self.viewerContainer.animate({
 					scrollTop: 0
-				}, 300)
+				}, 300);
 				var arr1 = self.eventType["backTop"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
-						arr1[i] && arr1[i].call(self)
+						arr1[i] && arr1[i].call(self);
 					}
 				}
-			})
+			});
 
 			function GetQueryString(name) {
 				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -1371,58 +1378,67 @@
 			var pdfurl = GetQueryString("file"),
 				url = "";
 			if (pdfurl && self.options.URIenable) {
-				url = pdfurl
+				url = pdfurl;
 			} else if (self.options.pdfurl) {
-				url = self.options.pdfurl
+				url = self.options.pdfurl;
 			}
 			if (self.options.loadingBar) {
 				self.loadingBar.show();
 				self.progress.css({
 					width: "3%"
-				})
+				});
 			}
 
 			if (url) {
 				if (self.options.type === "ajax") {
-					$.ajax({
-						type: "get",
-						mimeType: 'text/plain; charset=x-user-defined',
-						url: url,
-						success: function(data) {
-							var rawLength = data.length;
-							var array = [];
-							for (i = 0; i < rawLength; i++) {
-								array.push(data.charCodeAt(i) & 0xff);
+					var xhr = new XMLHttpRequest();
+					xhr.open("GET", url, true);
+					xhr.responseType = self.options.responseType ? self.options.responseType : "blob";// blob arraybuffer
+					xhr.onload = function (oEvent) {
+						if (xhr.status === 200) {
+							if (xhr.responseType === "arraybuffer") {
+								var data = this.response;
+								self.cacheData = data;
+								self.renderPdf(self.options, {
+									data: data
+								});
+							} else {
+								var blob = this.response;
+								var reader = new FileReader();
+								reader.readAsDataURL(blob);
+								reader.onload = function (e) {
+									self.cacheData = e.target.result;
+									self.renderPdf(self.options, {
+										url: e.target.result
+									});
+								};
 							}
-							self.cacheData = array
-							self.renderPdf(self.options, {
-								data: array
-							})
-						},
-						error: function(err) {
-							self.loading.hide()
-							var time = new Date().getTime();
-							self.endTime = time - self.initTime;
-							var arr1 = self.eventType["complete"];
-							if (arr1 && arr1 instanceof Array) {
-								for (var i = 0; i < arr1.length; i++) {
-									arr1[i] && arr1[i].call(self, "error", err.statusText, self
-										.endTime)
-								}
-							}
-							var arr2 = self.eventType["error"];
-							if (arr2 && arr2 instanceof Array) {
-								for (var i = 0; i < arr2.length; i++) {
-									arr2[i] && arr2[i].call(self, err.statusText, self.endTime)
-								}
-							}
-							throw Error(err.statusText)
 						}
-					});
+					};
+					xhr.onerror = function (err) {
+						self.loading.hide();
+						var time = new Date().getTime();
+						self.endTime = time - self.initTime;
+						var arr1 = self.eventType["complete"];
+						if (arr1 && arr1 instanceof Array) {
+							for (var i = 0; i < arr1.length; i++) {
+								arr1[i] && arr1[i].call(self, "error", err.statusText, self
+									.endTime);
+							}
+						}
+						var arr2 = self.eventType["error"];
+						if (arr2 && arr2 instanceof Array) {
+							for (var i = 0; i < arr2.length; i++) {
+								arr2[i] && arr2[i].call(self, err.statusText, self.endTime);
+							}
+						}
+						throw Error(err.statusText);
+					};
+					xhr.send();
 				} else {
 					self.renderPdf(self.options, {
 						url: url
-					})
+					});
 				}
 			} else if (self.options.data) {
 				var data = self.options.data;
@@ -1432,10 +1448,10 @@
 					for (i = 0; i < rawLength; i++) {
 						array.push(data.charCodeAt(i) & 0xff);
 					}
-					self.cacheData = array
+					self.cacheData = array;
 					self.renderPdf(self.options, {
 						data: array
-					})
+					});
 				} else if (typeof data === "object") {
 					if (data.length == 0) {
 						var time = new Date().getTime();
@@ -1444,21 +1460,21 @@
 						if (arr1 && arr1 instanceof Array) {
 							for (var i = 0; i < arr1.length; i++) {
 								arr1[i] && arr1[i].call(self, "error", "options.data is empty Array", self
-									.endTime)
+									.endTime);
 							}
 						}
 						var arr2 = self.eventType["error"];
 						if (arr2 && arr2 instanceof Array) {
 							for (var i = 0; i < arr2.length; i++) {
-								arr2[i] && arr2[i].call(self, "options.data is empty Array", self.endTime)
+								arr2[i] && arr2[i].call(self, "options.data is empty Array", self.endTime);
 							}
 						}
-						throw Error("options.data is empty Array")
+						throw Error("options.data is empty Array");
 					} else {
-						self.cacheData = data
+						self.cacheData = data;
 						self.renderPdf(self.options, {
 							data: data
-						})
+						});
 					}
 				}
 
@@ -1469,27 +1485,26 @@
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
 						arr1[i] && arr1[i].call(self, "error", "Expect options.pdfurl or options.data!",
-							self.endTime)
+							self.endTime);
 					}
 				}
 				var arr2 = self.eventType["error"];
 				if (arr2 && arr2 instanceof Array) {
 					for (var i = 0; i < arr2.length; i++) {
 						arr2[i] && arr2[i].call(self, "Expect options.pdfurl or options.data!", self
-							.endTime)
+							.endTime);
 					}
 				}
-				throw Error("Expect options.pdfurl or options.data!")
+				throw Error("Expect options.pdfurl or options.data!");
 			}
 		},
-		renderPdf: function(options, obj) {
+		renderPdf: function (options, obj) {
 			this.container[0].pdfLoaded = true;
 			var self = this;
 			if (options.cMapUrl) {
 				obj.cMapUrl = options.cMapUrl;
 			} else {
-				 obj.cMapUrl = 'https://unpkg.com/pdfjs-dist@2.0.943/cmaps/';
-				
+				obj.cMapUrl = 'https://unpkg.com/browse/pdfjs-dist@3.8.162/cmaps/';
 			}
 			if (options.httpHeaders) {
 				obj.httpHeaders = options.httpHeaders;
@@ -1499,7 +1514,6 @@
 			}
 			if (options.password) {
 				obj.password = options.password;
-				console.log(obj.password)
 			}
 			if (options.stopAtErrors) {
 				obj.stopAtErrors = true;
@@ -1518,19 +1532,19 @@
 			}
 			obj.cMapPacked = true;
 			obj.rangeChunkSize = 65536;
-			this.pdfjsLibPromise = pdfjsLib.getDocument(obj).then(function(pdf) {
-				self.loading.hide()
+			this.pdfjsLibPromise = pdfjsLib.getDocument(obj).promise.then(function (pdf) {
+				self.loading.hide();
 				self.thePDF = pdf;
 				self.totalNum = pdf.numPages;
 				if (options.limit > 0) {
-					self.totalNum = options.limit
+					self.totalNum = options.limit;
 				}
-				self.pageTotal.text(self.totalNum)
+				self.pageTotal.text(self.totalNum);
 				if (!self.pinchZoom) {
 					var arr1 = self.eventType["ready"];
 					if (arr1 && arr1 instanceof Array) {
 						for (var i = 0; i < arr1.length; i++) {
-							arr1[i] && arr1[i].call(self)
+							arr1[i] && arr1[i].call(self);
 						}
 					}
 					self.pinchZoom = new PinchZoom(self.viewer, {
@@ -1541,14 +1555,14 @@
 						minZoom: options.minZoom
 					}, self.viewerContainer);
 					var timeout, firstZoom = true;
-					self.pinchZoom.done = function(scale) {
-						clearTimeout(timeout)
-						timeout = setTimeout(function() {
+					self.pinchZoom.done = function (scale) {
+						clearTimeout(timeout);
+						timeout = setTimeout(function () {
 							if (self.options.renderType === "svg") {
-								return
+								return;
 							}
 							if (scale <= 1 || self.options.scale == 5) {
-								return
+								return;
 							}
 							if (self.thePDF) {
 								self.thePDF.destroy();
@@ -1557,33 +1571,33 @@
 							self.options.scale = scale;
 							self.renderPdf(self.options, {
 								data: self.cacheData
-							})
-						}, 310)
+							});
+						}, 310);
 						if (scale == 1) {
 							if (self.viewerContainer) {
 								self.viewerContainer.css({
 									'-webkit-overflow-scrolling': 'touch'
-								})
+								});
 							}
 
 						} else {
 							if (self.viewerContainer) {
 								self.viewerContainer.css({
 									'-webkit-overflow-scrolling': 'auto'
-								})
+								});
 							}
 						}
 						var arr1 = self.eventType["zoom"];
 						if (arr1 && arr1 instanceof Array) {
 							for (var i = 0; i < arr1.length; i++) {
-								arr1[i] && arr1[i].call(self, scale)
+								arr1[i] && arr1[i].call(self, scale);
 							}
 						}
-					}
+					};
 					if (options.zoomEnable) {
-						self.pinchZoom.enable()
+						self.pinchZoom.enable();
 					} else {
-						self.pinchZoom.disable()
+						self.pinchZoom.disable();
 					}
 				}
 
@@ -1597,20 +1611,25 @@
 						container: null,
 						scaledViewport: null
 					};
-					promise = promise.then(function(pageNum) {
-						return self.thePDF.getPage(pageNum).then(function(page) {
-							setTimeout(function() {
+					promise = promise.then(function (pageNum) {
+						return self.thePDF.getPage(pageNum).then(function (page) {
+							setTimeout(function () {
 								if (self.options.goto) {
 									if (pageNum == self.options.goto) {
-										self.goto(pageNum)
+										self.goto(pageNum);
 									}
 								}
-							}, 0)
-
+							}, 0);
 							self.cache[pageNum + ""].page = page;
-							var viewport = page.getViewport(options.scale);
-							var scale = (self.docWidth / viewport.width).toFixed(2)
-							var scaledViewport = page.getViewport(parseFloat(scale))
+							var viewport = page.getViewport(
+								{
+									scale: options.scale
+								});
+							var scale = (self.docWidth / viewport.width).toFixed(2);
+							var scaledViewport = page.getViewport(
+								{
+									scale: parseFloat(scale)
+								});
 							var div = self.container.find('.pageContainer' +
 								pageNum)[0];
 							var container;
@@ -1630,48 +1649,48 @@
 										'width': viewport.width + 'px',
 										"height": viewport.height + 'px'
 									}).attr("data-scale", viewport.width /
-										viewport.height)
+										viewport.height);
 								} else {
 									var h = $(container).width() / (viewport
 										.viewBox[2] / viewport.viewBox[3]);
 									if (h > viewport.height) {
-										h = viewport.height
+										h = viewport.height;
 									}
 									$(container).css({
 										'max-width': viewport.width,
 										"max-height": viewport.height,
-										"min-height": h + 'px'
+										// "min-height": h + 'px'
 									}).attr("data-scale", viewport.width /
-										viewport.height)
+										viewport.height);
 								}
 							} else {
-								container = div
+								container = div;
 							}
 							if (options.background) {
 								/*背景颜色*/
 								if (options.background.color) {
 									container.style["background-color"] = options
-										.background.color
+										.background.color;
 								}
 								/*背景图片*/
 								if (options.background.image) {
 									container.style["background-image"] = options
-										.background.image
+										.background.image;
 								}
 								/*平铺与否*/
 								if (options.background.repeat) {
 									container.style["background-repeat"] = options
-										.background.repeat
+										.background.repeat;
 								}
 								/*背景图片位置*/
 								if (options.background.position) {
 									container.style["background-position"] = options
-										.background.position
+										.background.position;
 								}
 								/*背景图像的尺寸*/
 								if (options.background.size) {
 									container.style["background-size"] = options
-										.background.size
+										.background.size;
 								}
 							}
 							self.cache[pageNum + ""].container = container;
@@ -1682,55 +1701,55 @@
 							self.pages = self.viewerContainer.find(
 								'.pageContainer');
 							if (options.resize) {
-								self.resize()
+								self.resize();
 							}
 							if (self.pages && options.lazy) {
-								self.pages.each(function(index, obj) {
+								self.pages.each(function (index, obj) {
 									var top = obj.offsetTop;
 									if (top <= containerH) {
 										sum = index + 1;
 										self.cache[sum + ""].loaded = true;
 									}
-								})
+								});
 							}
 
 							if (pageNum > sum && options.lazy) {
-								return
+								return;
 							}
 							if (options.renderType === "svg") {
 								return self.renderSvg(page, scaledViewport, pageNum,
-									num, container, options, viewport)
+									num, container, options, viewport);
 							}
 							return self.renderCanvas(page, scaledViewport, pageNum,
-								num, container, options)
+								num, container, options);
 						});
 					}.bind(null, i));
 				}
-			}).catch(function(err) {
+			}).catch(function (err) {
 				self.loading.hide();
 				var time = new Date().getTime();
 				self.endTime = time - self.initTime;
 				var arr1 = self.eventType["complete"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
-						arr1[i] && arr1[i].call(self, "error", err.message, self.endTime)
+						arr1[i] && arr1[i].call(self, "error", err.message, self.endTime);
 					}
 				}
 				var arr2 = self.eventType["error"];
 				if (arr2 && arr2 instanceof Array) {
 					for (var i = 0; i < arr2.length; i++) {
-						arr2[i] && arr2[i].call(self, err.message, self.endTime)
+						arr2[i] && arr2[i].call(self, err.message, self.endTime);
 					}
 				}
-			})
+			});
 		},
-		renderSvg: function(page, scaledViewport, pageNum, num, container, options, viewport) {
+		renderSvg: function (page, scaledViewport, pageNum, num, container, options, viewport) {
 			var self = this;
 			var viewport = page.getViewport(options.scale);
-			var scale = (self.docWidth / viewport.width).toFixed(2)
-			return page.getOperatorList().then(function(opList) {
+			var scale = (self.docWidth / viewport.width).toFixed(2);
+			return page.getOperatorList().then(function (opList) {
 				var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
-				return svgGfx.getSVG(opList, scaledViewport).then(function(svg) {
+				return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
 					self.loadedCount++;
 					container.children[0].style.display = "none";
 					container.appendChild(svg);
@@ -1739,28 +1758,28 @@
 					if (self.options.loadingBar) {
 						self.progress.css({
 							width: num * self.loadedCount + "%"
-						})
+						});
 					}
 					var time = new Date().getTime();
 					var arr1 = self.eventType["render"];
 					if (arr1 && arr1 instanceof Array) {
 						for (var i = 0; i < arr1.length; i++) {
 							arr1[i] && arr1[i].call(self, pageNum, time - self.initTime,
-								container)
+								container);
 						}
 					}
 					if (self.loadedCount === self.totalNum) {
-						self.finalRender(options)
+						self.finalRender(options);
 					}
 				});
-			}).then(function() {
+			}).then(function () {
 				return page.getTextContent();
-			}).then(function(textContent) {
+			}).then(function (textContent) {
 				if (!self.options.textLayer) {
-					return
+					return;
 				}
 				if ($(container).find(".textLayer")[0]) {
-					return
+					return;
 				}
 				var textLayerDiv = document.createElement('div');
 				textLayerDiv.setAttribute('class', 'textLayer');
@@ -1778,10 +1797,13 @@
 				textLayer.render();
 			});;
 		},
-		renderCanvas: function(page, viewport, pageNum, num, container, options) {
+		renderCanvas: function (page, viewport, pageNum, num, container, options) {
 			var self = this;
-			var viewport = page.getViewport(options.scale);
-			var scale = (self.docWidth / viewport.width).toFixed(2)
+			var viewport = page.getViewport(
+				{
+					scale: options.scale
+				});
+			var scale = (self.docWidth / viewport.width).toFixed(2);
 			var canvas = document.createElement("canvas");
 			var obj2 = {
 				'Cheight': viewport.height * scale,
@@ -1789,13 +1811,13 @@
 				'height': viewport.height,
 				'canvas': canvas,
 				'index': self.loadedCount
-			}
+			};
 			var context = canvas.getContext('2d');
 			if (options.logo) {
 				context.drawImage(self.options.logo.img, self.options.logo.x * self.options.scale,
 					self.options.logo.y * self.options.scale, self.options.logo.width * self.options
-					.scale, self.options.logo.height *
-					self.options.scale
+						.scale, self.options.logo.height *
+				self.options.scale
 				);
 			}
 			canvas.height = viewport.height;
@@ -1803,23 +1825,23 @@
 			if (self.options.loadingBar) {
 				self.progress.css({
 					width: num * self.loadedCount + "%"
-				})
+				});
 			}
 			obj2.src = obj2.canvas.toDataURL("image/png");
 			var renderObj = {
 				canvasContext: context,
 				viewport: viewport
-			}
+			};
 			if (options.background) {
-				renderObj.background = "rgba(255, 255, 255, 0)"
+				renderObj.background = "rgba(255, 255, 255, 0)";
 			}
-			return page.render(renderObj).then(function() {
+			return page.render(renderObj).promise.then(function () {
 				if (options.logo) {
 					context.drawImage(self.options.logo.img, self.options.logo.x * self.options
 						.scale,
 						self.options.logo.y * self.options.scale, self.options.logo.width * self
-						.options.scale, self.options.logo.height *
-						self.options.scale
+							.options.scale, self.options.logo.height *
+					self.options.scale
 					);
 				}
 				self.loadedCount++;
@@ -1827,9 +1849,9 @@
 				var time = new Date().getTime();
 				var time2 = 0;
 				if (self.renderTime == 0) {
-					time2 = time - self.startTime
+					time2 = time - self.startTime;
 				} else {
-					time2 = time - self.renderTime
+					time2 = time - self.renderTime;
 				}
 				obj2.src = obj2.canvas.toDataURL("image/png");
 
@@ -1840,27 +1862,27 @@
 				if (container && !img0) {
 					container.appendChild(img);
 				} else if (img0) {
-					img0.src = obj2.src
+					img0.src = obj2.src;
 				}
 				container.children[0].style.display = "none";
 				var time = new Date().getTime();
 				var arr1 = self.eventType["render"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
-						arr1[i] && arr1[i].call(self, pageNum, time - self.initTime, container)
+						arr1[i] && arr1[i].call(self, pageNum, time - self.initTime, container);
 					}
 				}
 				if (self.loadedCount === self.totalNum) {
-					self.finalRender(options)
+					self.finalRender(options);
 				}
-			}).then(function() {
+			}).then(function () {
 				return page.getTextContent();
-			}).then(function(textContent) {
+			}).then(function (textContent) {
 				if (!self.options.textLayer) {
-					return
+					return;
 				}
 				if ($(container).find(".textLayer")[0]) {
-					return
+					return;
 				}
 				var textLayerDiv = document.createElement('div');
 				textLayerDiv.setAttribute('class', 'textLayer');
@@ -1878,7 +1900,7 @@
 				textLayer.render();
 			});
 		},
-		finalRender: function(options) {
+		finalRender: function (options) {
 			var time = new Date().getTime();
 			var self = this;
 			if (self.options.loadingBar) {
@@ -1886,9 +1908,9 @@
 					width: "100%"
 				});
 			}
-			setTimeout(function() {
+			setTimeout(function () {
 				self.loadingBar.hide();
-			}, 300)
+			}, 300);
 			self.endTime = time - self.initTime;
 			if (options.renderType === "svg") {
 				if (self.totalNum !== 1) {
@@ -1899,77 +1921,77 @@
 			}
 			if (options.zoomEnable) {
 				if (self.pinchZoom) {
-					self.pinchZoom.enable()
+					self.pinchZoom.enable();
 				}
 			} else {
 				if (self.pinchZoom) {
-					self.pinchZoom.disable()
+					self.pinchZoom.disable();
 				}
 			}
 			var arr1 = self.eventType["complete"];
 			if (arr1 && arr1 instanceof Array) {
 				for (var i = 0; i < arr1.length; i++) {
-					arr1[i] && arr1[i].call(self, "success", "pdf加载完成", self.endTime)
+					arr1[i] && arr1[i].call(self, "success", "pdf加载完成", self.endTime);
 				}
 			}
 			var arr2 = self.eventType["success"];
 			if (arr2 && arr2 instanceof Array) {
 				for (var i = 0; i < arr2.length; i++) {
-					arr2[i] && arr2[i].call(self, self.endTime)
+					arr2[i] && arr2[i].call(self, self.endTime);
 				}
 			}
 		},
-		resize: function() {
+		resize: function () {
 			var self = this;
 			if (self.resizeEvent) {
-				return
+				return;
 			}
 			self.resizeEvent = true;
 			var timer;
 			if (self.pages) {
-				$(window).on("resize", function() {
-					self.pages.each(function(i, item) {
-						$(item).css("min-height", "auto")
-					})
-				})
+				$(window).on("resize", function () {
+					self.pages.each(function (i, item) {
+						$(item).css("min-height", "auto");
+					});
+				});
 			}
 		},
-		show: function(callback) {
+		show: function (callback) {
 			this.container.show();
-			callback && callback.call(this)
+			callback && callback.call(this);
 			var arr = this.eventType["show"];
 			if (arr && arr instanceof Array) {
 				for (var i = 0; i < arr.length; i++) {
-					arr[i] && arr[i].call(this)
+					arr[i] && arr[i].call(this);
 				}
 			}
 		},
-		hide: function(callback) {
-			this.container.hide()
-			callback && callback.call(this)
+		hide: function (callback) {
+			this.container.hide();
+			callback && callback.call(this);
 			var arr = this.eventType["hide"];
 			if (arr && arr instanceof Array) {
 				for (var i = 0; i < arr.length; i++) {
-					arr[i] && arr[i].call(this)
+					arr[i] && arr[i].call(this);
 				}
 			}
 		},
-		on: function(type, callback) {
+		on: function (type, callback) {
 			if (this.eventType[type] && this.eventType[type] instanceof Array) {
-				this.eventType[type].push(callback)
+				this.eventType[type].push(callback);
 			}
-			this.eventType[type] = [callback]
+			this.eventType[type] = [callback];
 		},
-		off: function(type) {
+		off: function (type) {
 			if (type !== undefined) {
-				this.eventType[type] = [null]
+				this.eventType[type] = [null];
 			} else {
 				for (var i in this.eventType) {
-					this.eventType[i] = [null]
+					this.eventType[i] = [null];
 				}
 			}
 		},
-		goto: function(num) {
+		goto: function (num) {
 			var self = this;
 
 			if (!isNaN(num)) {
@@ -1984,52 +2006,52 @@
 						}
 						self.viewerContainer.animate({
 							scrollTop: signHeight * (num - 1) + 8 * num
-						}, 300)
+						}, 300);
 					}
 				}
 			}
 		},
-		scrollEnable: function(flag) {
+		scrollEnable: function (flag) {
 			if (flag === false) {
 				this.viewerContainer.css({
 					"overflow": "hidden"
-				})
+				});
 			} else {
 				this.viewerContainer.css({
 					"overflow": "auto"
-				})
+				});
 			}
 			var arr = this.eventType["scrollEnable"];
 			if (arr && arr instanceof Array) {
 				for (var i = 0; i < arr.length; i++) {
-					arr[i] && arr[i].call(this, flag)
+					arr[i] && arr[i].call(this, flag);
 				}
 			}
 		},
-		zoomEnable: function(flag) {
+		zoomEnable: function (flag) {
 			if (!this.pinchZoom) {
-				return
+				return;
 			}
 			if (flag === false) {
-				this.pinchZoom.disable()
+				this.pinchZoom.disable();
 			} else {
-				this.pinchZoom.enable()
+				this.pinchZoom.enable();
 			}
 			var arr = this.eventType["zoomEnable"];
 			if (arr && arr instanceof Array) {
 				for (var i = 0; i < arr.length; i++) {
-					arr[i] && arr[i].call(this, flag)
+					arr[i] && arr[i].call(this, flag);
 				}
 			}
 		},
-		download: function(name, callback) {
+		download: function (name, callback) {
 			if (this.options.pdfurl) {
-				download(this.options.pdfurl, name, callback)
+				download(this.options.pdfurl, name, callback);
 			} else if (this.options.data) {
-				fileDownLoad(this.options.data, name, callback)
+				fileDownLoad(this.options.data, name, callback);
 			}
 		},
-		reset: function(callback) {
+		reset: function (callback) {
 			if (this.pinchZoom) {
 				this.pinchZoom.offset.y = 0;
 				this.pinchZoom.offset.x = 0;
@@ -2040,15 +2062,15 @@
 			if (this.viewerContainer) {
 				this.viewerContainer.scrollTop(0);
 			}
-			callback && callback.call(this)
+			callback && callback.call(this);
 			var arr = this.eventType["reset"];
 			if (arr && arr instanceof Array) {
 				for (var i = 0; i < arr.length; i++) {
-					arr[i] && arr[i].call(this)
+					arr[i] && arr[i].call(this);
 				}
 			}
 		},
-		destroy: function(callback) {
+		destroy: function (callback) {
 			this.reset();
 			this.off();
 			if (this.thePDF) {
@@ -2074,15 +2096,15 @@
 			this.progress = null;
 			this.loadedCount = 0;
 			this.timer = null;
-			callback && callback.call(this)
+			callback && callback.call(this);
 			var arr = this.eventType["destroy"];
 			if (arr && arr instanceof Array) {
 				for (var i = 0; i < arr.length; i++) {
-					arr[i] && arr[i].call(this)
+					arr[i] && arr[i].call(this);
 				}
 			}
 		}
-	}
+	};
 	return Pdfh5;
 
 	function download(url, name, callback) {
@@ -2090,48 +2112,48 @@
 		xhr.open('GET', url, true);
 		xhr.responseType = "blob";
 		if (Object.prototype.toString.call(name) === "[object Function]") {
-			callback = name
+			callback = name;
 			name = undefined;
 		}
 		name = name ? name : "download.pdf";
 		if (name.indexOf(".pdf") == -1) {
-			name += ".pdf"
+			name += ".pdf";
 		}
-		xhr.onload = function() {
+		xhr.onload = function () {
 			if (this.status === 200) {
 				var blob = this.response;
 				var reader = new FileReader();
 				reader.readAsDataURL(blob);
-				reader.onload = function(e) {
+				reader.onload = function (e) {
 					var a = document.createElement('a');
 					a.download = name;
 					a.href = e.target.result;
 					$("body").append(a);
 					a.click();
 					$(a).remove();
-					callback && callback()
-				}
+					callback && callback();
+				};
 			}
 		};
-		xhr.send()
+		xhr.send();
 	}
 
 	function fileDownLoad(data, name, callback) {
 		if (Object.prototype.toString.call(name) === "[object Function]") {
-			callback = name
+			callback = name;
 			name = undefined;
 		}
 		name = name ? name : "download.pdf";
 		if (name.indexOf(".pdf") == -1) {
-			name += ".pdf"
+			name += ".pdf";
 		}
-		var array = null
+		var array = null;
 		try {
-			var enc = new TextDecoder('utf-8')
-			array = JSON.parse(enc.decode(new Uint8Array(data)))
+			var enc = new TextDecoder('utf-8');
+			array = JSON.parse(enc.decode(new Uint8Array(data)));
 		} catch (err) {
 			if (Object.prototype.toString.call(data) === "[object ArrayBuffer]") {
-				array = data
+				array = data;
 			} else {
 				if (Object.prototype.toString.call(data) === "[object Array]") {
 					array = new Uint8Array(data);
@@ -2151,7 +2173,7 @@
 			$("body").append(a);
 			a.click();
 			$(a).remove();
-			callback && callback()
+			callback && callback();
 		}
 
 	}
