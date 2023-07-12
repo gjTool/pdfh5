@@ -83,7 +83,8 @@
 			$("#demo").show();
 			pdfh5 = new Pdfh5('#demo', {
 				pdfurl: "git.pdf",
-				// cMapUrl:"https://unpkg.com/pdfjs-dist@3.8.162/cmaps/",
+				// renderType: "svg",
+				// cMapUrl:"https://unpkg.com/pdfjs-dist@2.7.570/cmaps/",
 				// responseType: "blob" // blob arraybuffer
 			});
 			pdfh5.on("success", function (time) {

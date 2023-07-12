@@ -1,19 +1,19 @@
 ;
 (function (g, fn) {
-	var version = "1.4.5",
-		pdfjsVersion = "3.9.0";
+	var version = "1.4.7",
+		pdfjsVersion = "2.15.349";
 	console.log("pdfh5.js v" + version + " && pdf.js v" + pdfjsVersion + " https://www.gjtool.cn");
 	if (typeof require !== 'undefined') {
 		if (g.$ === undefined) {
 			g.$ = require('./jquery-3.6.0.min.js');
 		}
-		if (typeof g !== "undefined" && g["pdfjs-dist/build/pdf.worker"]) {
-			g.pdfjsWorker = g["pdfjs-dist/build/pdf.worker"] ? g["pdfjs-dist/build/pdf.worker"] : g.pdfjsWorker;
+		if (g["pdfjs-dist/build/pdf.worker"]) {
+			g.pdfjsWorker = g["pdfjs-dist/build/pdf.worker"];
 		} else {
 			g.pdfjsWorker = require("./pdf.worker.js");
 		}
-		if (typeof g !== "undefined" && g["pdfjs-dist/build/pdf"]) {
-			g.pdfjsLib = g["pdfjs-dist/build/pdf"] ? g["pdfjs-dist/build/pdf"] : g.pdfjsLib;
+		if (g["pdfjs-dist/build/pdf"]) {
+			g.pdfjsLib = g["pdfjs-dist/build/pdf"];
 		} else {
 			g.pdfjsLib = require("./pdf.js");
 		}

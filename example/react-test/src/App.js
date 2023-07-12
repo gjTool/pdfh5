@@ -5,7 +5,7 @@ import Pdf from './pdf.js'
 function App() {
   return (
     <div className="App">
-      <Pdf src= 'https://www.gjtool.cn/pdfh5/git.pdf' />
+      <Pdf src= './git.pdf' />
     </div>
   );
 }

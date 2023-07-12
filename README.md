@@ -12,13 +12,14 @@
 
 #### react、vue均可使用
 #### [example/test](https://github.com/gjTool/pdfh5/tree/master/example/test)是vue使用示例，vue示例展示axios调用接口展示pdf，跨域代理，相对路径等方法
+#### [example/vue3demo](https://github.com/gjTool/pdfh5/tree/master/example/vue3demo)是vue3使用示例
 #### [example/react-test](https://github.com/gjTool/pdfh5/tree/master/example/react-test)是react使用示例
 
 ![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
 
 ## 更新信息
 
-- 2023.07.10 更新： 更新官方pdf.js为最新版3.9.0，修复部分bugs
+- 2023.07.12 更新： 调整官方pdf.js版本为2.15.349，以此兼容旧版浏览器，以及完善vue3和vue2还有react构建打包例子
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
 
