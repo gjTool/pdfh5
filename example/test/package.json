@@ -7,13 +7,13 @@
     "scripts": {
         "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
         "start": "npm run dev",
-        "build": "node build/build.js"
+        "build": "node build/build2.js"
     },
     "dependencies": {
         "axios": "^0.19.2",
         "canvas": "^2.11.2",
         "dommatrix": "^1.0.3",
-        "pdfh5": "^1.4.6",
+        "pdfh5": "^1.4.7",
         "vue": "^2.5.2",
         "vue-router": "^3.0.1",
         "web-streams-polyfill": "^3.2.1"
