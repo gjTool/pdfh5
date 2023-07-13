@@ -1,8 +1,9 @@
 # pdfh5.js
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dw/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)  [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
-**由于精力有限，本插件暂时不会更新了，如果有问题可以加Q群咨询，有空会解答的**
+**有问题可以加Q群咨询，技术交流群，也可以探讨技术，另有微信群可以问群主拉入微信群**
 
+- [QQ群521681398](https://qm.qq.com/cgi-bin/qm/qr?k=3_qouxqe5w3gRCcHjpqkwtx-4yS6QSPD&jump_from=webapi&authKey=FlHU4wH2xOQUthUpgF5W3b1VXowCVmSRfJLU4GRcDVyBayJd1ank4HkOWSZei2f3)
 - [pdfh5博客主页](https://www.gjtool.cn/)  
 
 - [pdfh5项目GitHub地址](https://github.com/gjTool/pdfh5)  
@@ -11,15 +12,16 @@
 
 
 #### react、vue均可使用
-#### [example/test](https://github.com/gjTool/pdfh5/tree/master/example/test)是vue使用示例，vue示例展示axios调用接口展示pdf，跨域代理，相对路径等方法
+#### [example/test](https://github.com/gjTool/pdfh5/tree/master/example/test)是vue使用示例
 #### [example/vue3demo](https://github.com/gjTool/pdfh5/tree/master/example/vue3demo)是vue3使用示例
+#### [example/vite4vue3](https://github.com/gjTool/pdfh5/tree/master/example/vite4vue3)是vite4+vue3+ts使用示例
 #### [example/react-test](https://github.com/gjTool/pdfh5/tree/master/example/react-test)是react使用示例
 
 ![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
 
 ## 更新信息
 
-- 2023.07.12 更新： 调整官方pdf.js版本为2.15.349，以此兼容旧版浏览器，以及完善vue3和vue2还有react构建打包例子
+- 2023.07.13 更新： 新增vite4+vue3+ts示例，完善vu2测试例子
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
 
