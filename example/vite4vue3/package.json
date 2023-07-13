@@ -1,0 +1,40 @@
+{
+  "name": "vite4vue3",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "dommatrix": "^1.0.3",
+    "pdfh5": "^1.4.7",
+    "vue": "^3.3.4",
+    "web-streams-polyfill": "^3.2.1"
+  },
+  "peerDependencies": {
+    "worker-loader": "^3.0.8"
+  },
+  "peerDependenciesMeta": {
+    "worker-loader": {
+      "optional": true
+    }
+  },
+  "browser": {
+    "canvas": false,
+    "fs": false,
+    "http": false,
+    "https": false,
+    "url": false,
+    "zlib": false
+  },
+  "format": "amd",
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.0",
+    "vue-tsc": "^1.8.3"
+  }
+}
