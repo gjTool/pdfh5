@@ -4,7 +4,7 @@
 **有问题可以加Q群咨询，技术交流群，也可以探讨技术，另有微信群可以问群主拉入微信群**
 
 - [QQ群521681398](https://qm.qq.com/cgi-bin/qm/qr?k=3_qouxqe5w3gRCcHjpqkwtx-4yS6QSPD&jump_from=webapi&authKey=FlHU4wH2xOQUthUpgF5W3b1VXowCVmSRfJLU4GRcDVyBayJd1ank4HkOWSZei2f3)
-- [pdfh5博客主页](https://www.gjtool.cn/)  
+- [pdfh5博客主页](https://pdfh5.gjtool.cn/)  
 
 - [pdfh5项目GitHub地址](https://github.com/gjTool/pdfh5)  
 
