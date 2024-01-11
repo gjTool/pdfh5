@@ -1544,7 +1544,7 @@
 					var arr1 = self.eventType["ready"];
 					if (arr1 && arr1 instanceof Array) {
 						for (var i = 0; i < arr1.length; i++) {
-							arr1[i] && arr1[i].call(self);
+							arr1[i] && arr1[i].call(self, self.totalNum);
 						}
 					}
 					self.pinchZoom = new PinchZoom(self.viewer, {
