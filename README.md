@@ -2,8 +2,11 @@
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dw/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)  [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
 **1、有问题可以加Q群咨询，技术交流群，也可以探讨技术，另有微信群可以问群主拉入微信群**
+
 **2、如果有报错，请复制example运行，然后对照相关文件，以及package.json，缺什么补什么**
+
 **3、如果有某些字体显示不了，那可能是pdf.js缺少相关字库解析，可以尝试更改cMapUrl，建议去官方地址找版本**
+
 **4、如果IOS下pdf显示不了，安卓却可以，可能是pdf精度过高导致，Safari浏览器canvas渲染绘制图片宽高不能超过16777216，超过会不显示** 
 
 - [QQ群521681398](https://qm.qq.com/cgi-bin/qm/qr?k=3_qouxqe5w3gRCcHjpqkwtx-4yS6QSPD&jump_from=webapi&authKey=FlHU4wH2xOQUthUpgF5W3b1VXowCVmSRfJLU4GRcDVyBayJd1ank4HkOWSZei2f3)
