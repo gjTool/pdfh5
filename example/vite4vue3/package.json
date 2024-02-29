@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "dommatrix": "^1.0.3",
-    "pdfh5": "^1.4.7",
+    "pdfh5": "^1.4.8",
     "vue": "^3.3.4",
-    "web-streams-polyfill": "^3.2.1"
+    "web-streams-polyfill": "^3.2.1",
+    "canvas": "^2.11.2",
+    "path2d-polyfill": "^2.0.1"
   },
   "peerDependencies": {
     "worker-loader": "^3.0.8"
@@ -21,6 +23,10 @@
     "worker-loader": {
       "optional": true
     }
+  },
+  "optionalDependencies": {
+    "canvas": "^2.11.2",
+    "path2d-polyfill": "^2.0.1"
   },
   "browser": {
     "canvas": false,

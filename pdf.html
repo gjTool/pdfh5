@@ -6,6 +6,7 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta name="format-detection" content="telephone=no" />
+	<meta name="msapplication-tap-highlight" content="no" />
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -75,25 +76,26 @@
 	<script src="js/pdf.worker.js"></script>
 	<script src="js/jquery-3.6.0.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./vconsole.min.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script type="text/javascript">
+		var vConsole = new VConsole();
+		console.log('Hello world');
 		var pdfh5;
-		$(function () {
-			$("#app").remove();
-			$("#demo").show();
-			pdfh5 = new Pdfh5('#demo', {
-				pdfurl: "git.pdf",
-				// renderType: "svg",
-				// cMapUrl:"https://unpkg.com/pdfjs-dist@2.7.570/cmaps/",
-				// responseType: "blob" // blob arraybuffer
-			});
-			pdfh5.on("success", function (time) {
-				time = time / 1000;
-				console.log("pdf渲染完成，总耗时" + time + "秒");
-				//禁止手势缩放
-				pdfh5.zoomEnable(false);
-			});
-
+		$("#app").remove();
+		$("#demo").show();
+		pdfh5 = new Pdfh5('#demo', {
+			pdfurl: "git.pdf",
+			// renderType: "svg",
+			// cMapUrl:"https://unpkg.com/pdfjs-dist@2.7.570/cmaps/",
+			// responseType: "blob" // blob arraybuffer
+		});
+		pdfh5.on("complete", function (status, msg, time) {
+			console.log("状态：" + status + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum, msg);
+		});
+			// pdfh5.on("scroll", function (scrollTop, currentNum) {
+			// 	console.log("scrollTop:"+scrollTop,"currentNum:"+currentNum);
+			// });
 			//配置项参数 renderType:"svg" 渲染模式为svg，默认canvas
 			// var pdfh5 = new Pdfh5('#demo', {
 			//     pdfurl: "./default.pdf",
@@ -131,8 +133,8 @@
 			// 			pdfurl: url
 			// 		});
 
-			//pdfh5还原、销毁（附带回调函数）：   pdfh5.reset pdfh5.destroy 
-			//pdfh5显示、隐藏（附带回调函数）：   pdfh5.show pdfh5.hide 
+			//pdfh5还原、销毁（附带回调函数）：   pdfh5.reset pdfh5.destroy
+			//pdfh5显示、隐藏（附带回调函数）：   pdfh5.show pdfh5.hide
 
 			//pdf准备开始渲染，此时可以拿到pdf总页数
 			// pdfh5.on("ready", function() {
@@ -156,9 +158,8 @@
 			//on方法,监听事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
 			// 缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
 
-			//pdfh5支持在线预览 
+			//pdfh5支持在线预览
 			//http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf
-		})
 	</script>
 </body>
 

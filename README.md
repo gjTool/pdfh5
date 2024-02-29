@@ -1,10 +1,13 @@
 # pdfh5.js
 [![npm version](https://img.shields.io/npm/v/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dt/pdfh5.svg)](https://www.npmjs.com/package/pdfh5) [![npm downloads](https://img.shields.io/npm/dw/pdfh5.svg)](https://www.npmjs.com/package/pdfh5)  [![MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/gjTool/pdfh5/blob/master/LICENSE) [![GitHub issues](https://img.shields.io/github/issues/gjTool/pdfh5.svg)](https://github.com/gjTool/pdfh5/issues) [![GitHub stars](https://img.shields.io/github/stars/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/stargazers) [![GitHub forks](https://img.shields.io/github/forks/gjTool/pdfh5.svg?style=social)](https://github.com/gjTool/pdfh5/network/members)  
 
-**有问题可以加Q群咨询，技术交流群，也可以探讨技术，另有微信群可以问群主拉入微信群**
+**1、有问题可以加Q群咨询，技术交流群，也可以探讨技术，另有微信群可以问群主拉入微信群**
+**2、如果有报错，请复制example运行，然后对照相关文件，以及package.json，缺什么补什么**
+**3、如果有某些字体显示不了，那可能是pdf.js缺少相关字库解析，可以尝试更改cMapUrl，建议去官方地址找版本**
+**4、如果IOS下pdf显示不了，安卓却可以，可能是pdf精度过高导致，Safari浏览器canvas渲染绘制图片宽高不能超过16777216，超过会不显示** 
 
 - [QQ群521681398](https://qm.qq.com/cgi-bin/qm/qr?k=3_qouxqe5w3gRCcHjpqkwtx-4yS6QSPD&jump_from=webapi&authKey=FlHU4wH2xOQUthUpgF5W3b1VXowCVmSRfJLU4GRcDVyBayJd1ank4HkOWSZei2f3)
-- [pdfh5博客主页](https://www.gjtool.cn/)  
+- [pdfh5博客主页](https://pdfh5.gjtool.cn/)  
 
 - [pdfh5项目GitHub地址](https://github.com/gjTool/pdfh5)  
 
@@ -21,7 +24,7 @@
 
 ## 更新信息
 
-- 2023.07.13 更新： 新增vite4+vue3+ts示例，完善vu2测试例子
+- 2024.02.29 更新： 修复部分bugs。
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
 
@@ -153,7 +156,6 @@ var pdfh5 = new Pdfh5('#demo', {
 |renderType		| String				|"canvas"、"svg"，默认"canvas"																																		|pdf渲染模式																																					|
 |pageNum		| Boolean				|true、false， 默认true																																				|是否显示左上角页码																																				|
 |backTop		| Boolean				|true、false， 默认true																																				|是否显示右下角回到顶部按钮																																		|
-|lazy			| Boolean				|true、false， 默认false																																			|是否开启懒加载(实际是延迟加载图片，即屏幕滚动到pdf位置时加载图片)																								|
 |maxZoom		|  Number				|最大倍数3																																							|手势缩放最大倍数																																				|
 |scale			|  Number				|最大比例5，默认1.5																																					|pdf渲染的比例																																					|
 |scrollEnable	| Boolean				|true、false， 默认true																																				|是否允许pdf滚动																																				|
@@ -164,19 +166,6 @@ var pdfh5 = new Pdfh5('#demo', {
 |goto			| Number				| 默认0																																								|加载pdf跳转到第几页																																			|
 |textLayer		|  Boolean		| true、false， 默认false																																			|是否开启textLayer，可以复制文本（canvas模式下使用）【处于测试阶段，位置偏移严重】																				|
 |background		|  Object				| {color:"#fff",image:"url('pdfh5.png')",repeat:"no-repeat",position:"left top",size:"40px 40px"}，和css的background属性语法相同，默认false							|是否开启背景图模式																																				|
-
-- 以下属性可选
-
-|参数名称			|类型		|取值		|作用																																					|
-|:---:				|:---:		|:---:		|:---:																																					|
-|httpHeaders		| Object	| 默认空	|设置httpHeaders信息																																	|
-|withCredentials	| Boolean	| 默认false	|是否使用cookie或授权标头之类的凭据发出跨站点访问																										|
-|password			| String	| 默认空	|用于访问有密码的PDF																																	|
-|stopAtErrors		| Boolean	| 默认false	|当无法成功解析关联的PDF数据时，停止解析																												|
-|disableFontFace	| Boolean	| 默认false	|默认情况下，字体会转换为OpenType字体，并通过字体规则来加载。如果禁用，字体将使用内置的字体渲染器渲染。													|
-|disableRange		| Boolean	| 默认false	|禁用范围请求加载PDF文件。启用后，如果服务器支持部分内容请求，则将以块的形式获取PDF。																	|
-|disableStream		| Boolean	| 默认false	|禁用流式传输PDF文件数据。默认情况下，PDF.js尝试加载成块的PDF。																							|
-|disableAutoFetch	| Boolean	| 默认false	|禁用PDF文件数据的预取。启用范围请求后，即使不需要显示当前页面，PDF.js也会自动继续获取更多数据。默认值为“ false”。注意：还必须禁用流传输disableStream	|
 
 ## 	pdf请求示例
 1.

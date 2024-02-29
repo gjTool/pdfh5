@@ -1,8 +1,8 @@
 ;
 (function (g, fn) {
-	var version = "1.4.7",
+	var version = "1.4.8",
 		pdfjsVersion = "2.15.349";
-	console.log("pdfh5.js v" + version + " && pdf.js v" + pdfjsVersion + " https://www.gjtool.cn");
+	console.log("pdfh5.js v" + version + " && pdf.js v" + pdfjsVersion + " https://pdfh5.gjtool.cn");
 	if (typeof require !== 'undefined') {
 		if (g.$ === undefined) {
 			g.$ = require('./jquery-3.6.0.min.js');
@@ -1180,7 +1180,6 @@
 			this.options.backTop = this.options.backTop === false ? false : true;
 			this.options.URIenable = this.options.URIenable === true ? true : false;
 			this.options.fullscreen = this.options.fullscreen === false ? false : true;
-			this.options.lazy = this.options.lazy === true ? true : false;
 			this.options.renderType = this.options.renderType === "svg" ? "svg" : "canvas";
 			this.options.resize = this.options.resize === false ? false : true;
 			this.options.textLayer = this.options.textLayer === true ? true : false;
@@ -1301,39 +1300,6 @@
 						self.pageNum.fadeOut(200);
 					}
 				}, 1500);
-				if (self.options.lazy) {
-					var num = Math.floor(100 / self.totalNum).toFixed(2);
-					if (self.cache[self.cacheNum + ""] && !self.cache[self.cacheNum + ""].loaded) {
-						var page = self.cache[self.cacheNum + ""].page;
-						var container = self.cache[self.cacheNum + ""].container;
-						var pageNum = self.cacheNum;
-						self.cache[pageNum + ""].loaded = true;
-						var scaledViewport = self.cache[pageNum + ""].scaledViewport;
-						if (self.options.renderType === "svg") {
-							self.renderSvg(page, scaledViewport, pageNum, num, container, self
-								.options);
-						} else {
-							self.renderCanvas(page, scaledViewport, pageNum, num, container, self
-								.options);
-						}
-					}
-					if (self.cache[(self.totalNum - 1) + ""] && self.cache[(self.totalNum - 1) + ""]
-						.loaded && !self.cache[self.totalNum +
-							""].loaded) {
-						var page = self.cache[self.totalNum + ""].page;
-						var container = self.cache[self.totalNum + ""].container;
-						var pageNum = self.totalNum;
-						self.cache[pageNum + ""].loaded = true;
-						var scaledViewport = self.cache[pageNum + ""].scaledViewport;
-						if (self.options.renderType === "svg") {
-							self.renderSvg(page, scaledViewport, pageNum, num, container, self
-								.options);
-						} else {
-							self.renderCanvas(page, scaledViewport, pageNum, num, container, self
-								.options);
-						}
-					}
-				}
 				var arr1 = self.eventType["scroll"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
@@ -1625,11 +1591,21 @@
 								{
 									scale: options.scale
 								});
+							var w1 = viewport.width;
+							var h1 = viewport.height;
+							var whobj1 = changeWH(w1, h1);
+							viewport.width = whobj1.w;
+							viewport.height = whobj1.h;
 							var scale = (self.docWidth / viewport.width).toFixed(2);
 							var scaledViewport = page.getViewport(
 								{
 									scale: parseFloat(scale)
 								});
+							var w = scaledViewport.width;
+							var h = scaledViewport.height;
+							var whobj = changeWH(w, h);
+							scaledViewport.width = whobj.w;
+							scaledViewport.height = whobj.h;
 							var div = self.container.find('.pageContainer' +
 								pageNum)[0];
 							var container;
@@ -1703,19 +1679,6 @@
 							if (options.resize) {
 								self.resize();
 							}
-							if (self.pages && options.lazy) {
-								self.pages.each(function (index, obj) {
-									var top = obj.offsetTop;
-									if (top <= containerH) {
-										sum = index + 1;
-										self.cache[sum + ""].loaded = true;
-									}
-								});
-							}
-
-							if (pageNum > sum && options.lazy) {
-								return;
-							}
 							if (options.renderType === "svg") {
 								return self.renderSvg(page, scaledViewport, pageNum,
 									num, container, options, viewport);
@@ -1746,6 +1709,11 @@
 		renderSvg: function (page, scaledViewport, pageNum, num, container, options, viewport) {
 			var self = this;
 			var viewport = page.getViewport(options.scale);
+			var w = viewport.width;
+			var h = viewport.height;
+			var whobj = changeWH(w, h);
+			viewport.width = whobj.w;
+			viewport.height = whobj.h;
 			var scale = (self.docWidth / viewport.width).toFixed(2);
 			return page.getOperatorList().then(function (opList) {
 				var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
@@ -1801,8 +1769,13 @@
 			var self = this;
 			var viewport = page.getViewport(
 				{
-					scale: options.scale
+					scale: options.scale,
 				});
+			var w = viewport.width;
+			var h = viewport.height;
+			var whobj = changeWH(w, h);
+			viewport.width = whobj.w;
+			viewport.height = whobj.h;
 			var scale = (self.docWidth / viewport.width).toFixed(2);
 			var canvas = document.createElement("canvas");
 			var obj2 = {
@@ -1815,9 +1788,7 @@
 			var context = canvas.getContext('2d');
 			if (options.logo) {
 				context.drawImage(self.options.logo.img, self.options.logo.x * self.options.scale,
-					self.options.logo.y * self.options.scale, self.options.logo.width * self.options
-						.scale, self.options.logo.height *
-				self.options.scale
+					self.options.logo.y * self.options.scale, self.options.logo.width * self.options.scale, self.options.logo.height * self.options.scale
 				);
 			}
 			canvas.height = viewport.height;
@@ -2176,5 +2147,12 @@
 			callback && callback();
 		}
 
+	}
+	function changeWH(w, h) {
+		while (w * h > 16777216) {
+			w = 0.8 * w;
+			h = 0.8 * h;
+		}
+		return { w: w, h: h };
 	}
 });
