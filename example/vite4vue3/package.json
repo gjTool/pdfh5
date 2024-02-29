@@ -24,13 +24,10 @@
       "optional": true
     }
   },
-<<<<<<< HEAD
   "optionalDependencies": {
     "canvas": "^2.11.2",
     "path2d-polyfill": "^2.0.1"
   },
-=======
->>>>>>> 03de3d719387227e9137ff9f96cba3779f5aed39
   "browser": {
     "canvas": false,
     "fs": false,
@@ -46,8 +43,4 @@
     "vite": "^4.4.0",
     "vue-tsc": "^1.8.3"
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 03de3d719387227e9137ff9f96cba3779f5aed39

@@ -9,6 +9,7 @@
 
 **4、如果IOS下pdf显示不了，安卓却可以，可能是pdf精度过高导致，Safari浏览器canvas渲染绘制图片宽高不能超过16777216，超过会不显示** 
 
+
 - [QQ群521681398](https://qm.qq.com/cgi-bin/qm/qr?k=3_qouxqe5w3gRCcHjpqkwtx-4yS6QSPD&jump_from=webapi&authKey=FlHU4wH2xOQUthUpgF5W3b1VXowCVmSRfJLU4GRcDVyBayJd1ank4HkOWSZei2f3)
 - [pdfh5博客主页](https://pdfh5.gjtool.cn/)  
 
