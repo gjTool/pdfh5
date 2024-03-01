@@ -5012,8 +5012,8 @@ ip-regex@^2.1.0:
   resolved "https://registry.npmjs.org/ip-regex/-/ip-regex-2.1.0.tgz"
 
 ip@^1.1.0, ip@^1.1.5:
-  version "1.1.8"
-  resolved "https://registry.npmjs.org/ip/-/ip-1.1.8.tgz"
+  version "1.1.9"
+  resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.9.tgz#8dfbcc99a754d07f425310b86a99546b1151e396"
 
 ipaddr.js@1.9.1, ipaddr.js@^1.9.0:
   version "1.9.1"
@@ -7012,9 +7012,9 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-pdfh5@^1.4.6:
-  version "1.4.6"
-  resolved "https://registry.npmjs.org/pdfh5/-/pdfh5-1.4.6.tgz"
+pdfh5@^1.4.8:
+  version "1.4.8"
+  resolved "https://registry.yarnpkg.com/pdfh5/-/pdfh5-1.4.8.tgz#dd29529ca21465785b02effee4d2c97c2bcc942a"
 
 performance-now@^2.1.0:
   version "2.1.0"
