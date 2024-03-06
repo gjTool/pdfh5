@@ -5,15 +5,15 @@
     "author": "gjTool <305250069@qq.com>",
     "private": true,
     "scripts": {
-        "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+        "dev": "webpack-dev-server --inline --progress   --config build/webpack.dev.conf.js --host 0.0.0.0",
         "start": "npm run dev",
-        "build": "node build/build2.js"
+        "build": "node build/build.js"
     },
     "dependencies": {
         "axios": "^0.19.2",
         "canvas": "^2.11.2",
         "dommatrix": "^1.0.3",
-        "pdfh5": "^1.4.8",
+        "pdfh5": "^1.4.9",
         "vue": "^2.5.2",
         "vue-router": "^3.0.1",
         "web-streams-polyfill": "^3.2.1"
@@ -71,6 +71,10 @@
         "webpack-bundle-analyzer": "^2.9.0",
         "webpack-dev-server": "^2.9.1",
         "webpack-merge": "^4.1.0"
+    },
+    "optionalDependencies": {
+        "canvas": "^2.11.2",
+        "path2d-polyfill": "^2.0.1"
     },
     "engines": {
         "node": ">= 6.0.0",

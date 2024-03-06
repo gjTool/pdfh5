@@ -1,4 +1,14 @@
 node_modules
 package-lock.json
-.vscode
+pdf
+index
+git
+testPDF
+example
+fonts
+version
+test
+testPDF
 .github
+.vscode
+pdf

@@ -4,13 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vue-tsc && vite build",
     "preview": "vite preview"
-  },
+  },   
   "dependencies": {
     "dommatrix": "^1.0.3",
-    "pdfh5": "^1.4.8",
+    "pdfh5": "^1.4.9",
     "vue": "^3.3.4",
     "web-streams-polyfill": "^3.2.1",
     "canvas": "^2.11.2",

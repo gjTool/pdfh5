@@ -1,7 +1,7 @@
 ;
 (function (g, fn) {
-	var version = "1.4.8",
-		pdfjsVersion = "2.15.349";
+	var version = "1.4.9",
+		pdfjsVersion = "2.11.338";
 	console.log("pdfh5.js v" + version + " && pdf.js v" + pdfjsVersion + " https://pdfh5.gjtool.cn");
 	if (typeof require !== 'undefined') {
 		if (g.$ === undefined) {
@@ -1470,7 +1470,7 @@
 			if (options.cMapUrl) {
 				obj.cMapUrl = options.cMapUrl;
 			} else {
-				obj.cMapUrl = 'https://unpkg.com/browse/pdfjs-dist@3.8.162/cmaps/';
+				obj.cMapUrl = 'https://unpkg.com/browse/pdfjs-dist@2.11.338/cmaps/';
 			}
 			if (options.httpHeaders) {
 				obj.httpHeaders = options.httpHeaders;

@@ -93,73 +93,73 @@
 		pdfh5.on("complete", function (status, msg, time) {
 			console.log("状态：" + status + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum, msg);
 		});
-			// pdfh5.on("scroll", function (scrollTop, currentNum) {
-			// 	console.log("scrollTop:"+scrollTop,"currentNum:"+currentNum);
-			// });
-			//配置项参数 renderType:"svg" 渲染模式为svg，默认canvas
-			// var pdfh5 = new Pdfh5('#demo', {
-			//     pdfurl: "./default.pdf",
-			//     renderType:"svg"
-			// });
+		// pdfh5.on("scroll", function (scrollTop, currentNum) {
+		// 	console.log("scrollTop:"+scrollTop,"currentNum:"+currentNum);
+		// });
+		//配置项参数 renderType:"svg" 渲染模式为svg，默认canvas
+		// var pdfh5 = new Pdfh5('#demo', {
+		//     pdfurl: "./default.pdf",
+		//     renderType:"svg"
+		// });
 
-			//配置项参数 URIenable:true 开启获取地址栏file参数，获取地址栏pdf路径?file=xxx.pdf，默认false不开启
-			// var pdfh5 = new Pdfh5('#demo', {
-			//     URIenable:false,
-			//     pdfurl: "./default.pdf"
-			// });
+		//配置项参数 URIenable:true 开启获取地址栏file参数，获取地址栏pdf路径?file=xxx.pdf，默认false不开启
+		// var pdfh5 = new Pdfh5('#demo', {
+		//     URIenable:false,
+		//     pdfurl: "./default.pdf"
+		// });
 
-			//配置项参数 是否显示小部件 顶部绿色加载进度条loadingBar 左上角页码显示pageNum 右下角回到顶部按钮backTop  默认显示
-			//		var pdfh5 = new Pdfh5('#demo', {
-			// 			 loadingBar: false,
-			//           pageNum:false,
-			//           backTop:false
-			// 		});
+		//配置项参数 是否显示小部件 顶部绿色加载进度条loadingBar 左上角页码显示pageNum 右下角回到顶部按钮backTop  默认显示
+		//		var pdfh5 = new Pdfh5('#demo', {
+		// 			 loadingBar: false,
+		//           pageNum:false,
+		//           backTop:false
+		// 		});
 
-			//配置项参数data，文件流形式传入  pdfurl和data二选一
-			//		var pdfh5 = new Pdfh5('#demo', {
-			// 			data: data
-			// 		});
+		//配置项参数data，文件流形式传入  pdfurl和data二选一
+		//		var pdfh5 = new Pdfh5('#demo', {
+		// 			data: data
+		// 		});
 
-			//配置项参数scrollEnable:false不允许pdf滚动,true允许pdf滚动  默认允许
-			//		var pdfh5 = new Pdfh5('#demo', {
-			// 			scrollEnable:false,//是否允许pdf滚动
-			// 			pdfurl: url
-			// 		});
-			//pdfh5.scrollEnable(true)允许pdf滚动,pdfh5.scrollEnable(false)不允许pdf滚动
+		//配置项参数scrollEnable:false不允许pdf滚动,true允许pdf滚动  默认允许
+		//		var pdfh5 = new Pdfh5('#demo', {
+		// 			scrollEnable:false,//是否允许pdf滚动
+		// 			pdfurl: url
+		// 		});
+		//pdfh5.scrollEnable(true)允许pdf滚动,pdfh5.scrollEnable(false)不允许pdf滚动
 
-			//配置项参数zoomEnable:false不允许pdf手势缩放,true允许pdf手势缩放  默认允许
-			//		var pdfh5 = new Pdfh5('#demo', {
-			// 			zoomEnable:false,//是否允许pdf手势缩放
-			// 			pdfurl: url
-			// 		});
+		//配置项参数zoomEnable:false不允许pdf手势缩放,true允许pdf手势缩放  默认允许
+		//		var pdfh5 = new Pdfh5('#demo', {
+		// 			zoomEnable:false,//是否允许pdf手势缩放
+		// 			pdfurl: url
+		// 		});
 
-			//pdfh5还原、销毁（附带回调函数）：   pdfh5.reset pdfh5.destroy
-			//pdfh5显示、隐藏（附带回调函数）：   pdfh5.show pdfh5.hide
+		//pdfh5还原、销毁（附带回调函数）：   pdfh5.reset pdfh5.destroy
+		//pdfh5显示、隐藏（附带回调函数）：   pdfh5.show pdfh5.hide
 
-			//pdf准备开始渲染，此时可以拿到pdf总页数
-			// pdfh5.on("ready", function() {
-			// 	console.log("pdf准备开始渲染，总页数：" + this.totalNum)
-			// })
+		//pdf准备开始渲染，此时可以拿到pdf总页数
+		// pdfh5.on("ready", function() {
+		// 	console.log("pdf准备开始渲染，总页数：" + this.totalNum)
+		// })
 
-			//监听pdf渲染失败
-			// pdfh5.on("error", function (time) {
-			//     console.log("渲染失败，总耗时" + time + "毫秒")
-			// })
-			//监听完成事件，加载失败、渲染成功都会触发
-			// pdfh5.on("complete", function(status, msg, time) {
-			// 	console.log("状态：" + status + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum, msg)
-			// })
+		//监听pdf渲染失败
+		// pdfh5.on("error", function (time) {
+		//     console.log("渲染失败，总耗时" + time + "毫秒")
+		// })
+		//监听完成事件，加载失败、渲染成功都会触发
+		// pdfh5.on("complete", function(status, msg, time) {
+		// 	console.log("状态：" + status + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum, msg)
+		// })
 
-			//监听渲染中事件
-			// pdfh5.on("render", function(currentNum, time, currentPageDom) {
-			// 	// currentPageDom.append("<span class='name-logo'>张三</span>")
-			// 	console.log("当前页码：" + currentNum)
-			// })
-			//on方法,监听事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
-			// 缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
+		//监听渲染中事件
+		// pdfh5.on("render", function(currentNum, time, currentPageDom) {
+		// 	// currentPageDom.append("<span class='name-logo'>张三</span>")
+		// 	console.log("当前页码：" + currentNum)
+		// })
+		//on方法,监听事件： 开始初始化 init 准备渲染pdf ready 加载完成 complete 加载失败 error 加载成功 success 渲染pdf中 render
+		// 缩放zoom   滚动scroll 显示show  隐藏hide 还原reset 销毁destroy  允许缩放zoomEnable 允许滚动scrollEnable
 
-			//pdfh5支持在线预览
-			//http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf
+		//pdfh5支持在线预览
+		//http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf
 	</script>
 </body>
 
