@@ -4354,8 +4354,8 @@ flush-write-stream@^1.0.0:
     readable-stream "^2.3.6"
 
 follow-redirects@^1.0.0:
-  version "1.15.5"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.5.tgz#54d4d6d062c0fa7d9d17feb008461550e3ba8020"
+  version "1.15.6"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.6.tgz#7f815c0cda4249c74ff09e95ef97c23b5fd0399b"
 
 for-each@^0.3.3:
   version "0.3.3"
@@ -7092,9 +7092,9 @@ pbkdf2@^3.0.3:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-pdfh5@^1.4.8:
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/pdfh5/-/pdfh5-1.4.8.tgz#dd29529ca21465785b02effee4d2c97c2bcc942a"
+pdfh5@^1.4.9:
+  version "1.4.9"
+  resolved "https://registry.yarnpkg.com/pdfh5/-/pdfh5-1.4.9.tgz#4ba7bffc8573c3d07bd561a68fa5ec3dabd16fab"
 
 performance-now@^2.1.0:
   version "2.1.0"
