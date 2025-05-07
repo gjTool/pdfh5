@@ -37,33 +37,26 @@
 
 ## 快速使用（有两种方式）
 
-#### 一、script标签引入方式（需下载本项目文件夹css/pdfh5.css、js内所有文件）
+#### 一、script标签引入方式
 
-- 	1.引入css   
-
-```javascript
-<link rel="stylesheet" href="css/pdfh5.css" />
-```
-
-- 	2.创建div  
+- 	1.创建div  
 
 ```javascript
 <div id="demo"></div>
 ```
 
-- 	3.依次引入js（需引用本项目的js,不要引用官方的pdf.js,jquery可以引用其它版的）   
+- 	2.依次引入js（需引用本项目的js,不要引用官方的pdf.js,jquery可以引用其它版的）   
 
 ```javascript
 <script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/pdf.worker.js" type="text/javascript" charset="utf-8"></script>
-<script src="js/jquery-2.1.1.min.js" type="text/javascript" charset="utf-8"></script>
 <script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
 ```
 
-- 	4.实例化
+- 	3.实例化
 
 ```javascript
-var pdfh5 = new Pdfh5('#demo', {
+var pdfh5 = new Pdfh5(document.querySelector("#demo"), {
   pdfurl: "./default.pdf"
 });
 ```
@@ -94,7 +87,7 @@ npm install pdfh5
 	},
 	mounted() {
 		//实例化
-	  this.pdfh5 = new Pdfh5("#demo", {
+	  this.pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 		pdfurl: "../../static/test.pdf",
 		// cMapUrl:"https://unpkg.com/pdfjs-dist@3.8.162/cmaps/",
 		// responseType: "blob" // blob arraybuffer
@@ -110,7 +103,6 @@ npm install pdfh5
 </script>
 
 <style>
-	@import "pdfh5/css/pdfh5.css";
 	*{
 	padding: 0;
 	margin: 0;
@@ -122,11 +114,6 @@ npm install pdfh5
 </style>
 ```
 
-- **注意：如果css引用报错的话，按下面的方式引用。** 
-```javascript
-  import Pdfh5 from "pdfh5";
-  import "pdfh5/css/pdfh5.css";
-```
 
 # API接口方法
 
@@ -146,7 +133,7 @@ var pdfh5 = new Pdfh5(selector, options);
 - **示例：** 配置项参数 pdfurl
 
 ```javascript
-var pdfh5 = new Pdfh5('#demo', {
+var pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 	pdfurl: "./default.pdf"
 });
 ```
@@ -168,13 +155,13 @@ var pdfh5 = new Pdfh5('#demo', {
 |limit			| Number				| 默认0																																								|限制pdf加载最大页数																																			|
 |logo			| Object				|{src:"pdfh5.png",x:10,y:10,width:40,height:40}src水印图片路径（建议使用png透明图片），width水印宽度，height水印高度，以每页pdf左上角为0点，x、y为偏移值。 默认false|给每页pdf添加水印logo（canvas模式下使用）																														|
 |goto			| Number				| 默认0																																								|加载pdf跳转到第几页																																			|
-|textLayer		|  Boolean		| true、false， 默认false																																			|是否开启textLayer，可以复制文本（canvas模式下使用）【处于测试阶段，位置偏移严重】																				|
+|textLayer		|  Boolean		| true、false， 默认false																																			|是否开启textLayer，可以复制文本（canvas模式下使用）】																				|
 |background		|  Object				| {color:"#fff",image:"url('pdfh5.png')",repeat:"no-repeat",position:"left top",size:"40px 40px"}，和css的background属性语法相同，默认false							|是否开启背景图模式																																				|
 
 ## 	pdf请求示例
 1.
 ```javascript
-new Pdfh5('#demo', {
+new Pdfh5(document.querySelector("#demo"), {
 	pdfurl: "git.pdf",
 	// responseType: "blob" // blob arraybuffer
 });
@@ -183,7 +170,7 @@ new Pdfh5('#demo', {
 
 3. pdf文件流或者buffer已经得到，如何渲染
 ```javascript
- new Pdfh5('#demo', {
+ new Pdfh5(document.querySelector("#demo"), {
  	data: blob,  //blob arraybuffer
  });
 ```
