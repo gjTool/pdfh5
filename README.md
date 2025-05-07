@@ -125,7 +125,7 @@ var pdfh5 = new Pdfh5(selector, options);
 ```
 |参数名称	|类型		|取值	|是否必须	|作用				|
 |:---:		|:---:		|:---:	|:---:		|:---:				|
-|selector	|  String	| -		| √		|pdfh5的容器选择器	|
+|selector	|  HTMLElement	| -		| √		|pdfh5的容器,html DOM元素对象	|
 |options	|  Object	| -		| ×			|pdfh5的配置项参数	|
 
 ## options配置项参数列表
