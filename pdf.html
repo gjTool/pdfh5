@@ -73,16 +73,15 @@
 	<script src="js/pdf.worker.js"></script>
 	<script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
 	<script src="./vconsole.min.js"></script>
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script type="text/javascript">
 		var vConsole = new VConsole();
 		console.log('Hello world');
 		var pdfh5;
-		document.body.removeChild(document.querySelector("#app"));
-		document.querySelector("#demo").style.display = "block";
-		pdfh5 = new Pdfh5(document.querySelector("#demo"), {
-			pdfurl: "pdf/2.pdf",
-			// scale: 2.0,
+		$("#app").remove();
+		$("#demo").show();
+		pdfh5 = new Pdfh5('#demo', {
+			pdfurl: "git.pdf",
+			textLayer: true,
 			// renderType: "svg",
 			// cMapUrl:"https://unpkg.com/pdfjs-dist@2.7.570/cmaps/",
 			// responseType: "blob" // blob arraybuffer

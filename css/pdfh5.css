@@ -39,7 +39,7 @@
     height: 100%;
     position: relative;
     z-index: 100;
-	/* user-select:none; */
+    user-select:none;
 }
 
 .pdfjs .pageNum {
@@ -157,6 +157,11 @@
   opacity: 0.2;
   line-height: 1.0;
   z-index: 101;
+  user-select: text;
+}
+
+.pdfjs .textLayer > br::selection {
+  background-color: transparent !important;
 }
 
 .pdfjs .textLayer > span {
@@ -165,7 +170,6 @@
   white-space: pre;
   cursor: text;
   transform-origin: 0% 0%;
-  transform: translate(-99px, -80px) scaleX(1) !important;
 }
 
 .pdfjs .textLayer .highlight {
