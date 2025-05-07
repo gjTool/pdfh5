@@ -24,7 +24,7 @@
 #### [example/vite4vue3](https://github.com/gjTool/pdfh5/tree/master/example/vite4vue3)是vite4+vue3+ts使用示例
 #### [example/react-test](https://github.com/gjTool/pdfh5/tree/master/example/react-test)是react使用示例
 
-![pdfh5.js示例](https://img-blog.csdnimg.cn/20190731133403792.gif)
+![pdfh5.js示例](https://pdfh5.gjtool.cn/img/123.gif)
 
 ## 更新信息
 
@@ -32,20 +32,20 @@
 
 ### pdfh5在线预览 （建议使用谷歌浏览器F12手机模式打开预览）
 
--  [https://www.gjtool.cn/pdfh5/pdf.html?file=https://www.gjtool.cn/pdfh5/git.pdf](https://www.gjtool.cn/pdfh5/pdf.html?file=https://www.gjtool.cn/pdfh5/git.pdf)  
+-  [https://pdfh5.gjtool.cn/pdfh5/pdf.html?file=https://pdfh5.gjtool.cn/pdfh5/git.pdf](https://pdfh5.gjtool.cn/pdfh5/pdf.html?file=https://pdfh5.gjtool.cn/pdfh5/git.pdf)  
 
 
 ## 快速使用（有两种方式）
 
 #### 一、script标签引入方式
 
-- 	1.创建div  
+- 1.创建div  
 
 ```javascript
 <div id="demo"></div>
 ```
 
-- 	2.依次引入js（需引用本项目的js,不要引用官方的pdf.js,jquery可以引用其它版的）   
+- 2.依次引入js（需引用本项目的js,不要引用官方的pdf.js,jquery可以引用其它版的）   
 
 ```javascript
 <script src="js/pdf.js" type="text/javascript" charset="utf-8"></script>
@@ -53,7 +53,7 @@
 <script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
 ```
 
-- 	3.实例化
+- 3.实例化
 
 ```javascript
 var pdfh5 = new Pdfh5(document.querySelector("#demo"), {
@@ -63,12 +63,12 @@ var pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 
 ####  二、npm安装方式（适应于vue）, react使用方法类似vue（example/react-test是react使用示例）
 
-- 	1.安装
+- 1.安装
 
 ```javascript
 npm install pdfh5
 ```
-- 	2.使用
+- 2.使用
 
 ```javascript
 <template>
@@ -124,7 +124,7 @@ npm install pdfh5
 var pdfh5 = new Pdfh5(selector, options);
 ```
 |参数名称	|类型		|取值	|是否必须	|作用				|
-|:---:		|:---:		|:---:	|:---:		|:---:				|
+|:---:|:---:|:---:|:---:|:---:|
 |selector	|  HTMLElement	| -		| √		|pdfh5的容器,html DOM元素对象	|
 |options	|  Object	| -		| ×			|pdfh5的配置项参数	|
 
@@ -139,7 +139,7 @@ var pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 ```
 
 |参数名称		|类型					|取值																																								|作用																																							|
-|:---:			|:---:					|:---:																																								|:---:																																							|
+|:---:|:---:|:---:|:---:|
 |pdfurl			|  String				| -																																									|pdf地址																																						|
 |responseType			|  String				|blob 、 arraybuffer 默认 blob																																							|请求pdf数据格式																																					|
 |URIenable		|  Boolean			|true、false， 默认false																																			|  true开启地址栏file参数																																		|
@@ -159,7 +159,7 @@ var pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 |background		|  Object				| {color:"#fff",image:"url('pdfh5.png')",repeat:"no-repeat",position:"left top",size:"40px 40px"}，和css的background属性语法相同，默认false							|是否开启背景图模式																																				|
 
 ## 	pdf请求示例
-1.
+1、文件地址
 ```javascript
 new Pdfh5(document.querySelector("#demo"), {
 	pdfurl: "git.pdf",
@@ -168,7 +168,7 @@ new Pdfh5(document.querySelector("#demo"), {
 ```
 
 
-3. pdf文件流或者buffer已经得到，如何渲染
+2、pdf文件流或者buffer已经得到，如何渲染
 ```javascript
  new Pdfh5(document.querySelector("#demo"), {
  	data: blob,  //blob arraybuffer
@@ -184,7 +184,7 @@ pdfh5.scrollEnable(false) //不允许pdf滚动
 ```
 
 |方法名			|传参				|传参取值															|作用											|
-|:---:			|:---:				|:---:																|:---:											|
+|:---:|:---:|:---:|:---:|
 |scrollEnable	| Boolean			|true、false， 默认true												|是否允许pdf滚动(需要在pdf加载完成后使用)		|
 |zoomEnable		| Boolean			|true、false， 默认true												|是否允许pdf手势缩放(需要在pdf加载完成后使用)	|
 |show			| Function		|带一个回调函数														|pdfh5显示										|
@@ -205,7 +205,7 @@ pdfh5.on("ready", function () {
 })
 ```
 |事件名			|回调											|作用																				|
-|:---:			|:---:											|:---:																				|
+|:---:|:---:|:---:|
 |init			| Function									|监听pdfh5开始初始化																|
 |ready			| Function									|监听pdf准备开始渲染，此时可以拿到pdf总页数											|
 |error			| Function(msg,time)						|监听加载失败，msg信息，time耗时													|
