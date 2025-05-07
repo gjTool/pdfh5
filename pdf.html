@@ -77,7 +77,6 @@
 	<script src="js/jquery-3.6.0.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
 	<script src="./vconsole.min.js"></script>
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<script type="text/javascript">
 		var vConsole = new VConsole();
 		console.log('Hello world');
@@ -86,6 +85,7 @@
 		$("#demo").show();
 		pdfh5 = new Pdfh5('#demo', {
 			pdfurl: "git.pdf",
+			textLayer: true,
 			// renderType: "svg",
 			// cMapUrl:"https://unpkg.com/pdfjs-dist@2.7.570/cmaps/",
 			// responseType: "blob" // blob arraybuffer

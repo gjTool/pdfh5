@@ -32,8 +32,31 @@
 	}
 })(typeof window !== 'undefined' ? window : this, function (g, pdfjsWorker, pdfjsLib, $, version) {
 	'use strict';
+	class ImgResizeObserver {
+		observerInstance = null
+		constructor() {
+			this.observerInstance = new ResizeObserver((entries) => {
+				for (let i = 0; i < entries.length; i++) {
+					const event = entries[i];
+					const fn = this.callbacks[event.target.getAttribute( "data-o-key" )]
+					fn && fn(event)
+				}
+			})
+		}
+		callbacks = {}
+		observer(el, id, handler) {
+			this.observerInstance.observe( el )
+			this.callbacks[id] = handler
+		}
 
-	var _createClass = function () {
+		unobserve(el, id) {
+			this.observerInstance.unobserve( el )
+			delete this.callbacks[id]
+		}
+	}
+	const imgObserver = new ImgResizeObserver()
+
+		var _createClass = function () {
 		function defineProperties(target, props) {
 			for (var i = 0; i < props.length; i++) {
 				var descriptor = props[i];
@@ -1575,7 +1598,9 @@
 						page: null,
 						loaded: false,
 						container: null,
-						scaledViewport: null
+						scaledViewport: null,
+						img: null,
+						imgWidth: null
 					};
 					promise = promise.then(function (pageNum) {
 						return self.thePDF.getPage(pageNum).then(function (page) {
@@ -1806,7 +1831,7 @@
 			if (options.background) {
 				renderObj.background = "rgba(255, 255, 255, 0)";
 			}
-			return page.render(renderObj).promise.then(function () {
+			return page.render(renderObj).promise.then(async function () {
 				if (options.logo) {
 					context.drawImage(self.options.logo.img, self.options.logo.x * self.options
 						.scale,
@@ -1830,6 +1855,7 @@
 				img.className = "canvasImg" + pageNum;
 				var img0 = self.container.find(".pageContainer" + pageNum).find(".canvasImg" +
 					pageNum)[0];
+				img.setAttribute( "data-o-key", img.className )
 				if (container && !img0) {
 					container.appendChild(img);
 				} else if (img0) {
@@ -1846,7 +1872,14 @@
 				if (self.loadedCount === self.totalNum) {
 					self.finalRender(options);
 				}
-			}).then(function () {
+
+				const key = pageNum + ""
+
+				self.cache[key].img = img
+				self.cache[key].imgWidth = null
+
+				scale = +( img.width / viewport.width )
+			} ).then( function () {
 				return page.getTextContent();
 			}).then(function (textContent) {
 				if (!self.options.textLayer) {
@@ -1857,9 +1890,23 @@
 				}
 				var textLayerDiv = document.createElement('div');
 				textLayerDiv.setAttribute('class', 'textLayer');
-				container.appendChild(textLayerDiv);
-				viewport.width = viewport.width * scale;
-				viewport.height = viewport.height * scale;
+				textLayerDiv.style.width = `${viewport.width}px`
+				textLayerDiv.style.height = `${viewport.height}px`
+				textLayerDiv.style.transform = `scale(${scale})`
+
+				const key = pageNum + ''
+				let count = 0
+				const img = self.cache[key].img
+				imgObserver.observer( img, img.className, function ( event ) {
+					scale = +( img.width / viewport.width )
+					textLayerDiv.style.transform = `scale(${scale})`
+					count++
+				} )
+				textLayerDiv.style.transformOrigin = `0 0`
+				container.appendChild( textLayerDiv );
+
+				// viewport.width = viewport.width * scale;
+				// viewport.height = viewport.height * scale;
 				var textLayer = new TextLayerBuilder({
 					textLayerDiv: textLayerDiv,
 					pageIndex: page.pageIndex,
