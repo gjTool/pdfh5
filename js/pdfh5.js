@@ -1,12 +1,11 @@
-;
-(function (g, fn) {
-	var version = "1.4.9",
+; (function (g, fn) {
+	var version = "2.0.0",
 		pdfjsVersion = "2.11.338";
 	console.log("pdfh5.js v" + version + " && pdf.js v" + pdfjsVersion + " https://pdfh5.gjtool.cn");
+	if (!g.document) {
+		throw new Error("pdfh5 requires a window with a document");
+	}
 	if (typeof require !== 'undefined') {
-		if (g.$ === undefined) {
-			g.$ = require('./jquery-3.6.0.min.js');
-		}
 		if (g["pdfjs-dist/build/pdf.worker"]) {
 			g.pdfjsWorker = g["pdfjs-dist/build/pdf.worker"];
 		} else {
@@ -19,19 +18,64 @@
 		}
 	}
 	var pdfjsLib = g.pdfjsLib,
-		$ = g.$,
 		pdfjsWorker = g.pdfjsWorker;
 	if (typeof define === 'function' && define.amd) {
 		define(function () {
-			return fn(g, pdfjsWorker, pdfjsLib, $, version);
+			return fn(g, pdfjsWorker, pdfjsLib, version);
 		});
 	} else if (typeof module !== 'undefined' && module.exports) {
-		module.exports = fn(g, pdfjsWorker, pdfjsLib, $, version);
+		module.exports = fn(g, pdfjsWorker, pdfjsLib, version);
 	} else {
-		g.Pdfh5 = fn(g, pdfjsWorker, pdfjsLib, $, version);
+		g.Pdfh5 = fn(g, pdfjsWorker, pdfjsLib, version);
 	}
-})(typeof window !== 'undefined' ? window : this, function (g, pdfjsWorker, pdfjsLib, $, version) {
+})(typeof window !== 'undefined' ? window : this, function (g, pdfjsWorker, pdfjsLib, version) {
 	'use strict';
+	var css = ".pdfjs{width:100%;height:100%;overflow:hidden;background:#fff;position:relative;scroll-behavior:smooth;}.pdfjs .viewerContainer{position:relative;width:100%;height:100%;overflow:auto;-webkit-overflow-scrolling:touch;transition:all .3s;scroll-behavior:smooth;}.pdfjs .pdfViewer{position:relative;top:0;left:0;padding:10px 8px;scroll-behavior:smooth;}.pdfjs .pdfViewer .pageContainer{width:100%;margin:0px auto 8px auto;position:relative;overflow:visible;-webkit-box-shadow:darkgrey 0px 1px 3px 0px;-moz-box-shadow:darkgrey 0px 1px 3px 0px;box-shadow:darkgrey 0px 1px 3px 0px;background-color:white;box-sizing:border-box;}.pdfjs .pdfViewer .pageContainer img,.pdfjs .pdfViewer .pageContainer canvas{width:100%;height:100%;position:relative;z-index:100;}.pdfjs .pageNum{padding:0px 7px;height:26px;position:absolute;top:20px;left:15px;z-index:997;border-radius:8px;transition:all .3s;display:none;}.pdfjs .pageNum-bg,.pdfjs .pageNum-num{width:100%;height:100%;line-height:26px;text-align:center;position:absolute;top:0px;left:0px;color:#fff;border-radius:8px;font-size:16px;}.pdfjs .pageNum-bg{background:rgba(0,0,0,0.5);}.pdfjs .pageNum-num{position:relative;}.pdfjs .pageNum span{color:#fff;font-size:16px;}.pdfjs .loadingBar{position:absolute;width:100%;z-index:99;background:#fff !important;height:4px;top:0px;left:0px;transition:all .3s;}.pdfjs .loadingBar .progress{background:#fff !important;position:absolute;top:0;left:0;width:0%;height:100%;overflow:hidden;transition:width 200ms;}.pdfjs .loadingBar .progress .glimmer{position:absolute;top:0;left:0;height:100%;width:calc(100% + 150px);background:#7bcf34;}.pdfjs .backTop{width:50px;height:50px;line-height:50px;text-align:center;position:absolute;bottom:90px;right:15px;font-size:18px;z-index:999;border-radius:50%;background:rgba(0,0,0,0.4) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QAAAAAAAD5Q7t/AAAACXBIWXMAAAsSAAALEgHS3X78AAAA+klEQVRYw+2WUQ2DMBCG2TIBSJiESkACEpCAg83BcLBJmIQ5gClgDpiDby9tciGkoaUtZOESXuhdv7+X/pdm2dYC6IgX7Zh3THy+w9oN/rMASqBcE26iSA1XwCAEDIBKBc8F/KE/gB7IU8BbDXyJf2Z2tFFFAE8N6iRIi/jotXssuGn1FzhPrCu9BtCEhlcCrix5hbiYVSh46bKpELvcniO71Q51zWJ7ju3mUe9vzym7eR7Az57CbohTXBzAt9GknG9PoLY8KK4z6htLfeXTTXMZAfoZuWYWKC+YZWMAQuWZSP0k2wXsAnYB2xNwci1wGTKhO/COlLtu/ABVfTFsxwwYRgAAAABJRU5ErkJggg==) no-repeat center;background-size:50% 50%;transition:all .3s;display:none;}.pdfjs .loadEffect{width:100px;height:100px;position:absolute;top:50%;left:50%;margin-top:-50px;margin-left:-50px;z-index:99;background:url(data:image/gif;base64,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) no-repeat center;background-size:30% 30%;transition:all .3s;}.pdfjs .pdfViewer .pageContainer img.pdfLogo,.pdfjs .pdfViewer .pageContainer canvas.pdfLogo{position:absolute;z-index:101;}.pdfjs .textLayer{position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;opacity:0.2;line-height:1.0;z-index:101;}.pdfjs .textLayer > span{color:transparent;position:absolute;white-space:pre;cursor:text;transform-origin:0% 0%;transform:translate(-99px,-80px) scaleX(1) !important;}.pdfjs .textLayer .highlight{margin:-1px;padding:1px;background-color:rgba(180,0,170,1);border-radius:4px;}.pdfjs .textLayer .highlight.begin{border-radius:4px 0px 0px 4px;}.pdfjs .textLayer .highlight.end{border-radius:0px 4px 4px 0px;}.pdfjs .textLayer .highlight.middle{border-radius:0px;}.pdfjs .textLayer .highlight.selected{background-color:rgba(0,100,0,1);}.pdfjs .textLayer::selection{background:rgba(0,0,255,1);}.pdfjs .textLayer .endOfContent{display:block;position:absolute;left:0px;top:100%;right:0px;bottom:0px;z-index:-1;cursor:default;}.pdfjs .textLayer .endOfContent.active{top:0px;}";
+	if (typeof Object.assign != 'function') {
+		Object.defineProperty(Object, "assign", {
+			value: function assign(target, varArgs) {
+				if (target == null) {
+					throw new TypeError('Cannot convert undefined or null to object');
+				}
+				var to = Object(target);
+				for (var index = 1; index < arguments.length; index++) {
+					var nextSource = arguments[index];
+					if (nextSource != null) {
+						for (var nextKey in nextSource) {
+							if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
+								if (nextKey && nextSource[nextKey]) {
+									to[nextKey] = nextSource[nextKey];
+								}
+							}
+						}
+					}
+				}
+				return to;
+			},
+			writable: true,
+			configurable: true
+		});
+	}
+
+	if (typeof Array.from != 'function') {
+		Array.from = function (object) {
+			return [].slice.call(object);
+		};
+	}
+
+	// utils
+	var buildElement = function (str) {
+		// empty string as title argument required by IE and Edge
+		var tmp = document.implementation.createHTMLDocument('');
+		tmp.body.innerHTML = str;
+		return Array.from(tmp.body.children)[0];
+	};
+
+	var triggerEvent = function (el, name) {
+		var event = document.createEvent('HTMLEvents');
+		event.initEvent(name, true, false);
+		el.dispatchEvent(event);
+	};
 
 	var _createClass = function () {
 		function defineProperties(target, props) {
@@ -524,22 +568,25 @@
 	g.TextLayerBuilder = TextLayerBuilder;
 	g.DefaultTextLayerFactory = DefaultTextLayerFactory;
 
-	var definePinchZoom = function ($) {
-		var PinchZoom = function (el, options, viewerContainer) {
-			this.el = $(el);
-			this.viewerContainer = viewerContainer;
+	var definePinchZoom = function () {
+		var PinchZoom = function (el, options, pinchParentNode) {
+			this.el = el;
+			this.pinchParentNode = pinchParentNode;
 			this.zoomFactor = 1;
 			this.lastScale = 1;
 			this.offset = {
 				x: 0,
 				y: 0
 			};
-			this.options = $.extend({}, this.defaults, options);
+			this.options = Object.assign({}, this.defaults, options);
+			this.options.tapZoomFactor = isNaN(options.tapZoomFactor) ? 2 : options.tapZoomFactor;
 			this.options.zoomOutFactor = isNaN(options.zoomOutFactor) ? 1.2 : options.zoomOutFactor;
 			this.options.animationDuration = isNaN(options.animationDuration) ? 300 : options
 				.animationDuration;
 			this.options.maxZoom = isNaN(options.maxZoom) ? 3 : options.maxZoom;
 			this.options.minZoom = isNaN(options.minZoom) ? 0.8 : options.minZoom;
+
+			console.log(this.options);
 			this.setupMarkup();
 			this.bindEvents();
 			this.update();
@@ -559,11 +606,12 @@
 
 		PinchZoom.prototype = {
 			defaults: {
-				tapZoomFactor: 3,
+				tapZoomFactor: 2,
 				zoomOutFactor: 1.2,
 				animationDuration: 300,
-				maxZoom: 5,
+				maxZoom: 4,
 				minZoom: 0.8,
+				draggableUnzoomed: true,
 				lockDragAxis: false,
 				use2d: true,
 				zoomStartEventName: 'pz_zoomstart',
@@ -573,7 +621,7 @@
 				doubleTapEventName: 'pz_doubletap'
 			},
 			handleDragStart: function (event) {
-				this.el.trigger(this.options.dragStartEventName);
+				triggerEvent(this.el, this.options.dragStartEventName);
 				this.stopAnimation();
 				this.lastDragPosition = false;
 				this.hasInteraction = true;
@@ -590,11 +638,11 @@
 			},
 
 			handleDragEnd: function () {
-				this.el.trigger(this.options.dragEndEventName);
+				triggerEvent(this.el, this.options.dragEndEventName);
 				this.end();
 			},
 			handleZoomStart: function (event) {
-				this.el.trigger(this.options.zoomStartEventName);
+				triggerEvent(this.el, this.options.zoomStartEventName);
 				this.stopAnimation();
 				this.lastScale = 1;
 				this.nthZoom = 0;
@@ -615,7 +663,7 @@
 			},
 
 			handleZoomEnd: function () {
-				this.el.trigger(this.options.zoomEndEventName);
+				triggerEvent(this.el, this.options.zoomEndEventName);
 				this.end();
 			},
 			handleDoubleTap: function (event) {
@@ -635,7 +683,7 @@
 				}
 
 				this.animate(this.options.animationDuration, updateProgress, this.swing);
-				this.el.trigger(this.options.doubleTapEventName);
+				triggerEvent(this.el, this.options.doubleTapEventName);
 			},
 			sanitizeOffset: function (offset) {
 				var maxX = (this.zoomFactor - 1) * this.getContainerX(),
@@ -671,6 +719,9 @@
 				this.zoomFactor = Math.min(this.options.maxZoom, Math.max(this.zoomFactor, this.options
 					.minZoom));
 				return this.zoomFactor / originalZoomFactor;
+			},
+			canDrag: function () {
+				return this.options.draggableUnzoomed || !isCloseTo(this.zoomFactor, 1);
 			},
 			drag: function (center, lastCenter, event) {
 				if (lastCenter) {
@@ -768,40 +819,39 @@
 				this.setContainerY(this.getContainerX() / this.getAspectRatio());
 			},
 			getInitialZoomFactor: function () {
-				if (this.container[0] && this.el[0]) {
-					return this.container[0].offsetWidth / this.el[0].offsetWidth;
+				if (this.pinchContainer && this.el) {
+					return this.pinchContainer.offsetWidth / this.el.offsetWidth;
 				} else {
 					return 0;
 				}
 			},
 			getAspectRatio: function () {
-				if (this.el[0]) {
-					var offsetHeight = this.el[0].offsetHeight;
-					return this.container[0].offsetWidth / offsetHeight;
+				if (this.el) {
+					return this.pinchContainer.offsetWidth / this.el.offsetHeight;
 				} else {
 					return 0;
 				}
 
 			},
 			getCurrentZoomCenter: function () {
-				var length = this.container[0].offsetWidth * this.zoomFactor,
+				var length = this.pinchContainer.offsetWidth * this.zoomFactor,
 					offsetLeft = this.offset.x,
-					offsetRight = length - offsetLeft - this.container[0].offsetWidth,
+					offsetRight = length - offsetLeft - this.pinchContainer.offsetWidth,
 					widthOffsetRatio = offsetLeft / offsetRight,
-					centerX = widthOffsetRatio * this.container[0].offsetWidth / (widthOffsetRatio + 1),
+					centerX = widthOffsetRatio * this.pinchContainer.offsetWidth / (widthOffsetRatio + 1),
 
-					height = this.container[0].offsetHeight * this.zoomFactor,
+					height = this.pinchContainer.offsetHeight * this.zoomFactor,
 					offsetTop = this.offset.y,
-					offsetBottom = height - offsetTop - this.container[0].offsetHeight,
+					offsetBottom = height - offsetTop - this.pinchContainer.offsetHeight,
 					heightOffsetRatio = offsetTop / offsetBottom,
-					centerY = heightOffsetRatio * this.container[0].offsetHeight / (heightOffsetRatio +
+					centerY = heightOffsetRatio * this.pinchContainer.offsetHeight / (heightOffsetRatio +
 						1);
 
 				if (offsetRight === 0) {
-					centerX = this.container[0].offsetWidth;
+					centerX = this.pinchContainer.offsetWidth;
 				}
 				if (offsetBottom === 0) {
-					centerY = this.container[0].offsetHeight;
+					centerY = this.pinchContainer.offsetHeight;
 				}
 
 				return {
@@ -810,16 +860,19 @@
 				};
 			},
 
-			canDrag: function () {
-				return !isCloseTo(this.zoomFactor, 1);
-			},
-
 			getTouches: function (event) {
-				var position = this.container.offset();
+				var position = this.pinchContainer.getBoundingClientRect();
+				// var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+				// var scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
+				// var scrollTop2 = this.pinchParentNode.scrollTop;
+				// var scrollLeft2 = this.pinchParentNode.scrollLeft;
+				var posTop = position.top;
+				var posLeft = position.left;
+
 				return Array.prototype.slice.call(event.touches).map(function (touch) {
 					return {
-						x: touch.pageX - position.left,
-						y: touch.pageY - position.top
+						x: touch.pageX - posLeft,
+						y: touch.pageY - posTop,
 					};
 				});
 			},
@@ -859,38 +912,34 @@
 			},
 
 			getContainerX: function () {
-				if (this.el[0]) {
-					return this.el[0].offsetWidth;
+				if (this.el) {
+					return this.el.offsetWidth;
 				} else {
 					return 0;
 				}
 			},
 
 			getContainerY: function () {
-				return this.el[0].offsetHeight;
+				return this.el.offsetHeight;
 			},
 			setContainerY: function (y) {
 				y = y.toFixed(2);
-				return this.container.height(y);
+				return this.pinchContainer.style.height = y + 'px';
 			},
 			setupMarkup: function () {
-				this.container = $('<div class="pinch-zoom-container"></div>');
-				this.el.before(this.container);
-				this.container.append(this.el);
+				this.pinchContainer = buildElement('<div class="pinch-zoom-container"></div>');
+				this.el.parentNode.insertBefore(this.pinchContainer, this.el);
+				this.pinchContainer.appendChild(this.el);
 
-				this.container.css({
-					'position': 'relative',
-				});
+				this.pinchContainer.style.position = 'relative';
 
-				this.el.css({
-					'-webkit-transform-origin': '0% 0%',
-					'-moz-transform-origin': '0% 0%',
-					'-ms-transform-origin': '0% 0%',
-					'-o-transform-origin': '0% 0%',
-					'transform-origin': '0% 0%',
-					'position': 'relative'
-				});
+				this.el.style.webkitTransformOrigin = '0% 0%';
+				this.el.style.mozTransformOrigin = '0% 0%';
+				this.el.style.msTransformOrigin = '0% 0%';
+				this.el.style.oTransformOrigin = '0% 0%';
+				this.el.style.transformOrigin = '0% 0%';
 
+				this.el.style.position = 'relative';
 			},
 
 			end: function () {
@@ -900,10 +949,14 @@
 
 			},
 			bindEvents: function () {
-				detectGestures(this.container.eq(0), this, this.viewerContainer);
-				$(g).on('resize', this.update.bind(this));
-				$(this.el).find('img').on('load', this.update.bind(this));
+				var self = this;
+				detectGestures(this.pinchParentNode, this);
 
+				this.resizeHandler = this.update.bind(this);
+				window.addEventListener('resize', this.resizeHandler);
+				// Array.from(this.el.querySelectorAll('img')).forEach(function (imgEl) {
+				// 	imgEl.addEventListener('load', self.update.bind(self));
+				// });
 			},
 			update: function () {
 
@@ -931,21 +984,17 @@
 						}).bind(this);
 					if (!this.options.use2d || this.hasInteraction || this.inAnimation) {
 						this.is3d = true;
-						this.el.css({
-							'-webkit-transform': transform3d,
-							'-o-transform': transform2d,
-							'-ms-transform': transform2d,
-							'-moz-transform': transform2d,
-							'transform': transform3d
-						});
+						this.el.style.webkitTransform = transform3d;
+						this.el.style.mozTransform = transform2d;
+						this.el.style.msTransform = transform2d;
+						this.el.style.oTransform = transform2d;
+						this.el.style.transform = transform3d;
 					} else {
-						this.el.css({
-							'-webkit-transform': transform2d,
-							'-o-transform': transform2d,
-							'-ms-transform': transform2d,
-							'-moz-transform': transform2d,
-							'transform': transform2d
-						});
+						this.el.style.webkitTransform = transform2d;
+						this.el.style.mozTransform = transform2d;
+						this.el.style.msTransform = transform2d;
+						this.el.style.oTransform = transform2d;
+						this.el.style.transform = transform2d;
 						this.is3d = false;
 					}
 				}).bind(this), 0);
@@ -957,15 +1006,18 @@
 				this.enabled = false;
 			},
 			destroy: function () {
-				var dom = this.el.clone();
-				var p = this.container.parent();
-				this.container.remove();
-				dom.removeAttr('style');
-				p.append(dom);
+				window.removeEventListener('resize', this.resizeHandler);
+				if (this.pinchContainer) {
+					var parentNode = this.pinchContainer.parentNode;
+					var childNode = this.pinchContainer.firstChild;
+					parentNode.appendChild(childNode);
+					parentNode.removeChild(this.pinchContainer);
+
+				}
 			}
 		};
 
-		var detectGestures = function (el, target, viewerContainer) {
+		var detectGestures = function (el, target) {
 			var interaction = null,
 				fingers = 0,
 				lastTouchStart = null,
@@ -1040,7 +1092,7 @@
 				detectDoubleTap = function (event) {
 					var time = (new Date()).getTime();
 					var pageY = event.changedTouches[0].pageY;
-					var top = parentNode.scrollTop || 0;
+					var top = el.scrollTop || 0;
 					if (fingers > 1) {
 						lastTouchStart = null;
 						lastTouchY = null;
@@ -1068,67 +1120,63 @@
 					}
 				},
 				firstMove = true;
-			if (viewerContainer) {
-				var parentNode = viewerContainer[0];
-			}
-			if (parentNode) {
-				parentNode.addEventListener('touchstart', function (event) {
-					if (target.enabled) {
-						firstMove = true;
-						fingers = event.touches.length;
-						detectDoubleTap(event);
-						clientY = event.changedTouches[0].clientY;
-						if (fingers > 1) {
-							cancelEvent(event);
-						}
-					}
-				});
 
-				parentNode.addEventListener('touchmove', function (event) {
-					if (target.enabled) {
-						lastclientY = event.changedTouches[0].clientY;
-						if (firstMove) {
-							updateInteraction(event);
-							startTouches = targetTouches(event.touches);
-						} else {
-							switch (interaction) {
-								case 'zoom':
-									target.handleZoom(event, calculateScale(startTouches,
-										targetTouches(event.touches)));
-									break;
-								case 'drag':
-									target.handleDrag(event);
-									break;
-							}
-							if (interaction) {
-								target.update(lastclientY);
-							}
-						}
-						if (fingers > 1) {
-							cancelEvent(event);
-						}
-						firstMove = false;
+			el.addEventListener('touchstart', function (event) {
+				if (target.enabled) {
+					firstMove = true;
+					fingers = event.touches.length;
+					detectDoubleTap(event);
+					clientY = event.changedTouches[0].clientY;
+					if (fingers > 1) {
+						cancelEvent(event);
 					}
-				});
+				}
+			});
 
-				parentNode.addEventListener('touchend', function (event) {
-					if (target.enabled) {
-						fingers = event.touches.length;
-						if (fingers > 1) {
-							cancelEvent(event);
-						}
+			el.addEventListener('touchmove', function (event) {
+				if (target.enabled) {
+					lastclientY = event.changedTouches[0].clientY;
+					if (firstMove) {
 						updateInteraction(event);
+						startTouches = targetTouches(event.touches);
+					} else {
+						switch (interaction) {
+							case 'zoom':
+								target.handleZoom(event, calculateScale(startTouches,
+									targetTouches(event.touches)));
+								break;
+							case 'drag':
+								target.handleDrag(event);
+								break;
+						}
+						if (interaction) {
+							target.update(lastclientY);
+						}
 					}
-				});
-			}
+					if (fingers > 1) {
+						cancelEvent(event);
+					}
+					firstMove = false;
+				}
+			});
+
+			el.addEventListener('touchend', function (event) {
+				if (target.enabled) {
+					fingers = event.touches.length;
+					if (fingers > 1) {
+						cancelEvent(event);
+					}
+					updateInteraction(event);
+				}
+			});
 
 		};
 		return PinchZoom;
 	};
-	var PinchZoom = definePinchZoom($);
+	var PinchZoom = definePinchZoom();
 	var Pdfh5 = function (dom, options) {
 		this.version = version;
-		this.container = $(dom);
+		this.container = dom;
 		this.options = options;
 		this.thePDF = null;
 		this.totalNum = null;
@@ -1141,7 +1189,6 @@
 		this.pinchZoom = null;
 		this.timer = null;
 		this.docWidth = document.documentElement.clientWidth;
-		this.winWidth = $(window).width();
 		this.cache = {};
 		this.eventType = {};
 		this.cacheNum = 1;
@@ -1150,19 +1197,24 @@
 		this.pdfjsLibPromise = null;
 		this.init(options);
 	};
+
 	Pdfh5.prototype = {
 		init: function (options) {
 			var self = this;
-			if (this.container[0].pdfLoaded) {
+			if (this.container.pdfLoaded) {
 				this.destroy();
 			}
-			pdfjsLib.cMapPacked = true;
-			pdfjsLib.rangeChunkSize = 65536;
-			this.container[0].pdfLoaded = false;
-			this.container.addClass("pdfjs");
+			var $style = document.createElement('style');
+			$style.type = 'text/css';
+			$style.textContent = css;
+			document.head.appendChild($style);
+			// pdfjsLib.cMapPacked = true;
+			// pdfjsLib.rangeChunkSize = 65536;
+			this.container.pdfLoaded = false;
+			this.container.classList.add("pdfjs");
 			this.initTime = new Date().getTime();
 			setTimeout(function () {
-				var arr1 = self.eventType["scroll"];
+				var arr1 = self.eventType["init"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
 						arr1[i] && arr1[i].call(self, self.initTime);
@@ -1184,9 +1236,7 @@
 			this.options.resize = this.options.resize === false ? false : true;
 			this.options.textLayer = this.options.textLayer === true ? true : false;
 			this.options.goto = isNaN(this.options.goto) ? 0 : this.options.goto;
-			if (this.options.logo && Object.prototype.toString.call(this.options.logo) ===
-				'[object Object]' && this.options.logo
-					.src) {
+			if (this.options.logo && Object.prototype.toString.call(this.options.logo) === '[object Object]' && this.options.logo.src) {
 				this.options.logo.img = new Image();
 				this.options.logo.img.src = this.options.logo.src;
 				this.options.logo.img.style.display = "none";
@@ -1194,8 +1244,7 @@
 			} else {
 				this.options.logo = false;
 			}
-			if (!(this.options.background && (this.options.background.color || this.options.background
-				.image))) {
+			if (!(this.options.background && (this.options.background.color || this.options.background.image))) {
 				this.options.background = false;
 			}
 			if (this.options.limit) {
@@ -1205,6 +1254,7 @@
 				this.options.limit = 0;
 			}
 			this.options.type = this.options.type === "fetch" ? "fetch" : "ajax";
+
 			var html = '<div class="loadingBar">' +
 				'<div class="progress">' +
 				' <div class="glimmer">' +
@@ -1221,66 +1271,62 @@
 				'<div class="backTop">' +
 				'</div>' +
 				'<div class="loadEffect loading"></div>';
-			if (!this.container.find('.pageNum')[0]) {
-				this.container.append(html);
-			}
+			this.container.innerHTML = html;
 			var viewer = document.createElement("div");
 			viewer.className = 'pdfViewer';
 			var viewerContainer = document.createElement("div");
 			viewerContainer.className = 'viewerContainer';
 			viewerContainer.appendChild(viewer);
-			this.container.append(viewerContainer);
-			this.viewer = $(viewer);
-			this.viewerContainer = $(viewerContainer);
-			this.pageNum = this.container.find('.pageNum');
-			this.pageNow = this.pageNum.find('.pageNow');
-			this.pageTotal = this.pageNum.find('.pageTotal');
-			this.loadingBar = this.container.find('.loadingBar');
-			this.progress = this.loadingBar.find('.progress');
-			this.progressDom = this.progress[0];
-			this.backTop = this.container.find('.backTop');
-			this.loading = this.container.find('.loading');
+			this.container.appendChild(viewerContainer);
+			this.viewer = viewer;
+			this.viewerContainer = viewerContainer;
+
+			this.pageNum = this.container.querySelector('.pageNum');
+			this.pageNow = this.pageNum.querySelector('.pageNow');
+			this.pageTotal = this.pageNum.querySelector('.pageTotal');
+			this.loadingBar = this.container.querySelector('.loadingBar');
+			this.progress = this.loadingBar.querySelector('.progress');
+			this.backTop = this.container.querySelector('.backTop');
+			this.loading = this.container.querySelector('.loading');
 			if (!this.options.loadingBar) {
-				this.loadingBar.hide();
+				this.loadingBar.style.display = "none";
 			}
-			var containerH = this.container.height(),
+			var containerH = this.container.offsetHeight,
 				height = containerH * (1 / 3);
 
 			if (!this.options.scrollEnable) {
-				this.viewerContainer.css({
-					"overflow": "hidden"
-				});
+				this.viewerContainer.style.overflow = "hidden";
 			} else {
-				this.viewerContainer.css({
-					"overflow": "auto"
-				});
+				this.viewerContainer.style.overflow = "auto";
 			}
 			viewerContainer.addEventListener('scroll', function () {
 				var scrollTop = viewerContainer.scrollTop;
 				if (scrollTop >= 150) {
 					if (self.options.backTop) {
-						self.backTop.show();
+						self.backTop.style.display = "block";
 					}
 				} else {
 					if (self.options.backTop) {
-						self.backTop.fadeOut(200);
+						// self.backTop.fadeOut(200);
+						self.backTop.style.display = "none";
 					}
 				}
 				if (self.viewerContainer) {
-					self.pages = self.viewerContainer.find('.pageContainer');
+					self.pages = self.viewerContainer.querySelectorAll('.pageContainer');
 				}
 				clearTimeout(self.timer);
 				if (self.options.pageNum && self.pageNum) {
-					self.pageNum.show();
+					self.pageNum.style.display = "block";
 				}
 				var h = containerH;
 				if (self.pages) {
-					self.pages.each(function (index, obj) {
-						var top = obj.getBoundingClientRect().top;
-						var bottom = obj.getBoundingClientRect().bottom;
+					self.pages.forEach(function (obj, index) {
+						var rect = obj.getBoundingClientRect();
+						var top = rect.top;
+						var bottom = rect.bottom;
 						if (top <= height && bottom > height) {
 							if (self.options.pageNum) {
-								self.pageNow.text(index + 1);
+								self.pageNow.innerText = index + 1;
 							}
 							self.currentNum = index + 1;
 						}
@@ -1289,15 +1335,16 @@
 						}
 					});
 				}
-				if (scrollTop + self.container.height() >= self.viewer[0].offsetHeight) {
-					self.pageNow.text(self.totalNum);
+				if (scrollTop + self.container.offsetHeight >= self.viewer.offsetHeight) {
+					self.pageNow.innerText = self.totalNum;
 				}
 				if (scrollTop === 0) {
-					self.pageNow.text(1);
+					self.pageNow.innerText = 1;
 				}
 				self.timer = setTimeout(function () {
 					if (self.options.pageNum && self.pageNum) {
-						self.pageNum.fadeOut(200);
+						// self.pageNum.fadeOut(200);
+						self.pageNum.style.display = "none";
 					}
 				}, 1500);
 				var arr1 = self.eventType["scroll"];
@@ -1307,33 +1354,41 @@
 					}
 				}
 			});
-			this.backTop.on('click tap', function () {
-				var mart = self.viewer.css('transform');
+
+			this.fn1 = function () {
+				var mart = self.viewer.style.transform;
 				var arr = mart.replace(/[a-z\(\)\s]/g, '').split(',');
 				var s1 = arr[0];
 				var s2 = arr[3];
 				var x = arr[4] / 2;
-				var left = self.viewer[0].getBoundingClientRect().left;
+				var left = self.viewer.getBoundingClientRect().left;
 				if (left <= -self.docWidth * 2) {
 					x = -self.docWidth / 2;
 				}
-				self.viewer.css({
-					transform: 'scale(' + s1 + ', ' + s2 + ') translate(' + x + 'px, 0px)'
-				});
+				self.viewer.style.transform = 'scale(' + s1 + ', ' + s2 + ') translate(' + x + 'px, 0px)';
+
 				if (self.pinchZoom) {
 					self.pinchZoom.offset.y = 0;
 					self.pinchZoom.lastclientY = 0;
 				}
-				self.viewerContainer.animate({
-					scrollTop: 0
-				}, 300);
+				self.viewerContainer.scrollTo({
+					top: 0,
+					behavior: "smooth"
+				});
 				var arr1 = self.eventType["backTop"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
 						arr1[i] && arr1[i].call(self);
 					}
 				}
-			});
+			};
+			this.fn2 = function () {
+				self.pages.forEach(function (item, i) {
+					item.style.minHeight = "auto";
+				});
+			};
+			this.backTop.addEventListener("click", this.fn1);
+			this.backTop.addEventListener("tap", this.fn1);
 
 			function GetQueryString(name) {
 				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -1349,10 +1404,8 @@
 				url = self.options.pdfurl;
 			}
 			if (self.options.loadingBar) {
-				self.loadingBar.show();
-				self.progress.css({
-					width: "3%"
-				});
+				self.loadingBar.style.display = "block";
+				self.progress.style.width = "3%";
 			}
 
 			if (url) {
@@ -1365,31 +1418,26 @@
 							if (xhr.responseType === "arraybuffer") {
 								var data = this.response;
 								self.cacheData = data;
-								self.renderPdf(self.options, {
-									data: data
-								});
+								self.renderPdf(self.options, { data: data });
 							} else {
 								var blob = this.response;
 								var reader = new FileReader();
 								reader.readAsDataURL(blob);
 								reader.onload = function (e) {
 									self.cacheData = e.target.result;
-									self.renderPdf(self.options, {
-										url: e.target.result
-									});
+									self.renderPdf(self.options, { url: e.target.result });
 								};
 							}
 						}
 					};
 					xhr.onerror = function (err) {
-						self.loading.hide();
+						self.loading.style.display = "none";
 						var time = new Date().getTime();
 						self.endTime = time - self.initTime;
 						var arr1 = self.eventType["complete"];
 						if (arr1 && arr1 instanceof Array) {
 							for (var i = 0; i < arr1.length; i++) {
-								arr1[i] && arr1[i].call(self, "error", err.statusText, self
-									.endTime);
+								arr1[i] && arr1[i].call(self, "error", err.statusText, self.endTime);
 							}
 						}
 						var arr2 = self.eventType["error"];
@@ -1398,13 +1446,11 @@
 								arr2[i] && arr2[i].call(self, err.statusText, self.endTime);
 							}
 						}
-						throw Error(err.statusText);
+						console.log(err.statusText);
 					};
 					xhr.send();
 				} else {
-					self.renderPdf(self.options, {
-						url: url
-					});
+					self.renderPdf(self.options, { url: url });
 				}
 			} else if (self.options.data) {
 				var data = self.options.data;
@@ -1415,9 +1461,7 @@
 						array.push(data.charCodeAt(i) & 0xff);
 					}
 					self.cacheData = array;
-					self.renderPdf(self.options, {
-						data: array
-					});
+					self.renderPdf(self.options, { data: array });
 				} else if (typeof data === "object") {
 					if (data.length == 0) {
 						var time = new Date().getTime();
@@ -1425,8 +1469,7 @@
 						var arr1 = self.eventType["complete"];
 						if (arr1 && arr1 instanceof Array) {
 							for (var i = 0; i < arr1.length; i++) {
-								arr1[i] && arr1[i].call(self, "error", "options.data is empty Array", self
-									.endTime);
+								arr1[i] && arr1[i].call(self, "error", "options.data is empty Array", self.endTime);
 							}
 						}
 						var arr2 = self.eventType["error"];
@@ -1435,12 +1478,10 @@
 								arr2[i] && arr2[i].call(self, "options.data is empty Array", self.endTime);
 							}
 						}
-						throw Error("options.data is empty Array");
+						console.log("options.data is invaild");
 					} else {
 						self.cacheData = data;
-						self.renderPdf(self.options, {
-							data: data
-						});
+						self.renderPdf(self.options, { data: data });
 					}
 				}
 
@@ -1450,27 +1491,25 @@
 				var arr1 = self.eventType["complete"];
 				if (arr1 && arr1 instanceof Array) {
 					for (var i = 0; i < arr1.length; i++) {
-						arr1[i] && arr1[i].call(self, "error", "Expect options.pdfurl or options.data!",
-							self.endTime);
+						arr1[i] && arr1[i].call(self, "error", "Expect options.pdfurl or options.data!", self.endTime);
 					}
 				}
 				var arr2 = self.eventType["error"];
 				if (arr2 && arr2 instanceof Array) {
 					for (var i = 0; i < arr2.length; i++) {
-						arr2[i] && arr2[i].call(self, "Expect options.pdfurl or options.data!", self
-							.endTime);
+						arr2[i] && arr2[i].call(self, "Expect options.pdfurl or options.data!", self.endTime);
 					}
 				}
-				throw Error("Expect options.pdfurl or options.data!");
+				console.log("Expect options.pdfurl or options.data!");
 			}
 		},
 		renderPdf: function (options, obj) {
-			this.container[0].pdfLoaded = true;
+			this.container.pdfLoaded = true;
 			var self = this;
 			if (options.cMapUrl) {
 				obj.cMapUrl = options.cMapUrl;
 			} else {
-				obj.cMapUrl = 'https://unpkg.com/browse/pdfjs-dist@2.11.338/cmaps/';
+				obj.cMapUrl = 'https://unpkg.com/browse/pdfjs-dist@4.0.379/cmaps/';
 			}
 			if (options.httpHeaders) {
 				obj.httpHeaders = options.httpHeaders;
@@ -1499,13 +1538,13 @@
 			obj.cMapPacked = true;
 			obj.rangeChunkSize = 65536;
 			this.pdfjsLibPromise = pdfjsLib.getDocument(obj).promise.then(function (pdf) {
-				self.loading.hide();
+				self.loading.style.display = "none";
 				self.thePDF = pdf;
 				self.totalNum = pdf.numPages;
 				if (options.limit > 0) {
 					self.totalNum = options.limit;
 				}
-				self.pageTotal.text(self.totalNum);
+				self.pageTotal.innerText = self.totalNum;
 				if (!self.pinchZoom) {
 					var arr1 = self.eventType["ready"];
 					if (arr1 && arr1 instanceof Array) {
@@ -1535,22 +1574,15 @@
 								self.thePDF = null;
 							}
 							self.options.scale = scale;
-							self.renderPdf(self.options, {
-								data: self.cacheData
-							});
+							self.renderPdf(self.options, { data: self.cacheData });
 						}, 310);
 						if (scale == 1) {
 							if (self.viewerContainer) {
-								self.viewerContainer.css({
-									'-webkit-overflow-scrolling': 'touch'
-								});
+								self.viewerContainer.style.webkitOverflowScrolling = "touch";
 							}
-
 						} else {
 							if (self.viewerContainer) {
-								self.viewerContainer.css({
-									'-webkit-overflow-scrolling': 'auto'
-								});
+								self.viewerContainer.style.webkitOverflowScrolling = "auto";
 							}
 						}
 						var arr1 = self.eventType["zoom"];
@@ -1587,57 +1619,34 @@
 								}
 							}, 0);
 							self.cache[pageNum + ""].page = page;
-							var viewport = page.getViewport(
-								{
-									scale: options.scale
-								});
-							var w1 = viewport.width;
-							var h1 = viewport.height;
-							var whobj1 = changeWH(w1, h1);
-							viewport.width = whobj1.w;
-							viewport.height = whobj1.h;
+							var viewport = page.getViewport({ scale: options.scale });
 							var scale = (self.docWidth / viewport.width).toFixed(2);
-							var scaledViewport = page.getViewport(
-								{
-									scale: parseFloat(scale)
-								});
-							var w = scaledViewport.width;
-							var h = scaledViewport.height;
-							var whobj = changeWH(w, h);
-							scaledViewport.width = whobj.w;
-							scaledViewport.height = whobj.h;
-							var div = self.container.find('.pageContainer' +
-								pageNum)[0];
+							var scaledViewport = page.getViewport({ scale: parseFloat(scale) });
+							var div = self.container.querySelector('.pageContainer' + pageNum);
 							var container;
 							if (!div) {
 								container = document.createElement('div');
-								container.className =
-									'pageContainer pageContainer' + pageNum;
+								container.className = 'pageContainer pageContainer' + pageNum;
 								container.setAttribute('name', 'page=' + pageNum);
-								container.setAttribute('title', 'Page ' + pageNum);
+								// container.setAttribute('title', 'Page ' + pageNum);
 								var loadEffect = document.createElement('div');
 								loadEffect.className = 'loadEffect';
 								container.appendChild(loadEffect);
-								self.viewer[0].appendChild(container);
-								if (window.ActiveXObject || "ActiveXObject" in
-									window) {
-									$(container).css({
-										'width': viewport.width + 'px',
-										"height": viewport.height + 'px'
-									}).attr("data-scale", viewport.width /
-										viewport.height);
+								self.viewer.appendChild(container);
+								if (window.ActiveXObject || "ActiveXObject" in window) {
+									container.style.width = viewport.width + 'px';
+									container.style.height = viewport.height + 'px';
+									container.style.width = viewport.width + 'px';
+									container["data-scale"] = viewport.width / viewport.height;
 								} else {
-									var h = $(container).width() / (viewport
-										.viewBox[2] / viewport.viewBox[3]);
+									var h = container.offsetWidth / (viewport.viewBox[2] / viewport.viewBox[3]);
 									if (h > viewport.height) {
 										h = viewport.height;
 									}
-									$(container).css({
-										'max-width': viewport.width,
-										"max-height": viewport.height,
-										// "min-height": h + 'px'
-									}).attr("data-scale", viewport.width /
-										viewport.height);
+									container.style.maxWidth = viewport.width + 'px';
+									container.style.maxHeight = viewport.height + 'px';
+									// container.style.minHeight = h + 'px';
+									container["data-scale"] = viewport.width / viewport.height;
 								}
 							} else {
 								container = div;
@@ -1645,95 +1654,64 @@
 							if (options.background) {
 								/*背景颜色*/
 								if (options.background.color) {
-									container.style["background-color"] = options
-										.background.color;
+									container.style["background-color"] = options.background.color;
 								}
 								/*背景图片*/
 								if (options.background.image) {
-									container.style["background-image"] = options
-										.background.image;
+									container.style["background-image"] = options.background.image;
 								}
 								/*平铺与否*/
 								if (options.background.repeat) {
-									container.style["background-repeat"] = options
-										.background.repeat;
+									container.style["background-repeat"] = options.background.repeat;
 								}
 								/*背景图片位置*/
 								if (options.background.position) {
-									container.style["background-position"] = options
-										.background.position;
+									container.style["background-position"] = options.background.position;
 								}
 								/*背景图像的尺寸*/
 								if (options.background.size) {
-									container.style["background-size"] = options
-										.background.size;
+									container.style["background-size"] = options.background.size;
 								}
 							}
 							self.cache[pageNum + ""].container = container;
-							self.cache[pageNum + ""].scaledViewport =
-								scaledViewport;
-							var sum = 0,
-								containerH = self.container.height();
-							self.pages = self.viewerContainer.find(
-								'.pageContainer');
+							self.cache[pageNum + ""].scaledViewport = scaledViewport;
+							var sum = 0, containerH = self.container.offsetHeight;
+							self.pages = self.viewerContainer.querySelector('.pageContainer');
 							if (options.resize) {
-								self.resize();
+								window.addEventListener("resize", self.fn2);
 							}
 							if (options.renderType === "svg") {
-								return self.renderSvg(page, scaledViewport, pageNum,
-									num, container, options, viewport);
+								return self.renderSvg(page, scaledViewport, pageNum, num, container, options, viewport);
 							}
-							return self.renderCanvas(page, scaledViewport, pageNum,
-								num, container, options);
+							return self.renderCanvas(page, scaledViewport, pageNum, num, container, options);
 						});
 					}.bind(null, i));
 				}
 			}).catch(function (err) {
-				self.loading.hide();
-				var time = new Date().getTime();
-				self.endTime = time - self.initTime;
-				var arr1 = self.eventType["complete"];
-				if (arr1 && arr1 instanceof Array) {
-					for (var i = 0; i < arr1.length; i++) {
-						arr1[i] && arr1[i].call(self, "error", err.message, self.endTime);
-					}
-				}
-				var arr2 = self.eventType["error"];
-				if (arr2 && arr2 instanceof Array) {
-					for (var i = 0; i < arr2.length; i++) {
-						arr2[i] && arr2[i].call(self, err.message, self.endTime);
-					}
-				}
+				self.loading.style.display = "none";
+				console.log(err);
 			});
 		},
 		renderSvg: function (page, scaledViewport, pageNum, num, container, options, viewport) {
 			var self = this;
 			var viewport = page.getViewport(options.scale);
-			var w = viewport.width;
-			var h = viewport.height;
-			var whobj = changeWH(w, h);
-			viewport.width = whobj.w;
-			viewport.height = whobj.h;
 			var scale = (self.docWidth / viewport.width).toFixed(2);
 			return page.getOperatorList().then(function (opList) {
 				var svgGfx = new pdfjsLib.SVGGraphics(page.commonObjs, page.objs);
 				return svgGfx.getSVG(opList, scaledViewport).then(function (svg) {
 					self.loadedCount++;
-					container.children[0].style.display = "none";
+					container.firstChild.style.display = "none";
 					container.appendChild(svg);
 					svg.style.width = "100%";
 					svg.style.height = "100%";
 					if (self.options.loadingBar) {
-						self.progress.css({
-							width: num * self.loadedCount + "%"
-						});
+						self.progress.style.width = num * self.loadedCount + "%";
 					}
 					var time = new Date().getTime();
 					var arr1 = self.eventType["render"];
 					if (arr1 && arr1 instanceof Array) {
 						for (var i = 0; i < arr1.length; i++) {
-							arr1[i] && arr1[i].call(self, pageNum, time - self.initTime,
-								container);
+							arr1[i] && arr1[i].call(self, pageNum, time - self.initTime, container);
 						}
 					}
 					if (self.loadedCount === self.totalNum) {
@@ -1746,7 +1724,7 @@
 				if (!self.options.textLayer) {
 					return;
 				}
-				if ($(container).find(".textLayer")[0]) {
+				if (container.querySelector(".textLayer")) {
 					return;
 				}
 				var textLayerDiv = document.createElement('div');
@@ -1761,21 +1739,12 @@
 				});
 
 				textLayer.setTextContent(textContent);
-
 				textLayer.render();
 			});;
 		},
 		renderCanvas: function (page, viewport, pageNum, num, container, options) {
 			var self = this;
-			var viewport = page.getViewport(
-				{
-					scale: options.scale,
-				});
-			var w = viewport.width;
-			var h = viewport.height;
-			var whobj = changeWH(w, h);
-			viewport.width = whobj.w;
-			viewport.height = whobj.h;
+			var viewport = page.getViewport({ scale: options.scale });
 			var scale = (self.docWidth / viewport.width).toFixed(2);
 			var canvas = document.createElement("canvas");
 			var obj2 = {
@@ -1794,11 +1763,9 @@
 			canvas.height = viewport.height;
 			canvas.width = viewport.width;
 			if (self.options.loadingBar) {
-				self.progress.css({
-					width: num * self.loadedCount + "%"
-				});
+				self.progress.style.width = num * self.loadedCount + "%";
 			}
-			obj2.src = obj2.canvas.toDataURL("image/png");
+			// obj2.src = obj2.canvas.toDataURL("image/png");
 			var renderObj = {
 				canvasContext: context,
 				viewport: viewport
@@ -1808,15 +1775,10 @@
 			}
 			return page.render(renderObj).promise.then(function () {
 				if (options.logo) {
-					context.drawImage(self.options.logo.img, self.options.logo.x * self.options
-						.scale,
-						self.options.logo.y * self.options.scale, self.options.logo.width * self
-							.options.scale, self.options.logo.height *
-					self.options.scale
-					);
+					context.drawImage(self.options.logo.img, self.options.logo.x * self.options.scale, self.options.logo.y * self.options.scale, self.options.logo.width * self.options.scale, self.options.logo.height * self.options.scale);
 				}
 				self.loadedCount++;
-				var img = new Image();
+				// var img = new Image();
 				var time = new Date().getTime();
 				var time2 = 0;
 				if (self.renderTime == 0) {
@@ -1826,16 +1788,18 @@
 				}
 				obj2.src = obj2.canvas.toDataURL("image/png");
 
-				img.src = obj2.src;
-				img.className = "canvasImg" + pageNum;
-				var img0 = self.container.find(".pageContainer" + pageNum).find(".canvasImg" +
-					pageNum)[0];
-				if (container && !img0) {
-					container.appendChild(img);
-				} else if (img0) {
-					img0.src = obj2.src;
-				}
-				container.children[0].style.display = "none";
+				// img.src = obj2.src;
+				// img.className = "canvasImg" + pageNum;
+				canvas.className = "canvasImg" + pageNum;
+				container.appendChild(canvas);
+				// var img0 = self.container.querySelector(".pageContainer" + pageNum + " .canvasImg" + pageNum);
+				// if (container && !img0) {
+				// 	// container.appendChild(img);
+				// } 
+				// else if (img0) {
+				// 	img0.src = obj2.src;
+				// }
+				container.firstChild.style.display = "none";
 				var time = new Date().getTime();
 				var arr1 = self.eventType["render"];
 				if (arr1 && arr1 instanceof Array) {
@@ -1852,7 +1816,7 @@
 				if (!self.options.textLayer) {
 					return;
 				}
-				if ($(container).find(".textLayer")[0]) {
+				if (container.querySelector(".textLayer")) {
 					return;
 				}
 				var textLayerDiv = document.createElement('div');
@@ -1867,7 +1831,6 @@
 				});
 
 				textLayer.setTextContent(textContent);
-
 				textLayer.render();
 			});
 		},
@@ -1875,12 +1838,10 @@
 			var time = new Date().getTime();
 			var self = this;
 			if (self.options.loadingBar) {
-				self.progress.css({
-					width: "100%"
-				});
+				self.progress.style.width = "100%";
 			}
 			setTimeout(function () {
-				self.loadingBar.hide();
+				self.loadingBar.style.display = "none";
 			}, 300);
 			self.endTime = time - self.initTime;
 			if (options.renderType === "svg") {
@@ -1912,23 +1873,8 @@
 				}
 			}
 		},
-		resize: function () {
-			var self = this;
-			if (self.resizeEvent) {
-				return;
-			}
-			self.resizeEvent = true;
-			var timer;
-			if (self.pages) {
-				$(window).on("resize", function () {
-					self.pages.each(function (i, item) {
-						$(item).css("min-height", "auto");
-					});
-				});
-			}
-		},
 		show: function (callback) {
-			this.container.show();
+			this.container.style.display = "block";
 			callback && callback.call(this);
 			var arr = this.eventType["show"];
 			if (arr && arr instanceof Array) {
@@ -1938,7 +1884,7 @@
 			}
 		},
 		hide: function (callback) {
-			this.container.hide();
+			this.container.style.display = "none";
 			callback && callback.call(this);
 			var arr = this.eventType["hide"];
 			if (arr && arr instanceof Array) {
@@ -1964,33 +1910,28 @@
 		},
 		goto: function (num) {
 			var self = this;
-
 			if (!isNaN(num)) {
 				if (self.viewerContainer) {
-					self.pages = self.viewerContainer.find('.pageContainer');
-
+					self.pages = self.viewerContainer.querySelectorAll('.pageContainer');
 					if (self.pages) {
 						var h = 0;
 						var signHeight = 0;
 						if (num - 1 > 0) {
 							signHeight = self.pages[0].getBoundingClientRect().height;
 						}
-						self.viewerContainer.animate({
-							scrollTop: signHeight * (num - 1) + 8 * num
-						}, 300);
+						self.viewerContainer.scrollTo({
+							top: signHeight * (num - 1) + 8 * num,
+							behavior: "smooth"
+						});
 					}
 				}
 			}
 		},
 		scrollEnable: function (flag) {
 			if (flag === false) {
-				this.viewerContainer.css({
-					"overflow": "hidden"
-				});
+				this.viewerContainer.style.overflow = "hidden";
 			} else {
-				this.viewerContainer.css({
-					"overflow": "auto"
-				});
+				this.viewerContainer.style.overflow = "auto";
 			}
 			var arr = this.eventType["scrollEnable"];
 			if (arr && arr instanceof Array) {
@@ -2031,7 +1972,7 @@
 				this.pinchZoom.update();
 			}
 			if (this.viewerContainer) {
-				this.viewerContainer.scrollTop(0);
+				this.viewerContainer.scrollTop = 0;
 			}
 			callback && callback.call(this);
 			var arr = this.eventType["reset"];
@@ -2042,6 +1983,9 @@
 			}
 		},
 		destroy: function (callback) {
+			this.backTop.removeEventListener("click", this.fn1);
+			this.backTop.removeEventListener("tap", this.fn1);
+			window.removeEventListener("resize", this.fn2);
 			this.reset();
 			this.off();
 			if (this.thePDF) {
@@ -2049,7 +1993,7 @@
 				this.thePDF = null;
 			}
 			if (this.viewerContainer) {
-				this.viewerContainer.remove();
+				this.viewerContainer.parentNode.removeChild(this.viewerContainer);
 				this.viewerContainer = null;
 			}
 			if (this.container) {
@@ -2099,9 +2043,9 @@
 					var a = document.createElement('a');
 					a.download = name;
 					a.href = e.target.result;
-					$("body").append(a);
+					document.body.appendChild(a);
 					a.click();
-					$(a).remove();
+					document.body.removeChild(a);
 					callback && callback();
 				};
 			}
@@ -2141,18 +2085,11 @@
 			var url = window.URL.createObjectURL(blob);
 			a.download = name;
 			a.href = url;
-			$("body").append(a);
+			document.body.appendChild(a);
 			a.click();
-			$(a).remove();
+			document.body.removeChild(a);
 			callback && callback();
 		}
 
-	}
-	function changeWH(w, h) {
-		while (w * h > 16777216) {
-			w = 0.8 * w;
-			h = 0.8 * h;
-		}
-		return { w: w, h: h };
 	}
 });

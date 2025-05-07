@@ -13,7 +13,6 @@
 	<meta http-equiv="expires" content="0">
 	<title>PDFH5</title>
 	<link rel="stylesheet" href="css/style.css" />
-	<link rel="stylesheet" href="css/pdfh5.css" />
 	<link href="https://www.gjtool.cn/download/pdfh5.png" type="image/x-icon" rel="shortcut icon" />
 	<style>
 		html,
@@ -43,29 +42,27 @@
 	<div id="app">
 		<div class="text-wrapper">
 			<div class="text part1">
-				<div>
-					<span class="letter">
-						<div class="character">L</div> <span></span>
-					</span>
-					<span class="letter">
-						<div class="character">o</div> <span></span>
-					</span>
-					<span class="letter">
-						<div class="character">a</div> <span></span>
-					</span>
-					<span class="letter">
-						<div class="character">d</div> <span></span>
-					</span>
-					<span class="letter">
-						<div class="character">i</div> <span></span>
-					</span>
-					<span class="letter">
-						<div class="character">n</div> <span></span>
-					</span>
-					<span class="letter">
-						<div class="character">g</div> <span></span>
-					</span>
-				</div>
+				<span class="letter">
+					<div class="character">L</div> <span></span>
+				</span>
+				<span class="letter">
+					<div class="character">o</div> <span></span>
+				</span>
+				<span class="letter">
+					<div class="character">a</div> <span></span>
+				</span>
+				<span class="letter">
+					<div class="character">d</div> <span></span>
+				</span>
+				<span class="letter">
+					<div class="character">i</div> <span></span>
+				</span>
+				<span class="letter">
+					<div class="character">n</div> <span></span>
+				</span>
+				<span class="letter">
+					<div class="character">g</div> <span></span>
+				</span>
 			</div>
 			<div class="how-to"><span>正在加载中，请您耐心等待...</span></div>
 		</div>
@@ -74,7 +71,6 @@
 	<div id="demo"></div>
 	<script src="js/pdf.js"></script>
 	<script src="js/pdf.worker.js"></script>
-	<script src="js/jquery-3.6.0.min.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/pdfh5.js" type="text/javascript" charset="utf-8"></script>
 	<script src="./vconsole.min.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -82,10 +78,11 @@
 		var vConsole = new VConsole();
 		console.log('Hello world');
 		var pdfh5;
-		$("#app").remove();
-		$("#demo").show();
-		pdfh5 = new Pdfh5('#demo', {
-			pdfurl: "git.pdf",
+		document.body.removeChild(document.querySelector("#app"));
+		document.querySelector("#demo").style.display = "block";
+		pdfh5 = new Pdfh5(document.querySelector("#demo"), {
+			pdfurl: "pdf/2.pdf",
+			// scale: 2.0,
 			// renderType: "svg",
 			// cMapUrl:"https://unpkg.com/pdfjs-dist@2.7.570/cmaps/",
 			// responseType: "blob" // blob arraybuffer
@@ -97,38 +94,38 @@
 		// 	console.log("scrollTop:"+scrollTop,"currentNum:"+currentNum);
 		// });
 		//配置项参数 renderType:"svg" 渲染模式为svg，默认canvas
-		// var pdfh5 = new Pdfh5('#demo', {
+		// var pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 		//     pdfurl: "./default.pdf",
 		//     renderType:"svg"
 		// });
 
 		//配置项参数 URIenable:true 开启获取地址栏file参数，获取地址栏pdf路径?file=xxx.pdf，默认false不开启
-		// var pdfh5 = new Pdfh5('#demo', {
+		// var pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 		//     URIenable:false,
 		//     pdfurl: "./default.pdf"
 		// });
 
 		//配置项参数 是否显示小部件 顶部绿色加载进度条loadingBar 左上角页码显示pageNum 右下角回到顶部按钮backTop  默认显示
-		//		var pdfh5 = new Pdfh5('#demo', {
+		//		var pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 		// 			 loadingBar: false,
 		//           pageNum:false,
 		//           backTop:false
 		// 		});
 
 		//配置项参数data，文件流形式传入  pdfurl和data二选一
-		//		var pdfh5 = new Pdfh5('#demo', {
+		//		var pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 		// 			data: data
 		// 		});
 
 		//配置项参数scrollEnable:false不允许pdf滚动,true允许pdf滚动  默认允许
-		//		var pdfh5 = new Pdfh5('#demo', {
+		//		var pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 		// 			scrollEnable:false,//是否允许pdf滚动
 		// 			pdfurl: url
 		// 		});
 		//pdfh5.scrollEnable(true)允许pdf滚动,pdfh5.scrollEnable(false)不允许pdf滚动
 
 		//配置项参数zoomEnable:false不允许pdf手势缩放,true允许pdf手势缩放  默认允许
-		//		var pdfh5 = new Pdfh5('#demo', {
+		//		var pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 		// 			zoomEnable:false,//是否允许pdf手势缩放
 		// 			pdfurl: url
 		// 		});
@@ -160,6 +157,17 @@
 
 		//pdfh5支持在线预览
 		//http://www.gjtool.cn/pdfh5/pdf.html?file=http://www.gjtool.cn/pdfh5/default.pdf
+		// var w = 4304, h = 6071;
+		// function changeWH(w, h) {
+		// 	if (w * h >= 16777216 || w >= 16777216 || h >= 16777216) {
+		// 		w = 0.8 * w;
+		// 		h = 0.8 * h;
+		// 		return changeWH(w, h);
+		// 	}
+		// 	return { w: w.toFixed(2) * 1, h: h.toFixed(2) * 1 };
+		// }
+		// var obj = changeWH(w, h);
+		// console.log(obj, obj.w * obj.h > 16777216);
 	</script>
 </body>
 
