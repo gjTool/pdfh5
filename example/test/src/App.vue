@@ -13,8 +13,9 @@ export default {
     };
   },
   mounted() {
-    this.pdfh5 = new Pdfh5('#demo', {
-      pdfurl: "./static/git.pdf"
+    this.pdfh5 = new Pdfh5(document.querySelector("#demo"), {
+      pdfurl: "./static/git.pdf",
+			textLayer: true
     });
     this.pdfh5.on("scroll", function (scrollTop, currentNum) {
       console.log("scrollTop:" + scrollTop, "currentNum:" + currentNum);

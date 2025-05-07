@@ -7,8 +7,9 @@ import Pdfh5 from 'pdfh5';
 import { onMounted } from 'vue';
 
 onMounted(() => {
-  new Pdfh5('#demo', {
-    pdfurl: "./git.pdf"
+  new Pdfh5(document.querySelector("#demo"), {
+    pdfurl: "./git.pdf",
+    textLayer: true
   });
 });
 </script>
@@ -25,9 +26,7 @@ onMounted(() => {
   color: #2c3e50;
 }
 
-#demo {
- 
-}
+#demo {}
 
 * {
   padding: 0;
@@ -40,6 +39,4 @@ body,
   width: 100%;
   height: 100%;
 }
-
-
 </style>

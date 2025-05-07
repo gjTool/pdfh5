@@ -77,9 +77,9 @@
 		var vConsole = new VConsole();
 		console.log('Hello world');
 		var pdfh5;
-		$("#app").remove();
-		$("#demo").show();
-		pdfh5 = new Pdfh5('#demo', {
+		document.body.removeChild(document.querySelector("#app"));
+		document.querySelector("#demo").style.display = "block";
+		pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 			pdfurl: "git.pdf",
 			textLayer: true,
 			// renderType: "svg",

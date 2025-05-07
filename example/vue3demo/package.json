@@ -9,11 +9,11 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
-    "pdfh5": "^1.4.9",
+    "dommatrix": "^1.0.3",
+    "pdfh5": "^2.0.2",
     "vue": "^3.2.13",
     "vuetify": "^3.0.0",
-    "web-streams-polyfill": "^3.2.1",
-    "dommatrix": "^1.0.3"
+    "web-streams-polyfill": "^3.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
