@@ -79,9 +79,14 @@
 		var pdfh5;
 		document.body.removeChild(document.querySelector("#app"));
 		document.querySelector("#demo").style.display = "block";
+
+		var pdfUrl = "git.pdf";
+		if (location.search && location.search.includes("?file=")) {
+			pdfUrl = location.search.replace("?file=", "");
+		}
 		pdfh5 = new Pdfh5(document.querySelector("#demo"), {
-			pdfurl: "git.pdf",
-			textLayer: true,
+			pdfurl: pdfUrl,
+			textLayer: true,                                                                                                      
 			// renderType: "svg",
 			// cMapUrl:"https://unpkg.com/pdfjs-dist@2.7.570/cmaps/",
 			// responseType: "blob" // blob arraybuffer

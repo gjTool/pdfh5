@@ -1,5 +1,5 @@
 ; (function (g, fn) {
-	var version = "2.0.2",
+	var version = "2.0.3",
 		pdfjsVersion = "2.11.338";
 	console.log("pdfh5.js v" + version + " && pdf.js v" + pdfjsVersion + " https://pdfh5.gjtool.cn");
 	if (!g.document) {
@@ -623,9 +623,9 @@
 			this.options.zoomOutFactor = isNaN(options.zoomOutFactor) ? 1.2 : options.zoomOutFactor;
 			this.options.animationDuration = isNaN(options.animationDuration) ? 300 : options
 				.animationDuration;
-			this.options.maxZoom = isNaN(options.maxZoom) ? 3 : options.maxZoom;
-			this.options.minZoom = isNaN(options.minZoom) ? 0.8 : options.minZoom;
-
+			this.options.maxZoom = isNaN(options.maxZoom) ? 4 : options.maxZoom;
+			this.options.minZoom = isNaN(options.minZoom) ? 0.2 : options.minZoom;
+			this.options.dampingFactor = isNaN(options.dampingFactor) ? 0.85 : options.dampingFactor;
 			this.setupMarkup();
 			this.bindEvents();
 			this.update();
@@ -635,6 +635,10 @@
 			this.direction = null;
 			this.clientY = null;
 			this.lastclientY = null;
+			this.lastOffsets = [];
+			for (var i = 0; i < 5; i++) {
+				this.lastOffsets.push({ x: 0, y: 0, time: Date.now() });
+			}
 		},
 			sum = function (a, b) {
 				return a + b;
@@ -675,10 +679,79 @@
 					this.lastDragPosition = touch;
 				}
 			},
+			sanitizeOffset: function (offset) {
+				var containerWidth = this.getContainerX();
+				var imageWidth = this.el.offsetWidth * this.zoomFactor;
+				var maxX = Math.max(imageWidth - containerWidth, 0);
 
+				var containerHeight = this.getContainerY();
+				var imageHeight = this.el.offsetHeight * this.zoomFactor;
+				var maxY = Math.max(imageHeight - containerHeight, 0);
+
+				// 弹性系数（0.3~0.6之间调节手感）
+				var elasticFactor = 0.5;
+				var newX = offset.x;
+				var newY = offset.y;
+
+				// 水平弹性
+				if (newX < 0) {
+					newX = newX * elasticFactor;
+				} else if (newX > maxX) {
+					newX = maxX + (newX - maxX) * elasticFactor;
+				}
+
+				// 垂直弹性（根据需求可选）
+				if (newY < 0) {
+					newY = newY * elasticFactor;
+				} else if (newY > maxY) {
+					newY = maxY + (newY - maxY) * elasticFactor;
+				}
+
+				return {
+					x: newX,
+					y: newY
+				};
+			},
 			handleDragEnd: function () {
 				triggerEvent(this.el, this.options.dragEndEventName);
 				this.end();
+
+				// 计算惯性速度
+				var now = Date.now();
+				var validRecords = this.lastOffsets.filter(r => now - r.time < 100);
+				var velocityX = validRecords.length > 1 ?
+					(validRecords[validRecords.length - 1].x - validRecords[0].x) /
+					(validRecords[validRecords.length - 1].time - validRecords[0].time) : 0;
+
+				this.startInertiaAnimation(velocityX);
+
+
+			},
+
+			// 新增惯性动画方法
+			startInertiaAnimation: function (initialVelocity) {
+				var minVelocity = 0.08;    // 最小停止速度
+				var decay = 0.92;          // 速度衰减系数
+
+				var animateFrame = () => {
+					if (Math.abs(initialVelocity) < minVelocity) return;
+
+					// 应用速度
+					this.addOffset({
+						x: initialVelocity * 16, // 16ms 每帧的补偿值
+						y: 0
+					});
+
+					// 弹性边界处理
+					this.offset = this.sanitizeOffset(this.offset);
+					this.update();
+
+					// 衰减速度
+					initialVelocity *= decay;
+					requestAnimationFrame(animateFrame);
+				};
+
+				requestAnimationFrame(animateFrame);
 			},
 			handleZoomStart: function (event) {
 				triggerEvent(this.el, this.options.zoomStartEventName);
@@ -724,23 +797,6 @@
 				this.animate(this.options.animationDuration, updateProgress, this.swing);
 				triggerEvent(this.el, this.options.doubleTapEventName);
 			},
-			sanitizeOffset: function (offset) {
-				var maxX = (this.zoomFactor - 1) * this.getContainerX(),
-					maxY = (this.zoomFactor - 1) * this.getContainerY(),
-					maxOffsetX = Math.max(maxX, 0),
-					maxOffsetY = Math.max(maxY, 0),
-					minOffsetX = Math.min(maxX, 0),
-					minOffsetY = Math.min(maxY, 0);
-
-				var x = Math.min(Math.max(offset.x, minOffsetX), maxOffsetX),
-					y = Math.min(Math.max(offset.y, minOffsetY), maxOffsetY);
-
-
-				return {
-					x: x,
-					y: y
-				};
-			},
 			scaleTo: function (zoomFactor, center) {
 				this.scale(zoomFactor / this.zoomFactor, center);
 			},
@@ -763,31 +819,12 @@
 				return this.options.draggableUnzoomed || !isCloseTo(this.zoomFactor, 1);
 			},
 			drag: function (center, lastCenter, event) {
-				if (lastCenter) {
-					if (this.options.lockDragAxis) {
-						if (Math.abs(center.x - lastCenter.x) > Math.abs(center.y - lastCenter.y)) {
-							this.addOffset({
-								x: -(center.x - lastCenter.x),
-								y: 0
-							});
-						} else {
-							this.addOffset({
-								y: -(center.y - lastCenter.y),
-								x: 0
-							});
-						}
-					} else {
-						if (center.y - lastCenter.y < 0) {
-							this.direction = "down";
-						} else if (center.y - lastCenter.y > 10) {
-							this.direction = "up";
-						}
-						this.addOffset({
-							y: -(center.y - lastCenter.y),
-							x: -(center.x - lastCenter.x)
-						});
-					}
-				}
+				if (!lastCenter) return;
+
+				var dx = -(center.x - lastCenter.x) * this.options.dampingFactor;
+				var dy = -(center.y - lastCenter.y) * this.options.dampingFactor;
+
+				this.addOffset({ x: dx, y: dy });
 			},
 			getTouchCenter: function (touches) {
 				return this.getVectorAvg(touches);
@@ -983,7 +1020,7 @@
 
 			end: function () {
 				this.hasInteraction = false;
-				this.sanitize();
+				this.sanitize(); // 自动回弹到合法范围
 				this.update();
 
 			},
@@ -994,12 +1031,11 @@
 				this.resizeHandler = this.update.bind(this);
 				window.addEventListener('resize', this.resizeHandler);
 				Array.from(this.el.querySelectorAll('canvas')).forEach(function (imgEl) {
-					self.update.bind(self)
+					self.update.bind(self);
 					// imgEl.addEventListener('load', self.update.bind(self));
 				});
 			},
 			update: function () {
-
 				if (this.updatePlaned) {
 					return;
 				}
@@ -1037,6 +1073,13 @@
 						this.el.style.transform = transform2d;
 						this.is3d = false;
 					}
+					// 记录偏移用于计算速度
+					this.lastOffsets.shift();
+					this.lastOffsets.push({
+						x: this.offset.x,
+						y: this.offset.y,
+						time: Date.now()
+					});
 				}).bind(this), 0);
 			},
 			enable: function () {
