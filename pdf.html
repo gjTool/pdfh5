@@ -80,17 +80,23 @@
 		document.body.removeChild(document.querySelector("#app"));
 		document.querySelector("#demo").style.display = "block";
 
-		var pdfUrl = "git.pdf";
+		var pdfUrl = "test.pdf";
 		if (location.search && location.search.includes("?file=")) {
 			pdfUrl = location.search.replace("?file=", "");
 		}
 		pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 			pdfurl: pdfUrl,
-			textLayer: true,                                                                                                      
+			textLayer: true,
 			// renderType: "svg",
 			// cMapUrl:"https://unpkg.com/pdfjs-dist@2.7.570/cmaps/",
 			// responseType: "blob" // blob arraybuffer
 		});
+		setTimeout(function () {
+			pdfh5.destroy();
+			setTimeout(function () {
+				pdfh5.updateFile({ pdfurl: "git.pdf" });
+			}, 5000);
+		}, 5000);
 		pdfh5.on("complete", function (status, msg, time) {
 			console.log("状态：" + status + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum, msg);
 		});

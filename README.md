@@ -28,6 +28,7 @@
 
 ## 更新信息
 
+- 2025.05.13 更新： 新增方法updateFile更新pdf，修复destroy报错。
 - 2025.05.09 更新： 优化放大后的手势水平滚动。
 - 2025.05.07 更新： 移除jQuery依赖，img渲染还原成canvas渲染，合并textLayer的PR，所有示例同步更新，修复部分bugs。
 
@@ -195,7 +196,7 @@ pdfh5.scrollEnable(false) //不允许pdf滚动
 |on				| (String, Function)|String：监听的事件名，Function：监听的事件回调						|on方法监听所有事件								|
 |goto			| Number			|Number:要跳转的pdf页数												|pdf跳转到第几页（pdf加载完成后使用）			|
 |download		| (String, Function)|String：下载pdf的名称，默认download.pdf，Function：下载完成后的回调|下载pdf										|
-
+|updateFile		| options |options.pdfurl：要更新的pdf地址，options.data：要更新的pdf文件流（blob 、 arraybuffer ）|更新pdf
 ## on方法监听所有事件-事件名列表
 
 - **示例：** 监听pdf准备开始渲染，此时可以拿到pdf总页数

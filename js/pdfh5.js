@@ -1,5 +1,5 @@
 ; (function (g, fn) {
-	var version = "2.0.3",
+	var version = "2.0.4",
 		pdfjsVersion = "2.11.338";
 	console.log("pdfh5.js v" + version + " && pdf.js v" + pdfjsVersion + " https://pdfh5.gjtool.cn");
 	if (!g.document) {
@@ -76,22 +76,6 @@
 		event.initEvent(name, true, false);
 		el.dispatchEvent(event);
 	};
-	var _createClass = function () {
-		function defineProperties(target, props) {
-			for (var i = 0; i < props.length; i++) {
-				var descriptor = props[i];
-				descriptor.enumerable = descriptor.enumerable || false;
-				descriptor.configurable = true;
-				if ("value" in descriptor) descriptor.writable = true;
-				Object.defineProperty(target, descriptor.key, descriptor);
-			}
-		}
-		return function (Constructor, protoProps, staticProps) {
-			if (protoProps) defineProperties(Constructor.prototype, protoProps);
-			if (staticProps) defineProperties(Constructor, staticProps);
-			return Constructor;
-		};
-	}();
 
 	function ImgResizeObserver() {
 		this.callbacks = {};
@@ -1308,6 +1292,7 @@
 			this.options.pdfurl = this.options.pdfurl ? this.options.pdfurl : null;
 			this.options.data = this.options.data ? this.options.data : null;
 			this.options.scale = this.options.scale ? this.options.scale : this.scale;
+			this.scale = this.options.scale;
 			this.options.zoomEnable = this.options.zoomEnable === false ? false : true;
 			this.options.scrollEnable = this.options.scrollEnable === false ? false : true;
 			this.options.loadingBar = this.options.loadingBar === false ? false : true;
@@ -2089,7 +2074,7 @@
 			window.removeEventListener("resize", this.fn2);
 			this.reset();
 			this.off();
-			if (this.thePDF) {
+			if (this.thePDF && this.thePDF.destroy) {
 				this.thePDF.destroy();
 				this.thePDF = null;
 			}
@@ -2098,7 +2083,7 @@
 				this.viewerContainer = null;
 			}
 			if (this.container) {
-				this.container.html('');
+				this.container.innerHTML = "";
 			}
 			this.totalNum = null;
 			this.pages = null;
@@ -2112,6 +2097,9 @@
 			this.progress = null;
 			this.loadedCount = 0;
 			this.timer = null;
+			this.cache = {};
+			this.cacheData = "";
+			this.pinchZoom = null;
 			callback && callback.call(this);
 			var arr = this.eventType["destroy"];
 			if (arr && arr instanceof Array) {
@@ -2119,6 +2107,26 @@
 					arr[i] && arr[i].call(this);
 				}
 			}
+		},
+		updateFile: function (options) {
+			if (options.pdfurl) {
+				this.options.pdfurl = options.pdfurl;
+			}
+			if (options.data) {
+				this.options.data = options.data;
+			}
+			this.options.scale = this.scale;
+			this.destroy();
+			let _this = this;
+			setTimeout(function () {
+				_this.init(_this.options);
+				var arr = _this.eventType["updateFile"];
+				if (arr && arr instanceof Array) {
+					for (var i = 0; i < arr.length; i++) {
+						arr[i] && arr[i].call(_this);
+					}
+				}
+			}, 0);
 		}
 	};
 	return Pdfh5;

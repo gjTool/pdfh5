@@ -164,20 +164,16 @@
                 src="//ghbtns.com/github-btn.html?user=gjtool&amp;repo=pdfh5&amp;type=fork&amp;count=true" width="100"
                 height="20">
             </iframe>
-            <p style="text-align: left;margin-top: 20px;">本插件所需文件如下：</p>
-            <ol>
-           
-            </ol>
 
         </div>
         <p style="text-align: left;margin-top: 20px;padding-left: 10px;">pdfh5支持在线预览，修改地址栏file=后的地址就行，如果不填写，就在实例化的时候传入pdf地址：</p>
         <a target="_blank"
-            href="//www.gjtool.cn/pdfh5/pdf.html?file=//www.gjtool.cn/pdfh5/test.pdf" style="padding-left: 10px;">http://www.gjtool.cn/pdfh5/pdf.html?file=//www.gjtool.cn/pdfh5/test.pdf</a>
+            href="//pdfh5.gjtool.cn/pdfh5/pdf.html?file=//pdfh5.gjtool.cn/pdfh5/test.pdf" style="padding-left: 10px;">http://pdfh5.gjtool.cn/pdfh5/pdf.html?file=//pdfh5.gjtool.cn/pdfh5/test.pdf</a>
         <p style="text-align: left;margin-top: 20px;padding-left: 10px;">
             默认优先获取浏览器地址栏？file=后面的地址，如果地址栏没有，再拿配置项的pdfurl或者data来渲染pdf。pdfh5实例初始化：</p>
 <pre style="text-align: left;margin-top: 20px;background: #111;color:aqua">
-    var pdfh5 = new Pdfh5('.pdfjs', {
-        pdfurl: 'default.pdf'
+    var pdfh5 = new Pdfh5(document.querySelector("#app"), {
+        pdfurl: 'test.pdf'
     });
 </pre>
         <div class="phone">
