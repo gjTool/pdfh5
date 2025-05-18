@@ -1,5 +1,5 @@
 ; (function (g, fn) {
-	var version = "2.0.4",
+	var version = "2.0.5",
 		pdfjsVersion = "2.11.338";
 	console.log("pdfh5.js v" + version + " && pdf.js v" + pdfjsVersion + " https://pdfh5.gjtool.cn");
 	if (!g.document) {
@@ -1375,7 +1375,6 @@
 					}
 				} else {
 					if (self.options.backTop) {
-						// self.backTop.fadeOut(200);
 						self.backTop.style.display = "none";
 					}
 				}
@@ -1387,6 +1386,7 @@
 					self.pageNum.style.display = "block";
 				}
 				var h = containerH;
+
 				if (self.pages) {
 					self.pages.forEach(function (obj, index) {
 						var rect = obj.getBoundingClientRect();
@@ -1398,20 +1398,28 @@
 							}
 							self.currentNum = index + 1;
 						}
+
 						if (top <= h && bottom > h) {
 							self.cacheNum = index + 1;
 						}
 					});
 				}
+
 				if (scrollTop + self.container.offsetHeight >= self.viewer.offsetHeight) {
 					self.pageNow.innerText = self.totalNum;
+				}
+				var obj = self.pages[self.totalNum - 1];
+				if (obj) {
+					var rect = obj.getBoundingClientRect();
+					if (rect.bottom < window.innerHeight) {
+						self.currentNum = self.totalNum;
+					}
 				}
 				if (scrollTop === 0) {
 					self.pageNow.innerText = 1;
 				}
 				self.timer = setTimeout(function () {
 					if (self.options.pageNum && self.pageNum) {
-						// self.pageNum.fadeOut(200);
 						self.pageNum.style.display = "none";
 					}
 				}, 1500);
@@ -2073,7 +2081,6 @@
 			this.backTop.removeEventListener("tap", this.fn1);
 			window.removeEventListener("resize", this.fn2);
 			this.reset();
-			this.off();
 			if (this.thePDF && this.thePDF.destroy) {
 				this.thePDF.destroy();
 				this.thePDF = null;

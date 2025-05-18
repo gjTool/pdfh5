@@ -27,7 +27,7 @@
 ![pdfh5.js示例](https://pdfh5.gjtool.cn/img/123.gif)
 
 ## 更新信息
-
+- 2025.05.18 更新： 修复调用updateFile方法后，原先监听事件失效的问题。修复scroll事件监听最后一页的问题。
 - 2025.05.13 更新： 新增方法updateFile更新pdf，修复destroy报错。
 - 2025.05.09 更新： 优化放大后的手势水平滚动。
 - 2025.05.07 更新： 移除jQuery依赖，img渲染还原成canvas渲染，合并textLayer的PR，所有示例同步更新，修复部分bugs。

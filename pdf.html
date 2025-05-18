@@ -80,7 +80,7 @@
 		document.body.removeChild(document.querySelector("#app"));
 		document.querySelector("#demo").style.display = "block";
 
-		var pdfUrl = "test.pdf";
+		var pdfUrl = "git.pdf";
 		if (location.search && location.search.includes("?file=")) {
 			pdfUrl = location.search.replace("?file=", "");
 		}
@@ -91,18 +91,12 @@
 			// cMapUrl:"https://unpkg.com/pdfjs-dist@2.7.570/cmaps/",
 			// responseType: "blob" // blob arraybuffer
 		});
-		setTimeout(function () {
-			pdfh5.destroy();
-			setTimeout(function () {
-				pdfh5.updateFile({ pdfurl: "git.pdf" });
-			}, 5000);
-		}, 5000);
 		pdfh5.on("complete", function (status, msg, time) {
 			console.log("状态：" + status + "，总耗时：" + time + "毫秒，总页数：" + this.totalNum, msg);
 		});
-		// pdfh5.on("scroll", function (scrollTop, currentNum) {
-		// 	console.log("scrollTop:"+scrollTop,"currentNum:"+currentNum);
-		// });
+		pdfh5.on("scroll", function (scrollTop, currentNum) {
+			console.log("scrollTop:" + scrollTop, "currentNum:" + currentNum);
+		});
 		//配置项参数 renderType:"svg" 渲染模式为svg，默认canvas
 		// var pdfh5 = new Pdfh5(document.querySelector("#demo"), {
 		//     pdfurl: "./default.pdf",
