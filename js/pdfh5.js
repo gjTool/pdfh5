@@ -1616,6 +1616,9 @@
 			if (options.disableAutoFetch) {
 				obj.disableAutoFetch = true;
 			}
+			if (options.disableEvalSupported) {
+				obj.isEvalSupported = false;
+			}
 			obj.cMapPacked = true;
 			obj.rangeChunkSize = 65536;
 			this.pdfjsLibPromise = pdfjsLib.getDocument(obj).promise.then(function (pdf) {
